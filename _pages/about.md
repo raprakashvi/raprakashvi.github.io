@@ -8,7 +8,7 @@ redirect_from:
   - /about.html
 ---
 
-I am a doctoral researcher in [Brain Tool Lab](https://www.braintoollab.com/) with [Patrick Codd] (https://scholars.duke.edu/person/patrick.codd)  where I work on developing technologies towards automated brain surgery. My research focuses on Robotic Perception, Soft Body Manipulation and Machine Learning. I obtained my MS in Mechanical Engineering at [Duke University](https://duke.edu/) with [Xiaoyue Ni](http://ni.pratt.duke.edu/).
+I am a doctoral researcher in [Brain Tool Lab](https://www.braintoollab.com/) with [Patrick Codd](https://scholars.duke.edu/person/patrick.codd)  where I work on developing technologies towards automated brain surgery. My research focuses on Robotic Perception, Soft Body Manipulation and Machine Learning. I obtained my MS in Mechanical Engineering at [Duke University](https://duke.edu/) with [Xiaoyue Ni](http://ni.pratt.duke.edu/).
 
 My interests lies in developing interventions in healthcare for enhancing ability and accessibility of autonomous systems by equipping them with novel sensors and algorithms. Through my work, I wish to empower healthcare professionals in under-resourced communities for a equitable present and future.  
 
