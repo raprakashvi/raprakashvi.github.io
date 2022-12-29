@@ -57,7 +57,7 @@ yandex_site_verification :
 
 # Social Sharing
 linkedin:
-  username               : @raprakashvi
+  username               : &linkedin
 facebook:
   username               :
   app_id                 :
