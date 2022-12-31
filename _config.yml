@@ -82,7 +82,7 @@ analytics:
 author:
   name             : Ravi Prakash
   # avatar          : "images/profile pic_small.png"
-  avatar          : "profile pic_small-min.png"
+  avatar          : "/images/profile pic_small-min.png"
   bio              : PhD Candidate, Brain Tool Lab, Duke 
   location         : "Durham, NC, United States"
   employer         :
