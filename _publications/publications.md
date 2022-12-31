@@ -1,3 +1,14 @@
+---
+permalink: /
+title: "Publication and Presentation"
+excerpt: "Publication and Presentation"
+#author_profile: true
+redirect_from: 
+  - /publications/
+  - /publications.html
+---
+
+
 ## Publication and Presentation
 
 <ol>
