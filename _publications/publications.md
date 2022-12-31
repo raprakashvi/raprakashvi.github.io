@@ -1,11 +1,7 @@
 ---
-permalink: /
-title: "Publication and Presentation"
-excerpt: "Publication and Presentation"
-#author_profile: true
-redirect_from: 
-  - /publications/
-#   - /publications.html
+layout: archive
+title: "Publications and Presentations"
+permalink: /publications/
 ---
 
 
