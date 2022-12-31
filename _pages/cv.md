@@ -9,7 +9,9 @@ redirect_from:
 
 {% include base_path %}
 
-Education
+<embed src="/files/Prakash_Ravi_CV_221220.pdf">
+
+<!-- Education
 ======
 * B.S. in GitHub, GitHub University, 2012
 * M.S. in Jekyll, GitHub University, 2014
@@ -56,4 +58,4 @@ Teaching
   
 Service and leadership
 ======
-* Currently signed in to 43 different slack teams
+* Currently signed in to 43 different slack teams -->
