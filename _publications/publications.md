@@ -8,7 +8,7 @@ permalink: /publications/
 
 <ol>
 
-<li> <font size= style="color:blue">[Presentation]</font> Codd PJ, Ross W, Ma G, Tucker M,<b>Prakash R</b>, Raman A, Zachem T, Eward W, Mann B. <u>TumorCNC: Engineering an Automated Closed-Loop Robotic System for Neurosurgery </u>. Neurosurgical Society of America. June 14, 2022. Maui, HI</li>
+<li> <font style="color:blue">[Presentation]</font> Codd PJ, Ross W, Ma G, Tucker M,<b>Prakash R</b>, Raman A, Zachem T, Eward W, Mann B. <u>TumorCNC: Engineering an Automated Closed-Loop Robotic System for Neurosurgery </u>. Neurosurgical Society of America. June 14, 2022. Maui, HI</li>
 
 <li><font style="color:blue">[Poster Presentation]</font> Ma, G., <b>Prakash, R.</b>, Ross,W., Codd, P. J. (2022, April 13–15).<u> A Data-driven Method for Robotic Laser Orientation Planning </u>. International Symposium on Medical Robotics, Atlanta, Georgia, United States.</li>
 
