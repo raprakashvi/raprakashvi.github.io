@@ -17,11 +17,11 @@ redirect_from:
 News
 ======
 <ol>
-<li><font size = "2"> <font style ="color:red;">Fall 2022 </font> Thank you Duke Graduate and Professional Student Government for awarding DEI (Diversity, Equity, and Inclusion) microaward for our work with under-represented undergraduate students. </font> </li>
+<li><font size = "2.5"> <font style ="color:red;">Fall 2022 </font> Thank you Duke Graduate and Professional Student Government for awarding DEI (Diversity, Equity, and Inclusion) microaward for our work with under-represented undergraduate students. </font> </li>
 
-<li><font size = "2"> <font style ="color:red;">Summer 2021 </font> I received Woo Center for Big Data and Precision Health Fellowship to work with <a href="https://scholars.duke.edu/person/hanzhang.xu">Dr. Hanzhang Xu</a> on unstructured EHR reports </font> </li>
+<li><font size = "2.5"> <font style ="color:red;">Summer 2021 </font> I received Woo Center for Big Data and Precision Health Fellowship to work with <a href="https://scholars.duke.edu/person/hanzhang.xu">Dr. Hanzhang Xu</a> on unstructured EHR reports </font> </li>
 
-<li><font size = "2"> <font style ="color:red;">Fall 2020 </font> I received Dean's Research Award to support my research on flexible sensors.</font> </li>
+<li><font size = "2.5"> <font style ="color:red;">Fall 2020 </font> I received Dean's Research Award to support my research on flexible sensors.</font> </li>
 
 </ol>
 
