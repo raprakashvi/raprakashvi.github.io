@@ -3,6 +3,7 @@ title: "Futures+"
 url: "https://futures-plus.com/"
 excerpt: "Multi-national Deep Tech Innovation Program <br/><img src='/images/futures_plus.png'>"
 collection: portfolio
+
 ---
 
 <p><a href = "https://futures-plus.com/">Futures+</a>,a foresight driven community innovation program to address sustainability challenges using deep technologies. Teams from Bhutan, Indonesia, India and Singapore participated in the 6-month long program and it resulted in deployment of 3 finalist solutions in north-east India and parts of Indonesia. Futures+ was co-organized by <a href = "https://nitw.ac.in/">National Institute of Warangal</a> and <a href = "sustainablelivinglab.org">Sustainable Living Lab </a></p>
