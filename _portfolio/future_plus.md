@@ -1,6 +1,6 @@
 ---
 title: "Futures+"
-excerpt: "Multi-national Deep Tech Innovation Program <br/><a href = "https://futures-plus.com/"><img src='/images/futures_plus.png'></a>"
+excerpt: "Multi-national Deep Tech Innovation Program <br/><img src='/images/futures_plus.png'>"
 collection: portfolio
 ---
 
