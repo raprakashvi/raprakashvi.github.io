@@ -12,9 +12,8 @@ permalink: /teaching/
 As a teaching assisant for "Experiment Design & Research Methods" course, I worked with graduate students from various backgrounds to help develop protoyping and experiment design skills over a semester long course. The experience has helped me develop my skills to work "with" the students and assist with suggestions to complete the milestones within a semester.
 
 <ol>
-<li><font style="color:red">[Spring 2022]</font> <h2><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h2>
-
-<h3> Teaching Assistant</h3> </li>
+<li><h2><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h2> <br>
+<font style="color:red">[Spring 2022]</font> Teaching Assistant</li>
 
 
 <li><font style="color:red">[Fall 2021]</font> 
