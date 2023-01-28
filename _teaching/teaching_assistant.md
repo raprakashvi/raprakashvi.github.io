@@ -6,15 +6,15 @@ permalink: /teaching/
 
 
 
-<p><font style="color:red">[Spring 2022]</font> <a href=https://sites.duke.edu/memscapstone/technical-communication/ ><h2>Experiment Design & Research Methods </h2> </a> <br>
-<h3> Teaching Assistant</h3> </p>
+<p><font style="color:red">[Spring 2022]</font> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods</a> <br>
+<h4> Teaching Assistant</h4> </p>
 
 
-<p><font style="color:red">[Fall 2021]</font> <h2> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a></h2> <br>
-<h3> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</h3> </p>
+<p><font style="color:red">[Fall 2021]</font> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a> <br>
+<h4> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</h4> </p>
 
-<p><font style="color:red">[Spring 2021]</font> <h2> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a></h2> <br>
-<h3> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</h3> </p>
+<p><font style="color:red">[Spring 2021]</font> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a> <br>
+<h4> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</h4> </p>
 
 
 
