@@ -1,12 +1,13 @@
 ---
-layout: default
+layout: single
 title: "Teaching"
 permalink: /teaching/
 ---
 
 
-
-<p><font style="color:red">[Spring 2022]</font> <h2> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a></h2> <br>
+<section id = "Experiment Design & Research Methods">
+<h2>
+<p><font style="color:red">[Spring 2022]</font> <a href=https://sites.duke.edu/memscapstone/technical-communication/ ><h2>Experiment Design & Research Methods </h2> </a> <br>
 <h3> Teaching Assistant</h3> </p>
 
 
