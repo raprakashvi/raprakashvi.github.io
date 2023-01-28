@@ -5,8 +5,7 @@ permalink: /teaching/
 ---
 
 
-<section id = "Experiment Design & Research Methods">
-<h2>
+
 <p><font style="color:red">[Spring 2022]</font> <a href=https://sites.duke.edu/memscapstone/technical-communication/ ><h2>Experiment Design & Research Methods </h2> </a> <br>
 <h3> Teaching Assistant</h3> </p>
 
