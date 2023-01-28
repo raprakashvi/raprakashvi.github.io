@@ -6,15 +6,13 @@ permalink: /teaching/
 
 
 
-<ol>
-<li> <font style="color:red">[Spring 2022]</font> <h2> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a></h2> <br>
-<h3> Teaching Assistant</h3> <br>
-
-</li>
+<p><font style="color:red">[Spring 2022]</font> <h2> <a href=https://sites.duke.edu/memscapstone/technical-communication/ >Experiment Design & Research Methods </a></h2> <br>
+<h3> Teaching Assistant</h3> </p>
 
 
 
-</ol>
+
+
 
 
 
