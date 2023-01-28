@@ -4,11 +4,10 @@ title: "Teaching"
 permalink: /teaching/
 ---
 
+<p> I belive in learning by doing. At Duke, I have been supported by Laboratory and Curriculum Development Fellowship from the Department of Mechanican Engineering and Materials Science during my master's study. The fellowship allowed me to work with <a href ="https://mems.duke.edu/faculty/george-delagrammatikas" >Prof. George Delagrammatikas</a>
 
-
-<p><font style="color:red">[Spring 2022]</font> 
-<h2><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h2> <br>
-<h4> Teaching Assistant</h4> </p>
+<p><font style="color:red">[Spring 2022]</font> <h2><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h2>
+<h3> Teaching Assistant</h3> </p>
 
 
 <p><font style="color:red">[Fall 2021]</font> 
