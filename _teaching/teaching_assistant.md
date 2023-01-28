@@ -15,19 +15,19 @@ As a teaching assisant for "Experiment Design & Research Methods" course, I work
 
 <li><h3><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h3> 
 <ol style="list-style-type: lower-alpha; padding-bottom: 0;">
-  <li style="margin-left:2em"> <font style="color:red">[Spring 2022]</font> Teaching Assistant</li>
+  <li style="margin-left:0em"> <font style="color:red">[Spring 2022]</font> Teaching Assistant</li>
 </ol>
 </li>
 
 <li><h3><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h3> 
 <ol style="list-style-type: lower-alpha; padding-bottom: 0;">
-  <li style="margin-left:2em"> <font style="color:red">[Fall 2021]</font> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</li>
+  <li style="margin-left:0em"> <font style="color:red">[Fall 2021]</font> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</li>
 </ol>
 </li>
 
 <li><h3><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h3> 
 <ol style="list-style-type: lower-alpha; padding-bottom: 0;">
-  <li style="margin-left:2em"> <font style="color:red">[Spring 2021]</font> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</li>
+  <li style="margin-left:0em"> <font style="color:red">[Spring 2021]</font> Laboratory and Curriculum Development Fellowship (Teaching Assistant)</li>
 </ol>
 </li>
 
