@@ -1,12 +1,17 @@
 ---
-layout: single
+layout: archive
 title: "Teaching"
 permalink: /teaching/
 ---
 
-<p> I belive in learning by doing. At Duke, I have been supported by Laboratory and Curriculum Development Fellowship from the Department of Mechanican Engineering and Materials Science during my master's study. The fellowship allowed me to work with <a href ="https://mems.duke.edu/faculty/george-delagrammatikas" >Prof. George Delagrammatikas</a>
+
+
+<p> I belive in learning by doing. At Duke, I have been supported by Laboratory and Curriculum Development Fellowship from the Department of Mechanican Engineering and Materials Science during my master's study. The fellowship allowed me to work with <a href ="https://mems.duke.edu/faculty/george-delagrammatikas" >Prof. George Delagrammatikas</a> to design and build Duke's latest prototyping space "Garage Lab". 
+
+As a teaching assisant for "Experiment Design & Research Methods" course, I worked with graduate students from various backgrounds to help develop protoyping and experiment design skills over a semester long course. The experience has helped me develop my skills to work "with" the students and assist with suggestions to complete the milestones within a semester.
 
 <p><font style="color:red">[Spring 2022]</font> <h2><a href="https://sites.duke.edu/memscapstone/technical-communication/">Experiment Design & Research Methods</a></h2>
+-1em
 <h3> Teaching Assistant</h3> </p>
 
 
