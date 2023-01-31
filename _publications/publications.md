@@ -7,7 +7,9 @@ permalink: /publications/
 
 
 <ol>
-<li> <font style="color:blue">[Oral Presentation]</font> Sperber J, Zachem TJ,<b>Prakash R</b>, Chamberlain G, Cummings T, Ross W, Codd, PJ, Goodwin CR. <u>Characterization of the TumorID Technology to Differentiate Tumor from Non-Tumor in Frozen Samples</u>. Global Spine Congress; May 31-June 6, 2023; Prague, Germany</li>
+<li><font style="color:red">[Conference Paper]</font> <b>Prakash R</b>, Yamamoto KK, Oca SR, Ross W, Codd PJ. (2023). <u>Brain-Mimicking Phantom for Photoablation and Visualization </u>. International Symposium on Medical Robotics, Atlanta, Georgia,United States.</li>
+
+<li> <font style="color:blue">[Oral Presentation]</font> Sperber J, Zachem TJ,<b>Prakash R</b>, Chamberlain G, Cummings T, Ross W, Codd PJ, Goodwin CR. <u>Characterization of the TumorID Technology to Differentiate Tumor from Non-Tumor in Frozen Samples</u>. Global Spine Congress; May 31-June 6, 2023; Prague, Germany</li>
 
 <li> <font style="color:blue">[Oral Presentation]</font> Sperber J, Zachem TJ,<b>Prakash R</b>, Chamberlain G, Cummings T, Nguyen A, Hockenberry H, Ross W, Codd, PJ, Goodwin CR. <u>Laser Induced Endogenous Fluorescence Spectroscopy Produces Distinct Spectral Signatures in Pathology Prepared Tumor Samples</u>. 39th American Association of Neurological Surgeons/Congress of Neurological Surgeons Spine Summit; March 16-19, 2023; Miami, FL.</li>
 
