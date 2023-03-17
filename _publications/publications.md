@@ -19,7 +19,10 @@ in microchannels with uniformly varying cross-section </u>. In Proceedings of Em
 
 <ol>
 
-<li> <font style="color:blue">[E-Poster]</font> Sperber J, Zachem T,<b>Prakash R</b>, Chamberlain G, Cummings TJ, Nguyen AD, Hockenberry H, Ross W, Codd P, Goodwin CR. <u>Characterization of the TumorID Technology to Differentiate Tumor from Non-Tumor in Frozen Samples</u>. Global Spine Congress; May 31-June 6, 2023; Prague, Germany</li>
+<li><font style="color:blue">[Poster Presentation]</font> Ma, G., <b>Prakash, R.</b>, Mann, B., Ross,W., Codd, P. J. (2023, March 13–14).<u> 3D Laser-and-tissue Agnostic Data-driven Method
+for Cavity Prediction </u>. Fitzpatrick Institute for Photonics Symposium, Durham, North Carolina, United States.</li>
+
+<li> <font style="color:blue">[E-Poster]</font> Sperber J, Zachem T,<b>Prakash R</b>, Chamberlain G, Cummings TJ, Nguyen AD, Hockenberry H, Ross W, Codd P, Goodwin CR. <u>Characterization of the TumorID Technology to Differentiate Tumor from Non-Tumor in Frozen Samples</u>. Global Spine Congress; May 31-June 6, 2023; Prague, Czech Republic</li>
 
 <li> <font style="color:blue">[Oral Presentation]</font> Sperber J, Zachem T, <b>Prakash R</b>, Chamberlain G, Cummings TJ, Nguyen AD, Hockenberry H, Ross W, Codd P, Goodwin CR. <u>Laser Induced Endogenous Fluorescence Spectroscopy Produces Distinct Spectral Signatures in Pathology Prepared Tumor Samples</u>. 39th American Association of Neurological Surgeons/Congress of Neurological Surgeons Spine Summit; March 16-19, 2023; Miami, FL.</li>
 
