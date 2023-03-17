@@ -21,7 +21,7 @@ News
 
 <li><font size = "2.5"> <font style ="color:red;">March 2023 </font> I have been awarded Duke India Initaitives's research travel grant. The award will allow me to test our portable diagnoistic device as a solution for underresourced facilities in India. </font> </li>
 
-<li><font size = "2.5"> <font style ="color:red;">Feb 2023 </font> Our latest <a href = "../files/BMP_Brain_Mimicking_Phantom.pdf"> paper</a> on developing brain tissue mimicking phantoms for photoablation studies has been accepted for presentation at ISMR 2023 </font> </li>
+<li><font size = "2.5"> <font style ="color:red;">Feb 2023 </font> Our latest <a href = "../files/BMP_Brain_Mimicking_Phantom.pdf"> paper</a> on developing brain tissue mimicking phantoms for photoablation studies has been accepted for presentation at ISMR 2023. I am supported by "Conference Travel Award" from The Graduate School, Duke University to present the paper. </font> </li>
 
 <li><font size = "2.5"> <font style ="color:red;">December 2022 </font> Thank you Duke Graduate and Professional Student Government for awarding DEI (Diversity, Equity, and Inclusion) microaward for our work with under-represented undergraduate students. </font> </li>
 
