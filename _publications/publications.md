@@ -18,9 +18,9 @@ in microchannels with uniformly varying cross-section </u>. In Proceedings of Em
 <h2> <u>Presentations</u></h2>
 
 <ol>
+<li><font style="color:blue">[Poster Presentation]</font> <b>Prakash, R.</b>, Dupre, M. E., Ostbye, T., Xu, H., (2023, July 16–20).<u> A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic HealthRecord Data </u>. Alzheimer's Association International Conference, Amesterdam, Netherlands.</li>
 
-<li><font style="color:blue">[Poster Presentation]</font> Ma, G., <b>Prakash, R.</b>, Mann, B., Ross,W., Codd, P. J. (2023, March 13–14).<u> 3D Laser-and-tissue Agnostic Data-driven Method
-for Cavity Prediction </u>. Fitzpatrick Institute for Photonics Symposium, Durham, North Carolina, United States.</li>
+<li><font style="color:blue">[Poster Presentation]</font> Ma, G., <b>Prakash, R.</b>, Mann, B., Ross,W., Codd, P. J. (2023, March 13–14).<u> 3D Laser-and-tissue Agnostic Data-driven Method for Cavity Prediction </u>. Fitzpatrick Institute for Photonics Symposium, Durham, North Carolina, United States.</li>
 
 <li> <font style="color:blue">[E-Poster]</font> Sperber J, Zachem T,<b>Prakash R</b>, Chamberlain G, Cummings TJ, Nguyen AD, Hockenberry H, Ross W, Codd P, Goodwin CR. <u>Characterization of the TumorID Technology to Differentiate Tumor from Non-Tumor in Frozen Samples</u>. Global Spine Congress; May 31-June 6, 2023; Prague, Czech Republic</li>
 

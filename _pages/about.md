@@ -17,6 +17,8 @@ redirect_from:
 News
 ======
 <ol>
+
+
 <li><font size = "2.5"> <font style ="color:red;">March 2023 </font> Thank you Duke Office of Diversity, Equity, and Inclusion for awarding 2023 Maclin Community Connections Grant for our work with under-represented undergraduate students. </font> </li>
 
 <li><font size = "2.5"> <font style ="color:red;">March 2023 </font> I have been awarded Duke India Initaitives's research travel grant. The award will allow me to test our portable diagnoistic device as a solution for underresourced facilities in India. </font> </li>
