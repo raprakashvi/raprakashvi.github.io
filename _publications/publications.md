@@ -8,6 +8,8 @@ permalink: /publications/
 
 
 <ol>
+<li><font style="color:red">[Pre-print]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a> arXiv preprint arXiv:2305.01524</li>
+
 <li><font style="color:red">[Conference Paper]</font> <b>Prakash, R.</b>, Yamamoto, KK., Oca, SR., Ross, W., Codd, PJ. (2023). <u>Brain-Mimicking Phantom for Photoablation and Visualization </u>. International Symposium on Medical Robotics, Atlanta, Georgia,United States.</li>
 
 <li><font style="color:red">[Conference Paper]</font> Chatterjee, A., Valaparla, R. K., <b>Prakash, R.</b>, Balasubramanian, K. (2019). <u>Comparative study of fluid flow and heat transfer
