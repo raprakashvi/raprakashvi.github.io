@@ -18,6 +18,7 @@ News
 ======
 <ol>
 
+<li><font size = "2.5"> <font style ="color:red;">June 2023 </font> Our paper titled "3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning" has been accepted at IROS 2023. <a href = "https://arxiv.org/pdf/2305.01524.pdf"> arxiv link </a>  </font> </li>
 
 <li><font size = "2.5"> <font style ="color:red;">March 2023 </font> Thank you Duke Office of Diversity, Equity, and Inclusion for awarding 2023 Maclin Community Connections Grant for our work with under-represented undergraduate students. </font> </li>
 
