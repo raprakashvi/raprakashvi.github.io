@@ -7,7 +7,7 @@ permalink: /publications/
 <h2> <u>Publications</u></h2>
 
 
-<ol><font size = "-2">
+<ol><font size = "-1">
 <li><font style="color:green">[Pre-print]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a> arXiv preprint arXiv:2305.01524</li>
 
 <li><font style="color:green">[Conference Paper]</font> <b>Prakash, R.</b>, Yamamoto, KK., Oca, SR., Ross, W., Codd, PJ. (2023). <u>Brain-Mimicking Phantom for Photoablation and Visualization </u>. International Symposium on Medical Robotics, Atlanta, Georgia,United States.</li>
@@ -19,7 +19,7 @@ in microchannels with uniformly varying cross-section </u>. In Proceedings of Em
 
 <h2> <u>Presentations</u></h2>
 
-<ol>
+<ol><font size = "-1">
 <li><font style="color:blue">[Poster Presentation]</font> <b>Prakash, R.</b>, Dupre, M. E., Ostbye, T., Xu, H., (2023, July 16–20).<u> A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic HealthRecord Data </u>. Alzheimer's Association International Conference, Amesterdam, Netherlands.</li>
 
 <li><font style="color:blue">[Presentation]</font> Codd, P.J.,Ma, G.,<b>Prakash, R.</b>, Raman, A., Zachem, T., Yamamoto, K., Skyes, David., Eward, W., Mann, B., Ross, W., (2023, June 18–21).<u> 3D Multi-sensor-fusion Robotic Laser System for Neurosurgery  </u>. Neurosurgical Society of Americas, Cape Codd, MA, United States.</li>
@@ -45,7 +45,7 @@ Information</u>. Duke MEMS Non-Thesis Defense, Durham, North Carolina, United St
 <li><font style="color:blue">[Invited Presentation] </font><b>Prakash, R.</b>, Xu, H. (2021,September 14). <u>Understand the basics of natural language processing and its application in processing physicians’ notes</u>. Duke Family Medicine and Community Health Grand Rounds, Duke University,Durham, North Carolina, United States. </li>
 
 
-</ol> 
+<font></ol> 
 
 
 
