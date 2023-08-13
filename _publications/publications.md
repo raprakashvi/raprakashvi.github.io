@@ -4,7 +4,7 @@ title: "Publications and Presentations"
 permalink: /publications/
 ---
 
-<h2> <u>Publications</u></h2>
+<h3> <u>Publications</u></h3>
 
 
 <ol><font size = "-1">
@@ -17,7 +17,7 @@ in microchannels with uniformly varying cross-section </u>. In Proceedings of Em
 
 </font></ol>
 
-<h2> <u>Presentations</u></h2>
+<h3> <u>Presentations</u></h3>
 
 <ol><font size = "-1">
 <li><font style="color:blue">[Poster Presentation]</font> <b>Prakash, R.</b>, Dupre, M. E., Ostbye, T., Xu, H., (2023, July 16–20).<u> A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic HealthRecord Data </u>. Alzheimer's Association International Conference, Amesterdam, Netherlands.</li>
