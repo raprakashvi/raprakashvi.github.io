@@ -20,7 +20,7 @@ in microchannels with uniformly varying cross-section </u>. In Proceedings of Em
 <h3> <u>Presentations</u></h3>
 
 <ol><font size = "-1">
-<li><font style="color:blue">[Poster Presentation]</font> <b>Prakash, R.</b>, Dupre, M. E., Ostbye, T., Xu, H., (2023, July 16–20).<u> A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic HealthRecord Data </u>. Alzheimer's Association International Conference, Amesterdam, Netherlands.</li>
+<li><font style="color:blue">[Poster Presentation]</font> <b>Prakash, R.</b>, Dupre, M. E., Ostbye, T., Xu, H., (2023, July 16–20).<u> A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data </u>. Alzheimer's Association International Conference, Amsterdam, Netherlands.</li>
 
 <li><font style="color:blue">[Presentation]</font> Codd, P.J.,Ma, G.,<b>Prakash, R.</b>, Raman, A., Zachem, T., Yamamoto, K., Skyes, David., Eward, W., Mann, B., Ross, W., (2023, June 18–21).<u> 3D Multi-sensor-fusion Robotic Laser System for Neurosurgery  </u>. Neurosurgical Society of Americas, Cape Codd, MA, United States.</li>
 
