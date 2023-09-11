@@ -7,6 +7,7 @@ permalink: /teaching/
 <ol><font size = "-0.5">
 <h3> <u>Mentoring Summary</u></h3>
 <p> I belive in learning by doing. At Duke, I have been supported by Laboratory and Curriculum Development Fellowship from the Department of Mechanican Engineering and Materials Science during my master's studies. The fellowship allowed me to work with <a href ="https://mems.duke.edu/faculty/george-delagrammatikas" >Prof. George Delagrammatikas</a> to design and build Duke's latest prototyping space "Garage Lab". Check out their <a href = "https://sites.duke.edu/memscapstone/">awesome work</a>. <br><br>
+</ol>
 
 <h3><u>Students Mentored </u></h3>
 <ol>
