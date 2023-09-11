@@ -10,14 +10,14 @@ permalink: /teaching/
 
 
 <h3><u>Students Mentored </u></h3>
-<ol>
+<ol> 
 <li> Zacharias Chen, Junior </li>
 
 <li> Mahi Patel, Sophomore</li>
 
 <li> Changxin Yu, MS 
-<ol style="list-style-type: lower-alpha; padding-bottom: 0;">
-  <li> "A Deep Learning Pipeline for Unsupervised OCT Image Segmentation". 3rd prize in the Department's MS poster symposium. </li>
+<ol style="list-style-type: lower-alpha; padding-bottom: 0;"> <font size = "-1">
+  <li> MS Project : A Deep Learning Pipeline for Unsupervised OCT Image Segmentation. 3rd prize in the Department's MS poster symposium. </li>
   </ol>
 </li>
 </ol>
