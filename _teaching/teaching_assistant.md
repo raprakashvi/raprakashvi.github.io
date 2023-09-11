@@ -1,7 +1,7 @@
 ---
 layout: archive
 title: "Mentoring"
-permalink: /mentoring/
+permalink: /teaching/
 ---
 
 <ol><font size = "-0.5">
