@@ -18,9 +18,7 @@ permalink: /teaching/
 <li> Changxin Yu, MS 
 <ol style="list-style-type: lower-alpha; padding-bottom: 0;"> <font size = "-1">
   <li> MS Project : A Deep Learning Pipeline for Unsupervised OCT Image Segmentation. 3rd prize in the Department's MS poster symposium. </li>
-  </ol>
-</li>
-</ol>
+ 
 
 
 <h3> <u> Teaching Experience </u> </h3>
