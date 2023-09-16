@@ -10,7 +10,7 @@ permalink: /teaching/
 
 
 <h3><u>Students Mentored </u></h3>
-<ol> 
+
 <li> Zacharias Chen, Junior </li>
 
 <li> Mahi Patel, Sophomore</li>
