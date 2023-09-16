@@ -18,13 +18,13 @@ permalink: /teaching/
 <li> Changxin Yu, MS 
 <ol style="list-style-type: lower-alpha; padding-bottom: 0;"> <font size = "-0.5">
   <li> MS Project : A Deep Learning Pipeline for Unsupervised OCT Image Segmentation. 3rd prize in the Department's MS poster symposium. </li>
-</li>
+</ol>
  
 
 
 <h3> <u> Teaching Experience </u> </h3>
 As a teaching assisant for "Experiment Design & Research Methods" course, I worked with graduate students from various backgrounds to help develop protoyping and experiment design skills over a semester long course. The experience has helped me develop my skills to work "with" the students and assist with suggestions to complete the milestones within a semester.
-</ol>
+
 
 <ol><font size = "-0.5">
 
