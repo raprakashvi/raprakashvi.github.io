@@ -9,7 +9,7 @@ permalink: /publications/
 
 <ol><font size = "-1">
 
-<li><font style="color:green">[Workshop Paper]</font> Ross, W., <b>Prakash, R.</b>, Ma, G., Eward, W., Mann, B.,Ross, W., Codd, P. (2023). <a href="https://openreview.net/pdf?id=zWV9VIdOGC"><u>Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery</u>.</a> Workshop on Data vs Model in Medical Robotics (DMMR), IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
+<li><font style="color:green">[Workshop Paper]</font> Ross, W., <b>Prakash, R.</b>, Ma, G., Eward, W., Mann, B.,Ross, W., Codd, P. (2023). <u>Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery</u>.</a> Workshop on Data vs Model in Medical Robotics (DMMR), IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
 
 <li><font style="color:green">[Conference Paper]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a>IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
 
