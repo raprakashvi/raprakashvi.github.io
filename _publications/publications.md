@@ -8,7 +8,10 @@ permalink: /publications/
 
 
 <ol><font size = "-1">
-<li><font style="color:green">[Pre-print]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a> arXiv preprint arXiv:2305.01524</li>
+
+<li><font style="color:green">[Workshop Paper]</font> Ross, W., <b>Prakash, R.</b>, Ma, G., Eward, W., Mann, B.,Ross, W., Codd, P. (2023). <a href="https://openreview.net/pdf?id=zWV9VIdOGC"><u>Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery</u>.</a> Workshop on Data vs Model in Medical Robotics (DMMR), IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
+
+<li><font style="color:green">[Conference Paper]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a>IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
 
 <li><font style="color:green">[Conference Paper]</font> <b>Prakash, R.</b>, Yamamoto, KK., Oca, SR., Ross, W., Codd, PJ. (2023). <u>Brain-Mimicking Phantom for Photoablation and Visualization </u>. International Symposium on Medical Robotics, Atlanta, Georgia,United States.</li>
 
@@ -20,6 +23,11 @@ in microchannels with uniformly varying cross-section </u>. In Proceedings of Em
 <h3> <u>Presentations</u></h3>
 
 <ol><font size = "-1">
+
+<li><font style="color:blue">[Poster Presentation]</font> Sperber J, Zachem TJ,<b> Prakash R</b>, Chamberlain G, Cummings T, Nguyen A, Hockenberry H, Ross W, Codd PJ, Goodwin CR  (2023, September 9)<u> Differentiation of radiation necrosis from glioblastoma and metastatic lung carcinoma in pathology prepared slides using laser induced endogenous fluorescence spectroscopy</u>. Congress of Neurological Surgeons Annual Meeting, Washington DC, United States.</li>
+
+<li><font style="color:blue">[Poster Presentation]</font> Sperber J, Zachem TJ,<b> Prakash R</b>, Owolo E, Yamamoto K, Nguyen AD, Hockenbery H, Ross W, Herndon J, Codd P, Goodwin CR. (2023, September 9)<u> A blinded study using laser induced endogenous fluorescence spectroscopy to differentiate spine tumor, healthy muscle, and healthy bone ex vivo </u>. Congress of Neurological Surgeons Annual Meeting, Washington DC, United States.</li>
+
 <li><font style="color:blue">[Poster Presentation]</font> <b>Prakash, R.</b>, Dupre, M. E., Ostbye, T., Xu, H., (2023, July 16–20).<u> A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data </u>. Alzheimer's Association International Conference, Amsterdam, Netherlands.</li>
 
 <li><font style="color:blue">[Presentation]</font> Codd, P.J.,Ma, G.,<b>Prakash, R.</b>, Raman, A., Zachem, T., Yamamoto, K., Skyes, David., Eward, W., Mann, B., Ross, W., (2023, June 18–21).<u> 3D Multi-sensor-fusion Robotic Laser System for Neurosurgery  </u>. Neurosurgical Society of Americas, Cape Codd, MA, United States.</li>
