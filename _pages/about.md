@@ -17,6 +17,7 @@ redirect_from:
 News
 ======
 <ol>
+<li><font size = "2.5"> <font style ="color:red;">Jan 2024 </font> Our paper titled "A blinded study using laser induced endogenous fluorescence spectroscopy to differentiate ex vivo spine tumor, healthy muscle, and healthy bone." has been published at Scientific Reports. <a href = "https://www.nature.com/articles/s41598-023-50995-4"> arxiv link </a>  </font> </li>
 
 <li><font size = "2.5"> <font style ="color:red;">June 2023 </font> Our paper titled "3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning" has been accepted at IROS 2023. <a href = "https://arxiv.org/pdf/2305.01524.pdf"> arxiv link </a>  </font> </li>
 
