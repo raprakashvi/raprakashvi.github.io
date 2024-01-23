@@ -9,20 +9,20 @@ permalink: /publications/
 
 <ol><font size = "-1">
 
-<li><font style="color:orange">[Journal]</font> Sperber, J., Zachem, TJ., <b>Prakash, R.</b>, Owolo, E., Yamamoto, K., Nguyen, AD., Hockenberry, H., Ross, WA., Herndon, JE., Codd, PJ., Goodwin, CR (2024). <u>A Blinded Study Using Laser Induced Endogenous Fluorescence Spectroscopy to Differentiate Exvivo Spine Tumor, Healthy Muscle, and Healthy Bone</u>. Scientific Reports (Accepted).</li>
+<li><font style="color:green">[Journal]</font> Sperber J, Zachem TJ, <b>Prakash R</b>, Owolo E, Yamamoto K, Nguyen AD, Hockenberry H, Ross WA, Herndon JE 2nd, Codd PJ, Goodwin CR. <a href= "https://www.nature.com/articles/s41598-023-50995-4"> <u>A blinded study using laser induced endogenous fluorescence spectroscopy to differentiate ex vivo spine tumor, healthy muscle, and healthy bone.</u> </a>Sci Rep. 2024 Jan 22;14(1):1921. doi: 10.1038/s41598-023-50995-4. PMID: 38253556..</li>
 
 
-<li><font style="color:green">[arxiv]</font> Zachem, T.J., Chen, S.F., Venkatraman, V., Sykes, D.A., <b>Prakash, R.</b>, Spellicy, S., Suarez, A.D., Ross, W. and Codd, P.J. (2023).<a href="https://arxiv.org/pdf/2312.03001.pdf"><u>Computer Vision for Increased Operative Efficiency via Identification of Instruments in the Neurosurgical Operating Room: A Proof-of-Concept Study.</u> </a>arXiv preprint arXiv:2312.03001. </li>
+<li><font style="color:orange">[arxiv]</font> Zachem, T.J., Chen, S.F., Venkatraman, V., Sykes, D.A., <b>Prakash, R.</b>, Spellicy, S., Suarez, A.D., Ross, W. and Codd, P.J. (2023).<a href="https://arxiv.org/pdf/2312.03001.pdf"><u>Computer Vision for Increased Operative Efficiency via Identification of Instruments in the Neurosurgical Operating Room: A Proof-of-Concept Study.</u> </a>arXiv preprint arXiv:2312.03001. </li>
 
-<li><font style="color:orange">[Journal]</font><b> Prakash, R.</b>, Dupre, M.E., Ostbye, T. and Xu, H., 2023. <u>A Rule‐Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data.</u> Alzheimer's & Dementia, 19, p.e075325. </li>
+<li><font style="color:green">[Journal]</font><b> Prakash, R.</b>, Dupre, M.E., Ostbye, T. and Xu, H., 2023. <u>A Rule‐Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data.</u> Alzheimer's & Dementia, 19, p.e075325. </li>
 
-<li><font style="color:green">[Workshop]</font> Ross, W., <b>Prakash, R.</b>, Ma, G., Eward, W., Mann, B.,Ross, W., Codd, P. (2023). <u>Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery</u>. Workshop on Data vs Model in Medical Robotics (DMMR), IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
+<li><font style="color:orange">[Workshop]</font> Ross, W., <b>Prakash, R.</b>, Ma, G., Eward, W., Mann, B.,Ross, W., Codd, P. (2023). <u>Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery</u>. Workshop on Data vs Model in Medical Robotics (DMMR), IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
 
-<li><font style="color:green">[Conference]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a>IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
+<li><font style="color:orange">[Conference]</font> Ma, G., <b>Prakash, R.</b>, Mann, B.,Ross, W., Codd, P. (2023). <a href="https://arxiv.org/pdf/2305.01524.pdf"><u>3D Laser-and-tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning</u>.</a>IEEE/RSJ International Conference on Intelligent Robots and Systems, Detroit, Michigan, United States.</li>
 
-<li><font style="color:green">[Conference]</font> <b>Prakash, R.</b>, Yamamoto, KK., Oca, SR., Ross, W., Codd, PJ. (2023). <u>Brain-Mimicking Phantom for Photoablation and Visualization </u>. International Symposium on Medical Robotics, Atlanta, Georgia,United States.</li>
+<li><font style="color:orange">[Conference]</font> <b>Prakash, R.</b>, Yamamoto, KK., Oca, SR., Ross, W., Codd, PJ. (2023). <u>Brain-Mimicking Phantom for Photoablation and Visualization </u>. International Symposium on Medical Robotics, Atlanta, Georgia,United States.</li>
 
-<li><font style="color:green">[Conference Paper]</font> Chatterjee, A., Valaparla, R. K., <b>Prakash, R.</b>, Balasubramanian, K. (2019). <u>Comparative study of fluid flow and heat transfer
+<li><font style="color:orange">[Conference Paper]</font> Chatterjee, A., Valaparla, R. K., <b>Prakash, R.</b>, Balasubramanian, K. (2019). <u>Comparative study of fluid flow and heat transfer
 in microchannels with uniformly varying cross-section </u>. In Proceedings of Emerging Trends in Mechanical Engineering (pp.25–30). Warangal, Telangana.</li>
 
 </font></ol>
