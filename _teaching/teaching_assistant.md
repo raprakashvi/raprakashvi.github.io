@@ -1,11 +1,12 @@
 ---
+layout: archive
 permalink: /teaching/
 # title: "Mentoring"
 # excerpt: "Mentoring and Teaching"
-author_profile: true
-redirect_from: 
-  - /teaching/
-  - /teaching_test.html
+# author_profile: true
+# redirect_from: 
+#   - /teaching/
+#   - /teaching_test.html
 ---
 <!-- <!DOCTYPE html> -->
 <html lang="en">
