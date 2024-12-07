@@ -2,7 +2,7 @@
 permalink: /
 title: "Mentoring"
 # excerpt: "Mentoring and Teaching"
-author_profile: true
+author_profile: false
 redirect_from: 
   - /teaching/
   - /teaching_test.html
