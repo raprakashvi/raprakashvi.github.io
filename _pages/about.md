@@ -18,9 +18,15 @@ News
 ======
 <ol>
 
-<li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> Congratulations to Zach Chen & Alexa Cahilig for securing  <i>"Duke CoLab research award"</i>. This award will help us build a low-cost test bench for evaluating tissue transition boundary. </font> </li>
+<li><font size = "2.5"> <font style ="color:red;">Sept 2024 </font> Our paper titled <a href = "https://aging.jmir.org/2024/1/e57926/"> "Extracting Critical Information from Unstructured Clinicians’ Notes Data to Identify Dementia Severity Using a Rule-Based Approach: Feasibility Study" </a> has been published at JMIR Aging. We show the richness of unstructured EHR data in identifying ADRD severity. Use of interpretable rule-based methods can lower clinician's workload while allowing transperancy.</font> </li> </font> </li>
 
-<li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> Our team won the <i>"Bass Connection Student Research Award"</i> by Duke University to develop cheap multimodal sensors for understanding laser-tissue interaction.</font> </li>
+<li><font size = "2.5"> <font style ="color:red;">Sept 2024 </font> Our paper titled "Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery" is now available <a href = "https://arxiv.org/pdf/2410.03152"> arxiv link </a>. We  propose a surgical planning algorithm for volumetric tumor resection accounting laser attitude and operational parameters.</font> </li> </font> </li>
+
+<li><font size = "2.5"> <font style ="color:red;">Sept 2024 </font> Our paper titled "Design and Evaluation of a Compliant Quasi Direct Drive End-effector for Safe Robotic Ultrasound Imaging" is now available <a href = "https://arxiv.org/pdf/2410.03086"> arxiv link </a>. We demonstrate a novel end-effector design accounting for patient comfort through force regulation during autonomous ultrasound scans.  </font> </li> </font> </li>
+
+<li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> Congratulations to Zach Chen & Alexa Cahilig for securing  Duke CoLab research award. This award will help us build a low-cost test bench for evaluating tissue transition boundary. </font> </li>
+
+<li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> Our team won the Bass Connection Student Research Award by Duke University to develop cheap multimodal sensors for understanding laser-tissue interaction.</font> </li>
 
 <li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> I gave a talk on <i>"Innovating Surgical Robotics: Enhancing Precision and Automation in Minimally Invasive Procedures"</i> at Indian Institute of Technology Patna around my work on laser-based robotic systems.</font> </li>
 
