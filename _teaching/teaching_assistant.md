@@ -1,14 +1,12 @@
 ---
-permalink: /
-title: "Mentoring"
+permalink: /teaching
+# title: "Mentoring"
 # excerpt: "Mentoring and Teaching"
-author_profile: false
+author_profile: true
 redirect_from: 
   - /teaching/
   - /teaching_test.html
 ---
-
-
 <!-- <!DOCTYPE html> -->
 <html lang="en">
 <head>
