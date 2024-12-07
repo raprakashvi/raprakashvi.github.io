@@ -18,6 +18,8 @@ News
 ======
 <ol>
 
+<li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> Congratulations to Zach Chen & Alexa Cahilig for securing  <i>"Duke CoLab research award"</i>. This award will help us build a low-cost test bench for evaluating tissue transition boundary. </font> </li>
+
 <li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> Our team won the <i>"Bass Connection Student Research Award"</i> by Duke University to develop cheap multimodal sensors for understanding laser-tissue interaction.</font> </li>
 
 <li><font size = "2.5"> <font style ="color:red;">Feb 2024 </font> I gave a talk on <i>"Innovating Surgical Robotics: Enhancing Precision and Automation in Minimally Invasive Procedures"</i> at Indian Institute of Technology Patna around my work on laser-based robotic systems.</font> </li>
