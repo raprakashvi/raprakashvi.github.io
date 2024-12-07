@@ -1,7 +1,7 @@
 ---
 permalink: /
 title: "Mentoring"
-excerpt: "Mentoring and Teaching"
+# excerpt: "Mentoring and Teaching"
 author_profile: true
 redirect_from: 
   - /teaching/
@@ -9,7 +9,7 @@ redirect_from:
 ---
 
 
-<!DOCTYPE html>
+<!-- <!DOCTYPE html> -->
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -98,13 +98,19 @@ redirect_from:
     <h2 class="section-title">Students Mentored</h2>
     <h3>Current Students</h3>
     <ul>
-        <li>Caroline Chen, MS</li>
-        <li>Zacharias Chen, Junior</li>
-        <li>Humberto Andre Lopez, Junior</li>
+        <li>Zacharias Chen, Senior</li>
+        <li>Alexa Cahilig, Senior</li>
+        <li>Rohan Bhansali, Senior</li>
+        <li>Roslyn Bellscheidt, Junior</li>
+        
     </ul>
 
     <h3>Former Students</h3>
     <ul>
+        <li>Caroline Chen, MS.
+         <ul class="sub-list">
+                <li>Chen, C., Prakash, R., & Codd, P. J. (2024). VesselNav: A MedSAM-Enhanced Framework for Precision Vessel Segmentation and Navigation in Robotic Surgery. [Poster Presentation, ISMR 2024]</li>
+        <li>Humberto Andre Lopez, Junior</li>
         <li>Mahi Patel, Sophomore</li>
         <li>Changxin Yu, MS
             <ul class="sub-list">
