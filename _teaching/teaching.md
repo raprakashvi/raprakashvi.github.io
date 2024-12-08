@@ -117,8 +117,7 @@ permalink: /teaching/
                 <li>MS Project: A Deep Learning Pipeline for Unsupervised OCT Image Segmentation. Won 3rd prize in the Department's MS poster symposium.</li>
             </ul>
         </li>
-    </ul>
-</section>
+
 
 <section>
     <h2 class="section-title">Teaching Experience</h2>
