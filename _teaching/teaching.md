@@ -106,9 +106,10 @@ permalink: /teaching/
 
     <h3>Former Students</h3>
     <ul>
-        <li>Caroline Chen, MS.
-         <ul class="sub-list">
+        <li>Caroline Chen, MS
+            <ul class="sub-list">
                 <li>Chen, C., Prakash, R., & Codd, P. J. (2024). VesselNav: A MedSAM-Enhanced Framework for Precision Vessel Segmentation and Navigation in Robotic Surgery. [Poster Presentation, ISMR 2024]</li>
+            </ul>
         <li>Humberto Andre Lopez, Junior</li>
         <li>Mahi Patel, Sophomore</li>
         <li>Changxin Yu, MS
