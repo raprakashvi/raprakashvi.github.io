@@ -9,7 +9,6 @@ permalink: /publications/
 
 <ol reversed><font size = "-1">
 
- (2024).  
 
 <li><font style="color:green">[Journal]</font> Prakash, R., Dupre, M. E., Østbye, T., & Xu, H. <a href= "https://aging.jmir.org/2024/1/e57926/"> <u>Extracting Critical Information from Unstructured Clinicians’ Notes Data to Identify Dementia Severity Using a Rule-Based Approach: Feasibility Study.</u> </a>JMIR aging, 7(1), e57926.</li>
 
