@@ -9,7 +9,7 @@ redirect_from:
 ---
 
 
-# About Me
+<!-- # About Me -->
 
 I am a PhD Candidate in the [Brain Tool Lab](https://www.braintoollab.com/) under the mentorship of [Patrick Codd](https://scholars.duke.edu/person/patrick.codd) and [Boyuan Chen](http://boyuanchen.com/), where I develop cutting-edge technologies aimed at advancing automated surgery. My research encompasses **Robotic Perception**, **Surgical Robotics Platforms**, and **Machine Learning**. I hold an MS in Mechanical Engineering from [Duke University](https://duke.edu/), where I worked with [Xiaoyue Ni](http://ni.pratt.duke.edu/) on flexible epidermal sensors for physiological sensing.
 
@@ -47,7 +47,7 @@ My passion lies in creating transformative healthcare interventions by enhancing
 
 ---
 
-Thank you for visiting my page! For inquiries or collaborations, feel free to [contact me](#).
-```
+Thank you for visiting my page! For inquiries or collaborations, feel free to [contact me](ravi.prakash@duke.edu).
+
 
 Let me know if you need further adjustments!
