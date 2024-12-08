@@ -9,6 +9,11 @@ permalink: /publications/
 
 <ol reversed><font size = "-1">
 
+
+<li><font style="color:orange">[arxiv]</font> Chen, D., <b>Prakash, R.</b>, Chen, Z., Dias, S., Wang, V., Bridgeman, L., & Oca, S. (2024).<a href="https://arxiv.org/abs/2410.03086.pdf"><u>Design and Evaluation of a Compliant Quasi Direct Drive End-effector for Safe Robotic Ultrasound Imaging.</u> </a>arXiv preprint arXiv:2410.03086.</li>
+
+<li><font style="color:orange">[arxiv]</font> Wang, V. Y.,<b>Prakash, R.</b>, Oca, S. R., LoCicero, E. J., Codd, P. J., & Bridgeman, L. J. (2024).<a href="https://arxiv.org/abs/2410.03152.pdf"><u>Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery.</u> </a> arXiv preprint arXiv:2410.03152. </li>
+
 <li><font style="color:green">[Journal]</font> Sperber J, Zachem TJ, <b>Prakash R</b>, Owolo E, Yamamoto K, Nguyen AD, Hockenberry H, Ross WA, Herndon JE 2nd, Codd PJ, Goodwin CR. <a href= "https://www.nature.com/articles/s41598-023-50995-4"> <u>A blinded study using laser induced endogenous fluorescence spectroscopy to differentiate ex vivo spine tumor, healthy muscle, and healthy bone.</u> </a>Sci Rep. 2024 Jan 22;14(1):1921. doi: 10.1038/s41598-023-50995-4. PMID: 38253556..</li>
 
 
