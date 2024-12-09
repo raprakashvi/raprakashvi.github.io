@@ -50,4 +50,3 @@ My passion lies in creating transformative healthcare interventions by enhancing
 Thank you for visiting my page! For inquiries or collaborations, feel free to [contact me](#).
 
 
-Let me know if you need further adjustments!
