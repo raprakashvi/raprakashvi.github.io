@@ -22,16 +22,16 @@ My passion lies in creating transformative healthcare interventions by enhancing
 ### 2024
 
 - **September**: Our paper ["Extracting Critical Information from Unstructured Clinicians’ Notes Data to Identify Dementia Severity Using a Rule-Based Approach: Feasibility Study"](https://aging.jmir.org/2024/1/e57926/) was published in *JMIR Aging*. It highlights the potential of unstructured EHR data in assessing ADRD severity while reducing clinician workload.
-- **September**: Presented ["Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery"](https://arxiv.org/pdf/2410.03152), proposing a surgical planning algorithm for volumetric tumor resection.
-- **September**: Published ["Design and Evaluation of a Compliant Quasi Direct Drive End-effector for Safe Robotic Ultrasound Imaging"](https://arxiv.org/pdf/2410.03086), demonstrating a patient-focused end-effector for autonomous ultrasound imaging.
+- **September**: Our work ["Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery"](https://arxiv.org/pdf/2410.03152), is now available online. We propose a surgical planning algorithm for volumetric tumor resection.
+- **September**: Our work ["Design and Evaluation of a Compliant Quasi Direct Drive End-effector for Safe Robotic Ultrasound Imaging"](https://arxiv.org/pdf/2410.03086), is now available online. We demonstrate a compliant and patient-focused end-effector for autonomous ultrasound imaging.
 - **February**: Congratulations to Zach Chen & Alexa Cahilig for winning the Duke CoLab research award for developing a low-cost test bench for tissue transition boundary evaluation.
 - **February**: Awarded the Bass Connection Student Research Award by Duke University to develop affordable multimodal sensors for laser-tissue interaction studies.
 - **February**: Delivered a talk at IIT Patna on *"Innovating Surgical Robotics: Enhancing Precision and Automation in Minimally Invasive Procedures"*.
-- **January**: Published ["A Blinded Study Using Laser-Induced Endogenous Fluorescence Spectroscopy to Differentiate Ex Vivo Spine Tumor, Healthy Muscle, and Healthy Bone"](https://www.nature.com/articles/s41598-023-50995-4) in *Scientific Reports*.
+- **January**: Our work ["A Blinded Study Using Laser-Induced Endogenous Fluorescence Spectroscopy to Differentiate Ex Vivo Spine Tumor, Healthy Muscle, and Healthy Bone"](https://www.nature.com/articles/s41598-023-50995-4) has been published in *Scientific Reports*.
 
 ### 2023
 
-- **June**: Presented ["3D Laser-and-Tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning"](https://arxiv.org/pdf/2305.01524.pdf) at *IROS 2023*.
+- **June**: Our work ["3D Laser-and-Tissue Agnostic Data-driven Method for Robotic Laser Surgical Planning"](https://arxiv.org/pdf/2305.01524.pdf) has been accepted at *IROS 2023*.
 - **March**: Received the *Maclin Community Connections Grant* for supporting underrepresented undergraduate students.
 - **March**: Awarded Duke India Initiative’s Research Travel Grant for testing portable diagnostic devices in under-resourced facilities in India.
 - **February**: Presented ["Developing Brain Tissue Mimicking Phantoms for Photoablation Studies"](../files/BMP_Brain_Mimicking_Phantom.pdf) at *ISMR 2023* with support from the Duke Graduate School’s Conference Travel Award.
