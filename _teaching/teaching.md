@@ -122,6 +122,9 @@ permalink: /teaching/
 <section>
     <h2 class="section-title">Teaching Experience</h2>
     <p>
+        Identified teaching bottlenecks and developed self-learning modules for Intro to Medical Robotics & Surgical Technologies course with <a href="https://pratt.duke.edu/people/siobhan-oca/">Prof. Siobhan Oca</a>, as part of Collaborative Expeditions Grant through Bass Connections Foundation.  
+    </p>
+    <p>
         As a teaching assistant for the "Experiment Design & Research Methods" course, I guided graduate students from diverse backgrounds in developing prototyping and experiment design skills through a semester-long curriculum. This experience honed my ability to work closely with students and provide actionable guidance to help them achieve their milestones.
     </p>
     <ul>
