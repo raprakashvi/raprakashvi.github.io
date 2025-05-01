@@ -19,7 +19,7 @@ My passion lies in creating transformative healthcare interventions by enhancing
 
 ## News
 ### 2025
-- **April**: Our upcming work on autonomous control of multi-drone systems was featured in the ["latest article"](https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/) by Duke Forest. Stay tuned.  
+- **April**: Our upcoming work on autonomous control of multi-drone systems was featured in the ["latest article"](https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/) by Duke Forest. Stay tuned.  
 - **April**: Zach and Alexa's work on multimodal tissue boundary identification (*"Where is the Boundary:Multimodal Sensor Fusion Test Bench for Tissue Boundary Delineation"*) has been accepted at ICRA Evolving Landscape of Surgical Robotics 2025. Kudos to both of them for excellent senior year work. Additional details coming soon! 
 
 
