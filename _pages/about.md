@@ -18,9 +18,14 @@ My passion lies in creating transformative healthcare interventions by enhancing
 ---
 
 ## News
+### 2025
+- **April**: Our upcoming work on autonomous control of multi-drone systems was featured in the ["latest article"](https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/) by Duke Forest. Stay tuned.  
+- **April**: Zach and Alexa's work on multimodal tissue boundary identification (*"Where is the Boundary:Multimodal Sensor Fusion Test Bench for Tissue Boundary Delineation"*) has been accepted at ICRA Evolving Landscape of Surgical Robotics 2025. Kudos to both of them for excellent senior year work. Additional details coming soon! 
+
 
 ### 2024
-
+- **December**: Our workshop ["The Evolving Landscape of Surgical Robotics: Towards AI-Powered Unconventional Instruments and Technologies in the Operating Theatre"](https://sites.google.com/view/icra2025-workshop-clsr) got accepted for ["ICRA 2025"](https://2025.ieee-icra.org/). Excited for the speaker lineup. See you on 19th May in ATL.
+- **December**: Won *Rhodes Graduate Fellowship for Interdisciplinary Research* in recognition of my contributions towards the Bass Connections project Reimagining Surgery for Rural Needs: Robotics Teleoperation. This fellowship will allow me to understand surgical needs in rural North Carloina clinics and develop a suitable surgical platform.
 - **September**: Our paper ["Extracting Critical Information from Unstructured Clinicians’ Notes Data to Identify Dementia Severity Using a Rule-Based Approach: Feasibility Study"](https://aging.jmir.org/2024/1/e57926/) was published in *JMIR Aging*. It highlights the potential of unstructured EHR data in assessing ADRD severity while reducing clinician workload.
 - **September**: Our work ["Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery"](https://arxiv.org/pdf/2410.03152), is now available online. We propose a surgical planning algorithm for volumetric tumor resection.
 - **September**: Our work ["Design and Evaluation of a Compliant Quasi Direct Drive End-effector for Safe Robotic Ultrasound Imaging"](https://arxiv.org/pdf/2410.03086), is now available online. We demonstrate a compliant and patient-focused end-effector for autonomous ultrasound imaging.
@@ -47,6 +52,6 @@ My passion lies in creating transformative healthcare interventions by enhancing
 
 ---
 
-Thank you for visiting my page! For inquiries or collaborations, feel free to [contact me](#).
+Thank you for visiting my page! Feel free to [contact me](#).
 
 
