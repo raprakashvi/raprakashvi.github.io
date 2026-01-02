@@ -1,0 +1,87 @@
+{% include base_path %}
+
+{% comment %}
+  Publication card template
+  
+  Parameters:
+  - title: Publication title
+  - authors: Author list (string)
+  - venue: Venue name (conference/journal name)
+  - year: Publication year
+  - figure: Image path for publication figure
+  - figure_link: URL for clickable figure (project page or paper)
+  - paper_url: URL to paper (PDF/arXiv)
+  - venue_type: Type of venue (conference, journal, workshop, arxiv)
+  - tags: Array of research area tags (e.g., ["Robotics", "Sensing", "Learning"])
+{% endcomment %}
+
+<div class="publication-card">
+  {% if include.figure %}
+  <div class="publication-figure">
+    <a href="{{ include.figure_link | default: include.paper_url }}" {% if include.figure_link %}target="_blank"{% endif %}>
+      <img src="{% if include.figure contains '://' %}{{ include.figure }}{% else %}{{ include.figure | prepend: '/images/' | prepend: base_path }}{% endif %}" 
+           alt="{{ include.title }}" 
+           loading="lazy">
+    </a>
+  </div>
+  {% endif %}
+  
+  <div class="publication-content">
+    <h3 class="publication-title">
+      {% if include.paper_url %}
+        <a href="{{ include.paper_url }}" target="_blank">{{ include.title }}</a>
+      {% else %}
+        {{ include.title }}
+      {% endif %}
+    </h3>
+    
+    {% if include.authors %}
+    <p class="publication-authors">{{ include.authors }}</p>
+    {% endif %}
+    
+    {% if include.venue %}
+    <p class="publication-venue">{{ include.venue }}</p>
+    {% endif %}
+    
+    {% if include.year %}
+    <p class="publication-year">{{ include.year }}</p>
+    {% endif %}
+    
+    <div class="publication-tags">
+      {% if include.venue_type %}
+      <span class="publication-tag publication-tag--{{ include.venue_type }}">
+        {% case include.venue_type %}
+          {% when 'conference' %}Conference
+          {% when 'journal' %}Journal
+          {% when 'workshop' %}Workshop
+          {% when 'arxiv' %}arXiv
+          {% else %}{{ include.venue_type | capitalize }}
+        {% endcase %}
+      </span>
+      {% endif %}
+      
+      {% if include.tags %}
+        {% assign tag_array = include.tags | split: ',' %}
+        {% for tag in tag_array %}
+          {% assign trimmed_tag = tag | strip %}
+          <span class="publication-tag">{{ trimmed_tag }}</span>
+        {% endfor %}
+      {% endif %}
+    </div>
+    
+    <div class="publication-actions">
+      {% if include.paper_url %}
+      <a href="{{ include.paper_url }}" target="_blank" class="publication-btn">
+        Paper
+      </a>
+      {% endif %}
+      
+      {% if include.figure_link and include.figure_link != include.paper_url %}
+      <a href="{{ include.figure_link }}" target="_blank" class="publication-btn publication-btn--secondary">
+        Project
+      </a>
+      {% endif %}
+    </div>
+  </div>
+</div>
+

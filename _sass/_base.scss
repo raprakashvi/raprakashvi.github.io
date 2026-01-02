@@ -5,6 +5,16 @@ html {
   /* sticky footer fix */
   position: relative;
   min-height: 100%;
+  
+  /* CSS Custom Properties for see-plan-cut color scheme */
+  --bg: #ffffff;
+  --fg: #0b1220;
+  --muted: #5b6475;
+  --border: #e7e9ee;
+  --card: #fbfbfd;
+  --accent: #1f5eff;
+  --shadow: 0 10px 30px rgba(11, 18, 32, 0.08);
+  --radius: 18px;
 }
 
 body {
