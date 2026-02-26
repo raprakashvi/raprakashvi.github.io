@@ -95,6 +95,9 @@ a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:va
 .ni:first-of-type{border-top:1px solid var(--border)}
 .nd{font-family:var(--fm);font-size:.66rem;color:var(--muted);padding-top:.12rem;font-weight:500}
 .ni strong{color:var(--text);font-weight:600}
+.ni a{color:var(--accent)}
+.ni a:hover{color:var(--accent2)}
+.ni a strong{color:inherit}
 .nys{font-family:var(--fd);font-size:1.2rem;color:var(--muted);margin:1.2rem 0 .3rem}
 
 /* === PUBLICATIONS (with thumbnails) === */
@@ -128,6 +131,7 @@ a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:va
 .me{padding:.7rem .9rem;background:var(--card);border:1px solid var(--border);border-radius:6px;transition:border-color .15s}
 .me:hover{border-color:var(--border2)}
 .men{font-weight:600;font-size:.84rem}.med{font-size:.74rem;color:var(--text2);margin-top:.08rem}
+.metag{font-size:.6rem;font-family:var(--fm);font-weight:500;text-transform:uppercase;letter-spacing:.04em;padding:.08rem .35rem;border-radius:3px;margin-left:.4rem;background:var(--bg2);color:var(--muted)}
 .meo{font-size:.66rem;color:var(--accent);margin-top:.08rem;font-family:var(--fm);font-weight:500}
 
 /* === PORTFOLIO === */
@@ -292,7 +296,7 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 </div></div>
 
 <div class="page" id="page-publications"><div class="pc">
-<div class="reveal" style="padding-top:.5rem"><div class="sl">Publications</div><h2 class="st">Selected Works</h2><p class="sd">16+ publications across ICRA, IROS, ISMR, Nature Communications, and IEEE venues.</p></div>
+<!-- <div class="reveal" style="padding-top:.5rem"><div class="sl">Publications</div><h2 class="st">Selected Works</h2><p class="sd"> Publications across ICRA, IROS, ISMR, Nature Communications, and IEEE venues.</p></div> -->
 <div class="pf reveal">
 <button class="pfb active" onclick="fp('all',this)">All</button>
 <button class="pfb" onclick="fp('journal',this)">Journals</button>
@@ -331,6 +335,8 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 
 <div class="pi" data-t="journal"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="10" y="10" width="20" height="20" rx="3" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>Extracting Critical Info from Clinicians&rsquo; Notes to Identify Dementia Severity</h4><div class="pau"><strong>Prakash, R.</strong>, Dupre, M. E., &Oslash;stbye, T., Xu, H.</div><div class="pvt"><span>JMIR Aging</span> 7, e57926</div></div><div class="plc"><a href="https://aging.jmir.org/2024/1/e57926/" class="pls" target="_blank">Paper</a></div></div>
 
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="10" y="10" width="20" height="20" rx="3" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data</h4><div class="pau"><strong>Prakash, R.</strong>, Dupre, M. E., &Oslash;stbye, T., Xu, H.</div><div class="pvt"><span>AAIC 2023</span> &middot; Alzheimer&rsquo;s &amp; Dementia 19(S1): e075325</div></div><div class="plc"><a href="https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.075325" class="pls" target="_blank">Paper</a></div></div>
+
 <div class="pi" data-t="journal"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="10" stroke="#cec7b8" stroke-width="1"/><line x1="20" y1="10" x2="20" y2="30" stroke="#cec7b8" stroke-width=".5"/></svg></div></div><div class="pinfo"><h4>Blinded Study: Laser-Induced Fluorescence for Spine Tumor Differentiation</h4><div class="pau">Sperber, J., Zachem, T. J., <strong>Prakash, R.</strong>, et al.</div><div class="pvt"><span>Scientific Reports</span> 14(1), 1921</div></div><div class="plc"><a href="https://www.nature.com/articles/s41598-023-50995-4" class="pls" target="_blank">Paper</a></div></div>
 
 <div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M 10 30 Q 20 10 30 30" stroke="#cec7b8" stroke-width="1" fill="none"/></svg></div></div><div class="pinfo"><h4>3D Laser-and-Tissue Agnostic Method for Robotic Laser Surgical Planning</h4><div class="pau">Ma, G., <strong>Prakash, R.</strong>, Mann, B., Ross, W., Codd, P. J.</div><div class="pvt"><span>IROS 2023</span></div></div><div class="plc"><a href="https://arxiv.org/pdf/2305.01524.pdf" class="pls" target="_blank">PDF</a></div></div>
@@ -345,23 +351,23 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 <div class="page" id="page-teaching"><div class="pc">
 <div class="reveal" style="padding-top:.5rem"><div class="sl">Teaching &amp; Mentorship</div><h2 class="st">Building the Next Generation</h2><p class="sd">15+ students with outcomes at ICRA, RoboSoft, BSN, and placements at Google, Microsoft, Medtronic.</p></div>
 <div class="tg reveal">
-<div class="tc"><div class="tr">Instructor of Record &middot; 2025&ndash;26</div><h3>Reimagining Surgery for Rural Needs</h3><p>Bass Connections course &mdash; teleoperated laser surgery for rural clinics. Optomechanical assembly, HW/SW integration. 4.25/5 rating.</p></div>
-<div class="tc"><div class="tr">Guest Lecturer &middot; 2024, 2025</div><h3>Intro to Medical Robotics</h3><p>ML for Medical Robotics and Design of Experiments. Scaffolded self-learning for diverse experience levels.</p></div>
+<div class="tc"><div class="tr">Instructor of Record &middot; 2025&ndash;26 &middot; Team Lead &amp; Project Manager</div><h3>Reimagining Surgery for Rural Needs: Robotics Teleoperation</h3><p>Bass Connections course &mdash; teleoperated laser surgery for rural clinics. Optomechanical assembly, HW/SW integration. 4.25/5 rating.</p><div class="port-links" style="margin-top:.5rem"><a href="https://bassconnections.duke.edu/project/reimagining-surgery-rural-needs-robotics-teleoperation-2025-2026/" target="_blank">Project</a><a href="https://www.braintoollab.com/bass-connections-25-26" target="_blank">Website</a></div></div>
+<div class="tc"><div class="tr">Guest Lecturer &middot; 2024, 2025, 2026</div><h3>Intro to Medical Robotics</h3><p>ML for Medical Robotics and Design of Experiments. Scaffolded self-learning for diverse experience levels.</p></div>
 <div class="tc"><div class="tr">Curriculum Developer &middot; 2024</div><h3>Collaborative Expeditions</h3><p>Self-learning modules on DOE, ML, Literature Review with reflections and case studies.</p></div>
 <div class="tc"><div class="tr">TA &middot; 2021&ndash;22</div><h3>Experiment Design &amp; Research Methods</h3><p>Research scoping, rapid prototyping, portfolio development. 3 semesters.</p></div>
 </div>
 <div class="reveal"><div class="sl">Mentees</div><h2 class="st" style="font-size:1.4rem">Students &amp; Outcomes</h2></div>
 <div class="mg reveal">
-<div class="me"><div class="men">Devi Yuliarti</div><div class="med">Duke &mdash; Tactile Sensor</div><div class="meo">&rarr; RoboSoft 2026 (1st author), ICRA 2026</div></div>
-<div class="me"><div class="men">Zacharias Chen</div><div class="med">Duke &mdash; Tissue Boundary</div><div class="meo">&rarr; BSN 2025, ICRA Workshop &middot; Medtronic Hugo</div></div>
-<div class="me"><div class="men">Caroline Chen</div><div class="med">Duke MS &mdash; Segmentation</div><div class="meo">&rarr; ISMR 2024 &middot; ML Engineer, Google</div></div>
-<div class="me"><div class="men">Changxin Yu</div><div class="med">Duke MS &mdash; OCT Segmentation</div><div class="meo">&rarr; 3rd Prize Symposium &middot; Microsoft</div></div>
-<div class="me"><div class="men">Sarah Dias</div><div class="med">HS &mdash; Tissue Boundary</div><div class="meo">&rarr; BSN 2025, ICRA, IEEE TMRB</div></div>
-<div class="me"><div class="men">Prithu Kolar</div><div class="med">NCSSM &mdash; Acoustic/Video</div><div class="meo">&rarr; BSN 2025 &middot; Park Scholar, NC State</div></div>
-<div class="me"><div class="men">Antony Farrand</div><div class="med">Duke MS &mdash; Acoustic Surgery</div><div class="meo">&rarr; MEMS Poster Symposium</div></div>
-<div class="me"><div class="men">Yongjun Lu</div><div class="med">Duke &mdash; Ultrasonic Aspirator</div><div class="meo">&rarr; Clinical OR data acquisition</div></div>
-<div class="me"><div class="men">Felicity Lipchak</div><div class="med">NCSSM &mdash; Acoustic/Video</div><div class="meo">&rarr; Dartmouth College</div></div>
-<div class="me"><div class="men">Nikhil Aaryath</div><div class="med">Duke &mdash; UA Tissue</div><div class="meo">&rarr; Robotic data pipeline</div></div>
+<div class="me"><div class="men">Devi Yuliarti <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Tactile Sensor</div><div class="meo">&rarr; IEEE-RAS RoboSoft 2026 (Co-first author), IEEE ICRA 2026</div></div>
+<div class="me"><div class="men">Zacharias Chen <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Tissue Boundary</div><div class="meo">&rarr; IEEE-EMBS BSN 2025, ICRA ELSR Workshop &middot; Medtronic Hugo</div></div>
+<div class="me"><div class="men">Caroline Chen <span class="metag">Graduate</span></div><div class="med">Duke MS &mdash; Segmentation</div><div class="meo">&rarr; ISMR 2024 (Poster) &middot; ML Engineer, Google</div></div>
+<div class="me"><div class="men">Changxin Yu <span class="metag">Graduate</span></div><div class="med">Duke MS &mdash; OCT Segmentation</div><div class="meo">&rarr; 3rd Prize Symposium &middot; Microsoft</div></div>
+<div class="me"><div class="men">Sarah Dias <span class="metag">High School</span></div><div class="med">HS &mdash; Tissue Boundary</div><div class="meo">&rarr; IEEE-EMBS BSN 2025, ICRA ELSR Workshop, IEEE TMRB</div></div>
+<div class="me"><div class="men">Prithu Kolar <span class="metag">High School</span></div><div class="med">NCSSM &mdash; Acoustic/Video</div><div class="meo">&rarr; IEEE-EMBS BSN 2025 &middot; Park Scholar, NC State</div></div>
+<div class="me"><div class="men">Antony Farrand <span class="metag">Graduate</span></div><div class="med">Duke MS &mdash; Acoustic Surgery</div><div class="meo">&rarr; Duke MEMS Poster Symposium</div></div>
+<div class="me"><div class="men">Yongjun Lu <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Ultrasonic Aspirator</div><div class="meo">&rarr; Clinical OR data acquisition</div></div>
+<div class="me"><div class="men">Felicity Lipchak <span class="metag">High School</span></div><div class="med">NCSSM &mdash; Acoustic/Video</div><div class="meo">&rarr; Dartmouth College</div></div>
+<div class="me"><div class="men">Nikhil Aaryath <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; UA Tissue</div><div class="meo">&rarr; Robotic data pipeline</div></div>
 </div>
 </div></div>
 
@@ -373,7 +379,7 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 
 <div class="port-card wide"><div class="port-vis"><!-- ADD IMAGE: <img src="images/futures_plus.png" alt="Futures+"> --><img src="https://raprakashvi.github.io/images/futures_plus.png" alt="Futures+" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="port-placeholder" style="display:none"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><circle cx="20" cy="30" r="12" stroke="#c23a22" stroke-width=".8"/><circle cx="40" cy="30" r="12" stroke="#4a7a64" stroke-width=".8"/></svg></div></div><div class="port-body"><div class="port-tag">Foresight &amp; Innovation &middot; 2020</div><h3>Futures+: Multi-National Deep Tech Innovation Program</h3><p>Co-led a 6-month innovation program across Bhutan, Indonesia, India, and Singapore with 16 partners. Three finalist solutions deployed in northeast India and Indonesia. Direct engagement with farming communities shaped modular, repairable design principles.</p><div class="port-links"><a href="https://futures-plus.com/" target="_blank">Website</a></div></div></div>
 
-<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="12" y="15" width="36" height="30" rx="3" stroke="#c23a22" stroke-width=".8"/><text x="30" y="34" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#8a837a">TEDx</text></svg></div></div><div class="port-body"><div class="port-tag">Founder &middot; 2018</div><h3>TEDxNITW</h3><p>Founded the TEDx chapter at NIT Warangal. Organized the inaugural event with 400+ attendees &mdash; speaker curation, sponsorships, and production.</p><div class="port-links"><!-- ADD LINK: <a href="https://tedx-link" target="_blank">Event Page</a> --></div></div></div>
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="12" y="15" width="36" height="30" rx="3" stroke="#c23a22" stroke-width=".8"/><text x="30" y="34" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#8a837a">TEDx</text></svg></div></div><div class="port-body"><div class="port-tag">Founder &middot; 2018</div><h3>TEDxNITW</h3><p>Founded the TEDx chapter at NIT Warangal. Organized the inaugural event with 400+ attendees &mdash; speaker curation, sponsorships, and production.</p><div class="port-links"><a href="https://www.ted.com/tedx/events/22605" target="_blank">Event Page</a></div></div></div>
 
 <div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="10" y="18" width="18" height="24" rx="2" stroke="#4a7a64" stroke-width=".8"/><rect x="32" y="22" width="18" height="20" rx="2" stroke="#4a7a64" stroke-width=".8"/></svg></div></div><div class="port-body"><div class="port-tag">Fellowship &middot; 2020&ndash;21</div><h3>Duke Garage Lab</h3><p>Lab &amp; Curriculum Development Fellowship. Co-designed and built Duke&rsquo;s newest prototyping space for the MEMS capstone program.</p><div class="port-links"><a href="https://sites.duke.edu/memscapstone/" target="_blank">Capstone Program</a></div></div></div>
 
@@ -414,38 +420,25 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 
 <div class="media-card">
 <div class="media-vis">
-<!-- ADD: YouTube embed or thumbnail -->
-<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
+<video src="images/media/Day_In_Life.mov" controls playsinline preload="metadata" style="width:100%;height:100%;object-fit:cover"></video>
 </div>
 <div class="media-body">
 <div class="media-type">Video</div>
-<h3>Placeholder: Add Your Video Title Here</h3>
-<p>Replace this card with a video feature, interview, or talk recording. Use a YouTube embed or a thumbnail image with a link.</p>
-<div class="media-source"><a href="#" target="_blank">Source &middot; Date</a></div>
+<h3>Day in the Life: Duke Robotics</h3>
+<p>A look at my day-to-day work at Duke &mdash; from the Brain Tool Lab to surgical robotics, sensing, and building systems that see, decide, and act.</p>
+<div class="media-source">Duke University</div>
 </div>
 </div>
 
 <div class="media-card">
 <div class="media-vis">
-<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
+<iframe src="https://www.youtube.com/embed/akGQKCfIav4" allowfullscreen></iframe>
 </div>
 <div class="media-body">
 <div class="media-type">Video</div>
-<h3>Placeholder: Add Your Video Title Here</h3>
-<p>Replace this with another media item. Copy this block to add more.</p>
-<div class="media-source"><a href="#" target="_blank">Source &middot; Date</a></div>
-</div>
-</div>
-
-<div class="media-card">
-<div class="media-vis">
-<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
-</div>
-<div class="media-body">
-<div class="media-type">Video</div>
-<h3>Placeholder: Add Your Video Title Here</h3>
-<p>Replace this with another media item. Copy this block to add more.</p>
-<div class="media-source"><a href="#" target="_blank">Source &middot; Date</a></div>
+<h3>Master&rsquo;s Degrees in Mechanical Engineering, Duke University</h3>
+<p>Featured in Duke MEMS program video highlighting graduate research and robotics at Duke.</p>
+<div class="media-source"><a href="https://www.youtube.com/watch?v=akGQKCfIav4" target="_blank">YouTube &middot; Duke University</a></div>
 </div>
 </div>
 
