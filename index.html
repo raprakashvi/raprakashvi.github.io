@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ravi Prakash &mdash; Robotics Researcher</title>
+<meta name="description" content="Ravi Prakash. PhD Candidate at Duke University. Multimodal perception and closed-loop autonomy for surgical and aerial robotic systems.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&family=Outfit:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+
+:root {
+  --bg:#f2ede4; --bg2:#e8e2d6; --card:#fffdf8; --surface:#ddd7ca;
+  --border:#cec7b8; --border2:#b8b0a0; --text:#1c1c1c; --text2:#4a4540;
+  --muted:#8a837a; --accent:#c23a22; --accent2:#a0301c; --asoft:rgba(194,58,34,.07);
+  --sage:#4a7a64; --sage-soft:rgba(74,122,100,.08); --blue:#2d5f9e;
+  --fd:'Fraunces',Georgia,serif; --fb:'Outfit',-apple-system,sans-serif; --fm:'IBM Plex Mono',monospace;
+  --side:240px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+html{font-size:16px;scroll-behavior:smooth}
+body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+::selection{background:var(--accent);color:#fff}
+a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:var(--accent2)}
+
+/* SIDEBAR */
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--side);background:var(--card);border-right:1px solid var(--border);z-index:100;display:flex;flex-direction:column;padding:2rem 1.4rem 1.5rem;overflow-y:auto}
+.sb-name{font-family:var(--fd);font-size:1.35rem;font-weight:600;line-height:1.15;margin-bottom:.15rem;cursor:pointer}
+.sb-name em{color:var(--accent);font-style:normal}
+.sb-aff{font-size:.7rem;color:var(--muted);line-height:1.4;margin-bottom:1.2rem}
+.sb-photo{width:100%;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:1.2rem;background:var(--bg2)}
+.sb-photo img{width:100%;height:100%;object-fit:cover}
+.sb-nav{display:flex;flex-direction:column;gap:.1rem;margin-bottom:auto}
+.sb-link{font-size:.78rem;font-weight:500;color:var(--muted);padding:.4rem .6rem;border-radius:5px;cursor:pointer;transition:all .15s;background:none;border:none;font-family:var(--fb);text-align:left;letter-spacing:.02em}
+.sb-link:hover{color:var(--text2);background:var(--bg)}
+.sb-link.active{color:var(--accent);background:var(--asoft);font-weight:600}
+.sb-social{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
+.sb-social a{font-size:.65rem;font-family:var(--fm);color:var(--muted);padding:.2rem .4rem;border:1px solid var(--border);border-radius:3px;transition:all .15s;font-weight:500}
+.sb-social a:hover{border-color:var(--accent);color:var(--accent)}
+.sb-status{margin-top:.8rem;font-size:.65rem;font-family:var(--fm);color:var(--sage);background:var(--sage-soft);padding:.3rem .5rem;border-radius:4px;line-height:1.4;font-weight:500}
+
+/* MOBILE NAV */
+.topnav{display:none;position:fixed;top:0;left:0;right:0;height:54px;background:rgba(242,237,228,.94);backdrop-filter:blur(16px);z-index:100;padding:0 1.2rem;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
+.tn-name{font-family:var(--fd);font-size:1.1rem;font-weight:600}.tn-name em{color:var(--accent);font-style:normal}
+.tn-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:.4rem}
+.tn-btn svg{width:22px;height:22px}
+.mobmenu{display:none;position:fixed;top:54px;left:0;right:0;bottom:0;background:rgba(242,237,228,.98);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem}
+.mobmenu.open{display:flex}
+.mobmenu button,.mobmenu a{font-size:.85rem;font-weight:500;color:var(--text2);background:none;border:none;cursor:pointer;font-family:var(--fb);letter-spacing:.03em}
+
+/* MAIN */
+.main{margin-left:var(--side);min-height:100vh}
+.pc{max-width:900px;margin:0 auto;padding:0 2.5rem}
+.page{display:none;min-height:100vh;padding:3rem 0 4rem}.page.active{display:block}
+.sl{font-family:var(--fm);font-size:.66rem;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:500}
+.st{font-family:var(--fd);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:500;line-height:1.2;margin-bottom:.6rem}
+.sd{font-size:.92rem;color:var(--text2);max-width:560px;line-height:1.85;margin-bottom:2rem}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.reveal.visible{opacity:1;transform:translateY(0)}
+@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem 1rem;border-radius:5px;font-size:.78rem;font-weight:600;transition:all .2s;border:1px solid var(--border);background:var(--card);color:var(--text)}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.primary:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
+
+/* === HOME === */
+.hero-statement{padding:1rem 0 3rem;opacity:0;animation:fu .6s ease forwards .1s}
+.hero-statement h1{font-family:var(--fd);font-size:clamp(2rem,4.5vw,3.2rem);font-weight:500;line-height:1.12;margin-bottom:1rem;max-width:680px}
+.hero-statement h1 em{color:var(--accent);font-style:normal}
+.hero-statement p{font-size:1rem;color:var(--text2);max-width:520px;line-height:1.85}
+.hstats{display:flex;gap:2rem;margin-top:1.5rem;flex-wrap:wrap;opacity:0;animation:fu .6s ease forwards .3s}
+.hstat strong{display:block;font-size:1.3rem;font-weight:700;line-height:1}.hstat span{font-size:.66rem;color:var(--muted);font-family:var(--fm);letter-spacing:.05em;text-transform:uppercase;font-weight:500}
+.hlinks{display:flex;gap:.4rem;margin-top:1.5rem;flex-wrap:wrap;opacity:0;animation:fu .6s ease forwards .45s}
+
+/* Bento research grid */
+.bento{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(140px,auto);gap:.8rem;margin-bottom:2rem}
+.bento-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.3rem;transition:all .25s;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end}
+.bento-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.bento-card.big{grid-column:span 2;grid-row:span 2}
+.bento-card.tall{grid-row:span 2}
+.bento-card h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.25rem;line-height:1.25}
+.bento-card.big h3{font-size:1.3rem}
+.bento-card p{font-size:.8rem;color:var(--text2);line-height:1.6}
+.btag{display:inline-block;font-size:.6rem;font-family:var(--fm);padding:.1rem .35rem;border-radius:3px;font-weight:500;margin-bottom:.4rem}
+.btag.pub{background:rgba(74,122,100,.1);color:var(--sage)}.btag.sub{background:rgba(45,95,158,.1);color:var(--blue)}.btag.prep{background:var(--asoft);color:var(--accent)}
+.blinks{display:flex;gap:.3rem;margin-top:.5rem}
+.blink{font-size:.65rem;font-family:var(--fm);padding:.15rem .4rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);transition:all .15s;font-weight:500}
+.blink:hover{border-color:var(--accent);color:var(--accent)}
+
+/* News */
+.nsec{padding:2rem 0}
+.ng{display:flex;flex-direction:column}
+.ni{padding:.65rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:85px 1fr;gap:.7rem;font-size:.85rem;color:var(--text2);line-height:1.6}
+.ni:first-of-type{border-top:1px solid var(--border)}
+.nd{font-family:var(--fm);font-size:.66rem;color:var(--muted);padding-top:.12rem;font-weight:500}
+.ni strong{color:var(--text);font-weight:600}
+.nys{font-family:var(--fd);font-size:1.2rem;color:var(--muted);margin:1.2rem 0 .3rem}
+
+/* === PUBLICATIONS (with thumbnails) === */
+.pf{display:flex;gap:.3rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.pfb{font-size:.68rem;font-family:var(--fm);padding:.3rem .65rem;border-radius:4px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .15s;font-weight:500}
+.pfb:hover{color:var(--text2)}.pfb.active{border-color:var(--accent);color:var(--accent);background:var(--asoft)}
+.plist{display:flex;flex-direction:column}
+.pi{padding:1rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:120px 1fr auto;gap:1rem;align-items:start}
+.pi:first-child{border-top:1px solid var(--border)}
+.pi-thumb{width:120px;height:80px;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center}
+.pi-thumb img{width:100%;height:100%;object-fit:cover}
+.pi-thumb video{width:100%;height:100%;object-fit:cover}
+.pi-thumb svg{opacity:.3}
+.pi-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg2)}
+.pinfo h4{font-size:.88rem;font-weight:600;line-height:1.4;margin-bottom:.15rem}
+.pau{font-size:.76rem;color:var(--text2);line-height:1.5}.pau strong{color:var(--accent);font-weight:600}
+.pvt{font-family:var(--fm);font-size:.64rem;color:var(--muted);margin-top:.12rem;font-weight:500}
+.pvt span{display:inline-block;padding:.05rem .28rem;border-radius:3px;background:var(--bg2);margin-right:.15rem}
+.plc{display:flex;gap:.25rem;padding-top:.08rem;flex-wrap:wrap}
+.pls{font-size:.64rem;font-family:var(--fm);padding:.15rem .4rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);transition:all .15s;font-weight:500}
+.pls:hover{border-color:var(--accent);color:var(--accent)}
+
+/* === TEACHING === */
+.tg{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:2.5rem}
+.tc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem;transition:border-color .2s}
+.tc:hover{border-color:var(--accent)}
+.tc h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.2rem}
+.tr{font-family:var(--fm);font-size:.64rem;color:var(--accent);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.4rem;font-weight:500}
+.tc p{font-size:.82rem;color:var(--text2);line-height:1.6}
+.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem}
+.me{padding:.7rem .9rem;background:var(--card);border:1px solid var(--border);border-radius:6px;transition:border-color .15s}
+.me:hover{border-color:var(--border2)}
+.men{font-weight:600;font-size:.84rem}.med{font-size:.74rem;color:var(--text2);margin-top:.08rem}
+.meo{font-size:.66rem;color:var(--accent);margin-top:.08rem;font-family:var(--fm);font-weight:500}
+
+/* === PORTFOLIO === */
+.port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.port-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .25s}
+.port-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.port-card.wide{grid-column:span 2}
+.port-vis{height:180px;background:var(--bg2);overflow:hidden;position:relative}
+.port-card.wide .port-vis{height:220px}
+.port-vis img{width:100%;height:100%;object-fit:cover}
+.port-vis .port-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
+.port-body{padding:1.2rem}
+.port-tag{font-family:var(--fm);font-size:.62rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem;font-weight:500}
+.port-card h3{font-family:var(--fd);font-size:1.1rem;margin-bottom:.3rem}
+.port-card p{font-size:.82rem;color:var(--text2);line-height:1.65;margin-bottom:.6rem}
+.port-links{display:flex;gap:.3rem;flex-wrap:wrap}
+.port-links a{font-size:.66rem;font-family:var(--fm);padding:.18rem .5rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);transition:all .15s;font-weight:500}
+.port-links a:hover{border-color:var(--accent);color:var(--accent)}
+
+/* === MEDIA === */
+.media-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
+.media-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .25s}
+.media-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
+.media-vis{height:200px;background:#0a0a0a;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
+.media-vis img{width:100%;height:100%;object-fit:cover}
+.media-vis iframe{width:100%;height:100%;border:none}
+.media-play{position:absolute;width:48px;height:48px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
+.media-play:hover{transform:scale(1.08)}
+.media-play svg{width:20px;height:20px;margin-left:2px}
+.media-body{padding:1.1rem}
+.media-type{font-family:var(--fm);font-size:.62rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.25rem;font-weight:500}
+.media-card h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.2rem;line-height:1.25}
+.media-card p{font-size:.8rem;color:var(--text2);line-height:1.6}
+.media-source{font-family:var(--fm);font-size:.64rem;color:var(--muted);margin-top:.3rem;font-weight:500}
+.media-source a{color:var(--muted)}.media-source a:hover{color:var(--accent)}
+
+/* === ABOUT === */
+.ag{display:grid;grid-template-columns:2fr 1fr;gap:2.5rem;margin-bottom:2rem}
+.abio{font-size:.9rem;color:var(--text2);line-height:1.85}.abio p{margin-bottom:.8rem}
+.asb h3{font-family:var(--fd);font-size:1rem;margin-bottom:.6rem;margin-top:1.2rem}.asb h3:first-child{margin-top:0}
+.asb ul{list-style:none}.asb li{font-size:.78rem;color:var(--text2);padding:.12rem 0;line-height:1.5}.asb li strong{color:var(--text);font-weight:600}
+.awl{margin-bottom:2.5rem}
+.awi{padding:.5rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:44px 1fr;gap:.7rem;font-size:.84rem}
+.awi:first-child{border-top:1px solid var(--border)}
+.awy{font-family:var(--fm);font-size:.68rem;color:var(--muted);padding-top:.05rem;font-weight:500}
+
+/* FOOTER */
+footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
+.fc{font-size:.68rem;color:var(--muted)}
+
+/* RESPONSIVE */
+@media(max-width:900px){
+  .sidebar{display:none}.topnav{display:flex}.main{margin-left:0;padding-top:54px}
+  .bento{grid-template-columns:1fr}.bento-card.big,.bento-card.tall{grid-column:span 1;grid-row:span 1}
+  .tg,.port-grid,.media-grid{grid-template-columns:1fr}.port-card.wide{grid-column:span 1}
+  .ag{grid-template-columns:1fr}
+  .pi{grid-template-columns:80px 1fr}.pi-thumb{width:80px;height:56px}.plc{display:none}
+}
+@media(max-width:640px){.pc{padding:0 1.2rem}.ni{grid-template-columns:1fr;gap:.08rem}.pi{grid-template-columns:1fr}.pi-thumb{display:none}}
+</style></head><body>
+<aside class="sidebar">
+  <div class="sb-name" onclick="go('home')">Ravi<em>.</em><br>Prakash</div>
+  <div class="sb-aff">PhD Candidate<br>Brain Tool Lab, Duke University</div>
+  <div class="sb-photo"><img src="https://raprakashvi.github.io/images/profile%20pic_small-min.png" alt="Ravi Prakash" onerror="this.parentElement.style.background='var(--bg2)'"></div>
+  <nav class="sb-nav">
+    <button class="sb-link active" data-page="home" onclick="go('home')">Home</button>
+    <button class="sb-link" data-page="research" onclick="go('research')">Research</button>
+    <button class="sb-link" data-page="publications" onclick="go('publications')">Publications</button>
+    <button class="sb-link" data-page="teaching" onclick="go('teaching')">Teaching</button>
+    <button class="sb-link" data-page="portfolio" onclick="go('portfolio')">Portfolio</button>
+    <button class="sb-link" data-page="media" onclick="go('media')">Media</button>
+    <button class="sb-link" data-page="about" onclick="go('about')">About</button>
+  </nav>
+  <div class="sb-status">&#10003; Open to faculty &amp; postdoc positions</div>
+  <div class="sb-social">
+    <a href="mailto:ravi.prakash@duke.edu">Email</a>
+    <a href="https://scholar.google.com/citations?hl=en&amp;authuser=1&amp;user=BX_yW-kAAAAJ" target="_blank">Scholar</a>
+    <a href="https://github.com/raprakashvi" target="_blank">GitHub</a>
+    <a href="https://www.linkedin.com/in/raprakashvi/" target="_blank">LinkedIn</a>
+    <a href="https://orcid.org/0000-0002-4020-1590" target="_blank">ORCID</a>
+  </div>
+</aside>
+<div class="topnav">
+  <span class="tn-name" onclick="go('home')">Ravi<em>.</em></span>
+  <button class="tn-btn" onclick="document.getElementById('mob').classList.toggle('open')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+  </button>
+</div>
+<div class="mobmenu" id="mob">
+  <button onclick="go('home');document.getElementById('mob').classList.remove('open')">Home</button>
+  <button onclick="go('research');document.getElementById('mob').classList.remove('open')">Research</button>
+  <button onclick="go('publications');document.getElementById('mob').classList.remove('open')">Publications</button>
+  <button onclick="go('teaching');document.getElementById('mob').classList.remove('open')">Teaching</button>
+  <button onclick="go('portfolio');document.getElementById('mob').classList.remove('open')">Portfolio</button>
+  <button onclick="go('media');document.getElementById('mob').classList.remove('open')">Media</button>
+  <button onclick="go('about');document.getElementById('mob').classList.remove('open')">About</button>
+  <a href="mailto:ravi.prakash@duke.edu">Contact</a>
+</div>
+<div class="main">
+<div class="page active" id="page-home"><div class="pc">
+<div class="hero-statement">
+<h1>I build robotic systems that <em>see</em>, <em>decide</em>, and <em>act</em> &mdash; transforming multimodal sensing into precise autonomous action.</h1>
+<p>PhD researcher at Duke University&rsquo;s Brain Tool Lab, working across surgical robotics, neural perception, and acoustic intelligence. My systems close the loop from raw sensory data to real-world intervention.</p>
+<div class="hstats"><div class="hstat"><strong>16+</strong><span>Publications</span></div><div class="hstat"><strong>2</strong><span>Patents</span></div><div class="hstat"><strong>15+</strong><span>Mentees</span></div></div>
+<div class="hlinks"><a href="https://scholar.google.com/citations?hl=en&amp;authuser=1&amp;user=BX_yW-kAAAAJ" class="btn primary" target="_blank">Google Scholar</a><a href="mailto:ravi.prakash@duke.edu" class="btn">Email</a></div>
+</div>
+<div class="reveal"><div class="sl">Research</div><h2 class="st">Active Projects</h2></div>
+<div class="bento reveal">
+<div class="bento-card big" onclick="go('research')"><span class="btag sub">Nature Comms &mdash; Under Review</span><h3>TumorMap: Fully-Automated 3D Tumor Mapping &amp; Resection</h3><p>Three-laser platform (OCT + fluorescence + cutting scalpel) with deep learning for noncontact tumor resection in murine models. Submillimeter accuracy.</p><div class="blinks"><a href="https://arxiv.org/abs/2511.05723" class="blink" target="_blank">arXiv</a><a href="https://arxiv.org/pdf/2511.05723" class="blink" target="_blank">PDF</a></div></div>
+<div class="bento-card" onclick="go('research')"><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut</h3><p>MPC-based volumetric laser surgery with OCT guidance.</p></div>
+<div class="bento-card" onclick="go('research')"><span class="btag pub">RoboSoft 2026</span><h3>PalpAid</h3><p>Pneumatic tactile sensor for tissue palpation. Mentored project.</p></div>
+<div class="bento-card" onclick="go('research')"><span class="btag pub">ISMR 2025</span><h3>Portable Dual Sensor</h3><p>Large-area dual sensing for real-time surgical guidance.</p></div>
+<div class="bento-card" onclick="go('research')"><span class="btag pub">WACV 2026</span><h3>SurgXBench</h3><p>Explainable vision-language benchmark for surgery.</p></div>
+</div>
+<div class="nsec">
+<div class="reveal"><div class="sl">Latest</div><h2 class="st">News</h2></div>
+<div class="ng reveal">
+<div class="nys">2025</div>
+<div class="ni"><div class="nd">Dec 2025</div><div>Won <strong>Rhodes Graduate Fellowship</strong> for Interdisciplinary Research.</div></div>
+<div class="ni"><div class="nd">Dec 2025</div><div>Co-organized <a href="https://sites.google.com/view/icra2025-workshop-clsr" target="_blank">&ldquo;Evolving Landscape of Surgical Robotics&rdquo;</a> at <strong>ICRA 2025</strong>.</div></div>
+<div class="ni"><div class="nd">Nov 2025</div><div><strong>TumorMap</strong> preprint released. <a href="https://arxiv.org/abs/2511.05723" target="_blank">arXiv</a></div></div>
+<div class="ni"><div class="nd">Apr 2025</div><div>Multi-drone work featured in <a href="https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/" target="_blank">Duke Forest</a>.</div></div>
+<div class="ni"><div class="nd">Apr 2025</div><div>Mentees&rsquo; tissue boundary work at <strong>ICRA 2025</strong> workshop &amp; <strong>BSN 2025</strong>.</div></div>
+<div class="nys">2024</div>
+<div class="ni"><div class="nd">Sep 2024</div><div><a href="https://aging.jmir.org/2024/1/e57926/" target="_blank">JMIR Aging</a> &mdash; dementia severity from unstructured EHR data.</div></div>
+<div class="ni"><div class="nd">Sep 2024</div><div>Preprints: <a href="https://arxiv.org/abs/2410.03152" target="_blank">MPC ablation</a> &amp; <a href="https://arxiv.org/abs/2410.03086" target="_blank">compliant end-effector</a>.</div></div>
+<div class="ni"><div class="nd">Feb 2024</div><div>Invited talk at <strong>IIT Patna</strong>.</div></div>
+<div class="ni"><div class="nd">Jan 2024</div><div><a href="https://www.nature.com/articles/s41598-023-50995-4" target="_blank">Scientific Reports</a> &mdash; laser fluorescence spectroscopy.</div></div>
+<div class="nys">2023</div>
+<div class="ni"><div class="nd">Jun 2023</div><div>Surgical planning at <strong>IROS 2023</strong>.</div></div>
+<div class="ni"><div class="nd">Mar 2023</div><div><strong>Duke India Initiative</strong> grant for portable diagnostics in Bihar.</div></div>
+<div class="ni"><div class="nd">Feb 2023</div><div>Brain-mimicking phantom at <strong>ISMR 2023</strong>.</div></div>
+</div>
+</div>
+</div></div>
+
+<div class="page" id="page-research"><div class="pc">
+<div class="reveal" style="padding-top:.5rem"><div class="sl">Research</div><h2 class="st">Systems That See, Decide, and Act</h2><p class="sd">Full-stack platforms integrating hardware, sensing, and algorithms for high-stakes autonomous operation.</p></div>
+<div class="bento reveal">
+<div class="bento-card big"><span class="btag sub">Nature Comms &mdash; Under Review</span><h3>TumorMap: Fully-Automated 3D Tumor Mapping &amp; Resection</h3><p>Three-laser surgical platform &mdash; OCT, laser-induced fluorescence, cutting scalpel &mdash; with deep learning for noncontact tumor resection. Validated in murine osteosarcoma and soft-tissue sarcoma with submillimeter accuracy.</p><div class="blinks"><a href="https://arxiv.org/abs/2511.05723" class="blink" target="_blank">arXiv</a><a href="https://arxiv.org/pdf/2511.05723" class="blink" target="_blank">PDF</a></div></div>
+<div class="bento-card"><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut: MPC-Based Volumetric Laser Surgery</h3><p>Sampling-based MPC for OCT-guided volumetric ablation. Optimal trajectories respecting tissue constraints.</p><div class="blinks"><a href="https://arxiv.org/abs/2410.03152" class="blink" target="_blank">arXiv</a><a href="https://raprakashvi.github.io/see-plan-cut/" class="blink" target="_blank">Project</a></div></div>
+<div class="bento-card"><span class="btag pub">RoboSoft 2026</span><h3>PalpAid: Multimodal Pneumatic Tactile Sensor</h3><p>Pneumatic tactile sensor for tissue palpation &mdash; mentored undergraduate project.</p></div>
+<div class="bento-card tall"><span class="btag pub">ISMR 2025</span><h3>Portable Dual Sensor Visualization</h3><p>Large-area dual sensing for real-time surgical guidance in resource-constrained settings.</p></div>
+<div class="bento-card"><span class="btag pub">WACV 2026</span><h3>SurgXBench: Explainable VLM for Surgery</h3><p>Vision-language model benchmark for surgical scene understanding.</p></div>
+<div class="bento-card"><span class="btag pub">BSN 2025</span><h3>Multimodal Tissue Boundary Delineation</h3><p>Sensor fusion for tissue transition detection. Mentored project.</p></div>
+<div class="bento-card"><span class="btag pub">ISMR 2023</span><h3>Brain-Mimicking Phantom for Photoablation</h3><p>Tunable optical/mechanical phantoms for validating robotic laser surgery systems.</p></div>
+<div class="bento-card"><span class="btag pub">IROS 2023</span><h3>3D Laser-Tissue Agnostic Surgical Planning</h3><p>Data-driven method for robotic laser surgical planning from 3D scans.</p></div>
+</div>
+</div></div>
+
+<div class="page" id="page-publications"><div class="pc">
+<div class="reveal" style="padding-top:.5rem"><div class="sl">Publications</div><h2 class="st">Selected Works</h2><p class="sd">16+ publications across ICRA, IROS, ISMR, Nature Communications, and IEEE venues.</p></div>
+<div class="pf reveal">
+<button class="pfb active" onclick="fp('all',this)">All</button>
+<button class="pfb" onclick="fp('journal',this)">Journals</button>
+<button class="pfb" onclick="fp('conference',this)">Conferences</button>
+</div>
+<div class="plist reveal">
+
+<!-- To add a thumbnail: replace the SVG placeholder inside pi-thumb with <img src="path/to/image.jpg" alt=""> -->
+<!-- To add a video thumbnail: use <video src="path/to/video.mp4" muted autoplay loop playsinline></video> -->
+
+<div class="pi" data-t="journal"><div class="pi-thumb"><!-- ADD IMAGE: <img src="images/tumormap.jpg" alt="TumorMap"> --><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="14" stroke="#cec7b8" stroke-width="1"/><circle cx="20" cy="20" r="6" stroke="#cec7b8" stroke-width=".8" stroke-dasharray="2 2"/></svg></div></div><div class="pinfo"><h4>TumorMap: Laser-Based Platform for 3D Tumor Mapping and Automated Resection</h4><div class="pau">Ma, G.*, <strong>Prakash, R.*</strong>, Schleupner, B., Everitt, J. I., et al.</div><div class="pvt"><span>Nature Comms</span> Under Review &middot; *equal contribution</div></div><div class="plc"><a href="https://arxiv.org/abs/2511.05723" class="pls" target="_blank">arXiv</a><a href="https://arxiv.org/pdf/2511.05723" class="pls" target="_blank">PDF</a></div></div>
+
+<div class="pi" data-t="journal"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="10" y="12" width="20" height="16" rx="2" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound</h4><div class="pau">Chen, D., <strong>Prakash, R.</strong>, Wang, V., Chen, Z., et al.</div><div class="pvt"><span>IEEE TMRB</span> Under Review</div></div><div class="plc"><a href="https://arxiv.org/abs/2410.03086" class="pls" target="_blank">arXiv</a></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><!-- ADD IMAGE: <img src="images/see-plan-cut.jpg" alt="See Plan Cut"> --><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M 12 28 L 20 12 L 28 28 Z" stroke="#cec7b8" stroke-width="1" fill="none"/></svg></div></div><div class="pinfo"><h4>See, Plan, Cut: MPC-Based Autonomous Volumetric Robotic Laser Surgery</h4><div class="pau"><strong>Prakash, R.*</strong>, Wang, V.*, Mishra, A., Yuliarti, D., et al.</div><div class="pvt"><span>ICRA 2026</span> *equal contribution</div></div><div class="plc"><a href="https://arxiv.org/abs/2410.03152" class="pls" target="_blank">arXiv</a><a href="https://raprakashvi.github.io/see-plan-cut/" class="pls" target="_blank">Project</a></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="10" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>PalpAid: Multimodal Pneumatic Tactile Sensor for Tissue Palpation</h4><div class="pau">Yuliarti, D.*, <strong>Prakash, R.*</strong>, Cheung, H. H., et al.</div><div class="pvt"><span>RoboSoft 2026</span> Mentored</div></div><div class="plc"></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="8" y="14" width="24" height="12" rx="2" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>SurgXBench: Explainable VLM Benchmark for Surgery</h4><div class="pau">Cheng, J., et al., <strong>Prakash, R.</strong>, Codd, P. J., Lin, S.</div><div class="pvt"><span>WACV 2026</span></div></div><div class="plc"></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><line x1="10" y1="20" x2="30" y2="20" stroke="#cec7b8" stroke-width="1"/><circle cx="20" cy="20" r="5" stroke="#cec7b8" stroke-width=".8"/></svg></div></div><div class="pinfo"><h4>Where is the Boundary? Multimodal Sensor Fusion for Tissue Delineation</h4><div class="pau">Chen, Z., Cahilig, A. C., Dias, S., Kolar, P., <strong>Prakash, R.</strong>, Codd, P. J.</div><div class="pvt"><span>IEEE-EMBS BSN 2025</span> Mentored</div></div><div class="plc"></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M 12 28 L 20 12 L 28 28 Z" stroke="#cec7b8" stroke-width="1" fill="none"/></svg></div></div><div class="pinfo"><h4>Sampling-Based MPC for Volumetric Ablation in Robotic Laser Surgery</h4><div class="pau">Wang, V. Y., <strong>Prakash, R.</strong>, Oca, S. R., et al.</div><div class="pvt"><span>ICRA 2025</span></div></div><div class="plc"><a href="https://arxiv.org/abs/2410.03152" class="pls" target="_blank">arXiv</a></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="12" y="10" width="16" height="20" rx="2" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>Portable Dual Sensor Visualization for Robotic Laser Surgery</h4><div class="pau"><strong>Prakash, R.</strong>, Wang, V., Chen, Z., Bridgeman, L., Codd, P. J.</div><div class="pvt"><span>ISMR 2025</span></div></div><div class="plc"></div></div>
+
+<div class="pi" data-t="journal"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="10" y="10" width="20" height="20" rx="3" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>Extracting Critical Info from Clinicians&rsquo; Notes to Identify Dementia Severity</h4><div class="pau"><strong>Prakash, R.</strong>, Dupre, M. E., &Oslash;stbye, T., Xu, H.</div><div class="pvt"><span>JMIR Aging</span> 7, e57926</div></div><div class="plc"><a href="https://aging.jmir.org/2024/1/e57926/" class="pls" target="_blank">Paper</a></div></div>
+
+<div class="pi" data-t="journal"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="20" r="10" stroke="#cec7b8" stroke-width="1"/><line x1="20" y1="10" x2="20" y2="30" stroke="#cec7b8" stroke-width=".5"/></svg></div></div><div class="pinfo"><h4>Blinded Study: Laser-Induced Fluorescence for Spine Tumor Differentiation</h4><div class="pau">Sperber, J., Zachem, T. J., <strong>Prakash, R.</strong>, et al.</div><div class="pvt"><span>Scientific Reports</span> 14(1), 1921</div></div><div class="plc"><a href="https://www.nature.com/articles/s41598-023-50995-4" class="pls" target="_blank">Paper</a></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><path d="M 10 30 Q 20 10 30 30" stroke="#cec7b8" stroke-width="1" fill="none"/></svg></div></div><div class="pinfo"><h4>3D Laser-and-Tissue Agnostic Method for Robotic Laser Surgical Planning</h4><div class="pau">Ma, G., <strong>Prakash, R.</strong>, Mann, B., Ross, W., Codd, P. J.</div><div class="pvt"><span>IROS 2023</span></div></div><div class="plc"><a href="https://arxiv.org/pdf/2305.01524.pdf" class="pls" target="_blank">PDF</a></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><circle cx="20" cy="18" r="10" stroke="#cec7b8" stroke-width="1"/><path d="M 14 24 Q 20 32 26 24" stroke="#cec7b8" stroke-width=".8" fill="none"/></svg></div></div><div class="pinfo"><h4>Brain-Mimicking Phantom for Photoablation and Visualization</h4><div class="pau"><strong>Prakash, R.</strong>, Yamamoto, K. K., Oca, S. R., Ross, W., Codd, P. J.</div><div class="pvt"><span>ISMR 2023</span></div></div><div class="plc"></div></div>
+
+<div class="pi" data-t="conference"><div class="pi-thumb"><div class="pi-placeholder"><svg width="40" height="40" viewBox="0 0 40 40" fill="none"><rect x="10" y="14" width="20" height="12" rx="1" stroke="#cec7b8" stroke-width="1"/></svg></div></div><div class="pinfo"><h4>Fluid Flow and Heat Transfer in Microchannels with Varying Cross-Section</h4><div class="pau">Chatterjee, A., Valaparla, R. K., <strong>Prakash, R.</strong>, Balasubramanian, K.</div><div class="pvt"><span>ETME 2019</span></div></div><div class="plc"></div></div>
+
+</div>
+</div></div>
+
+<div class="page" id="page-teaching"><div class="pc">
+<div class="reveal" style="padding-top:.5rem"><div class="sl">Teaching &amp; Mentorship</div><h2 class="st">Building the Next Generation</h2><p class="sd">15+ students with outcomes at ICRA, RoboSoft, BSN, and placements at Google, Microsoft, Medtronic.</p></div>
+<div class="tg reveal">
+<div class="tc"><div class="tr">Instructor of Record &middot; 2025&ndash;26</div><h3>Reimagining Surgery for Rural Needs</h3><p>Bass Connections course &mdash; teleoperated laser surgery for rural clinics. Optomechanical assembly, HW/SW integration. 4.25/5 rating.</p></div>
+<div class="tc"><div class="tr">Guest Lecturer &middot; 2024, 2025</div><h3>Intro to Medical Robotics</h3><p>ML for Medical Robotics and Design of Experiments. Scaffolded self-learning for diverse experience levels.</p></div>
+<div class="tc"><div class="tr">Curriculum Developer &middot; 2024</div><h3>Collaborative Expeditions</h3><p>Self-learning modules on DOE, ML, Literature Review with reflections and case studies.</p></div>
+<div class="tc"><div class="tr">TA &middot; 2021&ndash;22</div><h3>Experiment Design &amp; Research Methods</h3><p>Research scoping, rapid prototyping, portfolio development. 3 semesters.</p></div>
+</div>
+<div class="reveal"><div class="sl">Mentees</div><h2 class="st" style="font-size:1.4rem">Students &amp; Outcomes</h2></div>
+<div class="mg reveal">
+<div class="me"><div class="men">Devi Yuliarti</div><div class="med">Duke &mdash; Tactile Sensor</div><div class="meo">&rarr; RoboSoft 2026 (1st author), ICRA 2026</div></div>
+<div class="me"><div class="men">Zacharias Chen</div><div class="med">Duke &mdash; Tissue Boundary</div><div class="meo">&rarr; BSN 2025, ICRA Workshop &middot; Medtronic Hugo</div></div>
+<div class="me"><div class="men">Caroline Chen</div><div class="med">Duke MS &mdash; Segmentation</div><div class="meo">&rarr; ISMR 2024 &middot; ML Engineer, Google</div></div>
+<div class="me"><div class="men">Changxin Yu</div><div class="med">Duke MS &mdash; OCT Segmentation</div><div class="meo">&rarr; 3rd Prize Symposium &middot; Microsoft</div></div>
+<div class="me"><div class="men">Sarah Dias</div><div class="med">HS &mdash; Tissue Boundary</div><div class="meo">&rarr; BSN 2025, ICRA, IEEE TMRB</div></div>
+<div class="me"><div class="men">Prithu Kolar</div><div class="med">NCSSM &mdash; Acoustic/Video</div><div class="meo">&rarr; BSN 2025 &middot; Park Scholar, NC State</div></div>
+<div class="me"><div class="men">Antony Farrand</div><div class="med">Duke MS &mdash; Acoustic Surgery</div><div class="meo">&rarr; MEMS Poster Symposium</div></div>
+<div class="me"><div class="men">Yongjun Lu</div><div class="med">Duke &mdash; Ultrasonic Aspirator</div><div class="meo">&rarr; Clinical OR data acquisition</div></div>
+<div class="me"><div class="men">Felicity Lipchak</div><div class="med">NCSSM &mdash; Acoustic/Video</div><div class="meo">&rarr; Dartmouth College</div></div>
+<div class="me"><div class="men">Nikhil Aaryath</div><div class="med">Duke &mdash; UA Tissue</div><div class="meo">&rarr; Robotic data pipeline</div></div>
+</div>
+</div></div>
+
+<div class="page" id="page-portfolio"><div class="pc">
+<div class="reveal" style="padding-top:.5rem"><div class="sl">Portfolio</div><h2 class="st">Beyond the Lab</h2><p class="sd">Leadership, community innovation, and institution-building.</p></div>
+<div class="port-grid reveal">
+
+<!-- To add images: replace the SVG placeholder with <img src="images/your-image.jpg" alt="description"> -->
+
+<div class="port-card wide"><div class="port-vis"><!-- ADD IMAGE: <img src="images/futures_plus.png" alt="Futures+"> --><img src="https://raprakashvi.github.io/images/futures_plus.png" alt="Futures+" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><div class="port-placeholder" style="display:none"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><circle cx="20" cy="30" r="12" stroke="#c23a22" stroke-width=".8"/><circle cx="40" cy="30" r="12" stroke="#4a7a64" stroke-width=".8"/></svg></div></div><div class="port-body"><div class="port-tag">Foresight &amp; Innovation &middot; 2020</div><h3>Futures+: Multi-National Deep Tech Innovation Program</h3><p>Co-led a 6-month innovation program across Bhutan, Indonesia, India, and Singapore with 16 partners. Three finalist solutions deployed in northeast India and Indonesia. Direct engagement with farming communities shaped modular, repairable design principles.</p><div class="port-links"><a href="https://futures-plus.com/" target="_blank">Website</a></div></div></div>
+
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="12" y="15" width="36" height="30" rx="3" stroke="#c23a22" stroke-width=".8"/><text x="30" y="34" text-anchor="middle" font-family="IBM Plex Mono,monospace" font-size="7" fill="#8a837a">TEDx</text></svg></div></div><div class="port-body"><div class="port-tag">Founder &middot; 2018</div><h3>TEDxNITW</h3><p>Founded the TEDx chapter at NIT Warangal. Organized the inaugural event with 400+ attendees &mdash; speaker curation, sponsorships, and production.</p><div class="port-links"><!-- ADD LINK: <a href="https://tedx-link" target="_blank">Event Page</a> --></div></div></div>
+
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="10" y="18" width="18" height="24" rx="2" stroke="#4a7a64" stroke-width=".8"/><rect x="32" y="22" width="18" height="20" rx="2" stroke="#4a7a64" stroke-width=".8"/></svg></div></div><div class="port-body"><div class="port-tag">Fellowship &middot; 2020&ndash;21</div><h3>Duke Garage Lab</h3><p>Lab &amp; Curriculum Development Fellowship. Co-designed and built Duke&rsquo;s newest prototyping space for the MEMS capstone program.</p><div class="port-links"><a href="https://sites.duke.edu/memscapstone/" target="_blank">Capstone Program</a></div></div></div>
+
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><path d="M 15 40 L 30 15 L 45 40 Z" stroke="#2d5f9e" stroke-width=".8" fill="none"/><circle cx="30" cy="30" r="6" stroke="#2d5f9e" stroke-width=".6" stroke-dasharray="2 2"/></svg></div></div><div class="port-body"><div class="port-tag">Fellowship &middot; 2021</div><h3>Design Health Fellow</h3><p>Duke Design Health program &mdash; clinical immersion and needs-finding methodology for healthcare innovation.</p><div class="port-links"><!-- ADD LINK: <a href="#" target="_blank">Program</a> --></div></div></div>
+
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><circle cx="22" cy="30" r="10" stroke="#c23a22" stroke-width=".6"/><circle cx="38" cy="30" r="10" stroke="#c23a22" stroke-width=".6"/></svg></div></div><div class="port-body"><div class="port-tag">Leadership &middot; 2023&ndash;24</div><h3>MEMS Graduate Student Committee</h3><p>President. Department events, student advocacy, and cross-lab networking for 100+ graduate students.</p><div class="port-links"><!-- ADD LINK: <a href="#" target="_blank">MEMS Dept</a> --></div></div></div>
+
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="12" y="18" width="36" height="24" rx="3" stroke="#4a7a64" stroke-width=".8"/><line x1="12" y1="28" x2="48" y2="28" stroke="#4a7a64" stroke-width=".3"/></svg></div></div><div class="port-body"><div class="port-tag">Service &middot; 2024&ndash;Present</div><h3>ICRA Workshop Organizer</h3><p>&ldquo;The Evolving Landscape of Surgical Robotics&rdquo; at ICRA 2025. Curated lineup of 12 international researchers.</p><div class="port-links"><a href="https://sites.google.com/view/icra2025-workshop-clsr" target="_blank">Workshop Page</a></div></div></div>
+
+</div>
+</div></div>
+
+<div class="page" id="page-media"><div class="pc">
+<div class="reveal" style="padding-top:.5rem"><div class="sl">Media</div><h2 class="st">Features &amp; Coverage</h2><p class="sd">Videos, interviews, and media coverage of my work.</p></div>
+
+<div class="media-grid reveal">
+
+<!-- TEMPLATE: To add a new media item, copy a media-card block and update:
+     - Image/video in media-vis (use <img> for thumbnail, or <iframe> for embedded YouTube)
+     - For YouTube: <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+     - media-type: VIDEO / ARTICLE / PODCAST / INTERVIEW
+     - Title, description, source link
+-->
+
+<div class="media-card">
+<div class="media-vis">
+<!-- ADD: YouTube embed or thumbnail image -->
+<!-- Example: <iframe src="https://www.youtube.com/embed/YOUR_VIDEO_ID" allowfullscreen></iframe> -->
+<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
+</div>
+<div class="media-body">
+<div class="media-type">Article</div>
+<h3>Drones Transforming Research in Duke Forest</h3>
+<p>Feature on our multi-drone acoustic sensing work for environmental monitoring and wildlife tracking.</p>
+<div class="media-source"><a href="https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/" target="_blank">Duke Forest &middot; Apr 2025</a></div>
+</div>
+</div>
+
+<div class="media-card">
+<div class="media-vis">
+<!-- ADD: YouTube embed or thumbnail -->
+<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
+</div>
+<div class="media-body">
+<div class="media-type">Video</div>
+<h3>Placeholder: Add Your Video Title Here</h3>
+<p>Replace this card with a video feature, interview, or talk recording. Use a YouTube embed or a thumbnail image with a link.</p>
+<div class="media-source"><a href="#" target="_blank">Source &middot; Date</a></div>
+</div>
+</div>
+
+<div class="media-card">
+<div class="media-vis">
+<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
+</div>
+<div class="media-body">
+<div class="media-type">Video</div>
+<h3>Placeholder: Add Your Video Title Here</h3>
+<p>Replace this with another media item. Copy this block to add more.</p>
+<div class="media-source"><a href="#" target="_blank">Source &middot; Date</a></div>
+</div>
+</div>
+
+<div class="media-card">
+<div class="media-vis">
+<div class="port-placeholder"><svg width="48" height="48" viewBox="0 0 48 48" fill="none"><circle cx="24" cy="24" r="18" stroke="#fff" stroke-width="1.5" opacity=".6"/><polygon points="20,16 34,24 20,32" fill="#fff" opacity=".6"/></svg></div>
+</div>
+<div class="media-body">
+<div class="media-type">Video</div>
+<h3>Placeholder: Add Your Video Title Here</h3>
+<p>Replace this with another media item. Copy this block to add more.</p>
+<div class="media-source"><a href="#" target="_blank">Source &middot; Date</a></div>
+</div>
+</div>
+
+</div>
+
+<!-- HOW TO ADD MORE MEDIA: Copy a media-card block above and update the content.
+     For YouTube videos, replace the port-placeholder SVG with:
+     <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
+     For images, use: <img src="images/your-thumbnail.jpg" alt="description">
+-->
+
+</div></div>
+
+<div class="page" id="page-about"><div class="pc">
+<div class="reveal" style="padding-top:.5rem"><div class="sl">About</div><h2 class="st">Background &amp; Vision</h2></div>
+<div class="ag reveal">
+<div class="abio">
+<p>I am a doctoral candidate in the <a href="https://www.braintoollab.com/" target="_blank">Brain Tool Lab</a> at Duke, advised by <a href="https://scholars.duke.edu/person/patrick.codd" target="_blank">Patrick Codd, M.D.</a> and <a href="http://boyuanchen.com/" target="_blank">Boyuan Chen, Ph.D.</a> My work sits at the intersection of robotics, multimodal perception, and surgical systems.</p>
+<p>I build closed-loop platforms that transform rich sensory data into precise autonomous action &mdash; from autonomous laser surgery (OCT + fluorescence + cutting lasers) to neural implicit representations for surgical navigation, acoustic sensing for multi-drone coordination, and multimodal tactile sensing for tissue assessment.</p>
+<p>Before Duke, I co-led <a href="https://futures-plus.com/" target="_blank">Futures+</a> across four countries and founded TEDxNITW. These experiences inform how I think about technology design for communities that need it most.</p>
+<p>I serve as Lab Manager at the Brain Tool Lab and am Instructor of Record for a Bass Connections course developing teleoperated surgical systems for rural clinics.</p>
+<p><strong>I am on the academic job market seeking faculty, postdoc, and research positions in robotics.</strong></p>
+</div>
+<div class="asb">
+<h3>Education</h3>
+<ul><li><strong>Ph.D.</strong> MEMS, Duke<br><span style="color:var(--muted);font-size:.7rem">2022&ndash;2026 (expected)</span></li>
+<li><strong>M.S.</strong> MEMS, Duke<br><span style="color:var(--muted);font-size:.7rem">2020&ndash;2021</span></li>
+<li><strong>B.Tech</strong> ME, NIT Warangal<br><span style="color:var(--muted);font-size:.7rem">2015&ndash;2019</span></li></ul>
+<h3>Reviewing</h3>
+<ul><li>IEEE RA-L &middot; CoRL &middot; IROS</li><li>ISMR &middot; BSN &middot; RoboSoft &middot; JMRR</li></ul>
+</div>
+</div>
+<div class="reveal"><div class="sl">Recognition</div><h2 class="st" style="font-size:1.4rem">Awards</h2></div>
+<div class="awl reveal">
+<div class="awi"><div class="awy">2025</div><div><strong>Rhodes Graduate Fellowship</strong>, Duke</div></div>
+<div class="awi"><div class="awy">2025</div><div><strong>IEEE-EMBS BSN</strong> Travel Award</div></div>
+<div class="awi"><div class="awy">2023</div><div><strong>Duke India Initiative</strong> Travel Award</div></div>
+<div class="awi"><div class="awy">2023</div><div><strong>Maclin Community Connections</strong> Grant</div></div>
+<div class="awi"><div class="awy">2021</div><div><strong>Dean&rsquo;s Research Award</strong>, Duke</div></div>
+<div class="awi"><div class="awy">2021</div><div><strong>Woo Center Big Data</strong> Fellowship</div></div>
+<div class="awi"><div class="awy">2021</div><div><strong>Design Health Fellow</strong>, Duke</div></div>
+<div class="awi"><div class="awy">2020</div><div><strong>Lab &amp; Curriculum Development</strong> Fellowship</div></div>
+<div class="awi"><div class="awy">2017</div><div><strong>S.N. Bose</strong> Undergraduate Research Fellowship</div></div>
+</div>
+</div></div>
+
+<footer><div class="pc"><p class="fc">Brain Tool Lab &middot; Duke University &middot; 144 Hudson Hall, Durham, NC 27708</p></div></footer>
+</div>
+
+<script>
+var cur = "home";
+function go(p) {
+  if (!p) p = "home";
+  cur = p;
+  var pages = document.querySelectorAll(".page");
+  for (var i = 0; i < pages.length; i++) pages[i].classList.remove("active");
+  var t = document.getElementById("page-" + p);
+  if (t) t.classList.add("active");
+  var links = document.querySelectorAll(".sb-link");
+  for (var i = 0; i < links.length; i++) links[i].classList.remove("active");
+  var b = document.querySelector('.sb-link[data-page="' + p + '"]');
+  if (b) b.classList.add("active");
+  try { history.pushState(null, "", "#" + p); } catch(e) {}
+  window.scrollTo(0, 0);
+  setTimeout(runObs, 50);
+}
+function runObs() {
+  try {
+    var o = new IntersectionObserver(function(entries) {
+      for (var i = 0; i < entries.length; i++) {
+        if (entries[i].isIntersecting) entries[i].target.classList.add("visible");
+      }
+    }, { threshold: 0.06, rootMargin: "0px 0px -20px 0px" });
+    var els = document.querySelectorAll(".reveal:not(.visible)");
+    for (var i = 0; i < els.length; i++) o.observe(els[i]);
+  } catch(e) {
+    var els = document.querySelectorAll(".reveal");
+    for (var i = 0; i < els.length; i++) els[i].classList.add("visible");
+  }
+}
+try { window.addEventListener("popstate", function() { var h = ""; try { h = location.hash.replace("#",""); } catch(e) {} go(h || "home"); }); } catch(e) {}
+function fp(t, b) {
+  var btns = document.querySelectorAll(".pfb");
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove("active");
+  if (b) b.classList.add("active");
+  var items = document.querySelectorAll(".pi");
+  for (var i = 0; i < items.length; i++) {
+    items[i].style.display = (t === "all" || items[i].getAttribute("data-t") === t) ? "" : "none";
+  }
+}
+go("home");
+</script>
+</body></html>
