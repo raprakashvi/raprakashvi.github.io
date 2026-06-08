@@ -75,6 +75,9 @@ a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:va
 .bento{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(140px,auto);gap:.8rem;margin-bottom:2rem}
 .bento-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.3rem;transition:all .25s;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end}
 .bento-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
+/* Dynamic papers: hover makes any card pop; rotation moves .big */
+#research-bento .bento-card{transition:transform .35s ease, box-shadow .35s ease, border-color .2s}
+#research-bento .bento-card:hover{transform:translateY(-6px) scale(1.04);z-index:5;box-shadow:0 12px 28px rgba(0,0,0,.1)}
 .bento-card.big{grid-column:span 2;grid-row:span 2}
 .bento-card.tall{grid-row:span 2}
 .bento-card h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.25rem;line-height:1.25}
@@ -178,13 +181,6 @@ a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:va
 .awi:first-child{border-top:1px solid var(--border)}
 .awy{font-family:var(--fm);font-size:.68rem;color:var(--muted);padding-top:.05rem;font-weight:500}
 
-/* Featured video */
-.feat-video{margin-bottom:2.5rem}
-.feat-video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:#0a0a0a}
-.feat-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
-.feat-video-label{font-family:var(--fm);font-size:.62rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:.3rem}
-.feat-video-caption{font-size:.8rem;color:var(--text2);margin-top:.6rem;line-height:1.6}
-
 /* FOOTER */
 footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 .fc{font-size:.68rem;color:var(--muted)}
@@ -248,26 +244,16 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 <div class="reveal"><div class="sl">Research</div><h2 class="st">Active Projects</h2></div>
 <div class="bento reveal">
 <div class="bento-card big" onclick="go('research')"><div class="bento-card-img"><img src="images/publications/TumorMap_figure.jpg" alt="TumorMap"></div><span class="btag sub">Under Review</span><h3>TumorMap: Fully-Automated 3D Tumor Mapping &amp; Resection</h3><p>Three-laser platform (OCT + fluorescence + cutting scalpel) with deep learning for noncontact tumor resection in murine models. Submillimeter accuracy.</p><div class="blinks"><a href="papers/TumorMap.pdf" class="blink" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.05723" class="blink" target="_blank">arXiv</a><a href="https://github.com/mgsresearch/tumormap_code" class="blink" target="_blank">Code</a></div></div>
-<div class="bento-card" onclick="go('research')"><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut</h3><p>MPC-based volumetric laser surgery with OCT guidance.</p><div class="blinks"><a href="https://raprakashvi.github.io/see-plan-cut/" class="blink" target="_blank">Website</a><a href="papers/See,Plan,Cut.pdf" class="blink" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.17777" class="blink" target="_blank">arXiv</a><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" class="blink" target="_blank">Video</a><a href="https://github.com/raprakashvi/see_plan_cut" class="blink" target="_blank">Code</a></div></div>
-<div class="bento-card" onclick="go('research')"><span class="btag pub">RoboSoft 2026</span><h3>PalpAid</h3><p>Pneumatic tactile sensor for tissue palpation. Mentored project.</p><div class="blinks"><a href="https://raprakashvi.github.io/palpaid/" class="blink" target="_blank">Website</a><a href="papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf" class="blink" target="_blank">PDF</a><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" class="blink" target="_blank">Video</a><a href="https://github.com/raprakashvi/palpaid_robosoft" class="blink" target="_blank">Code</a></div></div>
+<div class="bento-card" onclick="go('research')"><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut</h3><p>MPC-based volumetric laser surgery with OCT guidance.</p><div class="blinks"><a href="https://raprakashvi.github.io/see-plan-cut/" class="blink" target="_blank">Website</a><a href="papers/See,Plan,Cut.pdf" class="blink" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.17777" class="blink" target="_blank">arXiv</a><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" class="blink" target="_blank">Video</a></div></div>
+<div class="bento-card" onclick="go('research')"><span class="btag pub">RoboSoft 2026</span><h3>PalpAid</h3><p>Pneumatic tactile sensor for tissue palpation. Mentored project.</p><div class="blinks"><a href="https://raprakashvi.github.io/palpaid/" class="blink" target="_blank">Website</a><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" class="blink" target="_blank">Video</a><a href="https://github.com/raprakashvi/palpaid_robosoft" class="blink" target="_blank">Code</a></div></div>
 <div class="bento-card" onclick="go('research')"><span class="btag pub">ISMR 2025</span><h3>Portable Dual Sensor</h3><p>Large-area dual sensing for real-time surgical guidance.</p><div class="blinks"><a href="https://ieeexplore.ieee.org/abstract/document/11025962" class="blink" target="_blank">Paper</a><a href="papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf" class="blink" target="_blank">PDF</a></div></div>
 <div class="bento-card" onclick="go('research')"><span class="btag pub">WACV 2026</span><h3>SurgXBench</h3><p>Explainable vision-language benchmark for surgery.</p><div class="blinks"><a href="papers/SurgXBench.pdf" class="blink" target="_blank">PDF</a></div></div>
 </div>
-<div class="feat-video reveal">
-<div class="feat-video-label">&#9654; Featured Video</div>
-<div class="feat-video-wrap">
-<iframe src="https://www.youtube.com/embed/RGvBzVAV4XQ" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-</div>
-<p class="feat-video-caption"><strong>Robotic Laser Surgery: Overview &amp; Vision</strong> &mdash; A comprehensive look at our work on autonomous laser surgery, multimodal sensing, and the future of robotic surgical systems.Produced by our awesome undergrad <a href="https://www.linkedin.com/in/oliviasliu/" target="_blank">Olivia Liu</a>.</p>
-</div>
-
 <div class="nsec">
 <div class="reveal"><div class="sl">Latest</div><h2 class="st">News</h2></div>
 <div class="ng reveal">
 <div class="nys">2026</div>
-<div class="ni"><div class="nd">May 2026</div><div><a href="https://arxiv.org/abs/2410.03086" target="_blank"><strong>Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound</strong></a> accepted at <em>IEEE Transactions on Medical Robotics and Bionics</em>.</div></div>
-<div class="ni"><div class="nd">Apr 2026</div><div>Named <strong>STAUBLI Medical Robotics Rising Star</strong> at the <a href="https://ismr.gatech.edu/" target="_blank">International Symposium on Medical Robotics (ISMR 2026)</a> in Knoxville, TN &mdash; awarded during the poster session at <em>The Holistic Forum of Medical Robotics Junior Professors</em> workshop.</div></div>
-<div class="ni"><div class="nd">Mar 2026</div><div>Released <a href="https://www.youtube.com/watch?v=RGvBzVAV4XQ" target="_blank"><strong>Robotic Laser Surgery: Overview &amp; Vision</strong></a> &mdash; a comprehensive video on our work on autonomous laser surgery and multimodal sensing.</div></div>
+<div class="ni"><div class="nd">Feb 2026</div><div><a href="https://arxiv.org/abs/2410.03086" target="_blank"><strong>Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound</strong></a> accepted at <em>IEEE Transactions on Medical Robotics and Bionics</em>.</div></div>
 <div class="ni"><div class="nd">Jan 2026</div><div><a href="https://raprakashvi.github.io/see-plan-cut/" target="_blank"><strong>See, Plan, Cut</strong></a> accepted at <strong>ICRA 2026</strong>.</div></div>
 <div class="ni"><div class="nd">Jan 2026</div><div><a href="https://raprakashvi.github.io/palpaid/" target="_blank"><strong>PalpAid</strong></a> accepted at <strong>RoboSoft 2026</strong>.</div></div>
 <div class="nys">2025</div>
@@ -300,10 +286,10 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 
 <div class="page" id="page-research"><div class="pc">
 <div class="reveal" style="padding-top:.5rem"><div class="sl">Research</div><h2 class="st">Systems That See, Decide, and Act</h2><p class="sd">Full-stack platforms integrating hardware, sensing, and algorithms for high-stakes autonomous operation.</p></div>
-<div class="bento reveal">
+<div class="bento reveal" id="research-bento">
 <div class="bento-card big"><div class="bento-card-img"><img src="images/publications/TumorMap_figure.jpg" alt="TumorMap"></div><span class="btag sub">Under Review</span><h3>TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection</h3><p>Multimodal surgical platform &mdash; leveraging OCT, laser-induced fluorescence, RGB images, to generate 3D pathological maps with learning-based mapping, enabling autonomous resection through laser scalpel. Validated in murine osteosarcoma and soft-tissue sarcoma with submillimeter accuracy.</p><div class="blinks"><a href="papers/TumorMap.pdf" class="blink" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.05723" class="blink" target="_blank">arXiv</a><a href="https://github.com/mgsresearch/tumormap_code" class="blink" target="_blank">Code</a></div></div>
 <div class="bento-card"><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut: MPC-Based Volumetric Laser Surgery</h3><p>Sampling-based MPC for OCT-guided volumetric ablation. Optimal trajectories respecting tissue constraints.</p><div class="blinks"><a href="https://raprakashvi.github.io/see-plan-cut/" class="blink" target="_blank">Website</a><a href="papers/See,Plan,Cut.pdf" class="blink" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.17777" class="blink" target="_blank">arXiv</a><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" class="blink" target="_blank">Video</a></div></div>
-<div class="bento-card"><span class="btag pub">RoboSoft 2026</span><h3>PalpAid: Multimodal Pneumatic Tactile Sensor</h3><p>Pneumatic tactile sensor for tissue palpation &mdash; mentored undergraduate project.</p><div class="blinks"><a href="https://raprakashvi.github.io/palpaid/" class="blink" target="_blank">Website</a><a href="papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf" class="blink" target="_blank">PDF</a><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" class="blink" target="_blank">Video</a><a href="https://github.com/raprakashvi/palpaid_robosoft" class="blink" target="_blank">Code</a></div></div>
+<div class="bento-card"><span class="btag pub">RoboSoft 2026</span><h3>PalpAid: Multimodal Pneumatic Tactile Sensor</h3><p>Pneumatic tactile sensor for tissue palpation &mdash; mentored undergraduate project.</p><div class="blinks"><a href="https://raprakashvi.github.io/palpaid/" class="blink" target="_blank">Website</a><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" class="blink" target="_blank">Video</a><a href="https://github.com/raprakashvi/palpaid_robosoft" class="blink" target="_blank">Code</a></div></div>
 <div class="bento-card tall"><span class="btag pub">ISMR 2025</span><h3>Portable Dual Sensor Visualization</h3><p>Large-area dual sensing for real-time surgical guidance in resource-constrained settings.</p><div class="blinks"><a href="https://ieeexplore.ieee.org/abstract/document/11025962" class="blink" target="_blank">Paper</a><a href="papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf" class="blink" target="_blank">PDF</a></div></div>
 <div class="bento-card"><span class="btag pub">WACV 2026</span><h3>SurgXBench: Explainable VLM for Surgery</h3><p>Vision-language model benchmark for surgical scene understanding.</p><div class="blinks"><a href="papers/SurgXBench.pdf" class="blink" target="_blank">PDF</a></div></div>
 <div class="bento-card"><span class="btag pub">BSN 2025</span><h3>Multimodal Tissue Boundary Delineation</h3><p>Sensor fusion for tissue transition detection. Mentored project.</p></div>
@@ -338,9 +324,9 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 
 <div class="pi" data-t="journal"><div class="pi-thumb"><img src="images/publications/Compliant_Quasi_Direct_Drive.png" alt="Compliant Quasi Direct Drive End-Effector"></div><div class="pinfo"><h4>Design and Evaluation of a Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound Imaging</h4><div class="pau">Chen, D., <strong>Prakash, R.</strong>, Wang, V., Chen, Z., Dias, S., Bridgeman, L., Oca, S., Mann, B.</div><div class="pvt"><span>IEEE TMRB</span> Accepted</div></div><div class="plc"><a href="https://arxiv.org/abs/2410.03086" class="pls" target="_blank">arXiv</a></div></div>
 
-<div class="pi" data-t="conference"><div class="pi-thumb"><img src="https://img.youtube.com/vi/FnwhNJGcEeQ/hqdefault.jpg" alt="See, Plan, Cut"></div><div class="pinfo"><h4>See, Plan, Cut: MPC-Based Autonomous Volumetric Robotic Laser Surgery</h4><div class="pau"><strong>Prakash, R.*</strong>, Wang, V.*, Mishra, A., Yuliarti, D., et al.</div><div class="pvt"><span>ICRA 2026</span> *equal contribution</div></div><div class="plc"><a href="https://raprakashvi.github.io/see-plan-cut/" class="pls" target="_blank">Website</a><a href="papers/See,Plan,Cut.pdf" class="pls" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.17777" class="pls" target="_blank">arXiv</a><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" class="pls" target="_blank">Video</a><a href="https://github.com/raprakashvi/see_plan_cut" class="pls" target="_blank">Code</a></div></div>
+<div class="pi" data-t="conference"><div class="pi-thumb"><img src="https://img.youtube.com/vi/FnwhNJGcEeQ/hqdefault.jpg" alt="See, Plan, Cut"></div><div class="pinfo"><h4>See, Plan, Cut: MPC-Based Autonomous Volumetric Robotic Laser Surgery</h4><div class="pau"><strong>Prakash, R.*</strong>, Wang, V.*, Mishra, A., Yuliarti, D., et al.</div><div class="pvt"><span>ICRA 2026</span> *equal contribution</div></div><div class="plc"><a href="https://raprakashvi.github.io/see-plan-cut/" class="pls" target="_blank">Website</a><a href="papers/See,Plan,Cut.pdf" class="pls" target="_blank">PDF</a><a href="https://arxiv.org/abs/2511.17777" class="pls" target="_blank">arXiv</a><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" class="pls" target="_blank">Video</a></div></div>
 
-<div class="pi" data-t="conference"><div class="pi-thumb"><img src="images/publications/Palpaid.png" alt="PalpAid"></div><div class="pinfo"><h4>PalpAid: Multimodal Pneumatic Tactile Sensor for Tissue Palpation</h4><div class="pau">Yuliarti, D.*, <strong>Prakash, R.*</strong>, Cheung, H. H., et al.</div><div class="pvt"><span>RoboSoft 2026</span> Mentored</div></div><div class="plc"><a href="https://raprakashvi.github.io/palpaid/" class="pls" target="_blank">Website</a><a href="papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf" class="pls" target="_blank">PDF</a><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" class="pls" target="_blank">Video</a><a href="https://github.com/raprakashvi/palpaid_robosoft" class="pls" target="_blank">Code</a></div></div>
+<div class="pi" data-t="conference"><div class="pi-thumb"><img src="images/publications/Palpaid.png" alt="PalpAid"></div><div class="pinfo"><h4>PalpAid: Multimodal Pneumatic Tactile Sensor for Tissue Palpation</h4><div class="pau">Yuliarti, D.*, <strong>Prakash, R.*</strong>, Cheung, H. H., et al.</div><div class="pvt"><span>RoboSoft 2026</span> Mentored</div></div><div class="plc"><a href="https://raprakashvi.github.io/palpaid/" class="pls" target="_blank">Website</a><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" class="pls" target="_blank">Video</a><a href="https://github.com/raprakashvi/palpaid_robosoft" class="pls" target="_blank">Code</a></div></div>
 
 <div class="pi" data-t="conference"><div class="pi-thumb"><img src="images/publications/SurgXBench.png" alt="SurgXBench"></div><div class="pinfo"><h4>SurgXBench: Explainable VLM Benchmark for Surgery</h4><div class="pau">Cheng, J., et al., <strong>Prakash, R.</strong>, Codd, P. J., Lin, S.</div><div class="pvt"><span>WACV 2026</span></div></div><div class="plc"><a href="papers/SurgXBench.pdf" class="pls" target="_blank">PDF</a></div></div>
 
@@ -375,12 +361,12 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 </div>
 <div class="reveal"><div class="sl">Mentees</div><h2 class="st" style="font-size:1.4rem">Students &amp; Outcomes</h2></div>
 <div class="mg reveal">
-<div class="me"><div class="men">Yongjun Lu <span class="metag">Graduate</span></div><div class="med">Duke &mdash; Ultrasonic Aspirator</div><div class="meo">&rarr; Clinical OR data acquisition</div></div>
 <div class="me"><div class="men">Caroline Chen <span class="metag">Graduate</span></div><div class="med">Duke MS &mdash; Segmentation</div><div class="meo">&rarr; ISMR 2024 (Poster) &middot; ML Engineer, Google</div></div>
 <div class="me"><div class="men">Changxin Yu <span class="metag">Graduate</span></div><div class="med">Duke MS &mdash; OCT Segmentation</div><div class="meo">&rarr; 3rd Prize Symposium &middot; Microsoft</div></div>
 <div class="me"><div class="men">Antony Farrand <span class="metag">Graduate</span></div><div class="med">Duke MS &mdash; Acoustic Surgery</div><div class="meo">&rarr; Duke MEMS Poster Symposium</div></div>
 <div class="me"><div class="men">Devi Yuliarti <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Tactile Sensor</div><div class="meo">&rarr; IEEE-RAS RoboSoft 2026 (Co-first author), IEEE ICRA 2026</div></div>
 <div class="me"><div class="men">Zacharias Chen <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Tissue Boundary</div><div class="meo">&rarr; IEEE-EMBS BSN 2025, ICRA ELSR Workshop &middot; Medtronic Hugo</div></div>
+<div class="me"><div class="men">Yongjun Lu <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Ultrasonic Aspirator</div><div class="meo">&rarr; Clinical OR data acquisition</div></div>
 <div class="me"><div class="men">Nikhil Aaryath <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; UA Tissue</div><div class="meo">&rarr; Robotic data pipeline</div></div>
 <div class="me"><div class="men">Alexa Cahilig <span class="metag">Undergraduate</span></div><div class="med">Duke &mdash; Multimodal Tissue Boundary Test Bench</div><div class="meo">&rarr; IEEE ICRA ELSR Poster 2025, IEEE-EMBS BSN 2025 Paper</div></div>
 <div class="me"><div class="men">Aakriti <span class="metag">Undergraduate</span></div><div class="med">IIT Bombay &mdash; Mechano-Acoustic Speech Information</div><div class="meo">&rarr; Acoustic feature analysis and experimental characterization</div></div>
@@ -407,21 +393,13 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 
 <div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><circle cx="22" cy="30" r="10" stroke="#c23a22" stroke-width=".6"/><circle cx="38" cy="30" r="10" stroke="#c23a22" stroke-width=".6"/></svg></div></div><div class="port-body"><div class="port-tag">Leadership &middot; 2023&ndash;24</div><h3>MEMS Graduate Student Committee</h3><p>President. Department events, student advocacy, and cross-lab networking for 100+ graduate students.</p><div class="port-links"><!-- ADD LINK: <a href="#" target="_blank">MEMS Dept</a> --></div></div></div>
 
-<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="12" y="18" width="36" height="24" rx="3" stroke="#4a7a64" stroke-width=".8"/><line x1="12" y1="28" x2="48" y2="28" stroke="#4a7a64" stroke-width=".3"/></svg></div></div><div class="port-body"><div class="port-tag">Service &middot; 2025</div><h3>ICRA Evolving Landscape of Surgical Robotics Workshop Organizer</h3><p>&ldquo;The Evolving Landscape of Surgical Robotics&rdquo; at ICRA 2025. Curated lineup of 12 international researchers.</p><div class="port-links"><a href="https://sites.google.com/view/icra2025-workshop-clsr" target="_blank">Workshop Page</a></div></div></div>
+<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg width="60" height="60" viewBox="0 0 60 60" fill="none" opacity=".3"><rect x="12" y="18" width="36" height="24" rx="3" stroke="#4a7a64" stroke-width=".8"/><line x1="12" y1="28" x2="48" y2="28" stroke="#4a7a64" stroke-width=".3"/></svg></div></div><div class="port-body"><div class="port-tag">Service &middot; 202</div><h3>ICRA Evolving Landscape of Surgical Robotics Workshop Organizer</h3><p>&ldquo;The Evolving Landscape of Surgical Robotics&rdquo; at ICRA 2025. Curated lineup of 12 international researchers.</p><div class="port-links"><a href="https://sites.google.com/view/icra2025-workshop-clsr" target="_blank">Workshop Page</a></div></div></div>
 
 </div>
 </div></div>
 
 <div class="page" id="page-media"><div class="pc">
 <div class="reveal" style="padding-top:.5rem"><div class="sl">Media</div><h2 class="st">Features &amp; Coverage</h2><p class="sd">Videos, interviews, and media coverage of my work.</p></div>
-
-<div class="feat-video reveal" style="margin-bottom:1.5rem">
-<div class="feat-video-label">&#9654; Featured Video</div>
-<div class="feat-video-wrap">
-<iframe src="https://www.youtube.com/embed/RGvBzVAV4XQ" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-</div>
-<p class="feat-video-caption"><strong>Robotic Laser Surgery: Overview &amp; Vision</strong> &mdash; A comprehensive overview of our work on autonomous robotic laser surgery, multimodal sensing, and the future of precision surgical systems. Produced by our awesome undergrad <a href="https://www.linkedin.com/in/oliviasliu/" target="_blank">Olivia Liu</a>.</p>
-</div>
 
 <div class="media-grid reveal">
 
@@ -431,30 +409,6 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
      - media-type: VIDEO / ARTICLE / PODCAST / INTERVIEW
      - Title, description, source link
 -->
-
-<div class="media-card">
-<div class="media-vis">
-<iframe src="https://www.youtube.com/embed/FnwhNJGcEeQ" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-</div>
-<div class="media-body">
-<div class="media-type">Video &middot; ICRA 2026</div>
-<h3>See, Plan, Cut</h3>
-<p>MPC-based autonomous volumetric robotic laser surgery with OCT guidance. Full paper video.</p>
-<div class="media-source"><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" target="_blank">YouTube</a> &middot; <a href="https://raprakashvi.github.io/see-plan-cut/" target="_blank">Project Page</a> &middot; <a href="https://github.com/raprakashvi/see_plan_cut" target="_blank">Code</a></div>
-</div>
-</div>
-
-<div class="media-card">
-<div class="media-vis">
-<iframe src="https://www.youtube.com/embed/_mmzDbw0OuI" allowfullscreen allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"></iframe>
-</div>
-<div class="media-body">
-<div class="media-type">Video &middot; RoboSoft 2026</div>
-<h3>PalpAid</h3>
-<p>Pneumatic tactile sensor for tissue palpation. Full paper video for the mentored RoboSoft 2026 project.</p>
-<div class="media-source"><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" target="_blank">YouTube</a> &middot; <a href="https://raprakashvi.github.io/palpaid/" target="_blank">Project Page</a> &middot; <a href="https://github.com/raprakashvi/palpaid_robosoft" target="_blank">Code</a></div>
-</div>
-</div>
 
 <div class="media-card">
 <div class="media-vis">
@@ -512,7 +466,7 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 <p>I build closed-loop platforms that transform rich sensory data into precise autonomous action &mdash; from autonomous laser surgery (OCT + fluorescence + cutting lasers) to neural implicit representations for surgical navigation, acoustic sensing for multi-drone coordination, and multimodal tactile sensing for tissue assessment.</p>
 <p>Before Duke, I co-led <a href="https://futures-plus.com/" target="_blank">Futures+</a> across four countries and founded TEDxNITW. These experiences inform how I think about technology design for communities that need it most.</p>
 <p>I serve as Lab Manager at the Brain Tool Lab and am Instructor of Record for a Bass Connections course developing teleoperated surgical systems for rural clinics.</p>
-<p><strong style="color: var(--link);">I am on the academic job market seeking faculty, postdoc, and research positions in robotics.</strong></p>
+<p><strong>I am on the academic job market seeking faculty, postdoc, and research positions in robotics.</strong></p>
 </div>
 <div class="asb">
 <h3>Education</h3>
@@ -520,22 +474,11 @@ footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
 <li><strong>M.S.</strong> MEMS, Duke<br><span style="color:var(--muted);font-size:.7rem">2020&ndash;2021</span></li>
 <li><strong>B.Tech</strong> ME, NIT Warangal<br><span style="color:var(--muted);font-size:.7rem">2015&ndash;2019</span></li></ul>
 <h3>Reviewing</h3>
-<ul>
-  <li>IEEE TRO</li>
-  <li>IEEE/ASME T-MECH</li>
-  <li>IEEE RA-L</li>
-  <li>CoRL</li>
-  <li>IEEE/RSJ IROS</li>
-  <li>IEEE ISMR</li>
-  <li>IEEE/BSN BSN</li>
-  <li>IEEE/RAS RoboSoft</li>
-  <li>JMRR</li>
-</ul>
+<ul><li>IEEE T-MECH &middot;IEEE RA-L &middot; CoRL &middot; IROS</li><li>ISMR &middot; BSN &middot; RoboSoft &middot; JMRR</li></ul>
 </div>
 </div>
 <div class="reveal"><div class="sl">Recognition</div><h2 class="st" style="font-size:1.4rem">Awards</h2></div>
 <div class="awl reveal">
-<div class="awi"><div class="awy">2026</div><div><strong>STAUBLI Medical Robotics Rising Star</strong>, ISMR</div></div>
 <div class="awi"><div class="awy">2025</div><div><strong>Rhodes Graduate Fellowship</strong>, Duke</div></div>
 <div class="awi"><div class="awy">2025</div><div><strong>IEEE-EMBS BSN</strong> Travel Award</div></div>
 <div class="awi"><div class="awy">2023</div><div><strong>Duke India Initiative</strong> Travel Award</div></div>
@@ -594,5 +537,24 @@ function fp(t, b) {
   }
 }
 go("home");
+
+// Dynamic papers: rotate which research card is "big" every 6s
+(function(){
+  var grid = document.getElementById("research-bento");
+  if (!grid) return;
+  var cards = grid.querySelectorAll(".bento-card");
+  var n = cards.length;
+  if (n === 0) return;
+  var idx = 0;
+  function nextFeatured() {
+    cards[idx].classList.remove("big");
+    idx = (idx + 1) % n;
+    cards[idx].classList.add("big");
+  }
+  var t = setInterval(nextFeatured, 18000);
+  // Pause rotation while hovering a card (optional)
+  grid.addEventListener("mouseenter", function(){ clearInterval(t); }, true);
+  grid.addEventListener("mouseleave", function(){ t = setInterval(nextFeatured, 18000); }, true);
+})();
 </script>
 </body></html>
