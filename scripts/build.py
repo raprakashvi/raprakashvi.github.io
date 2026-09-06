@@ -168,13 +168,20 @@ def render_publications(records):
     """The publication list and its ScholarlyArticle graph, from one source."""
     kinds = [("all", "All"), ("journal", "Journal"), ("conference", "Conference"),
              ("review", "Under review"), ("chapter", "Chapter"), ("preprint", "Preprint")]
+    present = {r["type"] for r in records}
+    kinds = [(k, label) for k, label in kinds if k == "all" or k in present]
     filters = "".join(
         '<button type="button" data-filter="{k}" aria-pressed="{p}">{label}</button>'.format(
             k=k, p="true" if k == "all" else "false", label=label)
         for k, label in kinds)
 
     rows, graph = [], []
+    seen_year = None
     for rec in records:
+        year = rec.get("year") or 0
+        if year != seen_year:
+            seen_year = year
+            rows.append('<p class="yearmark"><span>{0}</span></p>'.format(year or "Earlier"))
         venue = re.sub(r"<span>(.*?)</span>", r'<span class="tag">\1</span>', rec["venue"])
         thumb = ""
         if rec["thumb"]:
