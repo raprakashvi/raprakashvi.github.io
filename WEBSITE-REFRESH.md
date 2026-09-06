@@ -32,3 +32,9 @@ See `scripts/check_site.py` for repeatable, dependency-free local integrity chec
 Final checks: dependency-free integrity check passed; Chromium covered all seven sections at 1440, 1024, 768, 390, and 320 pixels. Fourteen axe-core 4.10.3 WCAG A/AA audits (desktop and phone) reported zero violations after contrast and link styling fixes. Navigation/history, direct paper links, category filters, video selection, mobile menu/Escape, print, reduced motion, and JavaScript-disabled content passed. Third-party media requests were blocked during deterministic UI testing; these tests do not certify YouTube playback or external service uptime.
 
 Repeat browser checks with Playwright installed and a local server running: `AXE_PATH=/path/to/axe.min.js python scripts/browser_check.py`. Optional `CHROME_PATH` selects a Chrome executable; `SITE_TEST_OUTPUT` selects a screenshot/report directory. The default browser path targets macOS Google Chrome.
+
+## Owner review refinements
+
+Restored the original complete “see, decide, and act” headline with “Sensing for Informed Action” as its label and the owner's revised JHU/Duke bio. Restored Google Scholar, LinkedIn, CV, and JHU email buttons; retained all five sidebar contact/profile links. Availability now reads “On Job Market for Faculty and Research Scientist Positions.” Added the JHU student invitation for learning, imaging, and mechatronics work.
+
+Removed the extra homepage callout strip. Featured video now sits directly before the research projects. Silent video previews rotate every six seconds while visible, pause on hover/focus or playback, and have an explicit pause/resume control. Reduced-motion users start with rotation paused. Research figures use larger image areas and open at full size.

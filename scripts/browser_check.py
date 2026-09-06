@@ -39,6 +39,26 @@ with sync_playwright() as p:
  assert 'RGvBzVAV4XQ' in page.locator('#page-home iframe').get_attribute('src')
  assert 'Olivia Liu' in page.locator('#page-home .feat-video-caption').inner_text()
  page.reload(wait_until='domcontentloaded')
+ gallery=page.locator('#page-home .feat-video')
+ gallery.scroll_into_view_if_needed();page.mouse.move(0,0)
+ first=gallery.locator('[aria-pressed="true"]').get_attribute('data-video')
+ page.wait_for_timeout(6500)
+ assert gallery.locator('[aria-pressed="true"]').get_attribute('data-video')!=first
+ assert gallery.locator('iframe').get_attribute('src') is None
+ gallery.locator('.rotation-toggle').click()
+ assert gallery.get_attribute('data-rotation')=='false'
+ paused=gallery.locator('[aria-pressed="true"]').get_attribute('data-video')
+ page.wait_for_timeout(6500)
+ assert gallery.locator('[aria-pressed="true"]').get_attribute('data-video')==paused
+ gallery.locator('.rotation-toggle').click();assert gallery.get_attribute('data-rotation')=='true'
+ page.emulate_media(reduced_motion='reduce');expect(gallery).to_have_attribute('data-rotation','false')
+ page.emulate_media(reduced_motion='no-preference')
+ page.reload(wait_until='domcontentloaded')
+ page.evaluate('document.querySelectorAll(".feat-video").forEach(el=>setRotation(el,false))')
+ assert page.locator('.hlinks a').all_text_contents()==['Google Scholar','LinkedIn','CV','Email']
+ assert page.locator('.sb-social a').all_text_contents()==['Email','Scholar','GitHub','LinkedIn','ORCID']
+ assert page.locator('.student-note a').get_attribute('href')=='mailto:ravi.prakash@jhu.edu'
+ assert page.locator('.career-note').inner_text()=='On Job Market for Faculty and Research Scientist Positions'
  audits=[]
  for width in [1440,1024,768,390,320]:
   page.set_viewport_size({'width':width,'height':900})
@@ -61,6 +81,7 @@ with sync_playwright() as p:
  assert page.locator('.tn-btn').get_attribute('aria-expanded')=='false'
  page.locator('.tn-btn').click();page.locator('#mob a[href="#publications"]').click()
  expect(page.locator('#mob')).not_to_be_visible()
+ expect(page.locator('#page-publications')).to_be_visible()
  assert page.locator('#page-publications .pls:visible').count()>0
  page.emulate_media(reduced_motion='reduce');page.evaluate('go("home")')
  assert page.locator('.hero-statement').evaluate('(el)=>getComputedStyle(el).opacity')=='1'
@@ -73,6 +94,7 @@ with sync_playwright() as p:
  (OUTPUT/'website-a11y.json').write_text(json.dumps(audits,indent=2))
  print(json.dumps([x for x in audits if x['violations']],indent=2))
  assert not any(x['violations'] for x in audits), 'Accessibility violations remain'
+ print('PASS: timed preview rotation, pause/resume, reduced-motion preference, and profile links.')
  print('PASS: 14 axe-core audits, zero WCAG A/AA violations.')
  print('PASS: deep links, history, filters, video switching, mobile menu, 35 responsive layouts, print, reduced motion, no-JS content, no JS errors.')
  browser.close()

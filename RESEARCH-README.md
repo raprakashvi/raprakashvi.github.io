@@ -45,3 +45,5 @@ Use this order, omit what you don't have:
 - Research image sources: SonicFly thumbnail from the General Robotics Lab project assets; See_Plan_Cut.jpg rendered from Figure 1 of the local paper. Other thumbnails are existing author-provided assets.
 - Featured videos now use a local thumbnail poster before loading YouTube. Short SonicFly demo: `w1OSSJBS8dM`; overview: `GVpQvWdgkU4`. Keep the video title, thumbnail, `data-video`, and `data-src` aligned when changing the default.
 - Full browser/accessibility regression suite: `AXE_PATH=/path/to/axe.min.js python scripts/browser_check.py` (requires Playwright and Chrome, with the preview server running).
+- Featured previews rotate every six seconds while visible. Keep `advancePreview()` and `setRotation()` aligned with gallery markup; playback, keyboard focus, reduced motion, and the pause control stop rotation.
+- Research figure containers are links to the original image. Keep their `href` and image `src` aligned when replacing a figure.
