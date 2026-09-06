@@ -501,7 +501,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .press-read{margin-top:auto;padding-top:.7rem;font-family:var(--fm);font-size:.6875rem;
   font-weight:600;display:inline-flex;align-items:center;gap:.4rem}
 .press-read:hover{color:var(--sig-deep)}
-.profile-feature,.rural-feature{display:grid;grid-template-columns:1.3fr 1fr;gap:0;align-items:stretch;
+.profile-feature,.rural-feature{display:grid;grid-template-columns:1.05fr 1fr;gap:0;align-items:stretch;
   border:1px solid var(--rule);margin-bottom:0}
 .profile-feature .press-body,.rural-feature .press-body{padding:var(--pad);display:flex;flex-direction:column;gap:.35rem}
 .profile-feature figure,.rural-feature figure{border-left:1px solid var(--rule);background:var(--bone-2);display:flex;flex-direction:column}
@@ -572,7 +572,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* media features keep their own proportions instead of stretching to the text column */
 .profile-feature figure,.rural-feature figure{justify-content:flex-start}
-.profile-feature img,.rural-feature img{flex:none;height:auto;aspect-ratio:16/10;object-fit:cover;object-position:center 28%}
+.profile-feature img,.rural-feature img{flex:none;height:auto;aspect-ratio:3/2;object-fit:cover;object-position:center 30%}
 .profile-feature .press-body,.rural-feature .press-body{justify-content:flex-start}
 
 /* teaching summary: counted from the records on this page, nothing estimated */
@@ -684,3 +684,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .media-vis[data-player]{display:block;aspect-ratio:16/9}
 .media-vis[data-player] .player{height:100%;aspect-ratio:auto}
 .media-vis .player-copy b{font-size:.9rem}
+
+/* the contact dock is the same compact block on every page */
+.dock .links{flex-direction:column;align-items:flex-start;gap:0}
+.dock .links a{width:100%;margin:0 0 -1px 0}
