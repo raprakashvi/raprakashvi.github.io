@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+Disallow: /_site/
+Disallow: /_pages/
+Disallow: /_publications/
+Disallow: /_portfolio/
+Disallow: /_teaching/
+Disallow: /_talks/
+Disallow: /index-dynamic-papers.html
+Sitemap: https://raprakashvi.github.io/sitemap.xml
