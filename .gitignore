@@ -18,3 +18,10 @@ vendor/
 .env
 .env.local
 
+# Local working notes
+TODO-website-update.md
+
+
+# Design working files
+.impeccable/
+probe.html

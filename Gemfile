@@ -22,7 +22,8 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw]
 
 gem "webrick"
 
-
+# Fix for macOS 25.1 compatibility - force newer ffi version
+gem "ffi", "~> 1.16"
 
 # If you have any plugins, put them here!
 group :jekyll_plugins do

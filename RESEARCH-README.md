@@ -1,49 +1,81 @@
 # Research & Publications — Quick Reference
 
-## Folders
+## How the site is built (read this first)
 
-| Folder | Purpose |
-|--------|---------|
-| `images/publications/` | Thumbnail images for each paper (jpg, png, gif) |
-| `papers/` | Local PDF files to link from publications |
+The site is **generated**. Seven real URLs are produced from one shell plus per-page
+content fragments:
 
-## Adding a New Paper
-
-### 1. Add thumbnail (optional)
-Place image in `images/publications/paper-name.jpg`, then in `index.html`:
-```html
-<img src="images/publications/paper-name.jpg" alt="Paper Title">
+```
+src/pages/*.html      page content (home, research, publications, about, teaching, media, portfolio, 404)
+src/publications.json every paper — drives the list, the filters AND the Schema.org records
+src/site.css          the whole design system
+src/site.js           behaviour
+scripts/build.py      python3 scripts/build.py   ← run after every edit
+scripts/check_site.py python3 scripts/check_site.py  ← must print "0 checks failed"
 ```
 
-### 2. Add PDF (optional)
-Place PDF in `papers/paper-name.pdf`, then link:
-```html
-<a href="papers/paper-name.pdf" class="pls" target="_blank">PDF</a>
+**Never hand-edit `index.html` or `*/index.html`** — the next build overwrites them.
+Edit the file in `src/`, run the build, run the check.
+
+Preview locally: `python3 -m http.server 8765 --bind 127.0.0.1` then open
+<http://127.0.0.1:8765/>.
+
+## Adding a new paper
+
+Add one object to `src/publications.json`, then rebuild. That single record produces
+the row on `/publications/`, its filter category, its deep link, and its
+`ScholarlyArticle` structured data.
+
+```json
+{
+ "id": "publication-short-slug",
+ "type": "conference",
+ "thumb": "images/publications/paper-name.jpg",
+ "title": "Full Paper Title",
+ "authors": "<strong>Prakash, R.</strong>, Coauthor, A.",
+ "venue": "<span>ICRA 2027</span> *equal contribution",
+ "links": [{"label": "PDF", "href": "papers/paper-name.pdf"}]
+}
 ```
 
-### 3. Button order
-Use this order, omit what you don't have:
-1. **Website** — project page
-2. **PDF** — local (`papers/`) or external (arXiv, journal)
-3. **arXiv** — abstract page
-4. **Code** — GitHub, etc.
+- `id` — keep it stable; it is the permanent deep link (`/publications/#id`).
+- `type` — one of `journal`, `conference`, `review`, `chapter`, `preprint`.
+  Preserve explicit review/invitation status; **never imply acceptance.**
+- `thumb` — optional. Put the image in `images/publications/`. Use `null` if none.
+- `venue` — text inside `<span>` renders as the status tag.
+- `links` — in this order, omitting what you don't have:
+  **Website → PDF → arXiv → Code** (or `Paper` for a publisher page).
+  Paths are made root-absolute at build time; write them relative to the repo root.
 
-### 4. Where to edit
-- **Research page** (bento cards): `.blink` buttons in `.blinks`
-- **Publications page**: `.pls` buttons in `.plc`
+Add the PDF to `papers/` and the thumbnail to `images/publications/`.
 
-## September 2026 refresh
+## Adding news, research systems, or press
 
-- The live site is `index.html`; legacy Jekyll folders and `index-dynamic-papers.html` are dormant.
-- Current CV: `papers/CV_Prakash.pdf` (September 5, 2026). Keep this stable URL when replacing the PDF.
-- Sections use shareable hash links (`#research`, `#publications`). Individual publication IDs also open the publications section and clear filters.
-- Publication categories: `journal`, `conference`, `review`, `preprint`, `chapter`. Preserve explicit review/invitation status; never imply acceptance.
-- Video selectors use `data-video` YouTube IDs. Iframes use `data-src`, with the active section loaded by the router.
-- Keep `Person` JSON-LD, description, social metadata, contact email, and visible appointment text aligned.
-- Run `python3 scripts/check_site.py` for local links, assets, anchors, and metadata integrity.
-- Preview with `python3 -m http.server 8765 --bind 127.0.0.1`.
-- Research image sources: SonicFly thumbnail from the General Robotics Lab project assets; See_Plan_Cut.jpg rendered from Figure 1 of the local paper. Other thumbnails are existing author-provided assets.
-- Featured videos now use a local thumbnail poster before loading YouTube. Short SonicFly demo: `w1OSSJBS8dM`; overview: `GVpQvWdgkU4`. Keep the video title, thumbnail, `data-video`, and `data-src` aligned when changing the default.
-- Full browser/accessibility regression suite: `AXE_PATH=/path/to/axe.min.js python scripts/browser_check.py` (requires Playwright and Chrome, with the preview server running).
-- Featured previews rotate every six seconds while visible. Keep `advancePreview()` and `setRotation()` aligned with gallery markup; playback, keyboard focus, reduced motion, and the pause control stop rotation.
-- Research figure containers are links to the original image. Keep their `href` and image `src` aligned when replacing a figure.
+Edit the relevant fragment in `src/pages/` using the module grammar:
+`<div class="mod s6">…</div>` inside `<div class="grid">`. Spans are `s2`–`s12`
+against a 12-column lattice; they collapse automatically on small screens.
+`.slab` turns a module into the graphite panel. `.state` is the live availability chip.
+
+## What the checker enforces
+
+`scripts/check_site.py` fails the build if any of these regress:
+
+- a broken internal link, image, or PDF reference
+- a missing or duplicated `<title>` / meta description, or one outside its length band
+- a missing canonical, Open Graph, or Twitter card tag
+- JSON-LD that does not parse, or a page missing its `Person` / `BreadcrumbList` node
+- an `<img>` without `alt`
+- a sitemap that does not match the built pages
+- a publication in `publications.json` that never made it onto the page
+
+Image `width`/`height` are stamped automatically at build time from the real files,
+so nothing reflows while loading.
+
+## SEO notes
+
+- Each page owns its URL, `<title>`, description, canonical, OG/Twitter card and
+  1200×630 social image (`assets/og/`).
+- All 19 publications emit `ScholarlyArticle` records inside an `ItemList`.
+- Old hash links (`#research`, `#publication-…`) redirect to the new URLs in
+  `src/site.js` — keep that map in step if a page is ever renamed.
+- `papers/CV_Prakash.pdf` is a stable URL. Keep the filename when replacing the PDF.

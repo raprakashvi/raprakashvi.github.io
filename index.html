@@ -1,695 +1,319 @@
 <!DOCTYPE html>
-
 <html lang="en">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>Ravi Prakash | Robotics &amp; Multimodal Sensing | Johns Hopkins</title>
-<meta content="Ravi Prakash, robotics researcher and Postdoctoral Fellow at Johns Hopkins University. Multimodal sensing and autonomous surgical, medical, and aerial robots. On the job market for faculty and research scientist positions." name="description"/>
-<link href="https://fonts.googleapis.com" rel="preconnect"/>
-<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,300;1,9..144,400&amp;family=Outfit:wght@300;400;500;600;700&amp;family=IBM+Plex+Mono:wght@300;400;500&amp;display=swap" rel="stylesheet"/>
-<style>
-
-:root {
-  --bg:#f2ede4; --bg2:#e8e2d6; --card:#fffdf8; --surface:#ddd7ca;
-  --border:#cec7b8; --border2:#b8b0a0; --text:#1c1c1c; --text2:#4a4540;
-  --muted:#8a837a; --accent:#c23a22; --accent2:#a0301c; --asoft:rgba(194,58,34,.07);
-  --sage:#4a7a64; --sage-soft:rgba(74,122,100,.08); --blue:#2d5f9e;
-  --fd:'Fraunces',Georgia,serif; --fb:'Outfit',-apple-system,sans-serif; --fm:'IBM Plex Mono',monospace;
-  --side:240px;
-}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:16px;scroll-behavior:smooth}
-body{font-family:var(--fb);background:var(--bg);color:var(--text);line-height:1.7;overflow-x:hidden;-webkit-font-smoothing:antialiased}
-::selection{background:var(--accent);color:#fff}
-a{color:var(--accent);text-decoration:none;transition:color .2s}a:hover{color:var(--accent2)}
-
-/* SIDEBAR */
-.sidebar{position:fixed;top:0;left:0;bottom:0;width:var(--side);background:var(--card);border-right:1px solid var(--border);z-index:100;display:flex;flex-direction:column;padding:2rem 1.4rem 1.5rem;overflow-y:auto}
-.sb-name{font-family:var(--fd);font-size:1.35rem;font-weight:600;line-height:1.15;margin-bottom:.15rem;cursor:pointer}
-.sb-name em{color:var(--accent);font-style:normal}
-.sb-aff{font-size:.7rem;color:var(--muted);line-height:1.4;margin-bottom:1.2rem}
-.sb-photo{width:100%;aspect-ratio:1;border-radius:8px;overflow:hidden;border:1px solid var(--border);margin-bottom:1.2rem;background:var(--bg2)}
-.sb-photo img{width:100%;height:100%;object-fit:cover}
-.sb-nav{display:flex;flex-direction:column;gap:.1rem;margin-bottom:auto}
-.sb-link{font-size:.78rem;font-weight:500;color:var(--muted);padding:.4rem .6rem;border-radius:5px;cursor:pointer;transition:all .15s;background:none;border:none;font-family:var(--fb);text-align:left;letter-spacing:.02em}
-.sb-link:hover{color:var(--text2);background:var(--bg)}
-.sb-link.active{color:var(--accent);background:var(--asoft);font-weight:600}
-.sb-social{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:1rem;padding-top:1rem;border-top:1px solid var(--border)}
-.sb-social a{font-size:.65rem;font-family:var(--fm);color:var(--muted);padding:.2rem .4rem;border:1px solid var(--border);border-radius:3px;transition:all .15s;font-weight:500}
-.sb-social a:hover{border-color:var(--accent);color:var(--accent)}
-.sb-status{margin-top:.8rem;font-size:.65rem;font-family:var(--fm);color:var(--sage);background:var(--sage-soft);padding:.3rem .5rem;border-radius:4px;line-height:1.4;font-weight:500}
-
-/* MOBILE NAV */
-.topnav{display:none;position:fixed;top:0;left:0;right:0;height:54px;background:rgba(242,237,228,.94);backdrop-filter:blur(16px);z-index:100;padding:0 1.2rem;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border)}
-.tn-name{font-family:var(--fd);font-size:1.1rem;font-weight:600}.tn-name em{color:var(--accent);font-style:normal}
-.tn-btn{background:none;border:none;color:var(--text);cursor:pointer;padding:.4rem}
-.tn-btn svg{width:22px;height:22px}
-.mobmenu{display:none;position:fixed;top:54px;left:0;right:0;bottom:0;background:rgba(242,237,228,.98);z-index:99;flex-direction:column;align-items:center;justify-content:center;gap:1.2rem}
-.mobmenu.open{display:flex}
-.mobmenu button,.mobmenu a{font-size:.85rem;font-weight:500;color:var(--text2);background:none;border:none;cursor:pointer;font-family:var(--fb);letter-spacing:.03em}
-
-/* MAIN */
-.main{margin-left:var(--side);min-height:100vh}
-.pc{max-width:900px;margin:0 auto;padding:0 2.5rem}
-.page{display:none;min-height:100vh;padding:3rem 0 4rem}.page.active{display:block}
-.sl{font-family:var(--fm);font-size:.66rem;color:var(--accent);letter-spacing:.14em;text-transform:uppercase;margin-bottom:.4rem;font-weight:500}
-.st{font-family:var(--fd);font-size:clamp(1.6rem,3vw,2.3rem);font-weight:500;line-height:1.2;margin-bottom:.6rem}
-.sd{font-size:.92rem;color:var(--text2);max-width:560px;line-height:1.85;margin-bottom:2rem}
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .5s ease,transform .5s ease}.reveal.visible{opacity:1;transform:translateY(0)}
-@keyframes fu{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
-.btn{display:inline-flex;align-items:center;gap:.3rem;padding:.45rem 1rem;border-radius:5px;font-size:.78rem;font-weight:600;transition:all .2s;border:1px solid var(--border);background:var(--card);color:var(--text)}
-.btn:hover{border-color:var(--accent);color:var(--accent)}
-.btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}.btn.primary:hover{background:var(--accent2);border-color:var(--accent2);color:#fff}
-
-/* === HOME === */
-.hero-statement{padding:1rem 0 3rem;opacity:0;animation:fu .6s ease forwards .1s}
-.hero-statement h1{font-family:var(--fd);font-size:clamp(2rem,4.5vw,3.2rem);font-weight:500;line-height:1.12;margin-bottom:1rem;max-width:680px}
-.hero-statement h1 em{color:var(--accent);font-style:normal}
-.hero-statement p{font-size:1rem;color:var(--text2);max-width:520px;line-height:1.85}
-.hstats{display:flex;gap:2rem;margin-top:1.5rem;flex-wrap:wrap;opacity:0;animation:fu .6s ease forwards .3s}
-.hstat strong{display:block;font-size:1.3rem;font-weight:700;line-height:1}.hstat span{font-size:.66rem;color:var(--muted);font-family:var(--fm);letter-spacing:.05em;text-transform:uppercase;font-weight:500}
-.hlinks{display:flex;gap:.4rem;margin-top:1.5rem;flex-wrap:wrap;opacity:0;animation:fu .6s ease forwards .45s}
-
-/* Bento research grid */
-.bento{display:grid;grid-template-columns:repeat(3,1fr);grid-auto-rows:minmax(140px,auto);gap:.8rem;margin-bottom:2rem}
-.bento-card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.3rem;transition:all .25s;cursor:pointer;display:flex;flex-direction:column;justify-content:flex-end}
-.bento-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
-.bento-card.big{grid-column:span 2;grid-row:span 2}
-.bento-card.tall{grid-row:span 2}
-.bento-card h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.25rem;line-height:1.25}
-.bento-card.big h3{font-size:1.3rem}
-.bento-card p{font-size:.8rem;color:var(--text2);line-height:1.6}
-.bento-card-img{width:100%;height:140px;border-radius:6px;overflow:hidden;margin-bottom:.8rem;flex-shrink:0;background:var(--bg2)}
-.bento-card-img img{width:100%;height:100%;object-fit:cover}
-.btag{display:inline-block;font-size:.6rem;font-family:var(--fm);padding:.1rem .35rem;border-radius:3px;font-weight:500;margin-bottom:.4rem}
-.btag.pub{background:rgba(74,122,100,.1);color:var(--sage)}.btag.sub{background:rgba(45,95,158,.1);color:var(--blue)}.btag.prep{background:var(--asoft);color:var(--accent)}
-.blinks{display:flex;gap:.3rem;margin-top:.5rem;flex-wrap:wrap}
-.blink{font-size:.65rem;font-family:var(--fm);padding:.2rem .5rem;border-radius:4px;border:1px solid var(--border2);color:var(--text2);transition:all .15s;font-weight:500}
-.blink:hover{border-color:var(--accent);color:var(--accent)}
-
-/* News */
-.nsec{padding:2rem 0}
-.ng{display:flex;flex-direction:column}
-.ni{padding:.65rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:85px 1fr;gap:.7rem;font-size:.85rem;color:var(--text2);line-height:1.6}
-.ni:first-of-type{border-top:1px solid var(--border)}
-.nd{font-family:var(--fm);font-size:.66rem;color:var(--muted);padding-top:.12rem;font-weight:500}
-.ni strong{color:var(--text);font-weight:600}
-.ni a{color:var(--accent)}
-.ni a:hover{color:var(--accent2)}
-.ni a strong{color:inherit}
-.nys{font-family:var(--fd);font-size:1.2rem;color:var(--muted);margin:1.2rem 0 .3rem}
-
-/* === PUBLICATIONS (with thumbnails) === */
-.pf{display:flex;gap:.3rem;margin-bottom:1.2rem;flex-wrap:wrap}
-.pfb{font-size:.68rem;font-family:var(--fm);padding:.3rem .65rem;border-radius:4px;border:1px solid var(--border);color:var(--muted);background:transparent;cursor:pointer;transition:all .15s;font-weight:500}
-.pfb:hover{color:var(--text2)}.pfb.active{border-color:var(--accent);color:var(--accent);background:var(--asoft)}
-.plist{display:flex;flex-direction:column}
-.pi{padding:1rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:120px 1fr auto;gap:1rem;align-items:start}
-.pi:first-child{border-top:1px solid var(--border)}
-.pi-thumb{width:120px;height:80px;border-radius:6px;overflow:hidden;border:1px solid var(--border);background:var(--bg2);flex-shrink:0;display:flex;align-items:center;justify-content:center}
-.pi-thumb img{width:100%;height:100%;object-fit:cover}
-.pi-thumb video{width:100%;height:100%;object-fit:cover}
-.pi-thumb svg{opacity:.3}
-.pi-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;background:var(--bg2)}
-.pinfo h4{font-size:.88rem;font-weight:600;line-height:1.4;margin-bottom:.15rem}
-.pau{font-size:.76rem;color:var(--text2);line-height:1.5}.pau strong{color:var(--accent);font-weight:600}
-.pvt{font-family:var(--fm);font-size:.64rem;color:var(--muted);margin-top:.12rem;font-weight:500}
-.pvt span{display:inline-block;padding:.05rem .28rem;border-radius:3px;background:var(--bg2);margin-right:.15rem}
-.plc{display:flex;gap:.3rem;padding-top:.1rem;flex-wrap:wrap}
-.pls{font-size:.66rem;font-family:var(--fm);padding:.2rem .5rem;border-radius:4px;border:1px solid var(--border2);color:var(--text2);transition:all .15s;font-weight:500}
-.pls:hover{border-color:var(--accent);color:var(--accent)}
-
-/* === TEACHING === */
-.tg{display:grid;grid-template-columns:repeat(2,1fr);gap:.8rem;margin-bottom:2.5rem}
-.tc{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:1.2rem;transition:border-color .2s}
-.tc:hover{border-color:var(--accent)}
-.tc h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.2rem}
-.tr{font-family:var(--fm);font-size:.64rem;color:var(--accent);letter-spacing:.04em;text-transform:uppercase;margin-bottom:.4rem;font-weight:500}
-.tc p{font-size:.82rem;color:var(--text2);line-height:1.6}
-.mg{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.6rem}
-.me{padding:.7rem .9rem;background:var(--card);border:1px solid var(--border);border-radius:6px;transition:border-color .15s}
-.me:hover{border-color:var(--border2)}
-.men{font-weight:600;font-size:.84rem}.med{font-size:.74rem;color:var(--text2);margin-top:.08rem}
-.metag{font-size:.6rem;font-family:var(--fm);font-weight:500;text-transform:uppercase;letter-spacing:.04em;padding:.08rem .35rem;border-radius:3px;margin-left:.4rem;background:var(--bg2);color:var(--muted)}
-.meo{font-size:.66rem;color:var(--accent);margin-top:.08rem;font-family:var(--fm);font-weight:500}
-
-/* === PORTFOLIO === */
-.port-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
-.port-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .25s}
-.port-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
-.port-card.wide{grid-column:span 2}
-.port-vis{height:180px;background:var(--bg2);overflow:hidden;position:relative}
-.port-card.wide .port-vis{height:220px}
-.port-vis img{width:100%;height:100%;object-fit:cover}
-.port-vis .port-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center}
-.port-body{padding:1.2rem}
-.port-tag{font-family:var(--fm);font-size:.62rem;color:var(--muted);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.3rem;font-weight:500}
-.port-card h3{font-family:var(--fd);font-size:1.1rem;margin-bottom:.3rem}
-.port-card p{font-size:.82rem;color:var(--text2);line-height:1.65;margin-bottom:.6rem}
-.port-links{display:flex;gap:.3rem;flex-wrap:wrap}
-.port-links a{font-size:.66rem;font-family:var(--fm);padding:.18rem .5rem;border-radius:3px;border:1px solid var(--border);color:var(--muted);transition:all .15s;font-weight:500}
-.port-links a:hover{border-color:var(--accent);color:var(--accent)}
-
-/* === MEDIA === */
-.media-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}
-.media-card{background:var(--card);border:1px solid var(--border);border-radius:8px;overflow:hidden;transition:all .25s}
-.media-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 4px 16px rgba(0,0,0,.05)}
-.media-vis{height:200px;background:#0a0a0a;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}
-.media-vis img{width:100%;height:100%;object-fit:cover}
-.media-vis iframe{width:100%;height:100%;border:none}
-.media-play{position:absolute;width:48px;height:48px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .2s}
-.media-play:hover{transform:scale(1.08)}
-.media-play svg{width:20px;height:20px;margin-left:2px}
-.media-body{padding:1.1rem}
-.media-type{font-family:var(--fm);font-size:.62rem;color:var(--accent);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.25rem;font-weight:500}
-.media-card h3{font-family:var(--fd);font-size:1.05rem;margin-bottom:.2rem;line-height:1.25}
-.media-card p{font-size:.8rem;color:var(--text2);line-height:1.6}
-.media-source{font-family:var(--fm);font-size:.64rem;color:var(--muted);margin-top:.3rem;font-weight:500}
-.media-source a{color:var(--muted)}.media-source a:hover{color:var(--accent)}
-
-/* === ABOUT === */
-.ag{display:grid;grid-template-columns:2fr 1fr;gap:2.5rem;margin-bottom:2rem}
-.abio{font-size:.9rem;color:var(--text2);line-height:1.85}.abio p{margin-bottom:.8rem}
-.asb h3{font-family:var(--fd);font-size:1rem;margin-bottom:.6rem;margin-top:1.2rem}.asb h3:first-child{margin-top:0}
-.asb ul{list-style:none}.asb li{font-size:.78rem;color:var(--text2);padding:.12rem 0;line-height:1.5}.asb li strong{color:var(--text);font-weight:600}
-.awl{margin-bottom:2.5rem}
-.awi{padding:.5rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:44px 1fr;gap:.7rem;font-size:.84rem}
-.awi:first-child{border-top:1px solid var(--border)}
-.awy{font-family:var(--fm);font-size:.68rem;color:var(--muted);padding-top:.05rem;font-weight:500}
-
-/* Featured video */
-.feat-video{margin-bottom:2.5rem}
-.feat-video-wrap{position:relative;padding-bottom:56.25%;height:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);background:#0a0a0a}
-.feat-video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:none}
-.feat-video-label{font-family:var(--fm);font-size:.62rem;color:var(--accent);letter-spacing:.1em;text-transform:uppercase;font-weight:500;margin-bottom:.3rem}
-.feat-video-caption{font-size:.8rem;color:var(--text2);margin-top:.6rem;line-height:1.6}
-
-/* FOOTER */
-footer{padding:2rem 0;border-top:1px solid var(--border);text-align:center}
-.fc{font-size:.68rem;color:var(--muted)}
-
-/* RESPONSIVE */
-@media(max-width:900px){
-  .sidebar{display:none}.topnav{display:flex}.main{margin-left:0;padding-top:54px}
-  .bento{grid-template-columns:1fr}.bento-card.big,.bento-card.tall{grid-column:span 1;grid-row:span 1}
-  .tg,.port-grid,.media-grid{grid-template-columns:1fr}.port-card.wide{grid-column:span 1}
-  .ag{grid-template-columns:1fr}
-  .pi{grid-template-columns:80px 1fr}.pi-thumb{width:80px;height:56px}.plc{display:none}
-}
-@media(max-width:640px){.pc{padding:0 1.2rem}.ni{grid-template-columns:1fr;gap:.08rem}.pi{grid-template-columns:1fr}.pi-thumb{display:none}}
-</style><link href="https://raprakashvi.github.io/" rel="canonical"/>
-<meta content="Ravi Prakash" name="author"/>
-<meta content="profile" property="og:type"/><meta content="Ravi Prakash — Sensing for Informed Action" property="og:title"/>
-<meta content="https://raprakashvi.github.io/" property="og:url"/><meta content="https://raprakashvi.github.io/images/profile%20pic_small-min.png" property="og:image"/><meta content="Ravi Prakash, robotics researcher" property="og:image:alt"/>
-<meta content="summary" name="twitter:card"/><meta content="Ravi Prakash — Robotics Researcher" name="twitter:title"/><meta content="Ravi Prakash, robotics researcher and Postdoctoral Fellow at Johns Hopkins University. Multimodal sensing and autonomous surgical, medical, and aerial robots. On the job market for faculty and research scientist positions." property="og:description"/><meta content="Ravi Prakash, robotics researcher and Postdoctoral Fellow at Johns Hopkins University. Multimodal sensing and autonomous surgical, medical, and aerial robots. On the job market for faculty and research scientist positions." name="twitter:description"/><script type="application/ld+json">{"@context": "https://schema.org", "@type": "Person", "@id": "https://raprakashvi.github.io/#ravi-prakash", "name": "Ravi Prakash", "url": "https://raprakashvi.github.io/", "image": "https://raprakashvi.github.io/images/profile%20pic_small-min.png", "jobTitle": "Postdoctoral Fellow", "worksFor": {"@type": "CollegeOrUniversity", "name": "Johns Hopkins University"}, "alumniOf": [{"@type": "CollegeOrUniversity", "name": "Duke University"}, {"@type": "CollegeOrUniversity", "name": "National Institute of Technology Warangal"}], "email": "mailto:ravi.prakash@jhu.edu", "knowsAbout": ["Robotics", "Multimodal perception", "Surgical autonomy", "Acoustic sensing"], "sameAs": ["https://orcid.org/0000-0002-4020-1590", "https://scholar.google.com/citations?user=BX_yW-kAAAAJ", "https://github.com/raprakashvi", "https://www.linkedin.com/in/raprakashvi/"]}</script><noscript><style>.page{display:block}.reveal,.hero-statement,.hlinks{opacity:1;transform:none}.mobmenu{position:static;display:flex;padding:4rem 1rem 1rem}.topnav{position:absolute}.tn-btn{display:none}</style></noscript><style>
-/* Faculty market refresh — September 2026 */
-:root{--muted:#686158;--sage:#315b47;--accent:#ad321f;--side:248px}
-.sb-name,.tn-name{color:var(--text)}.sb-aff{font-size:.78rem;line-height:1.55}.sb-link{font-size:.88rem;padding:.5rem .6rem}.sb-status{font-size:.72rem}.sb-social a{font-size:.72rem}
-.pc{max-width:1100px}.hero-statement{padding:1rem 0 2rem}.hero-statement h1{font-size:clamp(3rem,6.5vw,5.6rem);letter-spacing:-.045em;line-height:1.02}.hero-statement p{max-width:720px;font-size:1.08rem}.hero-statement .sl{margin-bottom:1.2rem}
-.btn{font-size:.88rem;min-height:44px}.career-note{margin-top:1.4rem;font-size:.85rem;color:var(--sage)}.career-note span{display:block;color:var(--text2);font-size:.8rem}
-.evidence-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1.3rem;padding:1.3rem 0;margin-bottom:2.8rem;border-top:1px solid var(--border);border-bottom:1px solid var(--border)}.evidence-strip a{color:var(--text)}.evidence-strip span{display:block;font-family:var(--fm);font-size:.65rem;color:var(--muted);margin-bottom:.4rem}.evidence-strip strong{font-size:.9rem;line-height:1.4;display:block}
-.bento{grid-template-columns:repeat(2,minmax(0,1fr))}
-.bento-card{cursor:default;justify-content:flex-start}.bento-card.big{grid-column:span 2;grid-row:auto}.bento-card.tall{grid-row:auto}.bento-card-img{height:175px;background:#fff}.bento-card-img img{object-fit:contain}.bento-card.big .bento-card-img{height:270px}.bento-card h3{font-size:1.2rem}.bento-card p{font-size:.88rem}.btag{align-self:flex-start;font-size:.68rem}.blink,.pls{font-size:.73rem;min-height:36px;display:inline-flex;align-items:center}.blinks{margin-top:auto;padding-top:.8rem}
-.pi{grid-template-columns:120px minmax(0,1fr)}.plc{grid-column:2;display:flex;padding:0}.pinfo h4{font-size:1rem}.pau{font-size:.83rem}.pvt{font-size:.73rem}.pfb{font-size:.76rem;min-height:40px}.pub-mark{font-family:var(--fd);font-size:2rem;color:var(--accent)}
-.record-section{margin-top:3rem}.record-section>.tg{margin-top:1rem}.record-list{list-style:none;margin:1rem 0 1.5rem}.record-list li{padding:1rem 0;border-bottom:1px solid var(--border)}.record-list p{font-size:.85rem;color:var(--text2)}.workshop-art{padding:2rem;background:#213c37;color:#fff;display:flex;flex-direction:column;min-height:200px;justify-content:center}.workshop-art strong{font-family:var(--fd);font-size:4rem;line-height:1.2}.workshop-art span{font-size:.85rem}
-.video-choices{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}.video-choices button{font:inherit;font-size:.8rem;padding:.5rem .8rem;border:1px solid var(--border);border-radius:5px;background:var(--card);color:var(--text);cursor:pointer;min-height:44px}.video-choices button[aria-pressed=true]{background:var(--accent);color:white;border-color:var(--accent)}
-a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--blue);outline-offset:4px}.skip-link{position:fixed;left:1rem;top:-100px;z-index:200;background:var(--card);padding:.6rem 1rem}.skip-link:focus{top:1rem}.page h2[tabindex]{outline-offset:8px}
-@media(max-width:900px){.bento{grid-template-columns:repeat(2,minmax(0,1fr))}.plc{display:flex}.pc{padding-left:1.5rem;padding-right:1.5rem}}
-@media(max-width:640px){.hero-statement h1{font-size:3.5rem}.evidence-strip{grid-template-columns:1fr;gap:1rem}.bento{grid-template-columns:1fr}.bento-card.big{grid-column:auto}.bento-card.big .bento-card-img{height:200px}.pi{grid-template-columns:1fr}.plc{grid-column:1}.hero-statement p{font-size:1rem}}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation:none!important;transition:none!important}.reveal,.hero-statement,.hlinks{opacity:1;transform:none}}
-@media print{.sidebar,.topnav,.mobmenu,.skip-link,.video-choices,iframe,video,.pf{display:none!important}.main{margin:0;padding:0}.page{display:block!important;min-height:0;padding:1rem 0;break-before:page}.page:first-child{break-before:auto}.reveal,.hero-statement,.hlinks{opacity:1;transform:none}.pc{max-width:none;padding:0}.bento-card,.pi,.tc{break-inside:avoid}.pi{display:grid!important}.plc{display:flex!important}body{background:white}}
-
-.workshop-callout{display:block;padding:1.1rem 1.3rem;margin:1rem 0;background:var(--sage-soft);border:1px solid var(--border);border-radius:8px;color:var(--text)}.workshop-callout strong,.workshop-callout span{display:block}.workshop-callout span{font-size:.78rem;color:var(--text2)}
-
-/* Featured research films */
-p a,.ni a{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
-.reveal{opacity:1;transform:none;transition:none}
-.hero-statement,.hlinks{opacity:1;animation:none}
-.hero-statement h1{font-size:clamp(2.2rem,4.3vw,3.65rem);line-height:1.14;letter-spacing:-.03em;max-width:870px}
-.hero-continuation{font-size:.7em;line-height:1.32;display:block;margin-top:.45em;letter-spacing:-.015em;color:var(--text2)}
-.feat-video{padding:1.35rem;background:#203a35;border:1px solid #304c45;border-radius:16px;margin-top:.5rem;margin-bottom:2rem;box-shadow:0 12px 32px #203a3510}
-.feature-heading{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:1rem}.feature-heading h2{color:#fffdf8;font:500 1.6rem/1.2 var(--fd)}.feat-video-label{color:#c8d8d0;font-size:.67rem}.feature-project{color:#e5eae5;font-size:.78rem;text-decoration:underline;text-underline-offset:4px}.feature-project:hover{color:white}
-.feat-video-wrap{border:0;border-radius:9px;background:#11211d}.feat-video-wrap [hidden]{display:none}.video-poster{position:absolute;inset:0;width:100%;height:100%;border:0;background:#11211d;cursor:pointer;text-align:left;color:white;font:inherit}.video-poster>img{width:100%;height:100%;object-fit:cover}.poster-shade{position:absolute;inset:0;background:linear-gradient(0deg,#071812d9,transparent 65%)}.play-disc{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:grid;place-items:center;width:68px;height:68px;border-radius:50%;background:#fffdf8;color:#203a35;padding-left:4px;font-size:1.3rem;box-shadow:0 4px 25px #0003}.video-poster:hover .play-disc{background:#dce8df}.poster-copy{position:absolute;bottom:1.6rem;left:1.6rem;display:flex;flex-direction:column;gap:.15rem}.poster-copy strong{font:500 2.8rem/1.1 var(--fd)}.poster-copy>span{font-size:.8rem}
-.feat-video-caption{color:#e1e8e2;font-size:.86rem;margin-top:1rem}.feat-video-caption a{color:#fffdf8}.feat-video-caption strong{color:white}.video-choices{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:.55rem;margin-top:1.2rem}.video-choices button{padding:0;overflow:hidden;border:1px solid #718b7e;background:#29463e;color:#edf3ed;border-radius:7px;display:flex;flex-direction:column;text-align:left;min-width:0}.video-choices button[aria-pressed=true]{background:#fffdf8;color:#203a35;border-color:#fffdf8}.video-thumb{position:relative;display:block;aspect-ratio:16/10;width:100%;background:#fff}.video-thumb img{width:100%;height:100%;object-fit:cover}.video-thumb>span{position:absolute;right:5px;bottom:5px;display:grid;place-items:center;width:23px;height:23px;border-radius:50%;background:#183c31;color:white;font-size:.6rem}.video-name{padding:.55rem;font-size:.71rem;line-height:1.4}.feat-video :focus-visible{outline-color:#ffe2a9;outline-offset:3px}
-@media(max-width:640px){.hero-statement h1{font-size:2.5rem}.hero-continuation{font-size:.72em}.feat-video{padding:.8rem;border-radius:12px}.feature-heading h2{font-size:1.3rem}.feature-project{font-size:.7rem;max-width:100px;text-align:right}.video-choices{grid-template-columns:repeat(3,minmax(0,1fr))}.poster-copy{bottom:.9rem;left:.9rem}.poster-copy strong{font-size:1.65rem}.poster-copy>span{font-size:.65rem}.play-disc{width:48px;height:48px;font-size:1rem}}
-@media print{.feat-video{display:none}}
-
-/* Profile and research presentation refinements */
-.hero-statement h1{font-size:clamp(2rem,4.5vw,3.2rem);line-height:1.12;letter-spacing:-.02em;max-width:850px}
-.hero-statement p{max-width:780px}.hero-statement .student-note{font-size:.9rem;line-height:1.65;margin-top:1.2rem;padding:1rem 1.15rem;border-left:3px solid var(--sage);background:var(--sage-soft)}
-.career-note{max-width:720px}.sb-status{line-height:1.6}.rotation-toggle{border:1px solid #9aafa3;border-radius:5px;background:transparent;color:#fffdf8;font:500 .73rem var(--fb);padding:.55rem .7rem;min-height:40px;cursor:pointer}.feature-heading{flex-wrap:wrap}.feature-project{margin-left:auto}
-#page-home .bento-card.big{grid-column:auto}.bento-card{overflow:hidden;padding:1.2rem}.bento-card-img,.bento-card.big .bento-card-img{width:calc(100% + 2.4rem);height:260px;aspect-ratio:auto;margin:-1.2rem -1.2rem 1.1rem;border-radius:0;border-bottom:1px solid var(--border);background:#fff;padding:.6rem;display:block}.bento-card-img img{object-fit:contain}.bento-card-img.photo-figure{padding:0}.bento-card-img.photo-figure img{object-fit:cover}.bento-card-img:hover img{opacity:.9}.bento-card h3{margin-bottom:.5rem}.bento-card p{margin-bottom:.5rem}
-@media(max-width:640px){.hero-statement h1{font-size:2.2rem}.bento-card-img,.bento-card.big .bento-card-img{height:240px}.feature-heading{gap:.6rem}.feature-project{max-width:none}.rotation-toggle{font-size:.7rem}.poster-copy strong{font-size:1.45rem;max-width:220px}}
-@media print{.rotation-toggle{display:none}}
-</style><noscript><style>.rotation-toggle{display:none}
-</style></noscript><style>/* Profiles and editorial coverage */
-.press-section{margin:0 0 3rem}.profile-feature{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);background:var(--card);border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:1.2rem 0}.profile-feature>img{width:100%;height:100%;min-height:260px;object-fit:cover}.press-body{padding:1.5rem;min-width:0}.press-outlet{font-family:var(--fd);font-size:1.45rem;font-weight:600;line-height:1.2;color:var(--text);margin-bottom:.4rem}.press-date{font:500 .7rem/1.6 var(--fm);color:var(--muted);margin-bottom:1rem}.press-section h3{font-size:1.1rem;line-height:1.4;margin-bottom:.6rem}.press-section h3 a{color:var(--text);text-decoration:underline;text-underline-offset:3px}.press-section p{font-size:.87rem;color:var(--text2);line-height:1.7;margin-bottom:.8rem}.press-read{display:inline-flex;align-items:center;min-height:44px;font-size:.82rem;font-weight:600;text-decoration:underline;text-underline-offset:3px}.press-section .photo-credit{font-size:.65rem;color:var(--muted);margin-top:.5rem;margin-bottom:0}.lead-press-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem;margin-bottom:1rem}.press-card{padding:1.5rem;border:1px solid var(--border);border-radius:10px;background:var(--card)}.press-card.prominent{border-top:4px solid var(--accent);display:flex;flex-direction:column}.press-card.prominent .press-outlet{font-size:1.85rem}.press-card.prominent .press-read{margin-top:auto}.rural-feature{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);padding:0;overflow:hidden}.rural-feature figure{padding:1.5rem 1.5rem 1.5rem 0;align-self:center}.rural-feature img{width:100%;height:auto;border-radius:5px}.rural-feature figcaption{font-size:.65rem;line-height:1.5;color:var(--muted);margin-top:.4rem}.more-coverage-heading{font-family:var(--fd);margin-top:1.8rem}.coverage-list{list-style:none}.coverage-list li{display:flex;justify-content:space-between;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--border);color:var(--muted)}.coverage-list a{font-size:.88rem;text-decoration:underline;text-underline-offset:3px}.coverage-list div>span{display:block;font:500 .68rem/1.6 var(--fm);margin-top:.25rem}
-@media(max-width:640px){.profile-feature,.lead-press-grid,.rural-feature{grid-template-columns:1fr}.profile-feature>img{min-height:0;height:auto}.rural-feature figure{padding:0 1.5rem 1.5rem}.press-card.prominent .press-outlet{font-size:1.6rem}}
-@media print{.profile-feature,.press-card,.coverage-list li{break-inside:avoid}}
-</style></head><body><a class="skip-link" href="#main">Skip to content</a>
-<aside class="sidebar">
-<a class="sb-name" href="#home">Ravi<em>.</em><br/>Prakash</a>
-<div class="sb-aff">Postdoctoral Fellow<br/>Mechanical Engineering<br/>Johns Hopkins University</div>
-<div class="sb-photo"><img alt="Ravi Prakash" decoding="async" fetchpriority="high" height="400" onerror="this.parentElement.style.background='var(--bg2)'" src="images/profile%20pic_small-min.png" width="400"/></div>
-<nav aria-label="Main navigation" class="sb-nav">
-<a class="sb-link active" data-page="home" href="#home">Home</a><a class="sb-link" data-page="about" href="#about">About</a>
-<a class="sb-link" data-page="research" href="#research">Research</a>
-<a class="sb-link" data-page="publications" href="#publications">Publications</a>
-<a class="sb-link" data-page="teaching" href="#teaching">Teaching</a>
-<a class="sb-link" data-page="portfolio" href="#portfolio">Portfolio</a>
-<a class="sb-link" data-page="media" href="#media">Media</a>
-</nav>
-<div class="sb-status">On Job Market for Faculty and Research Scientist Positions</div>
-<div class="sb-social">
-<a href="mailto:ravi.prakash@jhu.edu">Email</a>
-<a href="https://scholar.google.com/citations?hl=en&amp;authuser=1&amp;user=BX_yW-kAAAAJ" rel="noopener noreferrer" target="_blank">Scholar</a>
-<a href="https://github.com/raprakashvi" rel="noopener noreferrer" target="_blank">GitHub</a>
-<a href="https://www.linkedin.com/in/raprakashvi/" rel="noopener noreferrer" target="_blank">LinkedIn</a>
-<a href="https://orcid.org/0000-0002-4020-1590" rel="noopener noreferrer" target="_blank">ORCID</a>
-</div>
-</aside>
-<div class="topnav">
-<a class="tn-name" href="#home">Ravi<em>.</em></a>
-<button aria-controls="mob" aria-expanded="false" aria-label="Open navigation" class="tn-btn" onclick="toggleMenu()">
-<svg fill="none" stroke="currentColor" stroke-width="2" viewbox="0 0 24 24"><line x1="3" x2="21" y1="6" y2="6"></line><line x1="3" x2="21" y1="12" y2="12"></line><line x1="3" x2="21" y1="18" y2="18"></line></svg>
-</button>
-</div>
-<div aria-label="Mobile navigation" class="mobmenu" id="mob">
-<a data-page="home" href="#home">Home</a><a data-page="about" href="#about">About</a>
-<a data-page="research" href="#research">Research</a>
-<a data-page="publications" href="#publications">Publications</a>
-<a data-page="teaching" href="#teaching">Teaching</a>
-<a data-page="portfolio" href="#portfolio">Portfolio</a>
-<a data-page="media" href="#media">Media</a>
-<a href="mailto:ravi.prakash@jhu.edu">Contact</a>
-</div>
-<main class="main" id="main" tabindex="-1">
-<div class="page active" id="page-home"><div class="pc"><span aria-hidden="true" class="section-anchor" id="home"></span>
-<div class="hero-statement">
-<div class="sl">Sensing for Informed Action</div><h1>I build robots that <em>see</em>, <em>decide</em>, and <em>act</em> — transforming multimodal sensing into precise autonomous action.</h1>
-<p>Postdoctoral fellow at Johns Hopkins University working with <a href="https://engineering.jhu.edu/faculty/axel-krieger/">Axel Krieger</a> on autonomous surgical robots for precision surgery. I received my PhD degree from Duke University, working with <a href="https://scholars.duke.edu/person/patrick.codd">Patrick Codd</a> and <a href="https://generalroboticslab.com/">Boyuan Chen</a>, working across multimodal perception, surgical autonomy, and machine learning. My systems close the loop from raw sensory data to real-world intervention.</p>
-<!-- <div class="hstats"><div class="hstat"><strong>16+</strong><span>Publications</span></div><div class="hstat"><strong>2</strong><span>Patents</span></div><div class="hstat"><strong>15+</strong><span>Mentees</span></div></div> -->
-<div class="hlinks"><a class="btn primary" href="https://scholar.google.com/citations?user=BX_yW-kAAAAJ" rel="noopener noreferrer" target="_blank">Google Scholar</a><a class="btn" href="https://www.linkedin.com/in/raprakashvi/" rel="noopener noreferrer" target="_blank">LinkedIn</a><a class="btn" href="papers/CV_Prakash.pdf">CV</a><a class="btn" href="mailto:ravi.prakash@jhu.edu">Email</a></div>
-<div class="career-note"><strong>On Job Market for Faculty and Research Scientist Positions</strong></div><p class="student-note"><strong>For JHU students:</strong> Interested in learning, imaging, or mechatronics? <a href="mailto:ravi.prakash@jhu.edu">Reach out to me</a> to discuss research opportunities.</p></div>
-<div class="feat-video reveal" data-rotation="true">
-<div class="feature-heading"><div><div class="feat-video-label">Featured video</div><h2>Robots in action</h2></div><a class="feature-project" href="https://generalroboticslab.com/SonicFly">SonicFly project ↗</a><button aria-label="Pause automatic video previews" class="rotation-toggle" type="button">Pause rotation</button></div>
-<div class="feat-video-wrap"><button aria-label="Play SonicFly flight demonstration" class="video-poster"><img alt="SonicFly aerial robot flight demonstration" decoding="async" src="images/media/thumbnails/sonicfly-demo.jpg"/><span class="poster-shade"></span><span aria-hidden="true" class="play-disc">▶</span><span class="poster-copy"><span>From sensing to action</span><strong>SonicFly</strong><span>Watch the flight demonstration</span></span></button><iframe allow="encrypted-media; picture-in-picture" allowfullscreen="" data-src="https://www.youtube-nocookie.com/embed/w1OSSJBS8dM" hidden="" loading="lazy" title="SonicFly flight demonstration"></iframe></div>
-<p class="feat-video-caption"><strong>SonicFly · flight demo</strong> — Aerial robots sensing and pursuing through the sound of flight. <a href="https://www.youtube.com/watch?v=w1OSSJBS8dM">Watch on YouTube ↗</a></p>
-<div aria-label="Choose a research video" class="video-choices"><button aria-pressed="true" data-video="w1OSSJBS8dM"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/media/thumbnails/sonicfly-demo.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">SonicFly · flight demo</span></button><button aria-pressed="false" data-video="GVpQvWdgkU4"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/SonicFly.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">SonicFly · overview</span></button><button aria-pressed="false" data-video="RGvBzVAV4XQ"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/media/thumbnails/laser-surgery.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">Robotic laser surgery</span></button><button aria-pressed="false" data-video="FnwhNJGcEeQ"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/See_Plan_Cut.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">See, Plan, Cut</span></button><button aria-pressed="false" data-video="_mmzDbw0OuI"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/Palpaid.png"/><span aria-hidden="true">▶</span></span><span class="video-name">PalpAid</span></button><button aria-pressed="false" data-video="akGQKCfIav4"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/media/thumbnails/duke-mems.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">Duke MEMS</span></button></div><noscript><a href="https://www.youtube.com/watch?v=w1OSSJBS8dM">Watch SonicFly on YouTube</a></noscript></div><div class="reveal"><div class="sl">Research</div><h2 class="st">Selected research</h2></div>
-<div class="bento reveal"><div class="bento-card big"><a aria-label="View full figure: SonicFly aerial robot pursuit experiment" class="bento-card-img photo-figure" href="images/publications/SonicFly.jpg" rel="noopener noreferrer" target="_blank"><img alt="SonicFly aerial robot pursuit experiment" decoding="async" loading="lazy" src="images/publications/SonicFly.jpg"/></a><span class="btag sub">2026 · Under review</span><h3>SonicFly: listening to the sound of flight</h3><p>Passive aeroacoustic sensing enables a flying robot to estimate and pursue another using its intrinsic flight sound.</p><div class="blinks"><a class="blink" href="https://generalroboticslab.com/SonicFly">Website</a><a class="blink" href="https://arxiv.org/pdf/2608.00401">PDF</a><a class="blink" href="https://arxiv.org/abs/2608.00401">arXiv</a><a class="blink" href="https://github.com/generalroboticslab/SonicFly">Code</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: TumorMap" class="bento-card-img" href="images/publications/TumorMap_figure.jpg" rel="noopener noreferrer" target="_blank"><img alt="TumorMap" decoding="async" loading="lazy" src="images/publications/TumorMap_figure.jpg"/></a><span class="btag sub">Under Review</span><h3>TumorMap: Fully-Automated 3D Tumor Mapping &amp; Resection</h3><p>Three-laser platform (OCT + fluorescence + cutting scalpel) with deep learning for noncontact tumor resection in murine models. Submillimeter accuracy.</p><div class="blinks"><a class="blink" href="https://mgsresearch.github.io/tumormap.github.io/" rel="noopener noreferrer" target="_blank">Website</a><a class="blink" href="papers/TumorMap.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="blink" href="https://arxiv.org/abs/2511.05723" rel="noopener noreferrer" target="_blank">arXiv</a><a class="blink" href="https://github.com/mgsresearch/tumormap_code" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: See, Plan, Cut research overview" class="bento-card-img" href="images/publications/See_Plan_Cut.jpg" rel="noopener noreferrer" target="_blank"><img alt="See, Plan, Cut research overview" decoding="async" loading="lazy" src="images/publications/See_Plan_Cut.jpg"/></a><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut</h3><p>MPC-based volumetric laser surgery with OCT guidance.</p><div class="blinks"><a class="blink" href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener noreferrer" target="_blank">Website</a><a class="blink" href="papers/See,Plan,Cut.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="blink" href="https://arxiv.org/abs/2511.17777" rel="noopener noreferrer" target="_blank">arXiv</a><a class="blink" href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" rel="noopener noreferrer" target="_blank">Video</a><a class="blink" href="https://github.com/raprakashvi/see_plan_cut" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: PalpAid research overview" class="bento-card-img" href="images/publications/Palpaid.png" rel="noopener noreferrer" target="_blank"><img alt="PalpAid research overview" decoding="async" loading="lazy" src="images/publications/Palpaid.png"/></a><span class="btag pub">RoboSoft 2026</span><h3>PalpAid</h3><p>Pneumatic tactile sensor for tissue palpation. Mentored project.</p><div class="blinks"><a class="blink" href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank">Website</a><a class="blink" href="papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="blink" href="https://www.youtube.com/watch?v=_mmzDbw0OuI" rel="noopener noreferrer" target="_blank">Video</a><a class="blink" href="https://github.com/raprakashvi/palpaid_robosoft" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: Portable Dual research overview" class="bento-card-img" href="images/publications/ISMR2025_portable_dual_sensor.png" rel="noopener noreferrer" target="_blank"><img alt="Portable Dual research overview" decoding="async" loading="lazy" src="images/publications/ISMR2025_portable_dual_sensor.png"/></a><span class="btag pub">ISMR 2025</span><h3>Portable Dual Sensor</h3><p>Large-area dual sensing for real-time surgical guidance.</p><div class="blinks"><a class="blink" href="https://ieeexplore.ieee.org/abstract/document/11025962" rel="noopener noreferrer" target="_blank">Paper</a><a class="blink" href="papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: SurgXBench research overview" class="bento-card-img" href="images/publications/SurgXBench.png" rel="noopener noreferrer" target="_blank"><img alt="SurgXBench research overview" decoding="async" loading="lazy" src="images/publications/SurgXBench.png"/></a><span class="btag pub">WACV 2026</span><h3>SurgXBench</h3><p>Explainable vision-language benchmark for surgery.</p><div class="blinks"><a class="blink" href="papers/SurgXBench.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-</div><a class="workshop-callout" href="https://sites.google.com/view/iros-elsr-2026/"><span>Workshop co-organizer · IROS 2026</span><strong>The Evolving Landscape of Surgical Robotics ↗</strong><span>Foundation Models Meet New Robotic Embodiments</span></a>
-<div class="nsec">
-<div class="reveal"><div class="sl">Latest</div><h2 class="st">News</h2></div>
-<div class="ng reveal">
-<div class="nys">2026</div><div class="ni"><div class="nd">Aug 2026</div><div>Featured in <a href="https://bassconnections.duke.edu/story/ravi-prakash-phd-mechanical-engineering-materials-science-26/"><strong>Duke Bass Connections</strong></a>, reflecting on interdisciplinary research, teaching, and mentorship.</div></div><div class="ni"><div class="nd">Aug 2026</div><div><strong>SonicFly in the news:</strong> <a href="https://spectrum.ieee.org/video-friday-heavy-lift-drone">IEEE Spectrum</a>, <a href="https://www.indiatoday.in/science/story/no-gps-no-camera-this-drone-targets-another-just-by-listening-to-its-rotor-sound-2972911-2026-08-17">India Today</a>, and <a href="#media-press">more coverage</a>.</div></div><div class="ni"><div class="nd">Invited talk</div><div>Invited talk: <strong>Sensing–Driven Surgical Autonomy</strong>, Arizona State University Medical Robotics Course.</div></div><div class="ni"><div class="nd">Aug 2026</div><div>Joined <strong>Johns Hopkins University</strong> as a Postdoctoral Fellow with Axel Krieger, following completion of my Ph.D. at Duke.</div></div><div class="ni"><div class="nd">Aug 2026</div><div><a href="https://arxiv.org/abs/2608.00401"><strong>SonicFly</strong></a>: our work on passive aeroacoustic perception for aerial robots is available as a preprint and under review.</div></div>
-<div class="ni" id="news-phd-defense"><div class="nd">Jul 2026</div><div>Successfully defended my PhD dissertation, <strong>“Sensing Driven Surgical Autonomy Through Multimodal Tissue Representation,”</strong> at <strong>Duke University</strong>.</div></div><div class="ni"><div class="nd">Jul 2026</div><div>Our <a href="https://bassconnections.duke.edu/news/how-can-robotic-surgery-improve-access-specialized-healthcare-rural-communities/"><strong>robotic surgery work for rural healthcare</strong></a> was featured in Bass Connections’ team-written project series.</div></div><div class="ni"><div class="nd">May 2026</div><div><a href="https://arxiv.org/abs/2410.03086" rel="noopener noreferrer" target="_blank"><strong>Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound</strong></a> accepted at <em>IEEE Transactions on Medical Robotics and Bionics</em>.</div></div>
-<div class="ni"><div class="nd">Apr 2026</div><div>Named <strong>STAUBLI Medical Robotics Rising Star</strong> at the <a href="https://ismr.gatech.edu/" rel="noopener noreferrer" target="_blank">International Symposium on Medical Robotics (ISMR 2026)</a> in Knoxville, TN — awarded at <em>The Holistic Forum of Medical Robotics Junior Professors</em> workshop.</div></div>
-<div class="ni"><div class="nd">Mar 2026</div><div>Released <a href="https://www.youtube.com/watch?v=RGvBzVAV4XQ" rel="noopener noreferrer" target="_blank"><strong>Robotic Laser Surgery: Overview &amp; Vision</strong></a> — a comprehensive video on our work on autonomous laser surgery and multimodal sensing.</div></div>
-<div class="ni"><div class="nd">Jan 2026</div><div><a href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener noreferrer" target="_blank"><strong>See, Plan, Cut</strong></a> accepted at <strong>ICRA 2026</strong>.</div></div>
-<div class="ni"><div class="nd">Jan 2026</div><div><a href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank"><strong>PalpAid</strong></a> accepted at <strong>RoboSoft 2026</strong>.</div></div>
-<div class="nys">2025</div>
-<div class="ni"><div class="nd">Nov 2025</div><div><strong>TumorMap</strong> paper submitted and available on <a href="https://arxiv.org/abs/2511.05723" rel="noopener noreferrer" target="_blank">arXiv</a>.</div></div>
-<div class="ni"><div class="nd">Apr 2025</div><div>Our aerial acoustic sensing research was featured in <a href="https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/">Duke Forest</a>. Read the resulting <a href="https://arxiv.org/abs/2608.00401">SonicFly preprint</a>.</div></div>
-<div class="ni"><div class="nd">Apr 2025</div><div>Zach &amp; Alexa’s <a href="https://ieeexplore.ieee.org/abstract/document/11337667" rel="noopener noreferrer" target="_blank">“Where is the Boundary”</a> (multimodal tissue boundary) accepted at <a href="https://sites.google.com/view/icra2025-workshop-clsr" rel="noopener noreferrer" target="_blank">ICRA Evolving Landscape of Surgical Robotics 2025</a>. Kudos to both.</div></div>
-<div class="nys">2024</div>
-<div class="ni"><div class="nd">Dec 2024</div><div>Workshop <a href="https://sites.google.com/view/icra2025-workshop-clsr" rel="noopener noreferrer" target="_blank">“The Evolving Landscape of Surgical Robotics”</a> accepted for <strong>ICRA 2025</strong>. See you 19 May in Atlanta.</div></div>
-<div class="ni"><div class="nd">Dec 2024</div><div>Won <strong>Rhodes Graduate Fellowship</strong> for Interdisciplinary Research (Bass Connections: Reimagining Surgery for Rural Needs).</div></div>
-<div class="ni"><div class="nd">Sep 2024</div><div><a href="https://aging.jmir.org/2024/1/e57926/" rel="noopener noreferrer" target="_blank">JMIR Aging</a> — extracting critical info from clinicians’ notes to identify dementia severity.</div></div>
-<div class="ni"><div class="nd">Sep 2024</div><div><a href="https://ieeexplore.ieee.org/abstract/document/11127624" rel="noopener noreferrer" target="_blank">Sampling-Based MPC for Volumetric Ablation</a> (ICRA 2025) now online.</div></div>
-<div class="ni"><div class="nd">Sep 2024</div><div><a href="https://arxiv.org/abs/2410.03086" rel="noopener noreferrer" target="_blank">Compliant Quasi Direct Drive End-Effector</a> for safe robotic ultrasound now online.</div></div>
-<div class="ni"><div class="nd">Feb 2024</div><div>Zach Chen &amp; Alexa Cahilig won <strong>Duke CoLab Research Award</strong> for tissue boundary test bench.</div></div>
-<div class="ni"><div class="nd">Feb 2024</div><div><strong>Bass Connection Student Research Award</strong> for affordable multimodal sensors for laser-tissue studies.</div></div>
-<div class="ni"><div class="nd">Feb 2024</div><div>Talk at <strong>IIT Patna</strong>: “Innovating Surgical Robotics: Precision and Automation in Minimally Invasive Procedures”.</div></div>
-<div class="ni"><div class="nd">Jan 2024</div><div><a href="https://www.nature.com/articles/s41598-023-50995-4" rel="noopener noreferrer" target="_blank">Scientific Reports</a> — laser-induced fluorescence to differentiate spine tumor, muscle, and bone.</div></div>
-<div class="nys">2023</div><div class="ni"><div class="nd">Dec 2023</div><div>DEI micro-award from Duke Graduate &amp; Professional Student Government for mentorship.</div></div>
-<div class="ni"><div class="nd">Jun 2023</div><div><a href="https://arxiv.org/abs/2305.01524" rel="noopener noreferrer" target="_blank">3D Laser-and-Tissue Agnostic Surgical Planning</a> accepted at <strong>IROS 2023</strong>.</div></div>
-<div class="ni"><div class="nd">Mar 2023</div><div><strong>Maclin Community Connections Grant</strong> for underrepresented undergraduates.</div></div>
-<div class="ni"><div class="nd">Mar 2023</div><div><strong>Duke India Initiative</strong> travel grant for portable diagnostics in India.</div></div>
-<div class="ni"><div class="nd">Feb 2023</div><div>Presented brain-mimicking phantoms for photoablation at <strong>ISMR 2023</strong> (Graduate School travel award).</div></div>
-<div class="nys">2021</div>
-<div class="ni"><div class="nd">May 2021</div><div><strong>Woo Center for Big Data and Precision Health Fellowship</strong> (unstructured EHR work with Dr. Hanzhang Xu).</div></div>
-<div class="nys">2020</div>
-<div class="ni"><div class="nd">Oct 2020</div><div><strong>Dean’s Research Award</strong> for work on flexible sensors.</div></div>
-</div>
-</div>
-</div></div><div class="page" id="page-about"><div class="pc"><span aria-hidden="true" class="section-anchor" id="about"></span>
-<div class="reveal" style="padding-top:.5rem"><div class="sl">About</div><h2 class="st">Background &amp; Vision</h2></div>
-<div class="ag reveal">
-<div class="abio">
-<p>I am a Postdoctoral Fellow in Mechanical Engineering at Johns Hopkins University, working with <a href="https://engineering.jhu.edu/faculty/axel-krieger/">Axel Krieger, Ph.D.</a> since August 2026. I completed my Ph.D. in Mechanical Engineering and Materials Science at Duke University in 2026, advised by <a href="https://scholars.duke.edu/person/patrick.codd">Patrick Codd, M.D.</a> and <a href="https://generalroboticslab.com/">Boyuan Chen, Ph.D.</a> in the <a href="https://www.braintoollab.com/">Brain Tool Lab</a>.</p>
-<p>I build closed-loop platforms that transform rich sensory data into precise autonomous action — from autonomous laser surgery (OCT + fluorescence + cutting lasers) to neural implicit representations for surgical navigation, acoustic sensing for multi-drone coordination, and multimodal tactile sensing for tissue assessment.</p>
-<p>Before Duke, I co-led <a href="https://futures-plus.com/" rel="noopener noreferrer" target="_blank">Futures+</a> across four countries and founded TEDxNITW. These experiences inform how I think about technology design for communities that need it most.</p>
-<p>I served as Lab Manager at the Brain Tool Lab (2023–2026) and Instructor of Record for a Bass Connections course developing teleoperated surgical systems for rural clinics.</p>
-<p><strong>On Job Market for Faculty and Research Scientist Positions</strong></p>
-<p>My M.S. research at Duke was advised by <a href="https://scholars.duke.edu/person/Xiaoyue.Ni">Xiaoyue Ni</a>; my B.Tech research at NIT Warangal was advised by <a href="https://nitw.ac.in/">P. Bangaru Babu</a>.</p></div>
-<div class="asb"><h3>Current appointment</h3><ul><li><strong>Postdoctoral Fellow</strong><br/>Johns Hopkins University<br/>August 2026–present</li></ul>
-<h3>Education</h3>
-<ul><li><strong>Ph.D.</strong> MEMS, Duke<br/><span style="color:var(--muted);font-size:.7rem">2022–2026</span></li>
-<li><strong>M.S.</strong> MEMS, Duke<br/><span style="color:var(--muted);font-size:.7rem">2020–2021</span></li>
-<li><strong>B.Tech</strong> ME, NIT Warangal<br/><span style="color:var(--muted);font-size:.7rem">2015–2019</span></li></ul>
-<h3>Reviewing</h3>
-<ul>
-<li>IEEE TRO</li>
-<li>IEEE/ASME T-MECH</li>
-<li>IEEE RA-L</li>
-<li>CoRL</li>
-<li>IEEE/RSJ IROS</li>
-<li>IEEE ISMR</li>
-<li>IEEE/BSN BSN</li>
-<li>IEEE/RAS RoboSoft</li>
-<li>JMRR</li>
-</ul>
-</div>
-</div>
-<div class="reveal"><div class="sl">Recognition</div><h2 class="st" style="font-size:1.4rem">Awards</h2></div>
-<div class="awl reveal">
-<div class="awi"><div class="awy">2026</div><div><strong>STAUBLI Medical Robotics Rising Star</strong>, ISMR</div></div>
-<div class="awi"><div class="awy">2025</div><div><strong>Rhodes Graduate Fellowship for Interdisciplinary Research</strong>, Duke</div></div>
-<div class="awi"><div class="awy">2025</div><div><strong>IEEE-EMBS BSN</strong> Travel Award</div></div>
-<div class="awi"><div class="awy">2023</div><div><strong>Duke India Initiative</strong> Travel Award</div></div>
-<div class="awi"><div class="awy">2023</div><div><strong>Maclin Community Connections</strong> Grant</div></div>
-<div class="awi"><div class="awy">2021</div><div><strong>Dean’s Research Award</strong>, Duke</div></div>
-<div class="awi"><div class="awy">2021</div><div><strong>Woo Center Big Data</strong> Fellowship</div></div>
-<div class="awi"><div class="awy">2021</div><div><strong>Design Health Fellow</strong>, Duke</div></div>
-<div class="awi"><div class="awy">2020</div><div><strong>Lab &amp; Curriculum Development</strong> Fellowship</div></div>
-<div class="awi"><div class="awy">2017</div><div><strong>S.N. Bose</strong> Undergraduate Research Fellowship</div></div>
-<div class="awi"><div class="awy">2015</div><div><strong>Merit Award in Physics and Information Technology</strong>, High School Diploma, Government of India</div></div>
-</div>
-<section class="record-section reveal"><div class="sl">Research leadership</div><h2 class="st">Sponsored research &amp; grants</h2><p>Selected projects and my role. Project amounts are total support, not individual awards.</p><div class="tg">
-<div class="tc"><div class="tr">Stryker Corporation · $346K · 2025–2026</div><h3>Ultrasonic aspirator for soft-tissue resection</h3><p>Project scoping and strategy; led proposal writing and assembly; IP coordination. PI: Patrick Codd, Duke University.</p></div>
-<div class="tc"><div class="tr">Bass Connections · $23K · 2025–2026</div><h3>Reimagining Surgery for Rural Needs</h3><p>Team Lead, Project Manager, and Instructor of Record. PI: Patrick Codd, Duke University.</p></div>
-<div class="tc"><div class="tr">Bass Connections · $5K · 2024–2025</div><h3>Flexible sensors for precision laser surgery</h3><p>Team Lead; led proposal writing. Faculty mentor: Patrick Codd.</p></div>
-<div class="tc"><div class="tr">Duke India Initiative · $2K · 2023–2024</div><h3>Portable tumor diagnostics</h3><p>PI; led proposal writing and built clinical collaborations in India. Faculty mentor: Patrick Codd.</p></div></div></section>
-<section class="record-section reveal"><div class="sl">Translation</div><h2 class="st">Patent applications</h2><ul class="record-list">
-<li><strong>Systems and Methods for Neural OCT Tissue Representations for Robot-Guided Intervention</strong><p>Prakash, R., McNabb, R. P., Codd, P. J. · US 64/045,412 · Provisional, patent pending.</p></li>
-<li><strong>Systems and Methods for Acoustically Guided Surgery</strong><p>Prakash, R., Chen, B., Codd, P. J., Lu, Yongjun. · US 63/988,766 · Provisional, patent pending.</p></li>
-<li><strong>Device for Treating Orthostatic Syncope and Methods Thereof</strong><p>Fudim, M., Richardson, E., Butch, J., Cross, V., Nandi, B., Lyon, R., Prakash, R., Ouyang, X., Miao, Y., Weil, B., Mitra, K., et al. · US 18/618,762 · Patent application, October 3, 2024.</p></li></ul></section>
-<section class="record-section reveal"><div class="sl">Invited talks</div><h2 class="st">Sharing the research</h2><ul class="record-list">
-<li><strong>Sensing–Driven Surgical Autonomy</strong><p>Invited talk · Arizona State University · Medical Robotics Course</p></li>
-<li><strong>Multimodal Autonomous Robots for Healthcare</strong><p>Johns Hopkins University · March 30, 2026</p></li>
-<li><strong>Innovating Surgical Robotics: Enhancing Precision and Automation in Minimally Invasive Procedures</strong><p>IIT Patna · February 9, 2024</p></li>
-<li><strong>Understanding the Basics of Natural Language Processing and Its Application to Processing Physicians’ Notes</strong><p>Duke Family Medicine and Community Health Grand Rounds · September 14, 2021</p></li></ul><a class="btn" href="papers/CV_Prakash.pdf">Full record in CV · September 2026</a></section></div></div>
-<div class="page" id="page-research"><div class="pc"><span aria-hidden="true" class="section-anchor" id="research"></span>
-<div class="reveal" style="padding-top:.5rem"><div class="sl">Research</div><h2 class="st">Systems That See, Decide, and Act</h2><p class="sd">Full-stack platforms integrating hardware, sensing, and algorithms for high-stakes autonomous operation.</p></div>
-<div class="bento reveal"><div class="bento-card big"><a aria-label="View full figure: SonicFly aerial robot pursuit experiment" class="bento-card-img photo-figure" href="images/publications/SonicFly.jpg" rel="noopener noreferrer" target="_blank"><img alt="SonicFly aerial robot pursuit experiment" decoding="async" loading="lazy" src="images/publications/SonicFly.jpg"/></a><span class="btag sub">2026 · Under review</span><h3>SonicFly: listening to the sound of flight</h3><p>Passive aeroacoustic sensing enables a flying robot to estimate and pursue another using its intrinsic flight sound.</p><div class="blinks"><a class="blink" href="https://generalroboticslab.com/SonicFly">Website</a><a class="blink" href="https://arxiv.org/pdf/2608.00401">PDF</a><a class="blink" href="https://arxiv.org/abs/2608.00401">arXiv</a><a class="blink" href="https://github.com/generalroboticslab/SonicFly">Code</a></div></div><div class="bento-card"><span class="btag sub">2026 · Under review</span><h3>OCTN: Neural OCT Tissue Representations</h3><p>Neural tissue representations for robot-guided precision intervention.</p><div class="blinks"><a class="blink" href="#publication-octn">Publication details</a></div></div>
-<div class="bento-card big"><a aria-label="View full figure: TumorMap" class="bento-card-img" href="images/publications/TumorMap_figure.jpg" rel="noopener noreferrer" target="_blank"><img alt="TumorMap" decoding="async" loading="lazy" src="images/publications/TumorMap_figure.jpg"/></a><span class="btag sub">Under Review</span><h3>TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection</h3><p>Multimodal surgical platform — leveraging OCT, laser-induced fluorescence, RGB images, to generate 3D pathological maps with learning-based mapping, enabling autonomous resection through laser scalpel. Validated in murine osteosarcoma and soft-tissue sarcoma with submillimeter accuracy.</p><div class="blinks"><a class="blink" href="https://mgsresearch.github.io/tumormap.github.io/" rel="noopener noreferrer" target="_blank">Website</a><a class="blink" href="papers/TumorMap.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="blink" href="https://arxiv.org/abs/2511.05723" rel="noopener noreferrer" target="_blank">arXiv</a><a class="blink" href="https://github.com/mgsresearch/tumormap_code" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: See, Plan, Cut research overview" class="bento-card-img" href="images/publications/See_Plan_Cut.jpg" rel="noopener noreferrer" target="_blank"><img alt="See, Plan, Cut research overview" decoding="async" loading="lazy" src="images/publications/See_Plan_Cut.jpg"/></a><span class="btag pub">ICRA 2026</span><h3>See, Plan, Cut: MPC-Based Volumetric Laser Surgery</h3><p>Sampling-based MPC for OCT-guided volumetric ablation. Optimal trajectories respecting tissue constraints.</p><div class="blinks"><a class="blink" href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener noreferrer" target="_blank">Website</a><a class="blink" href="papers/See,Plan,Cut.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="blink" href="https://arxiv.org/abs/2511.17777" rel="noopener noreferrer" target="_blank">arXiv</a><a class="blink" href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" rel="noopener noreferrer" target="_blank">Video</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: PalpAid research overview" class="bento-card-img" href="images/publications/Palpaid.png" rel="noopener noreferrer" target="_blank"><img alt="PalpAid research overview" decoding="async" loading="lazy" src="images/publications/Palpaid.png"/></a><span class="btag pub">RoboSoft 2026</span><h3>PalpAid: Multimodal Pneumatic Tactile Sensor</h3><p>Pneumatic tactile sensor for tissue palpation — mentored undergraduate project.</p><div class="blinks"><a class="blink" href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank">Website</a><a class="blink" href="papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="blink" href="https://www.youtube.com/watch?v=_mmzDbw0OuI" rel="noopener noreferrer" target="_blank">Video</a><a class="blink" href="https://github.com/raprakashvi/palpaid_robosoft" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="bento-card tall"><a aria-label="View full figure: Portable Dual research overview" class="bento-card-img" href="images/publications/ISMR2025_portable_dual_sensor.png" rel="noopener noreferrer" target="_blank"><img alt="Portable Dual research overview" decoding="async" loading="lazy" src="images/publications/ISMR2025_portable_dual_sensor.png"/></a><span class="btag pub">ISMR 2025</span><h3>Portable Dual Sensor Visualization</h3><p>Large-area dual sensing for real-time surgical guidance in resource-constrained settings.</p><div class="blinks"><a class="blink" href="https://ieeexplore.ieee.org/abstract/document/11025962" rel="noopener noreferrer" target="_blank">Paper</a><a class="blink" href="papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: SurgXBench research overview" class="bento-card-img" href="images/publications/SurgXBench.png" rel="noopener noreferrer" target="_blank"><img alt="SurgXBench research overview" decoding="async" loading="lazy" src="images/publications/SurgXBench.png"/></a><span class="btag pub">WACV 2026</span><h3>SurgXBench: Explainable VLM for Surgery</h3><p>Vision-language model benchmark for surgical scene understanding.</p><div class="blinks"><a class="blink" href="papers/SurgXBench.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="bento-card"><a aria-label="View full figure: Multimodal Tissue Boundary research overview" class="bento-card-img" href="images/publications/where_is_the_boundary.png" rel="noopener noreferrer" target="_blank"><img alt="Multimodal Tissue Boundary research overview" decoding="async" loading="lazy" src="images/publications/where_is_the_boundary.png"/></a><span class="btag pub">BSN 2025</span><h3>Multimodal Tissue Boundary Delineation</h3><p>Sensor fusion for tissue transition detection. Mentored project.</p></div>
-<div class="bento-card"><span class="btag pub">ISMR 2023</span><h3>Brain-Mimicking Phantom for Photoablation</h3><p>Tunable optical/mechanical phantoms for validating robotic laser surgery systems.</p></div>
-<div class="bento-card"><span class="btag pub">IROS 2023</span><h3>3D Laser-Tissue Agnostic Surgical Planning</h3><p>Data-driven method for robotic laser surgical planning from 3D scans.</p></div>
-</div>
-</div></div>
-<div class="page" id="page-publications"><div class="pc"><span aria-hidden="true" class="section-anchor" id="publications"></span><div class="reveal"><div class="sl">Publications</div><h2 class="st">Papers &amp; scholarly work</h2><p class="sd">Published papers, manuscripts under review, and invited contributions. Status is listed for each work; * denotes equal contribution.</p></div>
-<!-- <div class="reveal" style="padding-top:.5rem"><div class="sl">Publications</div><h2 class="st">Selected Works</h2><p class="sd"> Publications across ICRA, IROS, ISMR, Nature Communications, and IEEE venues.</p></div> -->
-<div class="pf reveal">
-<button class="pfb active" onclick="fp('all',this)">All</button>
-<button class="pfb" onclick="fp('journal',this)">Journals</button>
-<button class="pfb" onclick="fp('conference',this)">Conferences</button>
-<button class="pfb" onclick="fp('review',this)">Under review</button><button class="pfb" onclick="fp('preprint',this)">Preprints &amp; workshops</button><button class="pfb" onclick="fp('chapter',this)">Book chapters</button></div>
-<div class="plist reveal"><article class="pi" data-t="review" id="publication-sonicfly"><div class="pi-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/SonicFly.jpg"/></div><div class="pinfo"><h4>Embodied Passive Aeroacoustic Perception Enables Relative Sensing and Pursuit Between Aerial Robots</h4><div class="pau">Liu, Y., <strong>Prakash, R.</strong>, Lo, L. Y., Roede, N., Chen, B.</div><div class="pvt">2026 · Under review</div></div><div class="plc"><a class="pls" href="https://generalroboticslab.com/SonicFly">Website</a><a class="pls" href="https://arxiv.org/pdf/2608.00401">PDF</a><a class="pls" href="https://arxiv.org/abs/2608.00401">arXiv</a><a class="pls" href="https://github.com/generalroboticslab/SonicFly">Code</a></div></article><article class="pi" data-t="review" id="publication-octn"><div class="pi-thumb"><span aria-hidden="true" class="pub-mark">RP</span></div><div class="pinfo"><h4>OCTN: Neural OCT Tissue Representations for Robot-Guided Precision Intervention</h4><div class="pau"><strong>Prakash, R.</strong>, McNabb, R. P., Codd, P. J., Lin, S.</div><div class="pvt">2026 · Under review</div></div><div class="plc"></div></article><article class="pi" data-t="chapter" id="publication-chapter"><div class="pi-thumb"><span aria-hidden="true" class="pub-mark">RP</span></div><div class="pinfo"><h4>Intelligent Robotic Assistants for Minimally Invasive Surgery: From Camera Holders to Autonomous Task Partners</h4><div class="pau">Chen, X., <strong>Prakash, R.</strong>, Jopling, J., Krieger, A.</div><div class="pvt">Invited chapter · AI in Robotic Surgery: Foundation, Innovation, and Future Direction · Springer Nature</div></div><div class="plc"></div></article>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ravi Prakash — Robotics, Multimodal Sensing & Surgical Autonomy</title>
+<meta name="description" content="Ravi Prakash builds robots that turn multimodal sensing into precise autonomous action — surgical, medical and aerial systems. Postdoctoral Fellow at Johns Hopkins University, on the job market for faculty and research scientist positions.">
+<meta name="keywords" content="robotics researcher, surgical robotics, medical robotics, multimodal sensing, surgical autonomy, robotic laser surgery, optical coherence tomography, aeroacoustic perception, aerial robots, Johns Hopkins, Duke University, Ravi Prakash">
+<meta name="author" content="Ravi Prakash">
+<meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+<meta name="theme-color" content="#efece5">
+<link rel="canonical" href="https://raprakashvi.github.io/">
+<meta property="og:type" content="profile">
+<meta property="og:site_name" content="Ravi Prakash — Robotics Researcher">
+<meta property="og:title" content="Ravi Prakash — Robotics, Multimodal Sensing & Surgical Autonomy">
+<meta property="og:description" content="Ravi Prakash builds robots that turn multimodal sensing into precise autonomous action — surgical, medical and aerial systems. Postdoctoral Fellow at Johns Hopkins University, on the job market for faculty and research scientist positions.">
+<meta property="og:url" content="https://raprakashvi.github.io/">
+<meta property="og:locale" content="en_US">
+<meta property="og:image" content="https://raprakashvi.github.io/assets/og/og-home.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Ravi Prakash — Postdoctoral Fellow, Johns Hopkins University">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ravi Prakash — Robotics, Multimodal Sensing & Surgical Autonomy">
+<meta name="twitter:description" content="Ravi Prakash builds robots that turn multimodal sensing into precise autonomous action — surgical, medical and aerial systems. Postdoctoral Fellow at Johns Hopkins University, on the job market for faculty and research scientist positions.">
+<meta name="twitter:image" content="https://raprakashvi.github.io/assets/og/og-home.jpg">
+<meta name="twitter:image:alt" content="Ravi Prakash — Postdoctoral Fellow, Johns Hopkins University">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..700&family=Martian+Mono:wght@400..700&display=swap">
+<link rel="stylesheet" href="/assets/site.css?v=a19f35a5">
+<link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/images/profile%20pic_small-min.png">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://raprakashvi.github.io/#website","url":"https://raprakashvi.github.io/","name":"Ravi Prakash — Robotics Researcher","inLanguage":"en","publisher":{"@id":"https://raprakashvi.github.io/#ravi-prakash"}},{"@type":"ProfilePage","@id":"https://raprakashvi.github.io/#page","url":"https://raprakashvi.github.io/","name":"Ravi Prakash — Robotics, Multimodal Sensing & Surgical Autonomy","description":"Ravi Prakash builds robots that turn multimodal sensing into precise autonomous action — surgical, medical and aerial systems. Postdoctoral Fellow at Johns Hopkins University, on the job market for faculty and research scientist positions.","isPartOf":{"@id":"https://raprakashvi.github.io/#website"},"about":{"@id":"https://raprakashvi.github.io/#ravi-prakash"},"inLanguage":"en","primaryImageOfPage":{"@type":"ImageObject","url":"https://raprakashvi.github.io/assets/og/og-home.jpg"},"mainEntity":{"@id":"https://raprakashvi.github.io/#ravi-prakash"}},{"@type":"Person","@id":"https://raprakashvi.github.io/#ravi-prakash","name":"Ravi Prakash","givenName":"Ravi","familyName":"Prakash","url":"https://raprakashvi.github.io/","image":"https://raprakashvi.github.io/images/profile%20pic_small-min.png","jobTitle":"Postdoctoral Fellow","description":"Robotics researcher working on multimodal sensing and closed-loop autonomy for surgical, medical and aerial robotic systems.","worksFor":{"@type":"CollegeOrUniversity","name":"Johns Hopkins University","url":"https://www.jhu.edu/"},"alumniOf":[{"@type":"CollegeOrUniversity","name":"Duke University","url":"https://duke.edu/"},{"@type":"CollegeOrUniversity","name":"National Institute of Technology Warangal"}],"email":"mailto:ravi.prakash@jhu.edu","knowsAbout":["Robotics","Surgical robotics","Multimodal perception","Surgical autonomy","Acoustic sensing","Optical coherence tomography","Model predictive control","Medical imaging","Aerial robotics"],"sameAs":["https://orcid.org/0000-0002-4020-1590","https://scholar.google.com/citations?user=BX_yW-kAAAAJ","https://github.com/raprakashvi","https://www.linkedin.com/in/raprakashvi/"]}]}</script>
+</head>
+<body>
 <!--
-  PUBLICATION TEMPLATE (copy this block for each paper):
-  
-  THUMBNAIL: Put image in images/publications/, then:
-    <img src="images/publications/paper-name.jpg" alt="Title">
-  
-  LINKS (order: Website → PDF → arXiv → Code). Omit any you don't have:
-    <a href="https://project-page.com" class="pls" target="_blank">Website</a>
-    <a href="papers/paper-name.pdf" class="pls" target="_blank">PDF</a>   (or external URL)
-    <a href="https://arxiv.org/abs/xxxxx" class="pls" target="_blank">arXiv</a>
-    <a href="https://github.com/..." class="pls" target="_blank">Code</a>
+  THESIS: A research record assembled from a visible kit of docking modules, not
+  composed as a document. Refuses the academic-portfolio arrangement of headshot,
+  bio and a list beneath a serif headline.
+  OWN-WORLD: Warm bone ground, graphite structure ink, one electric signal colour
+  reserved for anything live. Every element docks to a visible hairline lattice:
+  square corners, 1px rules, mono runs for measured facts. Archivo across two
+  widths; Martian Mono for data only.
+  STORY: A search committee reads the thesis at full scale in one viewport, the
+  built systems as modules with their evidence attached, and availability as a lit
+  state chip; they leave able to state the research program, one click from proof.
+  FIRST VIEWPORT: identity module top-left, thesis spanning the lattice at display
+  scale, a research figure docked beside it, counted record and a signal-filled
+  contact module along the closing rule.
+  FORM: modular kit-of-parts; brief-pinned by the owner after two re-rolls,
+  superseding seed 4255b777.
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the
+  finish review, the verdict, and DESIGN.md
 -->
-<div class="pi" data-t="review" id="publication-tumormap-a-laser-based-surgical-platform-for-3d-tumor-mapping-and-fully-automated-tumor-resection"><div class="pi-thumb"><img alt="TumorMap" decoding="async" loading="lazy" src="images/publications/TumorMap_figure.jpg"/></div><div class="pinfo"><h4>TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection</h4><div class="pau">Ma, G.*, <strong>Prakash, R.*</strong>, Schleupner, B., Everitt, J. I., Mishra, A., Chen, J., Mann, B., Chen, B., Bridgeman, L., Zhong, P., Draelos, M., Eward, W., Codd, P. J.</div><div class="pvt"><span>Under Review</span> · *equal contribution</div></div><div class="plc"><a class="pls" href="https://mgsresearch.github.io/tumormap.github.io/" rel="noopener noreferrer" target="_blank">Website</a><a class="pls" href="papers/TumorMap.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="pls" href="https://arxiv.org/abs/2511.05723" rel="noopener noreferrer" target="_blank">arXiv</a><a class="pls" href="https://github.com/mgsresearch/tumormap_code" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="pi" data-t="journal" id="publication-design-and-evaluation-of-a-compliant-quasi-direct-drive-end-effector-for-safe-robotic-ultrasound-imaging"><div class="pi-thumb"><img alt="Compliant Quasi Direct Drive End-Effector" decoding="async" loading="lazy" src="images/publications/Compliant_Quasi_Direct_Drive.png"/></div><div class="pinfo"><h4>Design and Evaluation of a Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound Imaging</h4><div class="pau">Chen, D., <strong>Prakash, R.</strong>, Wang, V., Chen, Z., Dias, S., Bridgeman, L., Oca, S., Mann, B.</div><div class="pvt">IEEE Transactions on Medical Robotics and Bionics · 2026 · Published</div></div><div class="plc"><a class="pls" href="https://arxiv.org/abs/2410.03086" rel="noopener noreferrer" target="_blank">arXiv</a></div></div>
-<div class="pi" data-t="conference" id="publication-see-plan-cut-mpc-based-autonomous-volumetric-robotic-laser-surgery"><div class="pi-thumb"><img alt="See, Plan, Cut" decoding="async" loading="lazy" src="images/publications/See_Plan_Cut.jpg"/></div><div class="pinfo"><h4>See, Plan, Cut: MPC-Based Autonomous Volumetric Robotic Laser Surgery</h4><div class="pau"><strong>Prakash, R.*</strong>, Wang, V.*, Mishra, A., Yuliarti, D., et al.</div><div class="pvt"><span>ICRA 2026</span> *equal contribution</div></div><div class="plc"><a class="pls" href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener noreferrer" target="_blank">Website</a><a class="pls" href="papers/See,Plan,Cut.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="pls" href="https://arxiv.org/abs/2511.17777" rel="noopener noreferrer" target="_blank">arXiv</a><a class="pls" href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" rel="noopener noreferrer" target="_blank">Video</a><a class="pls" href="https://github.com/raprakashvi/see_plan_cut" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="pi" data-t="conference" id="publication-palpaid-multimodal-pneumatic-tactile-sensor-for-tissue-palpation"><div class="pi-thumb"><img alt="PalpAid" decoding="async" loading="lazy" src="images/publications/Palpaid.png"/></div><div class="pinfo"><h4>PalpAid: Multimodal Pneumatic Tactile Sensor for Tissue Palpation</h4><div class="pau">Yuliarti, D.*, <strong>Prakash, R.*</strong>, Cheung, H. H., et al.</div><div class="pvt"><span>RoboSoft 2026</span> Mentored</div></div><div class="plc"><a class="pls" href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank">Website</a><a class="pls" href="papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="pls" href="https://www.youtube.com/watch?v=_mmzDbw0OuI" rel="noopener noreferrer" target="_blank">Video</a><a class="pls" href="https://github.com/raprakashvi/palpaid_robosoft" rel="noopener noreferrer" target="_blank">Code</a></div></div>
-<div class="pi" data-t="conference" id="publication-surgxbench-explainable-vision-language-model-benchmark-for-surgery"><div class="pi-thumb"><img alt="SurgXBench" decoding="async" loading="lazy" src="images/publications/SurgXBench.png"/></div><div class="pinfo"><h4>SurgXBench: Explainable Vision-Language Model Benchmark for Surgery</h4><div class="pau">Cheng, J., Zhao, X., Tripathi, S., Liu, S., Yu, X., <strong>Prakash, R.</strong>, Codd, P. J., Katz, J. E., Lin, S.</div><div class="pvt"><span>WACV 2026</span></div></div><div class="plc"><a class="pls" href="papers/SurgXBench.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="pi" data-t="conference" id="publication-where-is-the-boundary-multimodal-sensor-fusion-test-bench-for-tissue-boundary-delineation"><div class="pi-thumb"><img alt="Where is the Boundary" decoding="async" loading="lazy" src="images/publications/where_is_the_boundary.png"/></div><div class="pinfo"><h4>Where is the Boundary? Multimodal Sensor Fusion Test Bench for Tissue Boundary Delineation</h4><div class="pau">Chen, Z., Cahilig, A. C., Dias, S., Kolar, P., <strong>Prakash, R.</strong>, Codd, P. J.</div><div class="pvt"><span>IEEE-EMBS BSN 2025</span> Mentored</div></div><div class="plc"><a class="pls" href="https://ieeexplore.ieee.org/abstract/document/11337667" rel="noopener noreferrer" target="_blank">Paper</a><a class="pls" href="papers/where_is_the_boundary.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="pi" data-t="conference" id="publication-sampling-based-model-predictive-control-for-volumetric-ablation-in-robotic-laser-surgery"><div class="pi-thumb"><img alt="Sampling-Based MPC" decoding="async" loading="lazy" src="images/publications/Sampling_Based_MPC.png"/></div><div class="pinfo"><h4>Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery</h4><div class="pau">Wang, V. Y., <strong>Prakash, R.</strong>, Oca, S. R., LoCicero, E. J., Codd, P. J., Bridgeman, L. J.</div><div class="pvt"><span>ICRA 2025</span></div></div><div class="plc"><a class="pls" href="https://ieeexplore.ieee.org/abstract/document/11127624" rel="noopener noreferrer" target="_blank">Paper</a><a class="pls" href="papers/Sampling_Based_MPC.pdf" rel="noopener noreferrer" target="_blank">PDF</a><a class="pls" href="https://arxiv.org/abs/2410.03152" rel="noopener noreferrer" target="_blank">arXiv</a></div></div>
-<div class="pi" data-t="conference" id="publication-portable-dual-sensor-large-area-visualization-system-for-robotic-laser-surgery"><div class="pi-thumb"><img alt="Portable Dual Sensor" decoding="async" loading="lazy" src="images/publications/ISMR2025_portable_dual_sensor.png"/></div><div class="pinfo"><h4>Portable Dual Sensor Large Area Visualization System for Robotic Laser Surgery</h4><div class="pau"><strong>Prakash, R.</strong>, Wang, V., Chen, Z., Bridgeman, L., Codd, P. J.</div><div class="pvt"><span>ISMR 2025</span></div></div><div class="plc"><a class="pls" href="https://ieeexplore.ieee.org/abstract/document/11025962" rel="noopener noreferrer" target="_blank">Paper</a><a class="pls" href="papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="pi" data-t="journal" id="publication-extracting-critical-information-from-unstructured-clinicians-notes-data-to-identify-dementia-severity-using-a-rule-based-approach-feasibility-study"><div class="pi-thumb"><div class="pi-placeholder"><svg fill="none" height="40" viewbox="0 0 40 40" width="40"><rect height="20" rx="3" stroke="#cec7b8" stroke-width="1" width="20" x="10" y="10"></rect></svg></div></div><div class="pinfo"><h4>Extracting Critical Information from Unstructured Clinicians’ Notes Data to Identify Dementia Severity Using a Rule-Based Approach: Feasibility Study.</h4><div class="pau"><strong>Prakash, R.</strong>, Dupre, M. E., Østbye, T., Xu, H.</div><div class="pvt"><span>JMIR Aging</span> 7, e57926</div></div><div class="plc"><a class="pls" href="https://aging.jmir.org/2024/1/e57926/" rel="noopener noreferrer" target="_blank">Paper</a></div></div>
-<div class="pi" data-t="conference" id="publication-a-rule-based-framework-to-identify-severity-of-dementia-from-unstructured-electronic-health-record-data"><div class="pi-thumb"><div class="pi-placeholder"><svg fill="none" height="40" viewbox="0 0 40 40" width="40"><rect height="20" rx="3" stroke="#cec7b8" stroke-width="1" width="20" x="10" y="10"></rect></svg></div></div><div class="pinfo"><h4>A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data</h4><div class="pau"><strong>Prakash, R.</strong>, Dupre, M. E., Østbye, T., Xu, H.</div><div class="pvt"><span>AAIC 2023</span> · Alzheimer’s &amp; Dementia 19(S1): e075325</div></div><div class="plc"><a class="pls" href="https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.075325" rel="noopener noreferrer" target="_blank">Paper</a></div></div>
-<div class="pi" data-t="journal" id="publication-a-blinded-study-using-laser-induced-endogenous-fluorescence-spectroscopy-to-differentiate-ex-vivo-spine-tumor-healthy-muscle-and-healthy-bone"><div class="pi-thumb"><div class="pi-placeholder"><svg fill="none" height="40" viewbox="0 0 40 40" width="40"><circle cx="20" cy="20" r="10" stroke="#cec7b8" stroke-width="1"></circle><line stroke="#cec7b8" stroke-width=".5" x1="20" x2="20" y1="10" y2="30"></line></svg></div></div><div class="pinfo"><h4>A Blinded Study Using Laser-Induced Endogenous Fluorescence Spectroscopy to Differentiate Ex Vivo Spine Tumor, Healthy Muscle, and Healthy Bone</h4><div class="pau">Sperber, J., Zachem, T. J., <strong>Prakash, R.</strong>, Owolo, E., Yamamoto, K., Nguyen, A. D., Hockenberry, H., Ross, W. A., Herndon, J. E., Codd, P. J., Goodwin, C. R.</div><div class="pvt"><span>Scientific Reports</span> 14(1), 1921</div></div><div class="plc"><a class="pls" href="https://www.nature.com/articles/s41598-023-50995-4" rel="noopener noreferrer" target="_blank">Paper</a></div></div>
-<div class="pi" data-t="conference" id="publication-3d-laser-and-tissue-agnostic-data-driven-method-for-robotic-laser-surgical-planning"><div class="pi-thumb"><div class="pi-placeholder"><svg fill="none" height="40" viewbox="0 0 40 40" width="40"><path d="M 10 30 Q 20 10 30 30" fill="none" stroke="#cec7b8" stroke-width="1"></path></svg></div></div><div class="pinfo"><h4>3D Laser-and-Tissue Agnostic Data-Driven Method for Robotic Laser Surgical Planning</h4><div class="pau">Ma, G., <strong>Prakash, R.</strong>, Mann, B., Ross, W., Codd, P. J.</div><div class="pvt"><span>IROS 2023</span></div></div><div class="plc"><a class="pls" href="https://arxiv.org/pdf/2305.01524.pdf" rel="noopener noreferrer" target="_blank">PDF</a></div></div>
-<div class="pi" data-t="conference" id="publication-brain-mimicking-phantom-for-photoablation-and-visualization"><div class="pi-thumb"><div class="pi-placeholder"><svg fill="none" height="40" viewbox="0 0 40 40" width="40"><circle cx="20" cy="18" r="10" stroke="#cec7b8" stroke-width="1"></circle><path d="M 14 24 Q 20 32 26 24" fill="none" stroke="#cec7b8" stroke-width=".8"></path></svg></div></div><div class="pinfo"><h4>Brain-Mimicking Phantom for Photoablation and Visualization</h4><div class="pau"><strong>Prakash, R.</strong>, Yamamoto, K. K., Oca, S. R., Ross, W., Codd, P. J.</div><div class="pvt"><span>ISMR 2023</span></div></div><div class="plc"></div></div>
-<div class="pi" data-t="conference" id="publication-comparative-study-of-fluid-flow-and-heat-transfer-in-microchannels-with-uniformly-varying-cross-section"><div class="pi-thumb"><div class="pi-placeholder"><svg fill="none" height="40" viewbox="0 0 40 40" width="40"><rect height="12" rx="1" stroke="#cec7b8" stroke-width="1" width="20" x="10" y="14"></rect></svg></div></div><div class="pinfo"><h4>Comparative Study of Fluid Flow and Heat Transfer in Microchannels with Uniformly Varying Cross-Section</h4><div class="pau">Chatterjee, A., Valaparla, R. K., <strong>Prakash, R.</strong>, Balasubramanian, K.</div><div class="pvt"><span>ETME 2019</span></div></div><div class="plc"></div></div>
-<article class="pi" data-t="preprint" id="publication-photoablation"><div class="pi-thumb"><span aria-hidden="true" class="pub-mark">RP</span></div><div class="pinfo"><h4>Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery</h4><div class="pau">Ross, W., <strong>Prakash, R.</strong>, Ma, G., Eward, W., Mann, B., Codd, P. J.</div><div class="pvt">DMMR Workshop @ IROS 2023 · Non–peer-reviewed</div></div><div class="plc"></div></article><article class="pi" data-t="preprint" id="publication-operative-vision"><div class="pi-thumb"><span aria-hidden="true" class="pub-mark">RP</span></div><div class="pinfo"><h4>Computer Vision for Increased Operative Efficiency via Identification of Instruments in the Neurosurgical Operating Room: A Proof-of-Concept Study</h4><div class="pau">Zachem, T. J., Chen, S. F., Venkatraman, V., Sykes, D. A., <strong>Prakash, R.</strong>, Spellicy, S., Suarez, A. D., Ross, W., Codd, P. J.</div><div class="pvt">arXiv preprint · 2023 · Non–peer-reviewed</div></div><div class="plc"></div></article></div>
-</div></div>
-<div class="page" id="page-teaching"><div class="pc"><span aria-hidden="true" class="section-anchor" id="teaching"></span>
-<div class="reveal" style="padding-top:.5rem"><div class="sl">Teaching &amp; Mentorship</div><h2 class="st">Building the Next Generation</h2><p class="sd">Mentorship across high school, undergraduate, and graduate research, with publications at ICRA, RoboSoft, and BSN and placements at Google, Microsoft, Medtronic, and Ethicon.</p></div>
-<div class="tg reveal">
-<div class="tc"><div class="tr">Instructor of Record · 2025–26 · Team Lead &amp; Project Manager</div><h3>Reimagining Surgery for Rural Needs: Robotics Teleoperation</h3><p>Completed Bass Connections course (Fall 2025–Spring 2026): teleoperated laser surgery for rural clinics, optomechanical assembly, and hardware/software integration. Course evaluation: 4.25/5 (Fall 2025).</p><div class="port-links" style="margin-top:.5rem"><a href="https://bassconnections.duke.edu/project/reimagining-surgery-rural-needs-robotics-teleoperation-2025-2026/" rel="noopener noreferrer" target="_blank">Project</a><a href="https://www.braintoollab.com/bass-connections-25-26" rel="noopener noreferrer" target="_blank">Website</a><a href="https://bassconnections.duke.edu/story/ravi-prakash-phd-mechanical-engineering-materials-science-26/">Mentorship profile</a><a href="https://bassconnections.duke.edu/news/how-can-robotic-surgery-improve-access-specialized-healthcare-rural-communities/">Team feature</a></div></div>
-<div class="tc"><div class="tr">Guest Lecturer · 2024, 2025, 2026</div><h3>Intro to Medical Robotics</h3><p>ML for Medical Robotics and Design of Experiments. Scaffolded self-learning for diverse experience levels.</p></div>
-<div class="tc"><div class="tr">Curriculum Developer · 2024</div><h3>Collaborative Expeditions</h3><p>Self-learning modules on DOE, ML, Literature Review with reflections and case studies.</p></div>
-<div class="tc"><div class="tr">TA · 2021–22</div><h3>Experiment Design &amp; Research Methods</h3><p>Research scoping, rapid prototyping, portfolio development. 3 semesters.</p></div>
-<div class="tc"><div class="tr">Guest Lecturer · Spring 2026 · ME/BME 555</div><h3>Engineering Technology in Biomedical Applications</h3><p>Robotics and AI for Laser Surgery: multimodal sensing, learning, neural state representations, and custom optomechanical hardware.</p></div></div>
-<div class="reveal"><div class="sl">Mentees</div><h2 class="st" style="font-size:1.4rem">Students &amp; Outcomes</h2></div>
-<div class="mg reveal"><div class="me"><div class="men">Tarun Vinodkumar <span class="metag">PhD student</span></div><div class="med">Johns Hopkins University — Autonomous robots for stroke intervention</div><div class="meo">Ongoing</div></div><div class="me"><div class="men">Vincent Wang <span class="metag">Graduate</span></div><div class="med">Duke Ph.D. candidate — Safety critical controls for precision robotic surgery</div><div class="meo">Ongoing</div></div>
-<div class="me"><div class="men">Yongjun Lu <span class="metag">Graduate</span></div><div class="med">Duke — Ultrasonic Aspirator</div><div class="meo">→ Clinical OR data acquisition · Ethicon, J&amp;J</div></div>
-<div class="me"><div class="men">Caroline Chen <span class="metag">Graduate</span></div><div class="med">Duke MS — Segmentation</div><div class="meo">→ ISMR 2024 (Poster) · ML Engineer, Google</div></div>
-<div class="me"><div class="men">Changxin Yu <span class="metag">Graduate</span></div><div class="med">Duke MS — OCT Segmentation</div><div class="meo">→ 3rd Prize Symposium · Microsoft</div></div>
-<div class="me"><div class="men">Antony Farrand <span class="metag">Graduate</span></div><div class="med">Duke MS — Acoustic Surgery</div><div class="meo">→ Duke MEMS Poster Symposium</div></div>
-<div class="me"><div class="men">Devi Yuliarti <span class="metag">Undergraduate</span></div><div class="med">Duke — Tactile Sensor</div><div class="meo">→ IEEE-RAS RoboSoft 2026 (Co-first author), IEEE ICRA 2026</div></div>
-<div class="me"><div class="men">Zacharias Chen <span class="metag">Undergraduate</span></div><div class="med">Duke — Tissue Boundary</div><div class="meo">→ IEEE-EMBS BSN 2025, ICRA ELSR Workshop · Medtronic Hugo; IEEE TMRB submission (conditionally accepted)</div></div>
-<div class="me"><div class="men">Nikhil Aaryath <span class="metag">Undergraduate</span></div><div class="med">Duke — UA Tissue</div><div class="meo">→ Robotic data pipeline</div></div>
-<div class="me"><div class="men">Alexa Cahilig <span class="metag">Undergraduate</span></div><div class="med">Duke — Multimodal Tissue Boundary Test Bench</div><div class="meo">→ IEEE ICRA ELSR Poster 2025, IEEE-EMBS BSN 2025 Paper</div></div>
-<div class="me"><div class="men">Aakriti <span class="metag">Undergraduate</span></div><div class="med">IIT Bombay — Mechano-Acoustic Speech Information</div><div class="meo">→ Acoustic feature analysis and experimental characterization</div></div>
-<div class="me"><div class="men">Akshit Srivastava <span class="metag">Undergraduate</span></div><div class="med">IIT Bombay — Mechano-Acoustic Speech Information</div><div class="meo">→ Contributed to characterization and analysis</div></div>
-<div class="me"><div class="men">Sarah Dias <span class="metag">High School</span></div><div class="med">HS — Tissue Boundary</div><div class="meo">→ IEEE-EMBS BSN 2025, ICRA ELSR Workshop; IEEE TMRB submission (conditionally accepted)</div></div>
-<div class="me"><div class="men">Prithu Kolar <span class="metag">High School</span></div><div class="med">NCSSM — Acoustic/Video</div><div class="meo">→ IEEE-EMBS BSN 2025 · Park Scholar, NC State</div></div>
-<div class="me"><div class="men">Felicity Lipchak <span class="metag">High School</span></div><div class="med">NCSSM — Acoustic/Video</div><div class="meo">→ Dartmouth College</div></div>
+<a class="skip" href="#main">Skip to content</a>
+<nav class="rail" aria-label="Primary">
+  <a class="rail-mark" href="/"><b>RAVI PRAKASH</b></a>
+  <div class="rail-nav"><a href="/" aria-current="page">Home</a><a href="/about/">About</a><a href="/research/">Research</a><a href="/publications/">Publications</a><a href="/teaching/">Teaching</a><a href="/media/">Media</a><a href="/portfolio/">Portfolio</a></div>
+  <span class="rail-dot" aria-hidden="true"></span>
+</nav>
+<div class="bar">
+  <a class="bar-mark" href="/">RAVI PRAKASH</a>
+  <button class="bar-toggle" type="button" aria-expanded="false" aria-controls="drawer">Menu</button>
 </div>
-</div></div>
-<div class="page" id="page-portfolio"><div class="pc"><span aria-hidden="true" class="section-anchor" id="portfolio"></span>
-<div class="reveal" style="padding-top:.5rem"><div class="sl">Portfolio</div><h2 class="st">Beyond the Lab</h2><p class="sd">Leadership, community innovation, and institution-building.</p></div>
-<div class="port-grid reveal"><div class="port-card wide"><div class="workshop-art"><span>IROS 2026 · Pittsburgh</span><strong>ELSR</strong><span>Foundation Models Meet New Robotic Embodiments</span></div><div class="port-body"><div class="port-tag">Workshop co-organizer · 2026</div><h3>The Evolving Landscape of Surgical Robotics</h3><p>Organizers: Lin, S., Prakash, R., Lu, J., Jiang, F., Dou, Q., Goldberg, K.</p><div class="port-links"><a href="https://sites.google.com/view/iros-elsr-2026/">Workshop website</a></div></div></div><div class="port-card wide"><div class="port-vis"><div class="port-placeholder"><svg fill="none" height="60" opacity=".3" viewbox="0 0 60 60" width="60"><rect height="24" rx="3" stroke="#4a7a64" stroke-width=".8" width="36" x="12" y="18"></rect><line stroke="#4a7a64" stroke-width=".3" x1="12" x2="48" y1="28" y2="28"></line></svg></div></div><div class="port-body"><div class="port-tag">Service · 2025</div><h3>ICRA Evolving Landscape of Surgical Robotics Workshop Organizer</h3><p>“The Evolving Landscape of Surgical Robotics” at ICRA 2025. Curated lineup of 12 international researchers. Organizers: Lin, S., Prakash, R., Fichera, L., Mattos, L., Su, H., Yip, M. C., Codd, P., Webster, R. J. III.</p><div class="port-links"><a href="https://sites.google.com/view/icra2025-workshop-clsr" rel="noopener noreferrer" target="_blank">Workshop Page</a></div></div></div>
-<!-- To add images: replace the SVG placeholder with <img src="images/your-image.jpg" alt="description"> -->
-<div class="port-card wide"><div class="port-vis"><!-- ADD IMAGE: <img src="images/futures_plus.png" alt="Futures+"> --><img alt="Futures+" decoding="async" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="images/futures_plus.png"/><div class="port-placeholder" style="display:none"><svg fill="none" height="60" opacity=".3" viewbox="0 0 60 60" width="60"><circle cx="20" cy="30" r="12" stroke="#c23a22" stroke-width=".8"></circle><circle cx="40" cy="30" r="12" stroke="#4a7a64" stroke-width=".8"></circle></svg></div></div><div class="port-body"><div class="port-tag">Foresight &amp; Innovation · 2020</div><h3>Futures+: Multi-National Deep Tech Innovation Program</h3><p>Co-led a 6-month innovation program across Bhutan, Indonesia, India, and Singapore with 16 partners. Three finalist solutions deployed in northeast India and Indonesia. Direct engagement with farming communities shaped modular, repairable design principles.</p><div class="port-links"><a href="https://futures-plus.com/" rel="noopener noreferrer" target="_blank">Website</a></div></div></div>
-<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg fill="none" height="60" opacity=".3" viewbox="0 0 60 60" width="60"><rect height="30" rx="3" stroke="#c23a22" stroke-width=".8" width="36" x="12" y="15"></rect><text fill="#8a837a" font-family="IBM Plex Mono,monospace" font-size="7" text-anchor="middle" x="30" y="34">TEDx</text></svg></div></div><div class="port-body"><div class="port-tag">Founder · 2018</div><h3>TEDxNITW</h3><p>Founded the TEDx chapter at NIT Warangal. Organized the inaugural event with 400+ attendees — speaker curation, sponsorships, and production.</p><div class="port-links"><a href="https://www.ted.com/tedx/events/22605" rel="noopener noreferrer" target="_blank">Event Page</a></div></div></div>
-<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg fill="none" height="60" opacity=".3" viewbox="0 0 60 60" width="60"><rect height="24" rx="2" stroke="#4a7a64" stroke-width=".8" width="18" x="10" y="18"></rect><rect height="20" rx="2" stroke="#4a7a64" stroke-width=".8" width="18" x="32" y="22"></rect></svg></div></div><div class="port-body"><div class="port-tag">Fellowship · 2020–21</div><h3>Duke Garage Lab</h3><p>Lab &amp; Curriculum Development Fellowship. Co-designed and built Duke’s newest prototyping space for the MEMS capstone program.</p><div class="port-links"><a href="https://sites.duke.edu/memscapstone/" rel="noopener noreferrer" target="_blank">Capstone Program</a></div></div></div>
-<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg fill="none" height="60" opacity=".3" viewbox="0 0 60 60" width="60"><path d="M 15 40 L 30 15 L 45 40 Z" fill="none" stroke="#2d5f9e" stroke-width=".8"></path><circle cx="30" cy="30" r="6" stroke="#2d5f9e" stroke-dasharray="2 2" stroke-width=".6"></circle></svg></div></div><div class="port-body"><div class="port-tag">Fellowship · 2021</div><h3>Design Health Fellow</h3><p>Duke Design Health program — clinical immersion and needs-finding methodology for healthcare innovation.</p><div class="port-links"><!-- ADD LINK: <a href="#" target="_blank">Program</a> --></div></div></div>
-<div class="port-card"><div class="port-vis"><div class="port-placeholder"><svg fill="none" height="60" opacity=".3" viewbox="0 0 60 60" width="60"><circle cx="22" cy="30" r="10" stroke="#c23a22" stroke-width=".6"></circle><circle cx="38" cy="30" r="10" stroke="#c23a22" stroke-width=".6"></circle></svg></div></div><div class="port-body"><div class="port-tag">Leadership · January 2022–May 2023</div><h3>MEMS Graduate Student Committee</h3><p>President. Department events, student advocacy, and cross-lab networking for 100+ graduate students.</p><div class="port-links"><!-- ADD LINK: <a href="#" target="_blank">MEMS Dept</a> --></div></div></div>
+<nav class="drawer" id="drawer" aria-label="Primary"><a href="/" aria-current="page">Home</a><a href="/about/">About</a><a href="/research/">Research</a><a href="/publications/">Publications</a><a href="/teaching/">Teaching</a><a href="/media/">Media</a><a href="/portfolio/">Portfolio</a></nav>
+<div class="shell">
+  <p class="crumb"><span aria-current="page">Home</span></p>
+  <main id="main" class="wrap" tabindex="-1">
+<div class="grid">
+
+  <div class="mod s7">
+    <h1 class="display display--long">I build robots that see, decide, and act &mdash; transforming multimodal sensing into precise autonomous action.</h1>
+    <p class="lede" style="margin-top:1.4rem">Postdoctoral fellow at Johns Hopkins University working with <a href="https://engineering.jhu.edu/faculty/axel-krieger/" rel="noopener" target="_blank">Axel Krieger</a> on autonomous surgical robots for precision surgery. I received my PhD degree from Duke University, working with <a href="https://bme.duke.edu/people/patrick-codd/" rel="noopener" target="_blank">Patrick Codd</a> and <a href="https://www.generalroboticslab.com/boyuanchen" rel="noopener" target="_blank">Boyuan Chen</a>, across multimodal perception, surgical autonomy, and machine learning. My systems close the loop from raw sensory data to real-world intervention.</p>
+    <p style="margin-top:1.6rem;display:flex;gap:.5rem;flex-wrap:wrap">
+      <a class="act act--sig" href="mailto:ravi.prakash@jhu.edu">Get in touch</a>
+      <a class="act" href="/papers/CV_Prakash.pdf">Curriculum vitae</a>
+      <a class="act" href="/research/">See the research</a>
+    </p>
+    <div class="venues">
+      <p class="mod-id" style="margin-bottom:.6rem">Recent venues</p>
+      <ul>
+        <li>ICRA <b>2026</b></li>
+        <li>RoboSoft <b>2026</b></li>
+        <li>WACV <b>2026</b></li>
+        <li>IEEE T-MRB <b>2026</b></li>
+        <li>ICRA <b>2025</b></li>
+        <li>ISMR <b>2025</b></li>
+        <li>IEEE-EMBS BSN <b>2025</b></li>
+        <li>Scientific Reports</li>
+        <li>JMIR Aging</li>
+        <li>IROS <b>2023</b></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="mod s5 flush id-dock">
+    <img src="/images/profile%20pic_small-min.png" alt="Ravi Prakash" width="1201" height="1091" fetchpriority="high" decoding="async">
+    <div class="id-body">
+      <p class="spec-lg">Ravi Prakash</p>
+      <p class="spec">Postdoctoral Fellow &middot; Mechanical Engineering<br>Johns Hopkins University</p>
+      <p style="margin-top:.9rem"><span class="state">On the faculty &amp; research scientist job market</span></p>
+      <div class="links" style="margin-top:.9rem">
+        <a href="https://scholar.google.com/citations?user=BX_yW-kAAAAJ" rel="noopener" target="_blank">Google Scholar</a>
+        <a href="https://orcid.org/0000-0002-4020-1590" rel="noopener" target="_blank">ORCID</a>
+        <a href="https://www.linkedin.com/in/raprakashvi/" rel="noopener" target="_blank">LinkedIn</a>
+        <a href="/about/">Full background</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="mod s8 flush" data-player="w1OSSJBS8dM">
+    <div class="player">
+      <img src="/images/media/posters/w1OSSJBS8dM.jpg" alt="" width="960" height="540" decoding="async">
+      <iframe hidden title="Research video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <button class="player-btn" type="button">
+        <span class="player-copy"><b>SonicFly &middot; flight demo</b><span>Play research video</span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mod s4 flush">
+    <div class="reel reel--side" role="group" aria-label="Choose a research video">
+      <button type="button" data-video="w1OSSJBS8dM" aria-pressed="true"><img src="/images/media/posters/w1OSSJBS8dM.jpg" alt="" loading="lazy" width="320" height="180"><span>SonicFly &middot; flight demo</span></button>
+      <button type="button" data-video="GVpQvWdgkU4" aria-pressed="false"><img src="/images/media/posters/GVpQvWdgkU4.jpg" alt="" loading="lazy" width="320" height="180"><span>SonicFly &middot; overview</span></button>
+      <button type="button" data-video="RGvBzVAV4XQ" aria-pressed="false"><img src="/images/media/posters/RGvBzVAV4XQ.jpg" alt="" loading="lazy" width="320" height="180"><span>Robotic laser surgery</span></button>
+      <button type="button" data-video="FnwhNJGcEeQ" aria-pressed="false"><img src="/images/media/posters/FnwhNJGcEeQ.jpg" alt="" loading="lazy" width="320" height="180"><span>See, Plan, Cut</span></button>
+      <button type="button" data-video="_mmzDbw0OuI" aria-pressed="false"><img src="/images/publications/Palpaid.png" alt="" loading="lazy" width="320" height="180"><span>PalpAid</span></button>
+      <button type="button" data-video="akGQKCfIav4" aria-pressed="false"><img src="/images/media/posters/akGQKCfIav4.jpg" alt="" loading="lazy" width="320" height="180"><span>Duke MEMS</span></button>
+    </div>
+  </div>
+
+  <div class="mod s12">
+    <h2 class="h2">Selected systems</h2>
+    <p class="body" style="margin-top:.5rem">Systems I designed, built and tested end to end. <a href="/research/">All research &rarr;</a></p>
+  </div>
+
+  <article class="mod s6">
+    <div class="sys">
+      <div class="sys-figure"><img src="/images/publications/SonicFly.jpg" alt="SonicFly aerial robot with passive acoustic sensing" loading="lazy" width="800" height="450"></div>
+      <p class="spec"><span class="tag">2026</span><span class="tag">Under review</span></p>
+      <h3 class="h3">SonicFly: listening to the sound of flight</h3>
+      <p class="body">Passive aeroacoustic sensing enables a flying robot to estimate and pursue another using its intrinsic flight sound.</p>
+      <div class="links">
+        <a href="https://generalroboticslab.com/SonicFly" rel="noopener" target="_blank">Website</a>
+        <a href="https://arxiv.org/pdf/2608.00401" rel="noopener" target="_blank">PDF</a>
+        <a href="https://arxiv.org/abs/2608.00401" rel="noopener" target="_blank">arXiv</a>
+        <a href="https://github.com/generalroboticslab/SonicFly" rel="noopener" target="_blank">Code</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="mod s6">
+    <div class="sys">
+      <div class="sys-figure"><img src="/images/publications/TumorMap_figure.jpg" alt="TumorMap three-laser platform for tumor mapping and resection" loading="lazy" width="800" height="450"></div>
+      <p class="spec"><span class="tag">Under review</span></p>
+      <h3 class="h3">TumorMap: fully-automated 3D tumor mapping &amp; resection</h3>
+      <p class="body">Three-laser platform (OCT + fluorescence + cutting scalpel) with deep learning for noncontact tumor resection in murine models. Submillimeter accuracy.</p>
+      <div class="links">
+        <a href="https://mgsresearch.github.io/tumormap.github.io/" rel="noopener" target="_blank">Website</a>
+        <a href="/papers/TumorMap.pdf">PDF</a>
+        <a href="https://arxiv.org/abs/2511.05723" rel="noopener" target="_blank">arXiv</a>
+        <a href="https://github.com/mgsresearch/tumormap_code" rel="noopener" target="_blank">Code</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="mod s3">
+    <div class="sys">
+      <div class="sys-figure"><img src="/images/publications/See_Plan_Cut.jpg" alt="See, Plan, Cut robotic laser surgery system" loading="lazy" width="600" height="338"></div>
+      <p class="spec"><span class="tag">ICRA 2026</span></p>
+      <h3 class="h3">See, Plan, Cut</h3>
+      <p class="body">MPC-based volumetric laser surgery with OCT guidance.</p>
+      <div class="links">
+        <a href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener" target="_blank">Website</a>
+        <a href="https://arxiv.org/abs/2511.17777" rel="noopener" target="_blank">arXiv</a>
+        <a href="https://github.com/raprakashvi/see_plan_cut" rel="noopener" target="_blank">Code</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="mod s3">
+    <div class="sys">
+      <div class="sys-figure"><img src="/images/publications/Palpaid.png" alt="PalpAid pneumatic tactile palpation sensor" loading="lazy" width="600" height="338"></div>
+      <p class="spec"><span class="tag">RoboSoft 2026</span></p>
+      <h3 class="h3">PalpAid</h3>
+      <p class="body">Pneumatic tactile sensor for tissue palpation. Mentored project.</p>
+      <div class="links">
+        <a href="https://raprakashvi.github.io/palpaid/" rel="noopener" target="_blank">Website</a>
+        <a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" rel="noopener" target="_blank">Video</a>
+        <a href="https://github.com/raprakashvi/palpaid_robosoft" rel="noopener" target="_blank">Code</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="mod s3">
+    <div class="sys">
+      <div class="sys-figure"><img src="/images/publications/ISMR2025_portable_dual_sensor.png" alt="Portable dual sensor visualization system" loading="lazy" width="600" height="338"></div>
+      <p class="spec"><span class="tag">ISMR 2025</span></p>
+      <h3 class="h3">Portable Dual Sensor</h3>
+      <p class="body">Large-area dual sensing for real-time surgical guidance.</p>
+      <div class="links">
+        <a href="https://ieeexplore.ieee.org/abstract/document/11025962" rel="noopener" target="_blank">Paper</a>
+        <a href="/papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf">PDF</a>
+      </div>
+    </div>
+  </article>
+
+  <article class="mod s3">
+    <div class="sys">
+      <div class="sys-figure"><img src="/images/publications/SurgXBench.png" alt="SurgXBench vision-language benchmark for surgery" loading="lazy" width="600" height="338"></div>
+      <p class="spec"><span class="tag">WACV 2026</span></p>
+      <h3 class="h3">SurgXBench</h3>
+      <p class="body">Explainable vision-language benchmark for surgery.</p>
+      <div class="links"><a href="/papers/SurgXBench.pdf">PDF</a></div>
+    </div>
+  </article>
+
+  <div class="mod s7 slab">
+    <span class="mod-id">Upcoming</span>
+    <h2 class="h2">2nd Workshop on the Evolving Landscape of Surgical Robotics</h2>
+    <p class="body" style="margin-top:.5rem">Surgical Autonomy for Today and Tomorrow. I co-organize ELSR with Shan Lin, Jingpei Lu, Art Jiang, Qi Dou and Ken Goldberg. Speakers include Axel Krieger, Ken Goldberg, Allison Okamura, Michael Yip, Hongliang Ren and Mathias Unberath.</p>
+    <p class="spec" style="margin-top:.8rem"><span class="tag tag--live">1 October 2026</span><span class="tag">IROS 2026</span><span class="tag">Pittsburgh</span></p>
+    <div class="links" style="margin-top:.9rem"><a href="https://sites.google.com/view/iros-elsr-2026/" rel="noopener" target="_blank">Workshop site</a></div>
+  </div>
+
+  <div class="mod s5 flush workshop-dock">
+    <div class="workshop-art">
+      <span>IROS 2026 &middot; Pittsburgh &middot; 1 Oct</span>
+      <strong>ELSR</strong>
+      <span>Surgical Autonomy for Today and Tomorrow</span>
+    </div>
+  </div>
+
+  <div class="mod s7">
+    <span class="mod-id">For JHU students</span>
+    <h2 class="h2">Interested in learning, imaging, or mechatronics?</h2>
+    <p class="body" style="margin-top:.6rem">I have mentored 15 students, from high school through PhD. If you want to work on something in this area, <a href="mailto:ravi.prakash@jhu.edu">email me</a> &mdash; or look at <a href="/teaching/">what past students have gone on to do</a>.</p>
+    <p style="margin-top:1rem"><a class="act act--sig" href="mailto:ravi.prakash@jhu.edu">Email ravi.prakash@jhu.edu</a></p>
+  </div>
+
+  <div class="mod s12">
+    <h2 class="h2">News</h2>
+  </div>
+  <div class="mod s12 flush"><h3 class="h3" style="padding:1.4rem var(--pad) .2rem;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;color:var(--ink-3)">2026</h3>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Aug 2026</div><div class="rec-what"><p class="rec-note">Featured in <a href="https://bassconnections.duke.edu/story/ravi-prakash-phd-mechanical-engineering-materials-science-26/"><strong>Duke Bass Connections</strong></a>, reflecting on interdisciplinary research, teaching, and mentorship.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Aug 2026</div><div class="rec-what"><p class="rec-note"><strong>SonicFly in the news:</strong> <a href="https://spectrum.ieee.org/video-friday-heavy-lift-drone">IEEE Spectrum</a>, <a href="https://www.indiatoday.in/science/story/no-gps-no-camera-this-drone-targets-another-just-by-listening-to-its-rotor-sound-2972911-2026-08-17">India Today</a>, and <a href="#media-press">more coverage</a>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Invited talk</div><div class="rec-what"><p class="rec-note">Invited talk: <strong>Sensing–Driven Surgical Autonomy</strong>, Arizona State University Medical Robotics Course.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Aug 2026</div><div class="rec-what"><p class="rec-note">Joined <strong>Johns Hopkins University</strong> as a Postdoctoral Fellow with Axel Krieger, following completion of my Ph.D. at Duke.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Aug 2026</div><div class="rec-what"><p class="rec-note"><a href="https://arxiv.org/abs/2608.00401"><strong>SonicFly</strong></a>: our work on passive aeroacoustic perception for aerial robots is available as a preprint and under review.</p></div></article>
+<article class="rec" id="news-phd-defense" style="padding:0 var(--pad)"><div class="rec-when">Jul 2026</div><div class="rec-what"><p class="rec-note">Successfully defended my PhD dissertation, <strong>“Sensing Driven Surgical Autonomy Through Multimodal Tissue Representation,”</strong> at <strong>Duke University</strong>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Jul 2026</div><div class="rec-what"><p class="rec-note">Our <a href="https://bassconnections.duke.edu/news/how-can-robotic-surgery-improve-access-specialized-healthcare-rural-communities/"><strong>robotic surgery work for rural healthcare</strong></a> was featured in Bass Connections’ team-written project series.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">May 2026</div><div class="rec-what"><p class="rec-note"><a href="https://arxiv.org/abs/2410.03086" rel="noopener noreferrer" target="_blank"><strong>Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound</strong></a> accepted at <em>IEEE Transactions on Medical Robotics and Bionics</em>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Apr 2026</div><div class="rec-what"><p class="rec-note">Named <strong>STAUBLI Medical Robotics Rising Star</strong> at the <a href="https://ismr.gatech.edu/" rel="noopener noreferrer" target="_blank">International Symposium on Medical Robotics (ISMR 2026)</a> in Knoxville, TN — awarded at <em>The Holistic Forum of Medical Robotics Junior Professors</em> workshop.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Mar 2026</div><div class="rec-what"><p class="rec-note">Released <a href="https://www.youtube.com/watch?v=RGvBzVAV4XQ" rel="noopener noreferrer" target="_blank"><strong>Robotic Laser Surgery: Overview &amp; Vision</strong></a> — a comprehensive video on our work on autonomous laser surgery and multimodal sensing.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Jan 2026</div><div class="rec-what"><p class="rec-note"><a href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener noreferrer" target="_blank"><strong>See, Plan, Cut</strong></a> accepted at <strong>ICRA 2026</strong>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Jan 2026</div><div class="rec-what"><p class="rec-note"><a href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank"><strong>PalpAid</strong></a> accepted at <strong>RoboSoft 2026</strong>.</p></div></article>
+<details class="more"><summary>Earlier news &middot; 19 entries</summary><div><h3 class="h3" style="padding:1.4rem var(--pad) .2rem;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;color:var(--ink-3)">2025</h3>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Nov 2025</div><div class="rec-what"><p class="rec-note"><strong>TumorMap</strong> paper submitted and available on <a href="https://arxiv.org/abs/2511.05723" rel="noopener noreferrer" target="_blank">arXiv</a>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Apr 2025</div><div class="rec-what"><p class="rec-note">Our aerial acoustic sensing research was featured in <a href="https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/">Duke Forest</a>. Read the resulting <a href="https://arxiv.org/abs/2608.00401">SonicFly preprint</a>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Apr 2025</div><div class="rec-what"><p class="rec-note">Zach &amp; Alexa’s <a href="https://ieeexplore.ieee.org/abstract/document/11337667" rel="noopener noreferrer" target="_blank">“Where is the Boundary”</a> (multimodal tissue boundary) accepted at <a href="https://sites.google.com/view/icra2025-workshop-clsr" rel="noopener noreferrer" target="_blank">ICRA Evolving Landscape of Surgical Robotics 2025</a>. Kudos to both.</p></div></article>
+<h3 class="h3" style="padding:1.4rem var(--pad) .2rem;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;color:var(--ink-3)">2024</h3>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Dec 2024</div><div class="rec-what"><p class="rec-note">Workshop <a href="https://sites.google.com/view/icra2025-workshop-clsr" rel="noopener noreferrer" target="_blank">“The Evolving Landscape of Surgical Robotics”</a> accepted for <strong>ICRA 2025</strong>. See you 19 May in Atlanta.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Dec 2024</div><div class="rec-what"><p class="rec-note">Won <strong>Rhodes Graduate Fellowship</strong> for Interdisciplinary Research (Bass Connections: Reimagining Surgery for Rural Needs).</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Sep 2024</div><div class="rec-what"><p class="rec-note"><a href="https://aging.jmir.org/2024/1/e57926/" rel="noopener noreferrer" target="_blank">JMIR Aging</a> — extracting critical info from clinicians’ notes to identify dementia severity.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Sep 2024</div><div class="rec-what"><p class="rec-note"><a href="https://ieeexplore.ieee.org/abstract/document/11127624" rel="noopener noreferrer" target="_blank">Sampling-Based MPC for Volumetric Ablation</a> (ICRA 2025) now online.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Sep 2024</div><div class="rec-what"><p class="rec-note"><a href="https://arxiv.org/abs/2410.03086" rel="noopener noreferrer" target="_blank">Compliant Quasi Direct Drive End-Effector</a> for safe robotic ultrasound now online.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Feb 2024</div><div class="rec-what"><p class="rec-note">Zach Chen &amp; Alexa Cahilig won <strong>Duke CoLab Research Award</strong> for tissue boundary test bench.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Feb 2024</div><div class="rec-what"><p class="rec-note"><strong>Bass Connection Student Research Award</strong> for affordable multimodal sensors for laser-tissue studies.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Feb 2024</div><div class="rec-what"><p class="rec-note">Talk at <strong>IIT Patna</strong>: “Innovating Surgical Robotics: Precision and Automation in Minimally Invasive Procedures”.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Jan 2024</div><div class="rec-what"><p class="rec-note"><a href="https://www.nature.com/articles/s41598-023-50995-4" rel="noopener noreferrer" target="_blank">Scientific Reports</a> — laser-induced fluorescence to differentiate spine tumor, muscle, and bone.</p></div></article>
+<h3 class="h3" style="padding:1.4rem var(--pad) .2rem;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;color:var(--ink-3)">2023</h3>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Dec 2023</div><div class="rec-what"><p class="rec-note">DEI micro-award from Duke Graduate &amp; Professional Student Government for mentorship.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Jun 2023</div><div class="rec-what"><p class="rec-note"><a href="https://arxiv.org/abs/2305.01524" rel="noopener noreferrer" target="_blank">3D Laser-and-Tissue Agnostic Surgical Planning</a> accepted at <strong>IROS 2023</strong>.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Mar 2023</div><div class="rec-what"><p class="rec-note"><strong>Maclin Community Connections Grant</strong> for underrepresented undergraduates.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Mar 2023</div><div class="rec-what"><p class="rec-note"><strong>Duke India Initiative</strong> travel grant for portable diagnostics in India.</p></div></article>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Feb 2023</div><div class="rec-what"><p class="rec-note">Presented brain-mimicking phantoms for photoablation at <strong>ISMR 2023</strong> (Graduate School travel award).</p></div></article>
+<h3 class="h3" style="padding:1.4rem var(--pad) .2rem;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;color:var(--ink-3)">2021</h3>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">May 2021</div><div class="rec-what"><p class="rec-note"><strong>Woo Center for Big Data and Precision Health Fellowship</strong> (unstructured EHR work with Dr. Hanzhang Xu).</p></div></article>
+<h3 class="h3" style="padding:1.4rem var(--pad) .2rem;font-family:var(--fm);font-size:.75rem;letter-spacing:.08em;color:var(--ink-3)">2020</h3>
+<article class="rec" style="padding:0 var(--pad)"><div class="rec-when">Oct 2020</div><div class="rec-what"><p class="rec-note"><strong>Dean’s Research Award</strong> for work on flexible sensors.</p></div></article></div></details></div>
 
 </div>
-</div></div>
-<div class="page" id="page-media"><div class="pc"><span aria-hidden="true" class="section-anchor" id="media"></span>
-<div class="reveal" style="padding-top:.5rem"><div class="sl">Media</div><h2 class="st">Features &amp; Coverage</h2><p class="sd">Videos, interviews, and media coverage of my work.</p></div>
-<section aria-labelledby="press-heading" class="press-section reveal" id="media-press">
-<div class="sl">Profiles &amp; press</div><h2 class="st" id="press-heading">Research in the news</h2>
-<article class="profile-feature" id="media-bass-profile">
-<img alt="Ravi Prakash and teammates presenting at the 2026 Bass Connections Showcase" decoding="async" height="686" loading="lazy" src="images/media/bass-connections-team.png" width="1220"/>
-<div class="press-body"><div class="press-outlet">Duke Bass Connections</div><div class="press-date">Researcher profile · August 17, 2026</div><h3><a href="https://bassconnections.duke.edu/story/ravi-prakash-phd-mechanical-engineering-materials-science-26/">Leading across disciplines: my Bass Connections experience</a></h3><p>A profile of my work as an instructor, researcher, and mentor, connecting surgical robotics with the needs of rural healthcare providers.</p><a class="press-read" href="https://bassconnections.duke.edu/story/ravi-prakash-phd-mechanical-engineering-materials-science-26/">Read the profile ↗</a><p class="photo-credit">Photo: Duke Bass Connections</p></div>
-</article>
-<div class="lead-press-grid">
-<article class="press-card prominent" id="media-ieee-spectrum"><div class="press-outlet">IEEE Spectrum</div><div class="press-date">Video Friday · 2026</div><h3><a href="https://spectrum.ieee.org/video-friday-heavy-lift-drone">SonicFly in Video Friday</a></h3><p>Our aerial sensing demonstration was selected for IEEE Spectrum’s weekly robotics video roundup.</p><a class="press-read" href="https://spectrum.ieee.org/video-friday-heavy-lift-drone">Read the roundup ↗</a></article>
-<article class="press-card prominent" id="media-india-today"><div class="press-outlet">India Today</div><div class="press-date">Science · August 17, 2026</div><h3><a href="https://www.indiatoday.in/science/story/no-gps-no-camera-this-drone-targets-another-just-by-listening-to-its-rotor-sound-2972911-2026-08-17">SonicFly in India Today</a></h3><p>Science coverage of our acoustic drone-following research.</p><a class="press-read" href="https://www.indiatoday.in/science/story/no-gps-no-camera-this-drone-targets-another-just-by-listening-to-its-rotor-sound-2972911-2026-08-17">Read the story ↗</a></article>
-</div>
-<article class="press-card rural-feature" id="media-bass-rural"><div class="press-body"><div class="press-outlet">Duke Bass Connections</div><div class="press-date">Team-written project feature · July 2, 2026</div><h3><a href="https://bassconnections.duke.edu/news/how-can-robotic-surgery-improve-access-specialized-healthcare-rural-communities/">How Can Robotic Surgery Improve Access To Specialized Healthcare in Rural Communities?</a></h3><p>Our team describes the robotic laser surgery prototype, clinician-informed design, and interdisciplinary collaboration behind Reimagining Surgery for Rural Needs.</p><a class="press-read" href="https://bassconnections.duke.edu/news/how-can-robotic-surgery-improve-access-specialized-healthcare-rural-communities/">Read the team’s story ↗</a></div><figure><img alt="Ravi Prakash presenting See, Plan, Cut at ISMR 2026" decoding="async" height="322" loading="lazy" src="images/events/ravi-ismr-2026.png" width="430"/><figcaption>Presenting at ISMR 2026 · Photo: Duke Bass Connections</figcaption></figure></article>
-<h3 class="more-coverage-heading">More SonicFly coverage</h3><ul class="coverage-list">
-<li><div><a href="https://circuitdigest.com/news/a-drone-that-tracks-its-leader-using-four-microphones-and-an-esp32-no-gps-or-cam"><strong>Circuit Digest</strong> · Building acoustic drone tracking with four microphones</a><span>August 17, 2026</span></div><span aria-hidden="true">↗</span></li>
-<li><div><a href="https://dronexl.co/2026/08/18/duke-sonicfly-drone-tracks-drone-by-sound/"><strong>DroneXL</strong> · Duke University’s sound-guided drone pursuit</a><span>August 18, 2026</span></div><span aria-hidden="true">↗</span></li>
-<li><div><a href="https://www.newsbytesapp.com/news/science/engineers-build-sonicfly-drone-that-follows-others-by-rotor-sounds/tldr"><strong>NewsBytes</strong> · Engineers build SonicFly drone that follows others by rotor sounds</a><span>August 17, 2026</span></div><span aria-hidden="true">↗</span></li>
-<li><div><a href="https://ei.futuranet.it/2026/08/22/sonicfly-il-drone-che-segue-un-altro-drone-usando-solo-il-suono/"><strong>Elettronica In</strong> · SonicFly: following another drone through sound</a><span>August 22, 2026 · Italian-language coverage</span></div><span aria-hidden="true">↗</span></li>
-</ul></section><div class="feat-video reveal" data-rotation="true" style="margin-bottom:1.5rem">
-<div class="feature-heading"><div><div class="feat-video-label">Featured video</div><h2>Robots in action</h2></div><a class="feature-project" href="https://generalroboticslab.com/SonicFly">SonicFly project ↗</a><button aria-label="Pause automatic video previews" class="rotation-toggle" type="button">Pause rotation</button></div>
-<div class="feat-video-wrap"><button aria-label="Play SonicFly flight demonstration" class="video-poster"><img alt="SonicFly aerial robot flight demonstration" decoding="async" src="images/media/thumbnails/sonicfly-demo.jpg"/><span class="poster-shade"></span><span aria-hidden="true" class="play-disc">▶</span><span class="poster-copy"><span>From sensing to action</span><strong>SonicFly</strong><span>Watch the flight demonstration</span></span></button><iframe allow="encrypted-media; picture-in-picture" allowfullscreen="" data-src="https://www.youtube-nocookie.com/embed/w1OSSJBS8dM" hidden="" loading="lazy" title="SonicFly flight demonstration"></iframe></div>
-<p class="feat-video-caption"><strong>SonicFly · flight demo</strong> — Aerial robots sensing and pursuing through the sound of flight. <a href="https://www.youtube.com/watch?v=w1OSSJBS8dM">Watch on YouTube ↗</a></p>
-<div aria-label="Choose a research video" class="video-choices"><button aria-pressed="true" data-video="w1OSSJBS8dM"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/media/thumbnails/sonicfly-demo.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">SonicFly · flight demo</span></button><button aria-pressed="false" data-video="GVpQvWdgkU4"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/SonicFly.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">SonicFly · overview</span></button><button aria-pressed="false" data-video="RGvBzVAV4XQ"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/media/thumbnails/laser-surgery.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">Robotic laser surgery</span></button><button aria-pressed="false" data-video="FnwhNJGcEeQ"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/See_Plan_Cut.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">See, Plan, Cut</span></button><button aria-pressed="false" data-video="_mmzDbw0OuI"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/publications/Palpaid.png"/><span aria-hidden="true">▶</span></span><span class="video-name">PalpAid</span></button><button aria-pressed="false" data-video="akGQKCfIav4"><span class="video-thumb"><img alt="" decoding="async" loading="lazy" src="images/media/thumbnails/duke-mems.jpg"/><span aria-hidden="true">▶</span></span><span class="video-name">Duke MEMS</span></button></div><noscript><a href="https://www.youtube.com/watch?v=w1OSSJBS8dM">Watch SonicFly on YouTube</a></noscript></div>
-<div class="reveal" style="margin-bottom:.8rem">
-<div class="sl">Conferences</div>
-<h2 class="st" style="font-size:1.4rem">Research videos &amp; conference photos</h2>
-<p class="sd" style="margin-bottom:1rem">Selected conference moments and presentations.</p>
-</div>
-<div class="media-grid reveal">
-<!-- TEMPLATE: To add a new media item, copy a media-card block and update:
-     - Image/video in media-vis (use <img> for thumbnail, or <iframe> for embedded YouTube)
-     - For YouTube: <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
-     - media-type: VIDEO / ARTICLE / PODCAST / INTERVIEW
-     - Title, description, source link
--->
-<div class="media-card">
-<div class="media-vis">
-<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-src="https://www.youtube-nocookie.com/embed/FnwhNJGcEeQ" loading="lazy" title="See, Plan, Cut"></iframe>
-</div>
-<div class="media-body">
-<div class="media-type">Video · ICRA 2026</div>
-<h3>See, Plan, Cut</h3>
-<p>MPC-based autonomous volumetric robotic laser surgery with OCT guidance. Full paper video.</p>
-<div class="media-source"><a href="https://www.youtube.com/watch?v=FnwhNJGcEeQ" rel="noopener noreferrer" target="_blank">YouTube</a> · <a href="https://raprakashvi.github.io/see-plan-cut/" rel="noopener noreferrer" target="_blank">Project Page</a> · <a href="https://github.com/raprakashvi/see_plan_cut" rel="noopener noreferrer" target="_blank">Code</a></div>
-</div>
-</div>
-<div class="media-card">
-<div class="media-vis">
-<iframe allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen="" data-src="https://www.youtube-nocookie.com/embed/_mmzDbw0OuI" loading="lazy" title="PalpAid"></iframe>
-</div>
-<div class="media-body">
-<div class="media-type">Video · RoboSoft 2026</div>
-<h3>PalpAid</h3>
-<p>Pneumatic tactile sensor for tissue palpation. Full paper video for the mentored RoboSoft 2026 project.</p>
-<div class="media-source"><a href="https://www.youtube.com/watch?v=_mmzDbw0OuI" rel="noopener noreferrer" target="_blank">YouTube</a> · <a href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank">Project Page</a> · <a href="https://github.com/raprakashvi/palpaid_robosoft" rel="noopener noreferrer" target="_blank">Code</a></div>
-</div>
-</div>
-<div class="media-card">
-<div class="media-vis">
-<img alt="Athena presenting PalpAid at RoboSoft 2026" decoding="async" loading="lazy" onerror="this.style.display='none'" src="images/events/athena_robosoft_2026.jpg"/>
-</div>
-<div class="media-body">
-<div class="media-type">Conference Photo · RoboSoft 2026</div>
-<h3>Athena @ RoboSoft 2026 (Kanazawa, Japan)</h3>
-<p><a href="https://scholar.google.com/citations?user=ffXTcrkAAAAJ&amp;hl=en" rel="noopener noreferrer" target="_blank">Athena</a> presented our work <a href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank"><strong>PalpAid</strong></a> at RoboSoft 2026 in Kanazawa, Japan.</p>
-<div class="media-source"><a href="https://raprakashvi.github.io/palpaid/" rel="noopener noreferrer" target="_blank">Paper Website</a></div>
-</div>
-</div>
-<div class="media-card">
-<div class="media-vis"><img alt="SonicFly aerial robotics research" decoding="async" loading="lazy" src="images/publications/SonicFly.jpg"/></div>
-<div class="media-body">
-<div class="media-type">Article</div>
-<h3>Drones Transforming Research in Duke Forest</h3>
-<p>Feature on our multi-drone acoustic sensing work for environmental monitoring and wildlife tracking.</p>
-<div class="media-source"><a href="https://dukeforest.duke.edu/2025/04/23/how-drones-are-transforming-research-in-the-duke-forest-and-beyond/" rel="noopener noreferrer" target="_blank">Duke Forest · Apr 2025</a> · <a href="https://arxiv.org/abs/2608.00401">SonicFly paper</a></div>
-</div>
-</div>
-<div class="media-card">
-<div class="media-vis">
-<video controls="" playsinline="" preload="metadata" style="width:100%;height:100%;object-fit:cover">
-<source src="images/media/Day_In_Life.mp4" type="video/mp4"/>
-</video>
-</div>
-<div class="media-body">
-<div class="media-type">Video</div>
-<h3>Day in the Life: Duke Robotics</h3>
-<p>A look at my day-to-day work at Duke — from the Brain Tool Lab to surgical robotics, sensing, and building systems that see, decide, and act.</p>
-<div class="media-source">Duke University</div>
-</div>
-</div>
-<div class="media-card">
-<div class="media-vis">
-<iframe allowfullscreen="" data-src="https://www.youtube-nocookie.com/embed/akGQKCfIav4" loading="lazy" title="Master’s Degrees in Mechanical Engineering, Duke University"></iframe>
-</div>
-<div class="media-body">
-<div class="media-type">Video</div>
-<h3>Master’s Degrees in Mechanical Engineering, Duke University</h3>
-<p>Featured in Duke MEMS program video highlighting graduate research and robotics at Duke.</p>
-<div class="media-source"><a href="https://www.youtube.com/watch?v=akGQKCfIav4" rel="noopener noreferrer" target="_blank">YouTube · Duke University</a></div>
-</div>
-</div>
-</div>
-<!-- HOW TO ADD MORE MEDIA: Copy a media-card block above and update the content.
-     For YouTube videos, replace the port-placeholder SVG with:
-     <iframe src="https://www.youtube.com/embed/VIDEO_ID" allowfullscreen></iframe>
-     For images, use: <img src="images/your-thumbnail.jpg" alt="description">
--->
-</div></div>
-<footer><div class="pc"><p class="fc">Ravi Prakash · Mechanical Engineering · Johns Hopkins University · Baltimore, MD</p></div></footer>
-</main>
-<script>
-const pageNames = ['home','about','research','publications','teaching','portfolio','media'];
-let cur = 'home';
-function toggleMenu(force) {
- const menu=document.getElementById('mob'), button=document.querySelector('.tn-btn');
- const open=typeof force==='boolean'?force:!menu.classList.contains('open');
- menu.classList.toggle('open',open); document.querySelector('main').inert=open; button.setAttribute('aria-expanded',String(open));
- button.setAttribute('aria-label',open?'Close navigation':'Open navigation');
-}
-function route(focus=false) {
- let hash=location.hash.slice(1), target=document.getElementById(hash);
- const page=pageNames.includes(hash)?hash:target?.closest('.page')?.id.replace('page-','')||'home';
- cur=page;
- document.querySelectorAll('.page').forEach(el=>el.classList.toggle('active',el.id==='page-'+page));
- document.querySelectorAll('[data-page]').forEach(el=>{const active=el.dataset.page===page;el.classList.toggle('active',active);if(active)el.setAttribute('aria-current','page');else el.removeAttribute('aria-current');});
- toggleMenu(false);
- document.title=page==='home'?'Ravi Prakash | Robotics & Multimodal Sensing | Johns Hopkins':page[0].toUpperCase()+page.slice(1)+' | Ravi Prakash — Robotics Researcher';
- if(target?.classList.contains('pi'))fp('all',document.querySelector('.pfb'));
- const heading=document.querySelector('#page-'+page+' h1, #page-'+page+' h2');
- if(focus&&heading){heading.tabIndex=-1;heading.focus({preventScroll:true});}
- if(target&&!pageNames.includes(hash))target.scrollIntoView();else window.scrollTo(0,0);
- document.querySelectorAll("iframe").forEach(frame=>{if(frame.closest(".page.active")){if(!frame.hidden&&!frame.hasAttribute("src"))frame.src=frame.dataset.src;}else frame.removeAttribute("src");});
- runObs();
-}
-function go(page){if(location.hash==='#'+page)route(true);else location.hash=page;}
-function runObs(){document.querySelectorAll('.page.active .reveal').forEach(el=>el.classList.add('visible'));}
-function fp(type,button){
- document.querySelectorAll('.pfb').forEach(el=>{el.classList.toggle('active',el===button);el.setAttribute('aria-pressed',String(el===button));});
- document.querySelectorAll('.pi').forEach(el=>{el.style.display=type==='all'||el.dataset.t===type?'':'none';});
-}
-window.addEventListener('hashchange',()=>route(true));
-document.addEventListener('keydown',event=>{if(event.key==='Escape'&&document.getElementById('mob').classList.contains('open')){toggleMenu(false);document.querySelector('.tn-btn').focus();}});
-document.addEventListener('click',event=>{
- const link=event.target.closest('a[href^="#"]');
- if(link){toggleMenu(false);if(link.hash===location.hash)route(true);}
- const rotation=event.target.closest('.rotation-toggle');
- if(rotation){const gallery=rotation.closest('.feat-video');setRotation(gallery,gallery.dataset.rotation!=='true');return;}
- const poster=event.target.closest('.video-poster');
- if(poster){const gallery=poster.closest('.feat-video'),frame=gallery.querySelector('iframe');setRotation(gallery,false);poster.hidden=true;frame.hidden=false;frame.src=frame.dataset.src;frame.focus();return;}
- const button=event.target.closest('[data-video]');if(!button)return;
- const gallery=button.closest('.feat-video'),frame=gallery.querySelector('iframe');
- setRotation(gallery,false);
- gallery.querySelector('.video-poster').hidden=true;frame.hidden=false;
- frame.dataset.src='https://www.youtube-nocookie.com/embed/'+button.dataset.video;
- frame.src=frame.dataset.src;
- frame.title=button.querySelector('.video-name').textContent;
- gallery.querySelectorAll('[data-video]').forEach(el=>el.setAttribute('aria-pressed',String(el===button)));
- const caption=gallery.querySelector('.feat-video-caption');caption.replaceChildren();
- const title=document.createElement('strong');title.textContent=frame.title;caption.append(title);
- if(button.dataset.video==='RGvBzVAV4XQ'){
-  caption.append(' — Robotic Laser Surgery: Overview & Vision. Produced by ');
-  const credit=document.createElement('a');credit.href='https://www.linkedin.com/in/oliviasliu/';credit.textContent='Olivia Liu';caption.append(credit);
- }
- caption.append(' · ');const watch=document.createElement('a');watch.href='https://www.youtube.com/watch?v='+button.dataset.video;watch.textContent='Watch on YouTube ↗';caption.append(watch);
 
-});
-fp('all',document.querySelector('.pfb'));
-route();
-
-// Rotate silent previews only. Playing a film or interacting with the gallery pauses rotation.
-const reducedMotion=window.matchMedia('(prefers-reduced-motion: reduce)');
-function setRotation(gallery,enabled){
- if(enabled&&gallery.dataset.rotation==='false')advancePreview(gallery,true);
- gallery.dataset.rotation=String(enabled);
- const toggle=gallery.querySelector('.rotation-toggle');
- toggle.textContent=enabled?'Pause rotation':'Resume rotation';
- toggle.setAttribute('aria-label',enabled?'Pause automatic video previews':'Resume automatic video previews');
- if(enabled){gallery.querySelector('iframe').hidden=true;gallery.querySelector('iframe').removeAttribute('src');gallery.querySelector('.video-poster').hidden=false;}
-}
-function advancePreview(gallery,keepCurrent=false){
- const choices=[...gallery.querySelectorAll('[data-video]')];
- const current=choices.findIndex(el=>el.getAttribute('aria-pressed')==='true');
- const next=choices[(current+(keepCurrent?0:1))%choices.length],name=next.querySelector('.video-name').textContent;
- choices.forEach(el=>el.setAttribute('aria-pressed',String(el===next)));
- const poster=gallery.querySelector('.video-poster'),frame=gallery.querySelector('iframe');
- poster.querySelector('img').src=next.querySelector('img').src;
- poster.querySelector('img').alt=name;
- poster.querySelector('.poster-copy strong').textContent=name;
- poster.querySelector('.poster-copy>span:last-child').textContent='Watch the research video';
- poster.setAttribute('aria-label','Play '+name);
- frame.dataset.src='https://www.youtube-nocookie.com/embed/'+next.dataset.video;frame.title=name;
- const caption=gallery.querySelector('.feat-video-caption');caption.replaceChildren();
- const title=document.createElement('strong');title.textContent=name;caption.append(title,' · ');
- const watch=document.createElement('a');watch.href='https://www.youtube.com/watch?v='+next.dataset.video;watch.textContent='Watch on YouTube ↗';caption.append(watch);
- if(next.dataset.video==='RGvBzVAV4XQ'){caption.append(' · Produced by ');const credit=document.createElement('a');credit.href='https://www.linkedin.com/in/oliviasliu/';credit.textContent='Olivia Liu';caption.append(credit);}
-}
-document.querySelectorAll('.feat-video').forEach(gallery=>{
- setRotation(gallery,!reducedMotion.matches);
- gallery.addEventListener('focusin',event=>{if(!event.target.closest('.rotation-toggle'))setRotation(gallery,false);});
-});
-reducedMotion.addEventListener('change',event=>{if(event.matches)document.querySelectorAll('.feat-video').forEach(el=>setRotation(el,false));});
-window.matchMedia('(min-width: 901px)').addEventListener('change',event=>{if(event.matches)toggleMenu(false);});
-setInterval(()=>{
- if(document.hidden||reducedMotion.matches)return;
- document.querySelectorAll('.page.active .feat-video').forEach(gallery=>{
-  const bounds=gallery.getBoundingClientRect();
-  if(gallery.dataset.rotation==='true'&&gallery.querySelector('iframe').hidden&&!gallery.matches(':hover, :focus-within')&&bounds.top<innerHeight&&bounds.bottom>0)advancePreview(gallery);
- });
-},6000);
-</script>
-</body></html>
+  </main>
+  <footer class="foot">
+    <div class="foot-grid">
+      <div>
+        <h2>Ravi Prakash</h2>
+        <p class="spec">Postdoctoral Fellow, Johns Hopkins University</p>
+      </div>
+      <div>
+        <h2>Pages</h2>
+        <ul><li><a href="/">Home</a></li><li><a href="/about/">About</a></li><li><a href="/research/">Research</a></li><li><a href="/publications/">Publications</a></li><li><a href="/teaching/">Teaching</a></li><li><a href="/media/">Media</a></li><li><a href="/portfolio/">Portfolio</a></li></ul>
+      </div>
+      <div>
+        <h2>Elsewhere</h2>
+        <ul>
+          <li><a href="https://scholar.google.com/citations?user=BX_yW-kAAAAJ" rel="noopener me" target="_blank">Google Scholar</a></li>
+          <li><a href="https://orcid.org/0000-0002-4020-1590" rel="noopener me" target="_blank">ORCID</a></li>
+          <li><a href="https://github.com/raprakashvi" rel="noopener me" target="_blank">GitHub</a></li>
+          <li><a href="https://www.linkedin.com/in/raprakashvi/" rel="noopener me" target="_blank">LinkedIn</a></li>
+        </ul>
+      </div>
+      <div>
+        <h2>Contact</h2>
+        <ul>
+          <li><a href="mailto:ravi.prakash@jhu.edu">ravi.prakash@jhu.edu</a></li>
+          <li><a href="/papers/CV_Prakash.pdf">Curriculum vitae (PDF)</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="foot-legal"><span>© 2026 Ravi Prakash</span><span>Built 2026-09-06</span></p>
+  </footer>
+</div>
+<script src="/assets/site.js?v=f35971ea" defer></script>
+</body>
+</html>

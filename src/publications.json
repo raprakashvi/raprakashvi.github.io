@@ -1,0 +1,306 @@
+[
+ {
+  "id": "publication-sonicfly",
+  "type": "review",
+  "thumb": "images/publications/SonicFly.jpg",
+  "title": "Embodied Passive Aeroacoustic Perception Enables Relative Sensing and Pursuit Between Aerial Robots",
+  "authors": "Liu, Y., <strong>Prakash, R.</strong>, Lo, L. Y., Roede, N., Chen, B.",
+  "venue": "2026 · Under review",
+  "links": [
+   {
+    "label": "Website",
+    "href": "https://generalroboticslab.com/SonicFly"
+   },
+   {
+    "label": "PDF",
+    "href": "https://arxiv.org/pdf/2608.00401"
+   },
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2608.00401"
+   },
+   {
+    "label": "Code",
+    "href": "https://github.com/generalroboticslab/SonicFly"
+   }
+  ]
+ },
+ {
+  "id": "publication-octn",
+  "type": "review",
+  "thumb": null,
+  "title": "OCTN: Neural OCT Tissue Representations for Robot-Guided Precision Intervention",
+  "authors": "<strong>Prakash, R.</strong>, McNabb, R. P., Codd, P. J., Lin, S.",
+  "venue": "2026 · Under review",
+  "links": []
+ },
+ {
+  "id": "publication-chapter",
+  "type": "chapter",
+  "thumb": null,
+  "title": "Intelligent Robotic Assistants for Minimally Invasive Surgery: From Camera Holders to Autonomous Task Partners",
+  "authors": "Chen, X., <strong>Prakash, R.</strong>, Jopling, J., Krieger, A.",
+  "venue": "Invited chapter · AI in Robotic Surgery: Foundation, Innovation, and Future Direction · Springer Nature",
+  "links": []
+ },
+ {
+  "id": "publication-tumormap-a-laser-based-surgical-platform-for-3d-tumor-mapping-and-fully-automated-tumor-resection",
+  "type": "review",
+  "thumb": "images/publications/TumorMap_figure.jpg",
+  "title": "TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection",
+  "authors": "Ma, G.*, <strong>Prakash, R.*</strong>, Schleupner, B., Everitt, J. I., Mishra, A., Chen, J., Mann, B., Chen, B., Bridgeman, L., Zhong, P., Draelos, M., Eward, W., Codd, P. J.",
+  "venue": "<span>Under Review</span> · *equal contribution",
+  "links": [
+   {
+    "label": "Website",
+    "href": "https://mgsresearch.github.io/tumormap.github.io/"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/TumorMap.pdf"
+   },
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2511.05723"
+   },
+   {
+    "label": "Code",
+    "href": "https://github.com/mgsresearch/tumormap_code"
+   }
+  ]
+ },
+ {
+  "id": "publication-design-and-evaluation-of-a-compliant-quasi-direct-drive-end-effector-for-safe-robotic-ultrasound-imaging",
+  "type": "journal",
+  "thumb": "images/publications/Compliant_Quasi_Direct_Drive.png",
+  "title": "Design and Evaluation of a Compliant Quasi Direct Drive End-Effector for Safe Robotic Ultrasound Imaging",
+  "authors": "Chen, D., <strong>Prakash, R.</strong>, Wang, V., Chen, Z., Dias, S., Bridgeman, L., Oca, S., Mann, B.",
+  "venue": "IEEE Transactions on Medical Robotics and Bionics · 2026 · Published",
+  "links": [
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2410.03086"
+   }
+  ]
+ },
+ {
+  "id": "publication-see-plan-cut-mpc-based-autonomous-volumetric-robotic-laser-surgery",
+  "type": "conference",
+  "thumb": "images/publications/See_Plan_Cut.jpg",
+  "title": "See, Plan, Cut: MPC-Based Autonomous Volumetric Robotic Laser Surgery",
+  "authors": "<strong>Prakash, R.*</strong>, Wang, V.*, Mishra, A., Yuliarti, D., et al.",
+  "venue": "<span>ICRA 2026</span> *equal contribution",
+  "links": [
+   {
+    "label": "Website",
+    "href": "https://raprakashvi.github.io/see-plan-cut/"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/See,Plan,Cut.pdf"
+   },
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2511.17777"
+   },
+   {
+    "label": "Video",
+    "href": "https://www.youtube.com/watch?v=FnwhNJGcEeQ"
+   },
+   {
+    "label": "Code",
+    "href": "https://github.com/raprakashvi/see_plan_cut"
+   }
+  ]
+ },
+ {
+  "id": "publication-palpaid-multimodal-pneumatic-tactile-sensor-for-tissue-palpation",
+  "type": "conference",
+  "thumb": "images/publications/Palpaid.png",
+  "title": "PalpAid: Multimodal Pneumatic Tactile Sensor for Tissue Palpation",
+  "authors": "Yuliarti, D.*, <strong>Prakash, R.*</strong>, Cheung, H. H., et al.",
+  "venue": "<span>RoboSoft 2026</span> Mentored",
+  "links": [
+   {
+    "label": "Website",
+    "href": "https://raprakashvi.github.io/palpaid/"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/PalpAid_Pneumatic_Microphone_Sensor_RoboSoft_2026.pdf"
+   },
+   {
+    "label": "Video",
+    "href": "https://www.youtube.com/watch?v=_mmzDbw0OuI"
+   },
+   {
+    "label": "Code",
+    "href": "https://github.com/raprakashvi/palpaid_robosoft"
+   }
+  ]
+ },
+ {
+  "id": "publication-surgxbench-explainable-vision-language-model-benchmark-for-surgery",
+  "type": "conference",
+  "thumb": "images/publications/SurgXBench.png",
+  "title": "SurgXBench: Explainable Vision-Language Model Benchmark for Surgery",
+  "authors": "Cheng, J., Zhao, X., Tripathi, S., Liu, S., Yu, X., <strong>Prakash, R.</strong>, Codd, P. J., Katz, J. E., Lin, S.",
+  "venue": "<span>WACV 2026</span>",
+  "links": [
+   {
+    "label": "PDF",
+    "href": "papers/SurgXBench.pdf"
+   }
+  ]
+ },
+ {
+  "id": "publication-where-is-the-boundary-multimodal-sensor-fusion-test-bench-for-tissue-boundary-delineation",
+  "type": "conference",
+  "thumb": "images/publications/where_is_the_boundary.png",
+  "title": "Where is the Boundary? Multimodal Sensor Fusion Test Bench for Tissue Boundary Delineation",
+  "authors": "Chen, Z., Cahilig, A. C., Dias, S., Kolar, P., <strong>Prakash, R.</strong>, Codd, P. J.",
+  "venue": "<span>IEEE-EMBS BSN 2025</span> Mentored",
+  "links": [
+   {
+    "label": "Paper",
+    "href": "https://ieeexplore.ieee.org/abstract/document/11337667"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/where_is_the_boundary.pdf"
+   }
+  ]
+ },
+ {
+  "id": "publication-sampling-based-model-predictive-control-for-volumetric-ablation-in-robotic-laser-surgery",
+  "type": "conference",
+  "thumb": "images/publications/Sampling_Based_MPC.png",
+  "title": "Sampling-Based Model Predictive Control for Volumetric Ablation in Robotic Laser Surgery",
+  "authors": "Wang, V. Y., <strong>Prakash, R.</strong>, Oca, S. R., LoCicero, E. J., Codd, P. J., Bridgeman, L. J.",
+  "venue": "<span>ICRA 2025</span>",
+  "links": [
+   {
+    "label": "Paper",
+    "href": "https://ieeexplore.ieee.org/abstract/document/11127624"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/Sampling_Based_MPC.pdf"
+   },
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2410.03152"
+   }
+  ]
+ },
+ {
+  "id": "publication-portable-dual-sensor-large-area-visualization-system-for-robotic-laser-surgery",
+  "type": "conference",
+  "thumb": "images/publications/ISMR2025_portable_dual_sensor.png",
+  "title": "Portable Dual Sensor Large Area Visualization System for Robotic Laser Surgery",
+  "authors": "<strong>Prakash, R.</strong>, Wang, V., Chen, Z., Bridgeman, L., Codd, P. J.",
+  "venue": "<span>ISMR 2025</span>",
+  "links": [
+   {
+    "label": "Paper",
+    "href": "https://ieeexplore.ieee.org/abstract/document/11025962"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/ISMR2025_Tissue_Visualization_for_Robotic_Laser_Surgery.pdf"
+   }
+  ]
+ },
+ {
+  "id": "publication-extracting-critical-information-from-unstructured-clinicians-notes-data-to-identify-dementia-severity-using-a-rule-based-approach-feasibility-study",
+  "type": "journal",
+  "thumb": null,
+  "title": "Extracting Critical Information from Unstructured Clinicians’ Notes Data to Identify Dementia Severity Using a Rule-Based Approach: Feasibility Study.",
+  "authors": "<strong>Prakash, R.</strong>, Dupre, M. E., Østbye, T., Xu, H.",
+  "venue": "<span>JMIR Aging</span> 7, e57926",
+  "links": [
+   {
+    "label": "Paper",
+    "href": "https://aging.jmir.org/2024/1/e57926/"
+   }
+  ]
+ },
+ {
+  "id": "publication-a-rule-based-framework-to-identify-severity-of-dementia-from-unstructured-electronic-health-record-data",
+  "type": "conference",
+  "thumb": null,
+  "title": "A Rule-Based Framework to Identify Severity of Dementia from Unstructured Electronic Health Record Data",
+  "authors": "<strong>Prakash, R.</strong>, Dupre, M. E., Østbye, T., Xu, H.",
+  "venue": "<span>AAIC 2023</span> · Alzheimer’s &amp; Dementia 19(S1): e075325",
+  "links": [
+   {
+    "label": "Paper",
+    "href": "https://alz-journals.onlinelibrary.wiley.com/doi/10.1002/alz.075325"
+   }
+  ]
+ },
+ {
+  "id": "publication-a-blinded-study-using-laser-induced-endogenous-fluorescence-spectroscopy-to-differentiate-ex-vivo-spine-tumor-healthy-muscle-and-healthy-bone",
+  "type": "journal",
+  "thumb": null,
+  "title": "A Blinded Study Using Laser-Induced Endogenous Fluorescence Spectroscopy to Differentiate Ex Vivo Spine Tumor, Healthy Muscle, and Healthy Bone",
+  "authors": "Sperber, J., Zachem, T. J., <strong>Prakash, R.</strong>, Owolo, E., Yamamoto, K., Nguyen, A. D., Hockenberry, H., Ross, W. A., Herndon, J. E., Codd, P. J., Goodwin, C. R.",
+  "venue": "<span>Scientific Reports</span> 14(1), 1921",
+  "links": [
+   {
+    "label": "Paper",
+    "href": "https://www.nature.com/articles/s41598-023-50995-4"
+   }
+  ]
+ },
+ {
+  "id": "publication-3d-laser-and-tissue-agnostic-data-driven-method-for-robotic-laser-surgical-planning",
+  "type": "conference",
+  "thumb": null,
+  "title": "3D Laser-and-Tissue Agnostic Data-Driven Method for Robotic Laser Surgical Planning",
+  "authors": "Ma, G., <strong>Prakash, R.</strong>, Mann, B., Ross, W., Codd, P. J.",
+  "venue": "<span>IROS 2023</span>",
+  "links": [
+   {
+    "label": "PDF",
+    "href": "https://arxiv.org/pdf/2305.01524.pdf"
+   }
+  ]
+ },
+ {
+  "id": "publication-brain-mimicking-phantom-for-photoablation-and-visualization",
+  "type": "conference",
+  "thumb": null,
+  "title": "Brain-Mimicking Phantom for Photoablation and Visualization",
+  "authors": "<strong>Prakash, R.</strong>, Yamamoto, K. K., Oca, S. R., Ross, W., Codd, P. J.",
+  "venue": "<span>ISMR 2023</span>",
+  "links": []
+ },
+ {
+  "id": "publication-comparative-study-of-fluid-flow-and-heat-transfer-in-microchannels-with-uniformly-varying-cross-section",
+  "type": "conference",
+  "thumb": null,
+  "title": "Comparative Study of Fluid Flow and Heat Transfer in Microchannels with Uniformly Varying Cross-Section",
+  "authors": "Chatterjee, A., Valaparla, R. K., <strong>Prakash, R.</strong>, Balasubramanian, K.",
+  "venue": "<span>ETME 2019</span>",
+  "links": []
+ },
+ {
+  "id": "publication-photoablation",
+  "type": "preprint",
+  "thumb": null,
+  "title": "Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery",
+  "authors": "Ross, W., <strong>Prakash, R.</strong>, Ma, G., Eward, W., Mann, B., Codd, P. J.",
+  "venue": "DMMR Workshop @ IROS 2023 · Non–peer-reviewed",
+  "links": []
+ },
+ {
+  "id": "publication-operative-vision",
+  "type": "preprint",
+  "thumb": null,
+  "title": "Computer Vision for Increased Operative Efficiency via Identification of Instruments in the Neurosurgical Operating Room: A Proof-of-Concept Study",
+  "authors": "Zachem, T. J., Chen, S. F., Venkatraman, V., Sykes, D. A., <strong>Prakash, R.</strong>, Spellicy, S., Suarez, A. D., Ross, W., Codd, P. J.",
+  "venue": "arXiv preprint · 2023 · Non–peer-reviewed",
+  "links": []
+ }
+]
