@@ -20,7 +20,7 @@ Hash sections are shareable but are not separate indexable pages; the sitemap de
 ## Deliberately pending
 
 - OCTN has no verified public manuscript or figure; its bibliographic record is included without invented links or imagery.
-- No new ISMR event photographs were supplied.
+- The ISMR poster and Bass Connections team photos are now sourced from Duke’s stories; additional event photographs can be added when available.
 - The workshop URL is supplied by the user's notes/CV context; Google’s page could not be parsed by the research tool; a subsequent HTTP check returned 200.
 - Legacy Jekyll files and the unused MOV remain on disk; removing them is unnecessary for this refresh and could remove material the owner wants to keep. They are not loaded by the live page.
 - Exact Ph.D. conferral month is unspecified; the site uses 2026.
@@ -38,3 +38,15 @@ Repeat browser checks with Playwright installed and a local server running: `AXE
 Restored the original complete “see, decide, and act” headline with “Sensing for Informed Action” as its label and the owner's revised JHU/Duke bio. Restored Google Scholar, LinkedIn, CV, and JHU email buttons; retained all five sidebar contact/profile links. Availability now reads “On Job Market for Faculty and Research Scientist Positions.” Added the JHU student invitation for learning, imaging, and mechatronics work.
 
 Removed the extra homepage callout strip. Featured video now sits directly before the research projects. Silent video previews rotate every six seconds while visible, pause on hover/focus or playback, and have an explicit pause/resume control. Reduced-motion users start with rotation paused. Research figures use larger image areas and open at full size.
+
+## Media and PhD defense additions
+
+Added eight linked media entries: two Duke Bass Connections stories, prominent IEEE Spectrum and India Today cards, plus Circuit Digest, DroneXL, NewsBytes, and Elettronica In. The duplicate Bass profile supplied in the request is represented once. IEEE coverage is accurately described as inclusion in a Video Friday roundup. NewsBytes and Elettronica In were found through additional research; Elettronica's indexed article was available, while direct retrieval encountered Cloudflare.
+
+Verified source dates: Bass researcher profile August 17, 2026; Bass rural-surgery team story July 2, 2026; Circuit Digest, India Today, and NewsBytes August 17; DroneXL August 18; Elettronica In August 22. The IEEE page did not expose a publication date in the retrieved article text, so its card uses 2026 only. Each media entry links directly to its original source. The Bass profile and team story are also linked from Teaching and homepage News.
+
+Photo sources: `images/media/bass-connections-team.png` from the Bass researcher profile; `images/events/ravi-ismr-2026.png` from the Bass rural-surgery story. Both are credited to Duke Bass Connections. Visual inspection confirms the ISMR photograph shows the See, Plan, Cut poster.
+
+The owner supplied the successful July 2026 Duke PhD defense and dissertation title, “Sensing Driven Surgical Autonomy Through Multimodal Tissue Representation”; added as a dated homepage news entry.
+
+Media-update validation passed: local asset/anchor integrity, eight new coverage entries, layouts at 1440/768/390/320 pixels, decoded images, two zero-violation WCAG A/AA axe audits, direct links to Media and the defense announcement, and the new Teaching links. Desktop and mobile screenshots were visually reviewed.
