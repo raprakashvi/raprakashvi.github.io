@@ -1,15 +1,7 @@
 User-agent: *
 Allow: /
 
-# Generated pages only; sources and dormant scaffolding are not content.
+# Page sources are not content; the generated pages are.
 Disallow: /src/
-Disallow: /_site/
-Disallow: /_pages/
-Disallow: /_publications/
-Disallow: /_portfolio/
-Disallow: /_teaching/
-Disallow: /_talks/
-Disallow: /vendor/
-Disallow: /index-dynamic-papers.html
 
 Sitemap: https://raprakashvi.github.io/sitemap.xml

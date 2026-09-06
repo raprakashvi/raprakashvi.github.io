@@ -1,27 +1,20 @@
 _site/
 
-# Ruby dependencies
+# Ruby / Jekyll leftovers (the site no longer uses them)
 .bundle/
 vendor/
+.jekyll-cache/
+.sass-cache/
 
 # System files
 .DS_Store
-*.DS_Store
 **/.DS_Store
-
-# Jekyll
-.jekyll-cache/
-.jekyll-assets-cache/
-.sass-cache/
 
 # Environment
 .env
 .env.local
 
-# Local working notes
+# Local working notes and design scratch
 TODO-website-update.md
-
-
-# Design working files
 .impeccable/
 probe.html
