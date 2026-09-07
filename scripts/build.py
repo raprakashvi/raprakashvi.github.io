@@ -21,7 +21,7 @@ ROLE = "Postdoctoral Fellow, Johns Hopkins University"
 
 # slug, nav label, <title>, meta description, h1, og image
 PAGES = [
-    ("", "Home", "Ravi Prakash — Robotics, Multimodal Sensing & Surgical Autonomy",
+    ("", "Home", "Ravi Prakash — Sensing for Informed Action",
      "Robotics researcher in surgical autonomy and medical robotics, turning multimodal sensing "
      "into precise autonomous action. Postdoctoral Fellow, Johns Hopkins.",
      "Robots that see, decide, and act", "og-home.jpg"),
