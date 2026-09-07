@@ -22,33 +22,32 @@ ROLE = "Postdoctoral Fellow, Johns Hopkins University"
 # slug, nav label, <title>, meta description, h1, og image
 PAGES = [
     ("", "Home", "Ravi Prakash — Robotics, Multimodal Sensing & Surgical Autonomy",
-     "Ravi Prakash builds robots that turn multimodal sensing into precise autonomous action — "
-     "surgical, medical and aerial systems. Postdoctoral Fellow at Johns Hopkins University, "
-     "on the job market for faculty and research scientist positions.",
+     "Robotics researcher in surgical autonomy and medical robotics, turning multimodal sensing "
+     "into precise autonomous action. Postdoctoral Fellow, Johns Hopkins.",
      "Robots that see, decide, and act", "og-home.jpg"),
     ("about", "About", "About — Background, Awards, Grants & Invited Talks | Ravi Prakash",
-     "Ravi Prakash's background, education, awards, sponsored research, patent applications and "
-     "invited talks. Ph.D. in Mechanical Engineering from Duke University, now at Johns Hopkins.",
+     "Medical robotics researcher Ravi Prakash: awards, sponsored research, patents and invited "
+     "talks. Mechanical Engineering Ph.D., Duke; now at Johns Hopkins.",
      "About", "og-about.jpg"),
-    ("research", "Research", "Research — Multimodal Sensing for Autonomous Robotic Systems | Ravi Prakash",
-     "Full-stack robotic platforms integrating hardware, multimodal sensing and control: autonomous "
-     "laser surgery, OCT and fluorescence tissue sensing, tactile palpation, and passive aeroacoustic "
-     "perception for aerial robots.",
+    ("research", "Research", "Research — Surgical Autonomy & Multimodal Sensing | Ravi Prakash",
+     "Surgical autonomy and multimodal sensing: autonomous laser surgery, optical coherence "
+     "tomography and fluorescence tissue sensing, tactile palpation, aerial perception.",
      "Research", "og-research.jpg"),
     ("publications", "Publications", "Publications — Robotics & Surgical Autonomy Papers | Ravi Prakash",
-     "Peer-reviewed papers, manuscripts under review and invited contributions by Ravi Prakash, "
-     "including ICRA, IROS, WACV, RoboSoft, ISMR, IEEE T-MRB, Scientific Reports and JMIR Aging.",
+     "Surgical robotics, medical robotics and sensing papers by Ravi Prakash — ICRA, IROS, WACV, "
+     "RoboSoft, ISMR, IEEE T-MRB, Scientific Reports and JMIR Aging.",
      "Publications", "og-publications.jpg"),
     ("teaching", "Teaching", "Teaching & Mentorship — Student Research Outcomes | Ravi Prakash",
-     "Mentorship across high school, undergraduate and graduate research, with student results at "
-     "ICRA, RoboSoft and IEEE-EMBS BSN and placements at Google, Microsoft, Medtronic and Ethicon.",
+     "Robotics research mentorship, high school to graduate: student papers at ICRA, RoboSoft and "
+     "IEEE-EMBS BSN; placements at Google, Medtronic and Ethicon.",
      "Teaching & mentorship", "og-teaching.jpg"),
     ("media", "Media", "Media & Press Coverage | Ravi Prakash, Robotics Researcher",
-     "Research videos and press coverage of Ravi Prakash's work, including IEEE Spectrum Video Friday, "
-     "India Today, DroneXL, Circuit Digest and Duke Bass Connections features.",
+     "Robotics research videos and press for Ravi Prakash — IEEE Spectrum Video Friday, India Today, "
+     "DroneXL, Circuit Digest and Duke Bass Connections.",
      "Media & press", "og-media.jpg"),
     ("portfolio", "Portfolio", "Portfolio — Leadership & Community Innovation | Ravi Prakash",
-     "Beyond the lab: leadership, community innovation and institution-building work by Ravi Prakash.",
+     "Beyond the lab: leadership, community innovation and institution-building by robotics "
+     "researcher Ravi Prakash, from Duke University to Johns Hopkins.",
      "Portfolio", "og-portfolio.jpg"),
 ]
 
@@ -74,14 +73,45 @@ PERSON = {
         {"@type": "CollegeOrUniversity", "name": "National Institute of Technology Warangal"},
     ],
     "email": "mailto:ravi.prakash@jhu.edu",
-    "knowsAbout": ["Robotics", "Surgical robotics", "Multimodal perception", "Surgical autonomy",
-                   "Acoustic sensing", "Optical coherence tomography", "Model predictive control",
-                   "Medical imaging", "Aerial robotics"],
+    "knowsAbout": ["Robotics", "Surgical robotics", "Medical robotics", "Multimodal perception",
+                   "Surgical autonomy", "Robot learning", "Tactile sensing", "Acoustic sensing",
+                   "Optical coherence tomography", "Robotic laser surgery", "Model predictive control",
+                   "Medical imaging", "Aerial robotics", "Mechanical engineering"],
     "sameAs": ["https://orcid.org/0000-0002-4020-1590",
                "https://scholar.google.com/citations?user=BX_yW-kAAAAJ",
                "https://github.com/raprakashvi",
                "https://www.linkedin.com/in/raprakashvi/"],
 }
+
+
+# Upcoming events shown on the home page, mirrored into its structured data.
+EVENTS = [{
+    "@type": "Event",
+    "@id": f"{ORIGIN}/#elsr-2026",
+    "name": "2nd Workshop on the Evolving Landscape of Surgical Robotics: "
+            "Surgical Autonomy for Today and Tomorrow",
+    "description": "Workshop on surgical autonomy, surgical robotics and medical robotics, "
+                   "co-located with IROS 2026.",
+    "startDate": "2026-10-01",
+    "endDate": "2026-10-01",
+    "eventStatus": "https://schema.org/EventScheduled",
+    "eventAttendanceMode": "https://schema.org/MixedEventAttendanceMode",
+    "url": "https://sites.google.com/view/iros-elsr-2026/",
+    "image": f"{ORIGIN}/images/events/IROS_ELSR_Poster.png",
+    "location": {
+        "@type": "Place",
+        "name": "IROS 2026",
+        "address": {"@type": "PostalAddress", "addressLocality": "Pittsburgh",
+                    "addressRegion": "PA", "addressCountry": "US"},
+    },
+    "organizer": [{"@id": f"{ORIGIN}/#ravi-prakash"}] + [
+        {"@type": "Person", "name": n} for n in
+        ("Shan Lin", "Jingpei Lu", "Art Jiang", "Qi Dou", "Ken Goldberg")],
+    "performer": [{"@type": "Person", "name": n} for n in (
+        "Axel Krieger", "Ken Goldberg", "Lueder Alexander-Kahrs", "Hongliang Ren",
+        "Michael Yip", "Allison Okamura", "Mathias Unberath", "Sabino Zani",
+        "Alan Kuntz", "Ji Woong Kim", "Ethan Quist", "Pink McDowall")],
+}]
 
 
 IMG_SIZE_CACHE = {}
@@ -440,7 +470,7 @@ def main():
     urls = []
     for slug, label, title, desc, h1, og in PAGES:
         fragment = (SRC / "pages" / "{0}.html".format(slug or "home")).read_text(encoding="utf-8")
-        extra = None
+        extra = EVENTS if slug == "" else None
         if slug == "publications":
             fragment = fragment.replace("<!--PUBLICATIONS-->", pub_html)
             extra = [{
@@ -467,7 +497,10 @@ def main():
                      "Jump to the index, research, or the publication list.",
                      "Not found", "og-home.jpg",
                      (SRC / "pages" / "404.html").read_text(encoding="utf-8"))
-    notfound = notfound.replace('<link rel="canonical"', '<meta name="robots" content="noindex">\n<link rel="canonical"')
+    notfound = notfound.replace(
+        '<meta name="robots" content="index, follow, max-image-preview:large, '
+        'max-snippet:-1, max-video-preview:-1">',
+        '<meta name="robots" content="noindex, follow">')
     (ROOT / "404.html").write_text(notfound, encoding="utf-8")
     print("  404.html")
 
