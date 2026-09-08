@@ -60,6 +60,15 @@
       rows.forEach(function (row) {
         row.hidden = !(kind === 'all' || row.dataset.kind === kind);
       });
+      document.querySelectorAll('#publist .yearmark').forEach(function (heading) {
+        var row = heading.nextElementSibling;
+        var hasVisiblePaper = false;
+        while (row && !row.classList.contains('yearmark')) {
+          if (row.matches('.rec') && !row.hidden) hasVisiblePaper = true;
+          row = row.nextElementSibling;
+        }
+        heading.hidden = !hasVisiblePaper;
+      });
     });
     /* A deep link to one paper must not land inside a filtered-out list. */
     if (location.hash.indexOf('#publication-') === 0) {
