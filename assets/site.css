@@ -688,3 +688,18 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* the contact dock is the same compact block on every page */
 .dock .links{flex-direction:column;align-items:flex-start;gap:0}
 .dock .links a{width:100%;margin:0 0 -1px 0}
+
+/* Interactive pixel canvas. */
+.pixel-lab{margin-top:1.8rem;border-top:1px solid var(--rule-2);padding-top:1rem;max-width:620px}
+.pixel-lab[hidden]{display:none}
+.pixel-heading,.pixel-footer{display:flex;align-items:center;justify-content:space-between;gap:.8rem}
+.pixel-heading h2{font-size:.95rem;font-weight:500}
+.pixel-display{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);align-items:center;gap:1.5rem;margin:.8rem 0}
+.pixel-details{display:flex;flex-direction:column;align-items:flex-start;gap:1rem}
+.pixel-name{font-size:clamp(1rem,2vw,1.6rem);font-weight:700;line-height:1.15;overflow-wrap:anywhere}
+.pixel-stage{display:block;width:100%;background:var(--slab);overflow:hidden;cursor:crosshair}
+.pixel-stage canvas{display:block;width:100%;height:auto}
+.pixel-stage:focus-visible{outline:2px solid var(--sig-deep);outline-offset:4px}
+.pixel-footer p{font-size:.68rem;color:var(--ink-3)}
+.pixel-pause{font: .65rem var(--fm);padding:.4rem .6rem;border:1px solid var(--rule-2);min-height:32px}
+@media(max-width:480px){.pixel-display{grid-template-columns:minmax(0,1.35fr) minmax(0,1fr);gap:1rem}.pixel-footer p{max-width:190px}}
