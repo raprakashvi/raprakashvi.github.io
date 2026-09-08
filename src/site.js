@@ -58,7 +58,7 @@
         b.setAttribute('aria-pressed', String(b === button));
       });
       rows.forEach(function (row) {
-        row.hidden = !(kind === 'all' || row.dataset.kind === kind);
+        row.hidden = !(kind === 'all' || row.dataset.kind.split(/\s+/).indexOf(kind) !== -1);
       });
       document.querySelectorAll('#publist .yearmark').forEach(function (heading) {
         var row = heading.nextElementSibling;

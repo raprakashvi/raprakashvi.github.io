@@ -198,7 +198,7 @@ def render_publications(records):
     """The publication list and its ScholarlyArticle graph, from one source."""
     kinds = [("all", "All"), ("journal", "Journal"), ("conference", "Conference"),
              ("review", "Under review"), ("chapter", "Chapter"), ("preprint", "Preprint")]
-    present = {r["type"] for r in records}
+    present = {kind for r in records for kind in [r["type"], *r.get("additional_types", [])]}
     kinds = [(k, label) for k, label in kinds if k == "all" or k in present]
     filters = "".join(
         '<button type="button" data-filter="{k}" aria-pressed="{p}">{label}</button>'.format(
@@ -229,7 +229,7 @@ def render_publications(records):
             '<div class="rec-what"><h3 class="h3">{title}</h3>'
             '<p class="rec-authors">{authors}</p>'
             '<p class="spec">{venue}</p>{links}</div></article>'.format(
-                id=rec["id"], kind=rec["type"], thumb=thumb, title=rec["title"],
+                id=rec["id"], kind=" ".join([rec["type"], *rec.get("additional_types", [])]), thumb=thumb, title=rec["title"],
                 authors=rec["authors"], venue=venue, links=links))
 
         node = {"@type": "ScholarlyArticle",

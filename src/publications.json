@@ -17,6 +17,7 @@
  {
   "id": "publication-sonicfly",
   "type": "review",
+  "additional_types": ["journal"],
   "thumb": "images/publications/SonicFly.jpg",
   "title": "Embodied Passive Aeroacoustic Perception Enables Relative Sensing and Pursuit Between Aerial Robots",
   "authors": "Liu, Y., <strong>Prakash, R.</strong>, Lo, L. Y., Roede, N., Chen, B.",
@@ -159,6 +160,7 @@
  {
   "id": "publication-tumormap-a-laser-based-surgical-platform-for-3d-tumor-mapping-and-fully-automated-tumor-resection",
   "type": "review",
+  "additional_types": ["journal"],
   "thumb": "images/publications/TumorMap_figure.jpg",
   "title": "TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection",
   "authors": "Ma, G.*, <strong>Prakash, R.*</strong>, Schleupner, B., Everitt, J. I., Mishra, A., Chen, J., Mann, B., Chen, B., Bridgeman, L., Zhong, P., Draelos, M., Eward, W., Codd, P. J.",
