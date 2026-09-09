@@ -1,5 +1,33 @@
 [
  {
+  "id": "publication-octn",
+  "type": "review",
+  "additional_types": ["journal"],
+  "thumb": "images/publications/OCTN.png",
+  "title": "OCTN: Neural OCT Representations for Robot-Guided Precision Intervention",
+  "authors": "<strong>Prakash, R.</strong>, McNabb, R. P., Codd, P. J., Lin, S.",
+  "venue": "2026 · <span>Under review</span>",
+  "links": [
+   {
+    "label": "Website",
+    "href": "https://raprakashvi.github.io/octn/"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/OCTN.pdf"
+   },
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2609.06810"
+   },
+   {
+    "label": "Video",
+    "href": "https://www.youtube.com/watch?v=riD9-W3JwzE"
+   }
+  ],
+  "year": 2026
+ },
+ {
   "id": "publication-design-and-evaluation-of-a-compliant-quasi-direct-drive-end-effector-for-safe-robotic-ultrasound-imaging",
   "type": "journal",
   "thumb": "images/publications/Compliant_Quasi_Direct_Drive.png",
