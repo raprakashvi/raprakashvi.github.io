@@ -82,8 +82,12 @@
     var frame = player.querySelector('iframe');
     var poster = player.querySelector('.player-btn');
     var copy = player.querySelector('.player-copy b');
+    var rotation = player.querySelector('.player-rotation');
+    var timer = null;
 
     function play(id, name) {
+      clearInterval(timer);
+      if (rotation) rotation.hidden = true;
       frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
       frame.title = name;
       frame.hidden = false;
@@ -96,11 +100,10 @@
     }
     var reel = player.parentNode.querySelector('.reel');
     if (!reel) return;
-    reel.addEventListener('click', function (e) {
-      var button = e.target.closest('button[data-video]');
-      if (!button) return;
+    var buttons = [].slice.call(reel.querySelectorAll('button[data-video]'));
+    function select(button) {
       var name = button.querySelector('span').textContent;
-      [].forEach.call(reel.querySelectorAll('button'), function (b) {
+      buttons.forEach(function (b) {
         b.setAttribute('aria-pressed', String(b === button));
       });
       player.dataset.player = button.dataset.video;
@@ -108,8 +111,33 @@
       var img = player.querySelector('.player > img, .player-btn img');
       var thumb = button.querySelector('img');
       if (img && thumb) { img.src = thumb.src; img.alt = ''; }
-      play(button.dataset.video, name);
+      return name;
+    }
+    reel.addEventListener('click', function (e) {
+      var button = e.target.closest('button[data-video]');
+      if (!button) return;
+      play(button.dataset.video, select(button));
     });
+    if (player.hasAttribute('data-rotate') && rotation) {
+      var motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      var paused = motion.matches;
+      function updateRotation() {
+        clearInterval(timer);
+        rotation.textContent = paused ? 'Resume previews' : 'Pause previews';
+        rotation.setAttribute('aria-pressed', String(paused));
+        if (paused || !frame.hidden || document.hidden) return;
+        timer = setInterval(function () {
+          // Leave the current preview in place while visitors use its controls.
+          if (player.matches(':hover') || player.contains(document.activeElement) || reel.contains(document.activeElement)) return;
+          var current = buttons.findIndex(function (b) { return b.dataset.video === player.dataset.player; });
+          select(buttons[(current + 1) % buttons.length]);
+        }, 8000);
+      }
+      rotation.addEventListener('click', function () { paused = !paused; updateRotation(); });
+      motion.addEventListener('change', function () { paused = motion.matches; updateRotation(); });
+      document.addEventListener('visibilitychange', updateRotation);
+      updateRotation();
+    }
   });
 })();
 

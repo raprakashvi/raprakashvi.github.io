@@ -315,6 +315,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .player-copy{position:relative;z-index:1;color:#fff}
 .player-copy b{display:block;font-variation-settings:'wdth' 106;font-weight:600;font-size:1.05rem;letter-spacing:-.02em}
 .player-copy span{font-family:var(--fm);font-size:.6875rem;color:var(--sig)}
+.player-rotation{position:absolute;z-index:2;top:.75rem;right:.75rem;padding:.6rem .75rem;background:var(--slab);color:#fff;border:1px solid var(--slab-rule);font-family:var(--fm);font-size:.6875rem}
 .reel{display:grid;grid-template-columns:repeat(auto-fit,minmax(128px,1fr));border-top:1px solid var(--rule)}
 .reel button{
   display:block;text-align:left;padding:.55rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);
@@ -623,6 +624,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .reel--side{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,1fr);height:100%}
 .reel--side button{display:flex;flex-direction:column;min-height:0;overflow:hidden}
 .reel--side img{aspect-ratio:auto;flex:1;min-height:0;object-fit:cover;margin-bottom:.3rem}
+.reel img[src$="/riD9-W3JwzE.jpg"],.player img[src$="/riD9-W3JwzE.jpg"]{object-fit:contain;background:#fff}
 .reel--side span{font-size:.6rem;min-height:0}
 @media (max-width:820px){.reel--side{height:auto}}
 
