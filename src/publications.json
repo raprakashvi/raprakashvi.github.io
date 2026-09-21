@@ -1,5 +1,32 @@
 [
  {
+  "id": "publication-tumormap-a-laser-based-surgical-platform-for-3d-tumor-mapping-and-fully-automated-tumor-resection",
+  "type": "journal",
+  "thumb": "images/publications/TumorMap_figure.jpg",
+  "title": "TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection",
+  "authors": "Ma, G.*, <strong>Prakash, R.*</strong>, Schleupner, B., Everitt, J. I., Mishra, A., Chen, J., Mann, B., Chen, B., Bridgeman, L., Zhong, P., Draelos, M., Eward, W., Codd, P. J.",
+  "venue": "<span>npj Digital Surgery</span> · 2026 · Accepted · *equal contribution",
+  "links": [
+   {
+    "label": "Website",
+    "href": "https://mgsresearch.github.io/tumormap.github.io/"
+   },
+   {
+    "label": "PDF",
+    "href": "papers/TumorMap.pdf"
+   },
+   {
+    "label": "arXiv",
+    "href": "https://arxiv.org/abs/2511.05723"
+   },
+   {
+    "label": "Code",
+    "href": "https://github.com/mgsresearch/tumormap_code"
+   }
+  ],
+  "year": 2026
+ },
+ {
   "id": "publication-octn",
   "type": "review",
   "additional_types": ["journal"],
@@ -181,34 +208,6 @@
    {
     "label": "arXiv",
     "href": "https://arxiv.org/abs/2410.03152"
-   }
-  ],
-  "year": 2025
- },
- {
-  "id": "publication-tumormap-a-laser-based-surgical-platform-for-3d-tumor-mapping-and-fully-automated-tumor-resection",
-  "type": "review",
-  "additional_types": ["journal"],
-  "thumb": "images/publications/TumorMap_figure.jpg",
-  "title": "TumorMap: A Laser-Based Surgical Platform for 3D Tumor Mapping and Fully-Automated Tumor Resection",
-  "authors": "Ma, G.*, <strong>Prakash, R.*</strong>, Schleupner, B., Everitt, J. I., Mishra, A., Chen, J., Mann, B., Chen, B., Bridgeman, L., Zhong, P., Draelos, M., Eward, W., Codd, P. J.",
-  "venue": "<span>Under Review</span> · *equal contribution",
-  "links": [
-   {
-    "label": "Website",
-    "href": "https://mgsresearch.github.io/tumormap.github.io/"
-   },
-   {
-    "label": "PDF",
-    "href": "papers/TumorMap.pdf"
-   },
-   {
-    "label": "arXiv",
-    "href": "https://arxiv.org/abs/2511.05723"
-   },
-   {
-    "label": "Code",
-    "href": "https://github.com/mgsresearch/tumormap_code"
    }
   ],
   "year": 2025

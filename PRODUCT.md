@@ -95,7 +95,7 @@ Secondary distinguishing dimensions: healthcare access for under-resourced commu
 
 Real, verifiable, and already on the site:
 
-- **Papers with PDFs, arXiv links, project sites, and code repos** — TumorMap (under review, arXiv 2511.05723, project site, GitHub), See Plan Cut (ICRA 2026, arXiv 2511.17777, video, code), PalpAid (RoboSoft 2026, video, code), Portable Dual Sensor (ISMR 2025, IEEE), SurgXBench (WACV 2026), plus published work in *Scientific Reports*, *JMIR Aging*, IROS 2023, and IEEE T-MRB.
+- **Papers with PDFs, arXiv links, project sites, and code repos** — TumorMap (accepted, npj Digital Surgery 2026, arXiv 2511.05723, project site, GitHub), See Plan Cut (ICRA 2026, arXiv 2511.17777, video, code), PalpAid (RoboSoft 2026, video, code), Portable Dual Sensor (ISMR 2025, IEEE), SurgXBench (WACV 2026), plus published work in *Scientific Reports*, *JMIR Aging*, IROS 2023, and IEEE T-MRB.
 - **Video** — a produced overview film (YouTube RGvBzVAV4XQ) plus per-paper demo videos; local MP4s in `images/media/`.
 - **Awards, dated and named** — STAUBLI Medical Robotics Rising Star (ISMR 2026), Rhodes Graduate Fellowship, Bass Connections Student Research Award, Duke India Initiative travel award, Maclin Community Connections Grant, Dean's Research Award, Woo Center Fellowship, Design Health Fellow, S.N. Bose Fellowship.
 - **Service** — reviewer for IEEE TRO, T-MECH, RA-L, CoRL, IROS, ISMR, BSN, RoboSoft, JMRR; co-organizer of the ICRA 2025 surgical robotics workshop; Lab Manager, Brain Tool Lab; Instructor of Record for a Bass Connections course.

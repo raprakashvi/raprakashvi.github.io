@@ -601,6 +601,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .id-dock{display:flex;flex-direction:column;background:var(--bone-2)}
 .id-dock img{width:100%;flex:1;min-height:0;object-fit:cover;object-position:center 22%}
 .id-body{padding:var(--pad);border-top:1px solid var(--rule);background:var(--bone)}
+/* a tall hero must not inflate the portrait: cap the photo and centre the
+   dock, so the column frames the face instead of stretching it */
+@media (min-width:1181px){
+  .id-dock{justify-content:center}
+  .id-dock img{flex:0 1 auto;max-height:clamp(360px,30vw,460px)}
+}
 
 /* older news folds away: nothing is lost, the homepage stops carrying it all */
 .more{border-top:1px solid var(--rule)}
