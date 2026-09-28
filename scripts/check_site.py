@@ -93,9 +93,14 @@ def main():
         if len(where) > 1:
             fail.append("duplicate description across {0}".format(", ".join(where)))
 
-    # --- sitemap covers exactly the built pages ---
+    # --- sitemap covers exactly the built pages, plus paper PDFs that exist ---
     sitemap = (ROOT / "sitemap.xml").read_text(encoding="utf-8")
     listed = set(re.findall(r"<loc>(.*?)</loc>", sitemap))
+    papers = {u for u in listed if u.startswith("{0}/papers/".format(ORIGIN)) and u.endswith(".pdf")}
+    for u in sorted(papers):
+        if not (ROOT / unquote(urlparse(u).path).lstrip("/")).exists():
+            fail.append("sitemap lists missing paper {0}".format(u))
+    listed -= papers
     expected = {"{0}/".format(ORIGIN)} | {
         "{0}/{1}/".format(ORIGIN, s) for s in
         ("research", "publications", "about", "teaching", "media", "portfolio")}

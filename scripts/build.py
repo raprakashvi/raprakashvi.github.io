@@ -7,8 +7,8 @@ Stdlib only, no dependencies. Edit content in src/pages/*.html, styling in
 src/site.css, behaviour in src/site.js, then rerun. Never edit the generated
 index.html files by hand -- the next build overwrites them.
 """
-import hashlib, json, re, shutil, datetime
-from urllib.parse import unquote
+import hashlib, json, re, shutil, datetime, subprocess
+from urllib.parse import unquote, quote
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -444,11 +444,29 @@ def shell(slug, title, desc, h1, og, content, extra_graph=None):
            cssv=ASSET_V["css"], jsv=ASSET_V["js"])
 
 
+def committed(path):
+    """Date a file last changed in git, so a rebuild doesn't claim every PDF is new."""
+    try:
+        out = subprocess.run(["git", "log", "-1", "--format=%cs", "--", str(path)], cwd=ROOT,
+                             capture_output=True, text=True, check=True).stdout.strip()
+    except (OSError, subprocess.CalledProcessError):
+        out = ""
+    return out or BUILT
+
+
+def paper_urls(records):
+    """Self-hosted paper PDFs, listed in the sitemap so Google and Scholar crawl them directly."""
+    hrefs = dict.fromkeys(l["href"] for r in records for l in r["links"]
+                          if l["href"].startswith("papers/") and l["href"].endswith(".pdf"))
+    return [("{0}/{1}".format(ORIGIN, quote(h, safe="/,")), "yearly", "0.6", committed(ROOT / h))
+            for h in hrefs if (ROOT / h).exists()]
+
+
 def sitemap(urls):
     rows = "".join(
         "\n  <url><loc>{0}</loc><lastmod>{1}</lastmod>"
-        "<changefreq>{2}</changefreq><priority>{3}</priority></url>".format(u, BUILT, cf, pr)
-        for u, cf, pr in urls)
+        "<changefreq>{2}</changefreq><priority>{3}</priority></url>".format(u, mod, cf, pr)
+        for u, cf, pr, mod in urls)
     return ('<?xml version="1.0" encoding="UTF-8"?>\n'
             '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">{0}\n</urlset>\n'.format(rows))
 
@@ -489,7 +507,7 @@ def main():
         priority = "1.0" if slug == "" else "0.9" if slug in ("research", "publications") else "0.7"
         freq = "weekly" if slug in ("", "publications") else "monthly"
         urls.append(("{0}/".format(ORIGIN) if slug == "" else "{0}/{1}/".format(ORIGIN, slug),
-                     freq, priority))
+                     freq, priority, BUILT))
         print("  {0:24} {1:>7,} bytes".format(str(out.relative_to(ROOT)), len(page)))
 
     notfound = shell("", "Page not found | Ravi Prakash",
@@ -507,6 +525,7 @@ def main():
     (ROOT / "assets").mkdir(exist_ok=True)
     shutil.copy(SRC / "site.css", ROOT / "assets" / "site.css")
     shutil.copy(SRC / "site.js", ROOT / "assets" / "site.js")
+    urls += paper_urls(records)
     (ROOT / "sitemap.xml").write_text(sitemap(urls), encoding="utf-8")
     (ROOT / "robots.txt").write_text(ROBOTS, encoding="utf-8")
     print("  sitemap.xml              {0} urls".format(len(urls)))
