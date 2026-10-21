@@ -100,3 +100,10 @@ Layer-level source retrieval statements (Boerhaave 2026-10-14; other museums 202
 are carried into item records, with the original source-layer declaration retained under raw.
 The 544 full Boerhaave CSV rows are preserved under raw.boerhaave_catalog, including
 created/modified fields, source dimension strings and any unparsed original fields.
+
+
+## Review and image follow-up (2026-10-21)
+
+Dataset `v1-8a2634871c59` adds two explicitly accession-captioned Pitt Rivers images to existing records, without new IDs or inferred measurements. All 2,826 records and 5,970 source-row references reconcile; 2,712 records now have images and 114 do not. The asset supplement preserves full-size source URLs, association evidence, pixel sizes, credits and checksums in `data/curated/import_images.json`. Redistribution and training remain subject to review.
+
+A separate frozen review pilot contains 150 unreviewed records and 297 pair tasks. It does not mutate museum facts, source labels or predictions. Its schema and provenance, conservative leakage groups, provisional splits and browser-local review protocol are documented in [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md).

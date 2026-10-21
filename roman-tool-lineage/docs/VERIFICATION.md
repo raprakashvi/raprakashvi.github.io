@@ -76,3 +76,30 @@ new interface. Its initial hosted run passed before redesign publication.
 - Most function labels are analyst or keyword interpretations; detailed source descriptions and calibrated measurements are often missing. The model roadmap starts with annotation and rights/group review.
 - Morphology retains existing image features and QC. New metadata-only imports are included in the coverage denominator, with no fabricated coordinates. The existing t-SNE/shape-distance results are preserved, not independently validated here.
 - Source rights and cultural attribution remain source statements. Owner-authorized research display is separate from redistribution/training eligibility.
+
+
+## Review delivery, 2026-10-21
+
+Current dataset `v1-8a2634871c59`; frozen review pilot `pilot-aa58d2739f53`.
+All 2,826 records validate and all 5,970 source references reconcile. All 2,710
+item-linked asset hashes resolve; two new Pitt Rivers photographs have verified
+accession-caption associations. Stable IDs and release bytes survive source reordering.
+
+Twelve Python tests pass (six source-access/cache, six pilot/history/mask tests).
+The pilot has 150 distinct known leakage groups and 297 pair tasks. Provisional
+partitions have no known entity-group leakage. Frozen files match their SHA-256 manifest.
+No reviews produce no labels: all observed masks false, zero eligible training rows.
+
+Local Chromium checks: 32 collection checks and 19 review checks pass. Review coverage
+includes unsupported judgment rejection, multi-label uncertainty, reload persistence,
+revision ancestry, independent pair dimensions, reveal flag, actual JSON export Blob,
+file import round-trip, deduplication, version mismatch rejection, branch conflicts,
+unsaved form protection, 390px layout, keyboard access and a simulated quota error.
+Synthetic review fixtures are removed after QA. No uncaught exceptions. Existing
+collection checks report zero HTTP errors. Browser-local timings are not a load test.
+Live verification is tracked separately in the corresponding `_live.json` reports.
+
+The bounded Smithsonian image follow-up received content HTTP 403 and stopped the host.
+All latest 80 museum imports remain without verified local images; the queue is explicit.
+Human review, near-duplicate/kit audit, rights/cultural review and adjudication remain
+required. No substantial training or automatic upload took place.

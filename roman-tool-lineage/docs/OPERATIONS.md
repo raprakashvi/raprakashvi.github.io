@@ -135,3 +135,8 @@ At tens of thousands of records, measure index transfer/parse/filter time and DO
 again. Add indexed query shards or a client worker before adopting an API. A true backend
 or private access would be a separate migration. The current static site does not promise
 arbitrary-scale server search, confidential assets or model inference.
+
+
+## Review drafts
+
+Review histories are browser-local, scoped to the pilot version and retained on sign-out. Export JSON before clearing browser data, moving devices or changing the pilot. There is no server upload. Source deployments contain the blank tasks and image queue, never local review notes. Follow [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md) for backup, import, offline validation and conflict handling. Preserve old `data/<version>/review/` assets for version-specific recovery.

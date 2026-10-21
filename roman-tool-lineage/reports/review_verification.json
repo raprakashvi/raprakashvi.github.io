@@ -1,0 +1,14 @@
+{
+  "dataset_version": "v1-8a2634871c59",
+  "pilot_version": "pilot-aa58d2739f53",
+  "checks": [
+    "Frozen pilot files match recorded SHA-256 hashes",
+    "Image queue reconciles 88 imports, 80 latest-batch records, 2 linked images",
+    "Latest 80 have explicit missing images; none fabricated"
+  ],
+  "pipeline_tests_passed": 6,
+  "access_tests_passed": 6,
+  "local_browser_checks_passed": 19,
+  "expert_reviews": 0,
+  "training_performed": false
+}

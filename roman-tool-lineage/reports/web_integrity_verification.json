@@ -1,13 +1,13 @@
 {
-  "version": "v1-5ea6e0e1e84c",
+  "version": "v1-8a2634871c59",
   "records_validated": 2826,
   "original_rows_compared": 2738,
   "source_row_references": 5970,
-  "assets_hash_verified": 2708,
+  "assets_hash_verified": 2710,
   "morphology_rows": 2600,
   "reordering_preserves_ids_and_release": true,
   "plaintext_password_in_artifact": false,
-  "site_bytes": 93423427,
+  "site_bytes": 94151101,
   "browser_tasks": "See web_browser_verification.json",
   "checks": "passed"
 }

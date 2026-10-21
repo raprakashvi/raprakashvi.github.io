@@ -175,3 +175,6 @@ traceable. Do not automatically upload data, embeddings, optimizer state or weig
 2. Run simple/frozen baselines before fine-tuning. If fusion/autoencoders fail to improve paired grouped evaluation, retain the simpler model and report the null result.
 3. If gains vanish in museum holdout or background controls, prioritize new acquisition and photography rather than enlarging the architecture.
 4. Submit function hypotheses for expert validation. No clinical-use, causal-history or ancestry claim follows from retrieval alone.
+
+
+Review implementation: see [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md) for the frozen 150-record pilot, independent pair judgments, browser-local histories, offline validation, masked labels, conservative grouping and provisional splits. No review votes or training labels have been invented.

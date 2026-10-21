@@ -57,3 +57,23 @@ Follow-up delivered: 2,826 records, 45 additional Pitt Rivers editorial entries 
 35 additional Smithsonian objects/assemblages, 41,600 ranked shape-comparison edges,
 and 32 passing local/live browser checks. Modern Pitt Rivers service remains down;
 bounded public editorial access is recovered. See ACCESS_RECOVERY.md.
+
+
+## Review workflow update, 2026-10-21
+
+Open https://raprakashvi.github.io/roman-tool-lineage/#review with the existing gate
+credentials. Choose a reviewer alias, inspect evidence, save local judgments and export
+JSON before changing devices or clearing browser data. Drafts do not upload or sync.
+Independent reviewers use separate aliases and exchange exports after independent work.
+Full instructions, offline validation and adjudication limits: [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md).
+
+Dataset `v1-8a2634871c59` keeps all 2,826 stable IDs and adds two verified Pitt Rivers
+photographs. Pilot `pilot-aa58d2739f53` has 150 unreviewed records and 297 similarity
+pairs; all training labels remain masked. `data/processed/web/review_current.json`
+locates the hashed frozen files under `data/review/`.
+
+The image queue covers all 88 museum imports, with 86 still lacking images (including
+the latest 80). Smithsonian detail-page 403 and modern Pitt maintenance remain source
+blockers. The existing personal website is preserved by scoped deployment. Source
+branch remains `vestigium-2026-10-21`; implementation/deployment commits and live results
+are recorded in PLAN.md after verification.

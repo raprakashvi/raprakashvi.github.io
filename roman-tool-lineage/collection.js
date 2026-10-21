@@ -44,12 +44,13 @@ async function compare(token){
  }catch(e){$('comparison').innerHTML=`<p role="alert">${esc(e.message)}. Reload to retry.</p>`;}
 }
 async function route(){
- const token=++request,hash=location.hash.slice(1)||'browse',view=hash.split('/')[0];const section={browse:'browse',compare:'compare',analysis:'analysis',about:'about',item:'item'}[view]||'browse';
- for(const name of ['browse','compare','analysis','about','item'])$(name+'-view').hidden=name!==section;
+ const token=++request,hash=location.hash.slice(1)||'browse',view=hash.split('/')[0];const section={browse:'browse',compare:'compare',analysis:'analysis',about:'about',review:'review',item:'item'}[view]||'browse';
+ for(const name of ['browse','compare','analysis','about','item','review'])$(name+'-view').hidden=name!==section;
  document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')==='#'+section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  $('global-error').hidden=true;
  if(section==='item')await showItem(hash.split('/')[1],token);
  if(section==='compare')await compare(token);
+ if(section==='review')try{const m=await import('./review.js');await m.show({base,index,manifest,esc,preview,record});}catch(e){$('review-view').innerHTML=`<div class="empty"><h1>Review could not load</h1><p>${esc(e.message)}</p><button onclick="location.reload()">Reload review workspace</button></div>`;}
  if(section==='analysis')try{const m=await import('./analysis.js');await m.show({base,index,manifest,esc,preview,syncComparisons:saveSelection,selectedId:hash.split('/')[1]||null});}catch(e){$('analysis-status').textContent='Analysis could not load. Reload to retry. '+e.message;}
 }
 await unlock();$('application').hidden=false;$('logout').onclick=signOut;

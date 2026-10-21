@@ -87,3 +87,29 @@ User requested another access attempt, a slow crawl if useful, then progress to 
 - Follow-up local verification: 6 access/cache regression tests pass; all 2,826 records validate; 5,970 source-row references reconcile; all item-linked image hashes resolve; 32 Chromium checks pass including nearest/cross-collection matches, 0 exceptions or HTTP errors. Publishing underway.
 
 - Follow-up live acceptance: 32 checks passed on `v1-5ea6e0e1e84c`, no exceptions or HTTP errors. Website implementation `cca42f5`, source implementation `413eb16`; source offsets now documented for resumable API requests. Main-site checker still reports zero failures/warnings.
+
+## Follow-up: review pilot and image readiness
+
+User authorized the next recommended step: review tools, a diverse 150-record pilot,
+image follow-up, leakage controls, and evaluation preparation. No model training.
+Recoverable source checkpoint: commit `91f7718`; website checkpoint `91b3ea9`.
+Existing canonical dataset remains frozen at `v1-5ea6e0e1e84c` unless verified assets change it.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 14 | complete | Freeze deterministic 150-record pilot and conservative leakage groups; publish sampling/coverage and provisional group splits. Verify repeatability, stable references, no group crosses splits, no fabricated labels. |
+| 15 | complete | Investigate missing images in all 88 imported records, including the latest 80. Produce source-linked acquisition queue and bounded access report; accept only explicitly associated images. |
+| 16 | complete | Add accessible Review & annotate view with local persistence, independent function states and shape/mechanism/function pair judgments, evidence, revision history, JSON export/import and offline validation. Verify round trips, schema failures and conflicts; judgments remain separate from museum facts. |
+| 17 | complete | Prepare masked evaluation exports and disagreement queue, document two-reviewer/adjudication protocol and training prerequisites. Verify empty reviews produce no ground-truth labels or quality claims. |
+| 18 | in progress | Run integrity, deterministic pipeline and desktop/mobile browser checks; commit and publish review workflow, verify live, preserve personal website. Distinguish workflow delivery from human reviews still required. |
+
+- Review delivery: 150 unreviewed records across all 13 collection labels (30 imports/120 existing), 297 independent shape/mechanism/function pair tasks, 2,818 conservative leakage groups, one representative per group. Seed 17; frozen pilot `pilot-aa58d2739f53` references dataset `v1-8a2634871c59` and hashed builder/group assignments. No known group crosses provisional splits; all training eligibility remains false.
+- Image follow-up: two exact-accession Pitt Rivers photographs recovered and byte-verified (1942.12.62 and 1995.20.1). No new IDs or physical measurements. Queue covers all 88 imports and flags the latest 80. Smithsonian detail-page content returned HTTP 403: host stopped, second page not fetched. Remaining 86 imports, including all latest 80, lack local images; this source-dependent gap remains blocked.
+- Review evidence: six offline pipeline/history/mask tests and six access/cache tests pass. Local Chromium: 19 review checks and 32 collection checks pass with zero uncaught exceptions; existing collection checks have zero HTTP errors. Review checks use synthetic fixtures removed afterward. Save/reload, multi-label states, pair dimensions, source reveal, revision ancestry, exact import deduplication, incompatible version rejection, conflict retention, unsaved changes and quota failure verified on desktop/mobile.
+- Offline export with zero reviews produces 150 rows with null labels, false observed masks and zero eligible training rows. Independent expert reviews, duplicate/cultural/rights audits and adjudication remain required before experiments. No training performed; no review notes uploaded.
+
+| Remaining task | Status | Blocker / next action |
+|---|---|---|
+| Independent review of the 150-item pilot | blocked (human input required) | Two knowledgeable reviewers must supply actual evidence-based judgments; no expert labels fabricated. Follow docs/REVIEW_WORKFLOW.md. |
+| Remaining museum images | blocked (source-dependent) | 86 imported records have no accessible, explicitly verified local image. Latest 80 all remain in acquisition queue. Smithsonian detail page returns 403; modern Pitt catalogue maintenance persists. |
+| Shared review server and adjudication UI | pending (deferred) | Browser-local histories and offline conflict reports are delivered. A centralized write backend and human adjudication workflow are later work; GitHub Pages remains static. |
