@@ -103,3 +103,5 @@ The bounded Smithsonian image follow-up received content HTTP 403 and stopped th
 All latest 80 museum imports remain without verified local images; the queue is explicit.
 Human review, near-duplicate/kit audit, rights/cultural review and adjudication remain
 required. No substantial training or automatic upload took place.
+
+Live acceptance also passes all 32 collection and 19 review checks on the hosted URL. Live module, frozen-pilot and recovered-image bytes match the verified artifact. See `web_browser_verification_live.json` and `review_browser_verification_live.json`; synthetic reviews were removed.

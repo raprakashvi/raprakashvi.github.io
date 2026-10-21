@@ -25,6 +25,8 @@ Canonical museum records, analyst interpretations and model predictions are unch
 6. Export JSON regularly. Drafts are stored in localStorage on this browser and origin,
    scoped to the exact pilot version. They do not sync or upload. Clearing site data,
    switching browser/device, or a changed origin loses access unless you export/import.
+   Edit in one browser tab at a time; localStorage read/merge/write is not a cross-tab transaction.
+   File imports retain revision branches, but simultaneous editing tabs can race.
    Sign-out restores the interface gate and retains local drafts on a shared device.
    Browser-local notes are not encrypted. Store sensitive reviews outside this site.
 7. Import a compatible JSON export to merge histories. Exact repeated revision IDs

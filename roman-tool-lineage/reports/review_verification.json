@@ -10,5 +10,10 @@
   "access_tests_passed": 6,
   "local_browser_checks_passed": 19,
   "expert_reviews": 0,
-  "training_performed": false
+  "training_performed": false,
+  "live_browser_checks_passed": 19,
+  "live_collection_checks_passed": 32,
+  "website_implementation_commit": "3286ffa",
+  "source_implementation_commit": "50bac76",
+  "live_asset_bytes_match": true
 }

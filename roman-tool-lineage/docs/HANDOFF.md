@@ -77,3 +77,5 @@ the latest 80). Smithsonian detail-page 403 and modern Pitt maintenance remain s
 blockers. The existing personal website is preserved by scoped deployment. Source
 branch remains `vestigium-2026-10-21`; implementation/deployment commits and live results
 are recorded in PLAN.md after verification.
+
+Review implementation source commit: `50bac76`; website implementation: `3286ffa`. Live acceptance passed 32 collection + 19 review checks, zero uncaught exceptions. The source branch and dataset/pilot hashes above identify reproducible artifacts; final evidence-only commits may follow.
