@@ -1,0 +1,24 @@
+{
+  "dataset_version": "v1-804c1e7c3202",
+  "byte_identical_paths": [
+    "collection.js",
+    "review.js",
+    "analysis.js",
+    "data/v1-804c1e7c3202/working_coverage.json",
+    "data/v1-804c1e7c3202/review/pilot.json",
+    "images/pitt-1942-12-62.jpg",
+    "images/pitt-1995-20-1.jpg",
+    "images/cma-373836-1.jpg",
+    "images/cma-373836-0.jpg",
+    "images/cma-102244-1.jpg",
+    "images/cma-102244-0.jpg",
+    "images/cma-108131-1.jpg",
+    "images/cma-108131-0.jpg",
+    "images/cma-171267-1.jpg",
+    "images/cma-171267-0.jpg"
+  ],
+  "supplemental_images_verified": 10,
+  "personal_site_implementation_commit": "4cf9ebe",
+  "source_implementation_commit": "c559c08",
+  "public_static_files": "Expected and documented under approved basic interface gate policy"
+}

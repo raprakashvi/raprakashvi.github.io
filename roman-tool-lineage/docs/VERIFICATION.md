@@ -144,3 +144,5 @@ python scripts/web/phase_acceptance.py --site /tmp/vestigium-complete
 Browser checks require a local Chromium debug endpoint; Firefox smoke checks use a local
 WebDriver with a temporary profile. Credential values are read from ignored local config
 and never logged. Test review histories are synthetic and removed after each suite.
+
+The expanded release also passes all 39 collection, 24 review and six Firefox smoke checks on the live site. Current modules, coverage, pilot and all ten supplemental image views match local bytes. Morphology and working-function PDF/SVG/PNG exports regenerate byte-for-byte from the frozen release. See the matching live browser, delivery, phase-acceptance and reproducibility JSON reports.

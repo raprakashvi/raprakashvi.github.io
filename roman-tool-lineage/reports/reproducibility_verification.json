@@ -1,0 +1,36 @@
+{
+  "dataset_version": "v1-804c1e7c3202",
+  "figures": [
+    {
+      "file": "morphology_web.pdf",
+      "byte_identical": true,
+      "sha256": "518af28b89c458eb1bb959096f95ce51550f49738159035d46aece20378e5072"
+    },
+    {
+      "file": "morphology_web.svg",
+      "byte_identical": true,
+      "sha256": "8fce3f3480053bc57aa13aad6d0245a54478a5dae003e97faddd645ff1559216"
+    },
+    {
+      "file": "morphology_web.png",
+      "byte_identical": true,
+      "sha256": "a16dc8cbf589eb434a7ad2306ac8a21116902ec01ce1c6c2147066c77af219a9"
+    },
+    {
+      "file": "working_functions.pdf",
+      "byte_identical": true,
+      "sha256": "9f7664739fd5fc1964f5ccfe879c8f5350414b473e8a513606db95fe35a2ce21"
+    },
+    {
+      "file": "working_functions.svg",
+      "byte_identical": true,
+      "sha256": "9bcc16236e17693670f8be9110f33f1c7ee97da593b5a59b4a8728ae7b33089b"
+    },
+    {
+      "file": "working_functions.png",
+      "byte_identical": true,
+      "sha256": "c2b13cbb0452e10523263794ad7adc11e694152074a2e9cd171a34fc508bd9fa"
+    }
+  ],
+  "training_performed": false
+}

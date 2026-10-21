@@ -1,8 +1,8 @@
 {
-  "tested_at": "2026-10-21T21:35:43.593Z",
+  "tested_at": "2026-10-21T22:32:36.810Z",
   "url": "https://raprakashvi.github.io/roman-tool-lineage/",
-  "dataset_version": "v1-8a2634871c59",
-  "pilot_version": "pilot-aa58d2739f53",
+  "dataset_version": "v1-804c1e7c3202",
+  "pilot_version": "pilot-2254e7f3e6c4",
   "checks": [
     "Frozen 150-item pilot loads",
     "All initial function states remain unobserved",
@@ -20,7 +20,12 @@
     "Review form fits 390px mobile viewport",
     "Pair review fits mobile viewport",
     "Keyboard can reach pair grading control",
+    "Arrow keys move keyboard focus within a rating group",
     "Storage failure is visible and leaves saved history intact",
+    "Review decisions and navigation use buttons instead of dropdowns",
+    "Function chip selects a function in one click",
+    "Second function-chip click clears selection",
+    "Save-and-next persists and advances the task",
     "Review tasks send no upload/write requests",
     "Review workflow has no uncaught browser exceptions"
   ],

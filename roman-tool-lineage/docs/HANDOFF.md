@@ -92,3 +92,5 @@ Current dataset: `v1-804c1e7c3202` (2,830 records); current later-review pilot:
 `pilot-2254e7f3e6c4`. Source branch remains `vestigium-2026-10-21`. Existing gate credentials
 and configuration instructions remain in OPERATIONS.md. New working-function exports,
 QC masks, figures and source coverage are versioned with their respective manifests.
+
+Expanded implementation: source `c559c08`, website `4cf9ebe`; final evidence-only commits follow. Live acceptance: 39 Chromium collection checks, 24 review checks and six Firefox smoke checks. Eighteen offline tests pass. Original personal-site files are byte-identical. All supplemental image bytes match the verified artifact, and six versioned figure exports reproduce byte-for-byte. The published `reports/phase_acceptance.json` records current deployment status and bounded acceptance; source-specific and deferred tasks remain listed explicitly.
