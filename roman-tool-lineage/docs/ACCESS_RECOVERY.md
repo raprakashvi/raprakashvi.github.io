@@ -96,5 +96,11 @@ Six focused access-policy/cache regression tests cover robots-unavailable vs con
 explicit disallow, rate-limit stop, cache corruption and paragraph extraction. Dataset
 validation checks all records, aliases, source rows, assets and neighbor references. Browser
 checks cover the expanded source filter and nearest/cross-collection comparison workflow.
-The personal site remains unchanged outside the collection folder. Local browser validation passed 32 checks with zero exceptions or HTTP errors. Live
-results are recorded separately after publication.
+The personal site remains unchanged outside the collection folder. Local and live browser validation each passed 32 checks with zero exceptions or HTTP
+errors on v1-5ea6e0e1e84c. Source implementation: 413eb16; website implementation: cca42f5.
+Later documentation/report commits do not change this code/data verification.
+
+API coverage reports preserve start and next_start offsets: knife resumes at 15, scraper
+at 12, tweezers at 12. Respect the current key quota before requesting another page;
+cache replay does not consume it. Full raw reconstruction runs ingest.py first (preserving
+reviewed seed entries), then access_recovery.py, then dataset/build validation.

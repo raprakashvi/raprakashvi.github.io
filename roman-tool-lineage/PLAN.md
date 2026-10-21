@@ -21,8 +21,8 @@ public static assets, no security or secrecy guarantee. No substantial ML traini
 
 | Task | Status | Exact remaining work |
 |---|---|---|
-| Full Pitt Rivers catalog expansion | blocked | Main database returns maintenance document; editorial robots endpoint HTTP 403. Establish approved API/export, scope and cultural flags after service/source clarification. Five cached mentions delivered; no census claim. |
-| Additional full ethnographic imports | pending (deferred) | Extend verified Smithsonian adapter with a personal key and reviewed query frame; review Te Papa/Swedish source terms and cultural handling. Three Smithsonian examples delivered. |
+| Full Pitt Rivers catalog expansion | blocked | Modern database still returns a maintenance document. Establish documented API/export scope and cultural flags when service returns. Editorial access recovered in follow-up: 50 records, not a census. |
+| Additional full ethnographic imports | pending (deferred) | Smithsonian bounded API frame now has 38 records; extend through saved offsets within quota or use a personal key for sustained work. Review Te Papa/Swedish source terms and cultural handling. |
 | Substantial local model training | pending (deferred by request) | Annotation, rights, entity-group and compute audits from ML roadmap precede experiments. No training or weight upload performed. |
 | Independent assistive-technology / cross-browser audit | pending (deferred) | Automated Chromium checks passed; independent screen-reader/Safari/Firefox checks not performed. |
 
@@ -79,9 +79,11 @@ User requested another access attempt, a slow crawl if useful, then progress to 
 | 10 | complete | Recheck official Pitt Rivers interfaces and robots behavior; try <=10 public editorial pages at >=2 s/request; actual content denials/429 stop the host. Preserve responses and scope. |
 | 11 | complete | Expand an accessible official API source with a small request budget; retain original IDs/provenance, report discoveries/duplicates/failures and source restrictions. |
 | 12 | complete | Add stable-ID nearest-shape comparisons using existing audited distances, with table access and clear distance semantics; no substantial training. |
-| 13 | in progress | Rebuild, validate, verify representative browser tasks, commit and publish the bounded update without changing main-site files. |
+| 13 | complete | Rebuild, validate, verify representative browser tasks, commit and publish the bounded update without changing main-site files. |
 
 - Follow-up: robots-file 403 is handled as unavailable under RFC 9309, while actual page denials/429 still stop the host. Five public editorial pages fetched at >=2 s/request, adding 45 Pitt Rivers records. Three bounded Smithsonian API requests added 35 records; one cultural-review exclusion. Current dataset has 2,826 records, source totals Pitt Rivers 50 / Smithsonian Anthropology 38.
 - Exported 41,600 ranked shape-neighbor edges for 2,600 specimens, with global and other-collection pools; original top-8 distances verified. No training performed.
 
 - Follow-up local verification: 6 access/cache regression tests pass; all 2,826 records validate; 5,970 source-row references reconcile; all item-linked image hashes resolve; 32 Chromium checks pass including nearest/cross-collection matches, 0 exceptions or HTTP errors. Publishing underway.
+
+- Follow-up live acceptance: 32 checks passed on `v1-5ea6e0e1e84c`, no exceptions or HTTP errors. Website implementation `cca42f5`, source implementation `413eb16`; source offsets now documented for resumable API requests. Main-site checker still reports zero failures/warnings.

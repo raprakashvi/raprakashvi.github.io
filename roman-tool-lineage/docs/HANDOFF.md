@@ -52,3 +52,8 @@ Final live acceptance: 29 Chromium checks passed for `v1-108ed1654c7f`, with 0 e
 and 0 HTTP errors. Personal-site checks: 0 failures, 0 warnings; no tracked file outside
 the collection changed. Checklist current-phase tasks complete; explicit future/source
 blockers remain listed. PDF/SVG/PNG morphology regeneration is byte-identical locally.
+
+Follow-up delivered: 2,826 records, 45 additional Pitt Rivers editorial entries and
+35 additional Smithsonian objects/assemblages, 41,600 ranked shape-comparison edges,
+and 32 passing local/live browser checks. Modern Pitt Rivers service remains down;
+bounded public editorial access is recovered. See ACCESS_RECOVERY.md.
