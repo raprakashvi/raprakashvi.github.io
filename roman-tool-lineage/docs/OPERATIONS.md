@@ -78,7 +78,9 @@ normal gate behavior after GitHub finishes publishing, since push success is not
 
 A manual source-repository Actions workflow optionally builds a downloadable artifact.
 Configure `VESTIGIUM_GATE_CONFIG` with the salted verifier JSON, not a plaintext password.
-It does not publish to or replace the personal site automatically. Browser QA is a local
+It is supplied on the source branch and was not executed here; merge it to the default
+branch and configure the verifier secret before using its manual trigger. It does not
+publish to or replace the personal site automatically. Browser QA is a local
 release step. Source caches in the original embedded `index.html` make the build independent
 of missing third-party thumbnail caches; museum refresh is separate and opt-in.
 

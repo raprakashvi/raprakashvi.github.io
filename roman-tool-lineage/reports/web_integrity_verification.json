@@ -1,0 +1,13 @@
+{
+  "version": "v1-108ed1654c7f",
+  "records_validated": 2746,
+  "original_rows_compared": 2738,
+  "source_row_references": 5890,
+  "assets_hash_verified": 2708,
+  "morphology_rows": 2600,
+  "reordering_preserves_ids_and_release": true,
+  "plaintext_password_in_artifact": false,
+  "site_bytes": 115575201,
+  "browser_tasks": "See web_browser_verification.json",
+  "checks": "passed"
+}

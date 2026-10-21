@@ -7,7 +7,9 @@ Website repository: https://github.com/raprakashvi/raprakashvi.github.io/tree/ma
 
 Initial hosted migration was committed and pushed as `238b7cf` before redesign.
 Its live gate/original-tree checks passed. Final release uses dataset `v1-108ed1654c7f`.
-Final source/website commit and live verification references are recorded below after publication.
+Source implementation commit: `1dd77e8` on `vestigium-2026-10-21`.
+Website implementation commit: `114c028` on `master`.
+A later documentation-only commit may follow these code/data release commits.
 
 Read initial access locally in `roman_tool_lineage/.access.local`; username `research`.
 This file is ignored, mode 0600, and absent from published artifacts. Rotate credentials
@@ -41,3 +43,8 @@ attributions are retained with source context. Image display authorization is se
 from redistribution and training eligibility. Independent assistive-technology and
 non-Chromium audits remain deferred. All current-phase verification claims distinguish
 local implementation from live delivery.
+
+Final live acceptance: 29 Chromium checks passed for `v1-108ed1654c7f`, with 0 exceptions
+and 0 HTTP errors. Personal-site checks: 0 failures, 0 warnings; no tracked file outside
+the collection changed. Checklist current-phase tasks complete; explicit future/source
+blockers remain listed. PDF/SVG/PNG morphology regeneration is byte-identical locally.
