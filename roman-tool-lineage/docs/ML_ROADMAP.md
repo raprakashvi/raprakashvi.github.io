@@ -178,3 +178,12 @@ traceable. Do not automatically upload data, embeddings, optimizer state or weig
 
 
 Review implementation: see [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md) for the frozen 150-record pilot, independent pair judgments, browser-local histories, offline validation, masked labels, conservative grouping and provisional splits. No review votes or training labels have been invented.
+
+## User sequencing clarification
+
+Human review is a later validation step. Continue website, ingestion, source extraction,
+provisional catalog-context assignment and descriptive morphology now. Working annotations
+are available in a separate versioned export with evidence/rule hashes. They may support
+exploratory browsing and later weak-label sensitivity studies; they are not expert labels
+or verified test targets. Training remains outside the current delivery. Review/rights
+and duplicate checks become experiment-specific prerequisites when that later phase starts.

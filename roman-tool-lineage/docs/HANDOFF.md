@@ -79,3 +79,16 @@ branch remains `vestigium-2026-10-21`; implementation/deployment commits and liv
 are recorded in PLAN.md after verification.
 
 Review implementation source commit: `50bac76`; website implementation: `3286ffa`. Live acceptance passed 32 collection + 19 review checks, zero uncaught exceptions. The source branch and dataset/pilot hashes above identify reproducible artifacts; final evidence-only commits may follow.
+
+## Current priority update
+
+Website/dataset work proceeds without human review. The current source-grounded working
+assignments, Cleveland import, additional descriptive outlines and button-based review
+workspace are detailed in [PHASE_STATUS.md](PHASE_STATUS.md). This is the current
+phase-by-phase acceptance and remaining-work map. Human validation and substantial
+training remain later phases; the site does not ask the user to review now.
+
+Current dataset: `v1-804c1e7c3202` (2,830 records); current later-review pilot:
+`pilot-2254e7f3e6c4`. Source branch remains `vestigium-2026-10-21`. Existing gate credentials
+and configuration instructions remain in OPERATIONS.md. New working-function exports,
+QC masks, figures and source coverage are versioned with their respective manifests.

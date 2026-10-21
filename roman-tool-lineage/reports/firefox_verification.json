@@ -1,0 +1,18 @@
+{
+  "checks": [
+    "Gate hides collection in fresh Firefox session",
+    "Firefox login and paginated browse",
+    "Firefox review uses buttons",
+    "Firefox function chip toggles positive",
+    "Firefox mobile-width review has no horizontal page overflow",
+    "Firefox morphology includes supplemental outlines"
+  ],
+  "browser": "Firefox",
+  "version": "158.0",
+  "url": "http://127.0.0.1:8768/",
+  "dataset_version": "v1-804c1e7c3202",
+  "limits": [
+    "Bounded Firefox smoke check, not a full screen-reader audit",
+    "No saved annotation or synthetic review history written"
+  ]
+}

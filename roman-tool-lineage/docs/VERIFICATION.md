@@ -105,3 +105,42 @@ Human review, near-duplicate/kit audit, rights/cultural review and adjudication 
 required. No substantial training or automatic upload took place.
 
 Live acceptance also passes all 32 collection and 19 review checks on the hosted URL. Live module, frozen-pilot and recovered-image bytes match the verified artifact. See `web_browser_verification_live.json` and `review_browser_verification_live.json`; synthetic reviews were removed.
+
+## Current expanded delivery and review redesign
+
+Dataset `v1-804c1e7c3202`: 2,830 valid records, 5,974 reconciled source references,
+2,718 distinct item-linked assets verified by SHA-256, stable IDs under reordering.
+Original 2,826 raw records, source descriptions/dates and function fields compare equal
+to the previous release. New context summaries are labeled and never fill source
+missingness. Twenty-one explicit material extracts retain source provenance. Working
+functions cover 2,621 records, with 209 unassigned; none become expert ground truth.
+
+Eighteen Python tests pass. The final local Chromium suite passes 39 collection and
+24 review checks, zero uncaught exceptions and zero collection HTTP errors. It checks
+working/documented evidence modes, new museum records, SI measurements, multiple image
+views, context summaries and accessible coverage, plus real function/rating button clicks,
+keyboard arrows, save-and-next, storage/revision/import boundaries and mobile layouts.
+Six Firefox 158 smoke checks also pass. Full Firefox, Safari and independent screen-reader
+validation remain separately pending; no human review is requested now.
+
+Measured initial local browse: HTML 8,970 bytes; search index 1,453,820 decoded bytes;
+24 cards; zero detailed-record shard requests. These are bounded payload measurements,
+not a concurrent-user production benchmark. Images and analysis remain lazy/on demand.
+
+Six new source-image main views were segmented with the existing algorithm: five pass
+automatic QC, one remains excluded (`case_or_mass`) with mask/reason retained. Plot CSV
+contains 2,605 rows; supplemental rows have explicit origin and mask references. Original
+2,600-record multiblock neighbor graph and all 41,600 ranked edges remain unchanged.
+Source/mask audit figures and package/version/source hashes document reproducibility.
+
+Run all offline checks after building:
+
+```sh
+VESTIGIUM_SITE=/tmp/vestigium-complete python -m unittest discover -s scripts/web -p 'test_*.py'
+python scripts/web/verify.py --site /tmp/vestigium-complete --reorder
+python scripts/web/phase_acceptance.py --site /tmp/vestigium-complete
+```
+
+Browser checks require a local Chromium debug endpoint; Firefox smoke checks use a local
+WebDriver with a temporary profile. Credential values are read from ignored local config
+and never logged. Test review histories are synthetic and removed after each suite.

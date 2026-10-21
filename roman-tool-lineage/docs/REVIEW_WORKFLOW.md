@@ -125,3 +125,27 @@ not establish that the museum has no photographs. Remaining editorial images wit
 matching accessions must not be assigned to imported objects. A bounded Smithsonian detail-page follow-up returned HTTP 403 on the first object page; the host was stopped, and the second candidate was not requested. Exact outcomes appear in `results/tables/smithsonian_image_access.json`. All latest 80 imports remain without local images. Additional official-media lookup is source-specific work; the modern Pitt Rivers catalogue remains unavailable.
 Research display authorization is recorded separately from redistribution and training
 eligibility. No image-derived physical dimensions were inferred.
+
+## Current priority and redesigned interface
+
+**Human review is deferred by the user.** It is not required to continue website work,
+museum ingestion, contextual annotation or descriptive exploration. The collection now
+uses explicit working hypotheses derived from catalog context. No review is requested now.
+
+When later review begins, the page uses function chips and Yes/No/Unsure/Clear buttons;
+multiple functions can be selected. Click a function chip again to clear it. Pair tasks
+use independent None/Slight/Moderate/Strong/Cannot tell buttons for shape, mechanism and
+function. Keyboard Tab/Enter/Space and left/right within a button group are supported.
+Save & next persists and advances; Skip leaves the task untouched. Session/backup and
+additional evidence fields are collapsed initially. State meanings and revision/export
+semantics from the protocol above remain the same; there are no decision dropdowns.
+
+The evidence field starts from the actual displayed-image or catalog context, clearly
+marked as an interpretation. A user can select Documented use only with a source URL
+and specific evidence locator; untouched function rows remain unobserved. Working
+suggestions can be copied explicitly as an editable starting point. They are not
+silently pre-filled as a review and never become model ground truth automatically.
+
+The old review format remains valid for its exact dataset/pilot. A changed dataset
+creates a new frozen pilot, and old exports remain usable with their original offline
+validator inputs. Do not rename version fields to force a cross-version import.

@@ -64,3 +64,30 @@ The updated interface also exports multiblock nearest-outline comparisons for al
 other collections. See ACCESS_RECOVERY.md for distance semantics, hash-verified source
 matching, cross-collection ranking and the exportable ranked-edge CSV. This is a separate
 comparison from the 2D scatter.
+
+## Expanded image cohort
+
+The build now plots the 2,600 original study outlines plus five supplemental outlines
+passing the existing deterministic extractor's automated QC. Original points use circles,
+supplemental points diamonds; table/CSV `feature_origin` identifies the cohort. The
+static PDF/SVG/PNG figure uses the shared visual definitions. Existing multiblock ranks
+remain on the original 2,600 objects and are not recomputed or imputed for the new cohort.
+
+```sh
+MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/supplemental_shapes.py
+python scripts/web/build_site.py --output /tmp/vestigium --gate-config gate.local.json
+python scripts/web/morphology.py --dataset-version DATASET_VERSION --output /tmp/replay
+```
+
+Six object-specific main views were processed. Five pass automatic QC; the Pitt Rivers
+1942.12.62 broad blade triggers `case_or_mass` and stays excluded, even though the mask
+visually resembles the object. This conservative rule can be investigated later, without
+silently overriding QC. Masks and all outcomes are retained under
+`data/processed/morph/supplemental/`; a source/mask audit panel is exported as
+`results/figures/supplemental_masks.{png,pdf,svg}`. The implementation agent inspected the
+panel; independent segmentation validation is deferred. No ruler calibration was inferred.
+Extractor/preprocessing hashes and source image/mask checksums accompany every new row.
+
+Working function coverage is a separate table/figure derived from catalog interpretation
+rules. Its counts are not measured morphology, embeddings, confidence probabilities or
+validation of functional or evolutionary relationships.

@@ -1,0 +1,283 @@
+{
+  "type": "object",
+  "properties": {
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "dataset_version": {
+      "type": "string",
+      "pattern": "^v1-[a-f0-9]{12}$"
+    },
+    "pilot_version": {
+      "type": "string",
+      "pattern": "^pilot-[a-f0-9]{12}$"
+    },
+    "revisions": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[a-f0-9-]{36}$"
+          },
+          "supersedes": {
+            "type": [
+              "string",
+              "null"
+            ]
+          },
+          "reviewer": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[A-Za-z0-9_.-]+$"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "kind": {
+            "enum": [
+              "item",
+              "pair"
+            ]
+          },
+          "target": {
+            "type": "string"
+          },
+          "targets": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "pattern": "^META-[0-9]{6}$"
+            },
+            "minItems": 1,
+            "maxItems": 2,
+            "uniqueItems": true
+          },
+          "labels": {
+            "type": "object"
+          },
+          "evidence": {
+            "type": "object",
+            "properties": {
+              "basis": {
+                "enum": [
+                  "source_documented",
+                  "expert_interpretation",
+                  "visual_affordance",
+                  "observed_use",
+                  "not_assessed"
+                ]
+              },
+              "source_url": {
+                "type": [
+                  "string",
+                  "null"
+                ],
+                "maxLength": 2000
+              },
+              "locator": {
+                "type": "string",
+                "maxLength": 2000
+              }
+            },
+            "required": [
+              "basis",
+              "source_url",
+              "locator"
+            ],
+            "additionalProperties": false
+          },
+          "confidence": {
+            "enum": [
+              null,
+              "low",
+              "medium",
+              "high"
+            ]
+          },
+          "notes": {
+            "type": "string",
+            "maxLength": 10000
+          },
+          "sources_revealed": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "id",
+          "supersedes",
+          "reviewer",
+          "created_at",
+          "kind",
+          "target",
+          "targets",
+          "labels",
+          "evidence",
+          "confidence",
+          "notes",
+          "sources_revealed"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "kind": {
+                  "const": "item"
+                }
+              }
+            },
+            "then": {
+              "properties": {
+                "labels": {
+                  "type": "object",
+                  "properties": {
+                    "extraction": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "crushing": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "cutting": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "gripping": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "scraping": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "piercing": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "probing": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    },
+                    "dilation": {
+                      "enum": [
+                        "unobserved",
+                        "positive",
+                        "negative",
+                        "uncertain"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "extraction",
+                    "crushing",
+                    "cutting",
+                    "gripping",
+                    "scraping",
+                    "piercing",
+                    "probing",
+                    "dilation"
+                  ],
+                  "additionalProperties": false
+                },
+                "targets": {
+                  "maxItems": 1
+                }
+              }
+            },
+            "else": {
+              "properties": {
+                "labels": {
+                  "type": "object",
+                  "properties": {
+                    "shape": {
+                      "enum": [
+                        "unobserved",
+                        "unassessable",
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                      ]
+                    },
+                    "mechanism": {
+                      "enum": [
+                        "unobserved",
+                        "unassessable",
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                      ]
+                    },
+                    "function": {
+                      "enum": [
+                        "unobserved",
+                        "unassessable",
+                        "0",
+                        "1",
+                        "2",
+                        "3"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "shape",
+                    "mechanism",
+                    "function"
+                  ],
+                  "additionalProperties": false
+                },
+                "targets": {
+                  "minItems": 2
+                }
+              }
+            }
+          }
+        ]
+      },
+      "maxItems": 20000
+    }
+  },
+  "required": [
+    "schema_version",
+    "dataset_version",
+    "pilot_version",
+    "revisions"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Vestigium independent review history v1"
+}

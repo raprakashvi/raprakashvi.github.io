@@ -1,0 +1,13 @@
+{
+  "dataset_version": "v1-804c1e7c3202",
+  "records": 2830,
+  "previous_records_preserved": 2826,
+  "documented_functions_prior_interpretations_predictions_unchanged": true,
+  "original_raw_values_descriptions_dates_unchanged": true,
+  "contextual_functions_have_hypothesis_status": true,
+  "supplemental_images": 10,
+  "new_source_records": 4,
+  "python_tests_passed": 18,
+  "human_review": "deferred",
+  "training_performed": false
+}

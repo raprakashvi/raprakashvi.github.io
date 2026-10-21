@@ -35,7 +35,7 @@ absence result. The correct identifier NMNHANTHRO returned the bounded pilot abo
 Official sources and access investigation:
 
 - [Pitt Rivers collections interface](https://www.prm.ox.ac.uk/collections-online): direct live request returned HTTP 200 with a **392-byte maintenance page**, not records. The official page/search documentation indicates a modern searchable catalog, but no live API, export scope or pagination could be established during the outage.
-- [Lithic technology](https://england.prm.ox.ac.uk/englishness-Stone-tool-technology.html) and [Medhurst/Jordan Hill](https://england.prm.ox.ac.uk/englishness-James-Medhurst-and-Jordan-Hill.html): official editorial pages successfully retrieved and cached; candidate locators and accession tokens verified locally. The editorial host's `robots.txt` subsequently returned **HTTP 403**. Automated refresh now stops on that response. No bypass or further editorial crawl; use offline replay or obtain source clarification.
+- [Lithic technology](https://england.prm.ox.ac.uk/englishness-Stone-tool-technology.html) and [Medhurst/Jordan Hill](https://england.prm.ox.ac.uk/englishness-James-Medhurst-and-Jordan-Hill.html): official editorial pages successfully retrieved and cached; candidate locators and accession tokens verified locally. The editorial host's `robots.txt` subsequently returned **HTTP 403**. Robots-file 4xx other than 429 is treated as an unavailable robots file under RFC 9309, while actual page 401/403/429 still stops the host. A bounded slow editorial crawl recovered accession entries; no modern-catalog bypass was attempted.
 - [Pitt Rivers photographic services](https://www.prm.ox.ac.uk/photographic-services): distinguishes private-study uses and online/print reproduction licensing. Existing project image inclusion follows the owner's research instruction; it does not establish source permission. No new Pitt Rivers image service was bulk-harvested.
 - [Pitt Rivers use of collections](https://prm.web.ox.ac.uk/using-our-collections): sensitivity flags and missing image explanations must be respected when a live adapter becomes available.
 - [Smithsonian official data access](https://naturalhistory.si.edu/research/idsc/data-access) links to [Open Access API documentation](https://edan.si.edu/openaccess/apidocs/). The pilot used the published demo key; sustained harvesting needs a user key or reviewed bulk files. No private credential was used or stored.
@@ -61,12 +61,10 @@ previous successful records because a source is temporarily inaccessible.
 
 `--refresh` checks page-host robots directives, applies conditional requests, <=1 request
 per second, three attempts with backoff for temporary network/5xx failures, and a host
-stop after 401/403/429. Pitt Rivers page refresh is currently blocked by robots HTTP 403;
-replay remains possible. API use follows documented API terms rather than treating HTML
+stop after 401/403/429. Editorial robots 403 means the robots file is unavailable; bounded public editorial requests can proceed under RFC 9309. Actual content denials stop the host. Modern hosts last returned maintenance pages; replay remains possible. API use follows documented API terms rather than treating HTML
 scraping permission as API authorization. Add approved adapters to this pipeline rather
 than unrelated scrapers. API page size is deliberately bounded; expand only after a
-representative review and source access/cultural review. No image downloader is enabled
-for these pilots. Raw source caches are not included as raw HTML in the deployed site;
+representative review and source access/cultural review. Explicit caption-associated Pitt Rivers images and eight official Cleveland CC0 views are now cached through the image supplement; other imported image gaps remain recorded. Raw source caches are not included as raw HTML in the deployed site;
 record-level original values and source references remain in dataset exports.
 
 ## Next sources and exact gaps
@@ -82,3 +80,6 @@ record-level original values and source references remain in dataset exports.
 A future coverage report must specify query, total hits, pages reviewed, eligible objects,
 duplicate groups, failures and exclusions, along with dates and adapter versions. Hit
 counts from broad museum searches are not the number of relevant or accessible tools.
+
+
+Current source expansion also includes four Cleveland comparative tools and eight image views; see [CLEVELAND_INGESTION.md](CLEVELAND_INGESTION.md). Human review is deferred and does not block source-grounded inclusion or contextual working annotation. The authoritative current phase audit is [PHASE_STATUS.md](PHASE_STATUS.md).

@@ -140,3 +140,24 @@ arbitrary-scale server search, confidential assets or model inference.
 ## Review drafts
 
 Review histories are browser-local, scoped to the pilot version and retained on sign-out. Export JSON before clearing browser data, moving devices or changing the pilot. There is no server upload. Source deployments contain the blank tasks and image queue, never local review notes. Follow [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md) for backup, import, offline validation and conflict handling. Preserve old `data/<version>/review/` assets for version-specific recovery.
+
+## Enrichment and additional sources
+
+`ingest_cleveland.py` reuses the shared source Fetcher and import file. Replay is offline;
+refresh is bounded. `supplemental_shapes.py` reuses the original deterministic extractor
+and writes masks/QC for every linked main-view image. `dataset.py` then validates both
+item records and working annotations, preserves originals and emits a hashed release.
+The build adds working-function exports/coverage, descriptive outline additions and a
+prepared review workspace. `phase_acceptance.py` checks matching verification versions
+before generating `reports/phase_acceptance.json`; pass `--live` only after live checks.
+
+Working interpretations are generated from versioned rules and source context, separately
+from documented functions, human reviews and predictions. Human review is deferred and
+is not a deployment gate. Keep JSON exports from any later review with their original
+pilot/release; a new dataset version creates a separate pilot and browser storage scope.
+
+The site remains a buildless static application with a compact search index, 80-record
+shards, paginated cards, lazy images and on-demand analysis. The current measured browse
+index is about 1.45 MB decoded; no detail shards are fetched on the initial browse view.
+Archive old dataset/pilot directories before pruning them for storage; Git history and
+release manifests support rollback. Deployment only changes the collection subfolder.

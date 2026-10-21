@@ -107,3 +107,26 @@ created/modified fields, source dimension strings and any unparsed original fiel
 Dataset `v1-8a2634871c59` adds two explicitly accession-captioned Pitt Rivers images to existing records, without new IDs or inferred measurements. All 2,826 records and 5,970 source-row references reconcile; 2,712 records now have images and 114 do not. The asset supplement preserves full-size source URLs, association evidence, pixel sizes, credits and checksums in `data/curated/import_images.json`. Redistribution and training remain subject to review.
 
 A separate frozen review pilot contains 150 unreviewed records and 297 pair tasks. It does not mutate museum facts, source labels or predictions. Its schema and provenance, conservative leakage groups, provisional splits and browser-local review protocol are documented in [REVIEW_WORKFLOW.md](REVIEW_WORKFLOW.md).
+
+## Contextual enrichment and additional museum pilot
+
+The current release contains 2,830 records, including four Cleveland comparative tools.
+`derived.working_annotation` stores deterministic provisional function/mechanism
+assignments, rule IDs/hash, original evidence field/text, confidence wording and an
+explicit `training_ground_truth=false`. Auxiliary schema:
+`data/schema/working-annotation-v1.schema.json`. The migration validates it separately
+from the item schema. `functions.documented`, earlier interpretations, predictions and
+original descriptions remain unchanged. Missing source descriptions may display a
+clearly labeled generated context summary; they remain null in the source field.
+
+Material enrichment uses explicit unambiguous material words in existing imported
+source descriptions. It does not read material from images, manufacture dates from
+accessions or geography from appearance. Source wording and component-level ambiguity
+remain available. Working assignments and source-material extracts can be regenerated
+from `data/curated/working_rules.json` using `scripts/web/enrichment.py` via the site build.
+
+Supplemental image morphology is stored separately under
+`derived.supplemental_morphology`: image/mask hashes, source paths, extractor hash,
+automated QC and dimensionless measurements. Failed masks remain recorded; only
+QC-passed outlines enter the descriptive plot. The original neighbor matrix is unchanged.
+Current scoped acceptance, missing data and later tasks: [PHASE_STATUS.md](PHASE_STATUS.md).

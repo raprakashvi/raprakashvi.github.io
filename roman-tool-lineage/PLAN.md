@@ -110,10 +110,34 @@ Existing canonical dataset remains frozen at `v1-5ea6e0e1e84c` unless verified a
 
 | Remaining task | Status | Blocker / next action |
 |---|---|---|
-| Independent review of the 150-item pilot | blocked (human input required) | Two knowledgeable reviewers must supply actual evidence-based judgments; no expert labels fabricated. Follow docs/REVIEW_WORKFLOW.md. |
+| Independent review of the 150-item pilot | pending (deferred by user) | Later validation step. Website, source enrichment and exploratory analysis proceed with explicit provisional working annotations; no human review requested now. |
 | Remaining museum images | blocked (source-dependent) | 86 imported records have no accessible, explicitly verified local image. Latest 80 all remain in acquisition queue. Smithsonian detail page returns 403; modern Pitt catalogue maintenance persists. |
 | Shared review server and adjudication UI | pending (deferred) | Browser-local histories and offline conflict reports are delivered. A centralized write backend and human adjudication workflow are later work; GitHub Pages remains static. |
 
 - Review workflow deployed and live-verified: dataset `v1-8a2634871c59`, pilot `pilot-aa58d2739f53`; 32 collection checks + 19 review checks pass on the hosted URL, zero uncaught exceptions and zero collection HTTP errors. Live review modules, pilot and both recovered image bytes match the local artifact. Synthetic browser judgments removed.
 - Source implementation `50bac76` pushed to `raprakashvi/local_tinkering`, branch `vestigium-2026-10-21`; website implementation `3286ffa` pushed on personal-site `master`. Existing personal-site tracked files verified byte-identical; site checker has zero failures/warnings. Final documentation/evidence commits follow these implementation references.
 - Current delivery is implemented, locally tested and deployed. Actual expert annotation/adjudication and restricted-source image acquisition remain explicit blockers; model training remains deferred. Review protocol notes single-tab editing and browser-local export/backup limits.
+
+## Current priority: finish enrichment and simplify the later review workflow
+
+User clarification: human review is deferred and does not block website, dataset,
+source expansion or descriptive analysis. Use existing evidence and explicit working
+interpretations now. Never promote contextual guesses to source facts or expert labels.
+Recoverable checkpoints: source `4f234f7`, website `47996c3`.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 19 | complete | Reassess remaining work; replace human-review blocker with deferred status. Publish a current remaining-work report with source-specific blockers and completion conditions. |
+| 20 | complete | Apply reproducible contextual working annotations and conservative source-text enrichment across the collection; retain original wording and evidence locators, distinguish inferred category/function/mechanism from documented claims, export missingness and coverage. No trained models or fabricated negatives. |
+| 21 | complete | Extend a feasible official museum adapter through shared cache/retry/duplicate infrastructure; bounded inclusion, provenance, images where accessible, explicit discovered/imported/skipped/failed scope. Keep inaccessible sources documented. |
+| 22 | complete | Overhaul review workspace for later use: image-first compact layout, function chips and explicit state toggles, separate pair rating buttons, fast skip/save-and-next, keyboard/mobile usability, progressive evidence and backup controls. Keep existing review histories compatible where release matches. |
+| 23 | complete | Publish working-annotation analysis coverage and searchable evidence modes; refresh morphology against final release, document what remains unknown. Verify deterministic labels, schema, assets, frozen exports and browser paths. |
+| 24 | in progress | Commit, deploy and verify live; update checklist and handoff with remaining source-dependent work and later research tasks. No request for human review now. |
+
+- Current acceptance audit: docs/PHASE_STATUS.md covers every Phase 1–6 acceptance area, remaining gaps and evidence paths. Human review is deferred, not an operational blocker.
+- Enriched release `v1-804c1e7c3202`: 2,830 records, 5,974 reconciled source references, 2,718 distinct item-linked assets; 2,621 provisional contextual function assignments and 209 unassigned records; 21 explicit material extractions. Original 2,826 raw records, descriptions, dates and function fields remain unchanged. Eight function categories are reported, including zero supported crushing assignments; missing functions are not negatives.
+- Cleveland expansion: four comparative tools and eight official CC0 image views; 32 query entries inspected, 28 excluded. Shared Fetcher, bounded 12-request initial run at >=2-second intervals; cached replay is byte-stable and reports four duplicates, zero new network requests. No complete-catalog claim.
+- Morphology: five supplemental main-view outlines pass automatic QC, one broad-blade case fails and stays excluded with its mask/reason. Plot/table/CSV now cover 2,605 outlines; original 2,600-object neighbor matrix remains unchanged. Masks were visually inspected by the implementation agent; no physical calibration or independent expert validation claimed.
+- Review redesign: image-first layout, function chips and independent Yes/No/Unsure/Clear controls, separate pair rating buttons, Save & next and Skip, compact evidence/backup settings, keyboard groups and mobile layout. No decision dropdowns. No human review requested; no expert labels fabricated.
+- Local acceptance: 18 Python tests pass, 39 Chromium collection checks and 24 review checks pass, no uncaught exceptions or collection HTTP errors. Six Firefox 158 smoke checks also pass (gate, login/browse, toggles, mobile width, morphology). Independent screen-reader/Safari and full Firefox workflow audits remain deferred.
+- Initial browse payload measured: 8,970-byte HTML, 1,453,820-byte decoded search index, 24 cards and zero detailed-record shard requests. This is a measured local payload check, not a production concurrency benchmark.
