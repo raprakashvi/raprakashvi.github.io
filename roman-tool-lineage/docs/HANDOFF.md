@@ -6,7 +6,7 @@ Source repository: https://github.com/raprakashvi/local_tinkering/tree/vestigium
 Website repository: https://github.com/raprakashvi/raprakashvi.github.io/tree/master/roman-tool-lineage
 
 Initial hosted migration was committed and pushed as `238b7cf` before redesign.
-Its live gate/original-tree checks passed. Final release uses dataset `v1-e7e305cec67f`.
+Its live gate/original-tree checks passed. Final release uses dataset `v1-108ed1654c7f`.
 Final source/website commit and live verification references are recorded below after publication.
 
 Read initial access locally in `roman_tool_lineage/.access.local`; username `research`.

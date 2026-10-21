@@ -16,7 +16,7 @@ than merging by title or image. An institution name change requires an explicit 
 migration; otherwise it can create a second identity. Correct a mistaken merge with a
 reviewed split and deprecation/cross-reference release; never silently reuse an ID.
 
-The migration reconciles 2,738 legacy rows and 2,600 morphology rows into 2,738 initial
+The migration reconciles 2,738 legacy rows, 544 full Boerhaave catalog CSV rows and 2,600 morphology rows into 2,738 initial
 records; the latter are aliases for objects already represented in the atlas. Eight pilot
 imports bring the current collection to 2,746 records. Original curated records remain
 separate where accession strings are ambiguous or refer to grouped witnesses. The
@@ -95,3 +95,8 @@ fields, candidate duplicates and asset failures; it aborts on schema errors, ide
 conflicts or changed permanent aliases. Verification checks every source-row mapping and
 every published asset checksum. Input files are not altered. The original offline atlas
 and all research scripts remain available alongside this delivery.
+
+Layer-level source retrieval statements (Boerhaave 2026-10-14; other museums 2026-10-21)
+are carried into item records, with the original source-layer declaration retained under raw.
+The 544 full Boerhaave CSV rows are preserved under raw.boerhaave_catalog, including
+created/modified fields, source dimension strings and any unparsed original fields.

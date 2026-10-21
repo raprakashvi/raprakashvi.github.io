@@ -6,7 +6,7 @@ Local verification on 2026-10-21; live results are recorded separately in
 | Check | Result |
 |---|---|
 | Schema and unique IDs | All 2,746 records pass Draft 2020-12 validation; permanent IDs unique |
-| Lossless item migration | All 2,738 legacy source rows compared against preserved raw values; 5,346 row references reconcile (including 2,600 morphology aliases and eight imports) |
+| Lossless item migration | All 2,738 legacy source rows compared against preserved raw values; 5,890 row references reconcile (including 2,600 morphology aliases, 544 full Boerhaave CSV rows and eight imports) |
 | Stable IDs under reordering | Reverse each original source layer and rebuild: identical IDs and canonical records SHA-256 |
 | Asset paths and hashes | 2,708 distinct item-linked assets exist and match original bytes; all 2,760 existing atlas images are separately packaged, including source scans |
 | Missing information | 2,352 descriptions, 540 material fields, 2,156 numeric dimension lists, two contexts, 1,735 cultural attributions and 36 image lists are missing; reported, not imputed |

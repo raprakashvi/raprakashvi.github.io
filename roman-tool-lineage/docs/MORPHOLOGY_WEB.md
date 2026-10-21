@@ -9,7 +9,7 @@ MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/build_site.py --gate-config g
 To regenerate a specific frozen release without changing the current pointer:
 
 ```bash
-MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/morphology.py --dataset-version v1-e7e305cec67f --output /tmp/vestigium-morph-replay
+MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/morphology.py --dataset-version v1-108ed1654c7f --output /tmp/vestigium-morph-replay
 ```
 
 Outputs: `results/figures/morphology_web.{pdf,svg,png}` (PNG 300 dpi),
