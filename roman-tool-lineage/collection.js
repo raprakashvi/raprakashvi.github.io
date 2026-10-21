@@ -1,0 +1,69 @@
+import {unlock,signOut} from './gate.js';
+const $=id=>document.getElementById(id),esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const safeUrl=url=>{try{const u=new URL(url);return /^https?:$/.test(u.protocol)?u.href:'#';}catch{return '#';}};
+const year=n=>n<0?`${-n} BCE`:`${n} CE`;
+const dates=(a,b)=>a==null?'Date not recorded':a===b?year(a):`${year(a)}–${year(b)}`;
+const missing=value=>value?esc(value):'<span class="muted">Not recorded</span>';
+const functionList=values=>values.length?values.map(v=>`<li>${esc(v.label)} <small class="muted">${esc(v.basis)}</small></li>`).join(''):'<li class="muted">Not documented</li>';
+let index=[],manifest,base,page=0,matched=[],request=0;const PAGE=24,shards=new Map();
+let selected;try{selected=new Set(JSON.parse(sessionStorage.getItem('tool-atlas-compare')||'[]'));}catch{selected=new Set();}
+function notice(message){$('notice').textContent=message;$('notice').hidden=false;setTimeout(()=>$('notice').hidden=true,3500);}
+async function json(url){const r=await fetch(url,url==='data/current.json'?{cache:'no-store'}:{});if(!r.ok)throw Error(`Could not load ${url} (${r.status})`);return r.json();}
+export async function record(id){const row=index.find(r=>r.id===id);if(!row)throw Error('No record with this identifier.');if(!shards.has(row.shard))shards.set(row.shard,json(base+row.shard).catch(e=>{shards.delete(row.shard);throw e}));return (await shards.get(row.shard)).find(r=>r.id===id);}
+function saveSelection(){sessionStorage.setItem('tool-atlas-compare',JSON.stringify([...selected]));$('compare-count').textContent=selected.size;document.querySelectorAll('.compare-toggle').forEach(b=>{b.setAttribute('aria-pressed',String(selected.has(b.dataset.compare)));b.textContent=selected.has(b.dataset.compare)?'✓ Selected for comparison':'+ Compare';});}
+function toggle(id){if(selected.has(id))selected.delete(id);else if(selected.size<4)selected.add(id);else return notice('Compare up to four tools. Remove one to add another.');saveSelection();}
+function options(id,values){$(id).insertAdjacentHTML('beforeend',[...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b)).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join(''));}
+function filter(){
+ const q=$('search').value.trim().toLocaleLowerCase();const val=name=>$('filter-'+name).value;
+ const has=(values,choice)=>!choice||(choice==='__missing'?values.length===0:values.includes(choice));
+ matched=index.filter(r=>(!q||`${r.id} ${r.text}`.toLocaleLowerCase().includes(q))&&has(r.category,val('category'))&&has(r.function,val('function'))&&has(r.material,val('material'))&&has(r.geography?[r.geography]:[],val('geography'))&&(!val('institution')||r.institution===val('institution'))&&(!$('has-image').checked||r.image)&&period(r,val('period')));
+ const sort=$('sort').value;matched.sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='date'?(a.start??Infinity)-(b.start??Infinity)||a.id.localeCompare(b.id):a.id.localeCompare(b.id));page=0;renderCards();
+}
+function period(r,p){if(!p)return true;if(p==='__missing')return r.start==null;if(r.start==null||r.end==null)return false;const [a,b]={ancient:[-Infinity,499],medieval:[500,1499],modern:[1500,1799],recent:[1800,Infinity]}[p];return r.start<=b&&r.end>=a;}
+function preview(image,name){return image?`<img src="${esc(image)}" alt="${esc(name)} — source image; inspect the record for image role and caption" loading="lazy" decoding="async" width="320" height="190">`:'<span class="missing-image">No image linked</span>';}
+function renderCards(){
+ $('result-count').textContent=`${matched.length.toLocaleString()} of ${index.length.toLocaleString()} records · dates match overlapping intervals`;
+ $('cards').innerHTML=matched.length?matched.slice(page*PAGE,(page+1)*PAGE).map(r=>`<article class="card"><a class="image-link" href="#item/${r.id}" aria-label="Inspect ${esc(r.name)}">${preview(r.image,r.name)}</a><div class="card-copy"><span class="record-id">#${r.id}</span><h2><a href="#item/${r.id}">${esc(r.name)}</a></h2><p>${esc(r.institution)}</p><p>${dates(r.start,r.end)}</p><p>${esc(r.category[0]||'Category not recorded')}</p><button class="compare-toggle" data-compare="${r.id}" aria-label="Compare ${esc(r.name)}" aria-pressed="false">+ Compare</button></div></article>`).join(''):'<div class="empty"><h2>No matching records</h2><p>Try broader search terms or reset the filters.</p><button id="empty-reset">Reset filters</button></div>';
+ $('page-status').textContent=`Page ${page+1} of ${Math.max(1,Math.ceil(matched.length/PAGE))}`;$('previous').disabled=page===0;$('next').disabled=(page+1)*PAGE>=matched.length;saveSelection();
+}
+async function showItem(id,token){
+ $('item-view').innerHTML='<p role="status">Loading record…</p>';
+ try{
+ const r=await record(id);if(token!==request)return;
+ const related=index.filter(s=>s.id!==id&&s.category.some(c=>r.categories.includes(c))).slice(0,5);
+ $('item-view').innerHTML=`<div class="item-top"><div><a href="#browse">← Back to collection</a><p class="record-id">#${r.id} · ${esc(r.unit)}</p><h1 id="item-heading">${esc(r.name)}</h1><p>${esc(r.source.institution)} · ${missing(r.source.accession)}</p></div><button class="compare-toggle" data-compare="${r.id}" aria-pressed="false">+ Compare</button></div><div class="item-layout"><div class="item-gallery">${r.images.length?r.images.map(im=>`<figure>${im.storage_path?`<a href="${esc(im.storage_path)}">${preview(im.storage_path,im.caption)}</a>`:'<p>No local image. See source record.</p>'}<figcaption>${esc(im.caption)}<br>${esc(im.credit)}<br>${esc(im.rights.statement||'Source rights not stated')} ${im.license_url?`<a href="${safeUrl(im.license_url)}">Rights statement ↗</a>`:''}<br>Image role: ${esc(im.role||'not recorded')} · ${esc(im.id)}</figcaption></figure>`).join(''):'<div class="empty">No image linked. This record remains in the collection.</div>'}<h2>Related by catalog category</h2><ul>${related.map(s=>`<li><a href="#item/${s.id}">${esc(s.name)}</a> <small>#${s.id}</small></li>`).join('')}</ul><p class="muted">Shared categories nominate comparisons; they do not establish common function or ancestry.</p></div><article class="item-body"><h2>Description</h2><p>${missing(r.description)}</p>${r.reviewed_description?`<h3>Reviewed description</h3><p>${esc(r.reviewed_description)}</p>`:''}<dl><dt>Category</dt><dd>${r.categories.map(c=>`<span class="chip">${esc(c)}</span>`).join('')||'Not recorded'}</dd><dt>Catalog date</dt><dd>${dates(r.dates.start,r.dates.end)}<br><small>${esc(r.dates.basis||'Basis not recorded')}</small></dd><dt>Material</dt><dd>${r.materials.map(esc).join('; ')||'Not recorded'}</dd><dt>Dimensions</dt><dd>${r.dimensions.map(v=>`${esc(v.label)}: ${v.value} ${esc(v.unit)}<br><small>${esc(v.basis)}</small>`).join('<br>')||'Not recorded; photographs are not calibrated measurements'}</dd><dt>Source context / geography</dt><dd>${missing(r.geography)}</dd><dt>Cultural attribution</dt><dd>${missing(r.cultural_attribution)}</dd><dt>Retrieved</dt><dd>${missing(r.source.retrieved_at)}</dd></dl><h2>Documented function</h2><ul>${functionList(r.functions.documented)}</ul><h3>Interpretations &amp; automated labels</h3><ul>${functionList(r.functions.interpretations)}</ul><p class="muted">These labels require review. Model predictions: ${r.functions.predictions.length?'present':'none'}.</p><h2>Uncertainty &amp; missing evidence</h2><ul>${r.uncertainty.map(s=>`<li>${esc(s)}</li>`).join('')||'<li>No additional uncertainty note recorded.</li>'}</ul><h2>Sources &amp; provenance</h2><p>${r.source.url?`<a href="${safeUrl(r.source.url)}" target="_blank" rel="noopener">Open source record ↗</a>`:'No source URL recorded'}</p><ul>${r.citations.map(c=>`<li>${c.url?`<a href="${safeUrl(c.url)}" target="_blank" rel="noopener">${esc(c.title||c.id)}</a>`:esc(c.title||c.id)} ${esc(c.locator||'')}</li>`).join('')}</ul><p class="note">Display: ${esc(r.rights.display)}. Redistribution: ${esc(r.rights.redistribution)}. Training: ${esc(r.rights.training)}.</p><details><summary>Original values and field provenance</summary><pre>${esc(JSON.stringify({provenance:r.provenance,raw:r.raw},null,2))}</pre></details><a href="${base+index.find(x=>x.id===id).shard}" download>Download source record shard (JSON)</a></article></div>`;
+ saveSelection();$('item-heading').tabIndex=-1;$('item-heading').focus({preventScroll:true});
+ }catch(e){if(token===request)$('item-view').innerHTML=`<div class="empty" role="alert"><h1>Record unavailable</h1><p>${esc(e.message)}</p><a href="#browse">Return to collection</a></div>`;}
+}
+async function compare(token){
+ if(!selected.size){$('comparison').innerHTML='<div class="empty">No tools selected. <a href="#browse">Browse the collection</a> and choose Compare on a record.</div>';return;}
+ $('comparison').innerHTML='<p role="status">Loading comparison…</p>';
+ try{const records=await Promise.all([...selected].map(record));if(token!==request)return;
+ const rows=[['Source',r=>esc(r.source.institution)],['Accession',r=>missing(r.source.accession)],['Date',r=>dates(r.dates.start,r.dates.end)],['Material',r=>r.materials.map(esc).join('; ')||'Not recorded'],['Dimensions',r=>r.dimensions.map(v=>`${esc(v.label)}: ${v.value} ${esc(v.unit)}`).join('<br>')||'Not recorded'],['Description',r=>missing(r.description)],['Documented function',r=>`<ul>${functionList(r.functions.documented)}</ul>`],['Interpretations',r=>`<ul>${functionList(r.functions.interpretations)}</ul>`],['Uncertainty',r=>r.uncertainty.map(esc).join('<br>')||'No additional note']];
+ $('comparison').innerHTML=`<div class="table-wrap"><table class="compare-table"><caption>Source-linked comparison of selected records. Missing values are not negative labels.</caption><thead><tr><th scope="col">Field</th>${records.map(r=>`<th scope="col">${preview(r.images[0]?.storage_path,r.name)}<h3><a href="#item/${r.id}">${esc(r.name)}</a></h3>#${r.id}<p><button class="compare-toggle" data-compare="${r.id}" aria-pressed="true">Remove</button></p></th>`).join('')}</tr></thead><tbody>${rows.map(([name,get])=>`<tr><th scope="row">${name}</th>${records.map(r=>`<td>${get(r)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+ }catch(e){$('comparison').innerHTML=`<p role="alert">${esc(e.message)}. Reload to retry.</p>`;}
+}
+async function route(){
+ const token=++request,hash=location.hash.slice(1)||'browse',view=hash.split('/')[0];const section={browse:'browse',compare:'compare',analysis:'analysis',about:'about',item:'item'}[view]||'browse';
+ for(const name of ['browse','compare','analysis','about','item'])$(name+'-view').hidden=name!==section;
+ document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')==='#'+section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ $('global-error').hidden=true;
+ if(section==='item')await showItem(hash.split('/')[1],token);
+ if(section==='compare')await compare(token);
+ if(section==='analysis')try{const m=await import('./analysis.js');await m.show({base,index,manifest,esc,preview});}catch(e){$('analysis-status').textContent='Analysis could not load. Reload to retry. '+e.message;}
+}
+await unlock();$('application').hidden=false;$('logout').onclick=signOut;
+try{
+ manifest=await json('data/current.json');base=`data/${manifest.version}/`;index=await json(base+'index.json');selected=new Set([...selected].filter(id=>index.some(r=>r.id===id)).slice(0,4));
+ $('release-label').textContent=`Dataset ${manifest.version} · ${index.length.toLocaleString()} records`;
+ $('collection-summary').innerHTML=`<div><strong>${index.length.toLocaleString()}</strong><small>stable records</small></div><div><strong>${new Set(index.map(r=>r.institution)).size}</strong><small>source collections</small></div><div><strong>${index.filter(r=>r.image).length.toLocaleString()}</strong><small>records with images</small></div>`;
+ for(const [name,key] of [['category','category'],['function','function'],['material','material'],['geography','geography'],['institution','institution']])options('filter-'+name,index.flatMap(r=>r[key]||[]));
+ $('coverage-link').href=base+'coverage.json';$('export-link').href=base+'dataset.zip';$('morph-csv').href=base+'morphology.csv';$('figure-pdf').href='figures/morphology_web.pdf';
+ let timeout;$('search').addEventListener('input',()=>{clearTimeout(timeout);timeout=setTimeout(filter,140)});
+ $('filters').addEventListener('submit',e=>{e.preventDefault();filter()});$('filters').addEventListener('change',filter);$('filters').addEventListener('reset',()=>setTimeout(filter,0));$('sort').onchange=filter;
+ $('previous').onclick=()=>{page--;renderCards();$('result-count').scrollIntoView({block:'start'})};$('next').onclick=()=>{page++;renderCards();$('result-count').scrollIntoView({block:'start'})};
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-compare]');if(b){toggle(b.dataset.compare);if(location.hash==='#compare')compare(request);}if(e.target.id==='empty-reset')$('filters').reset()});
+ $('clear-compare').onclick=()=>{selected.clear();saveSelection();compare(request)};
+ document.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement){e.target.replaceWith(Object.assign(document.createElement('span'),{className:'image-failed',textContent:'Image unavailable — see source record'}))}},true);
+ window.addEventListener('hashchange',route);filter();await route();
+}catch(e){$('global-error').hidden=false;$('global-error').innerHTML=`<div class="empty"><h1>Collection could not load</h1><p>${esc(e.message)}</p><button onclick="location.reload()">Reload collection</button></div>`;$('browse-view').hidden=true;}

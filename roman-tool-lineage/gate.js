@@ -1,7 +1,7 @@
 // An interface gate only. Every static asset remains publicly accessible.
 export async function unlock() {
   const box = document.createElement('section'); box.className = 'gate';
-  box.innerHTML = `<div class="gate-card"><p class="eyebrow">Research collection</p><h1>Tool Atlas</h1><p>Sign in to browse the collection.</p><form id="gate-form"><label>Username<input id="gate-user" autocomplete="username" required></label><label>Password<input id="gate-pass" type="password" autocomplete="current-password" required></label><button>Enter collection</button></form><p id="gate-status" role="status" aria-live="polite">Loading access configuration…</p><small>This is a basic interface gate. The static files are public. Please use a password unique to this collection.</small></div>`;
+  box.innerHTML = `<div class="gate-card"><p class="eyebrow">Research collection</p><h1>Vestigium</h1><p>Sign in to browse the collection.</p><form id="gate-form"><label>Username<input id="gate-user" autocomplete="username" required></label><label>Password<input id="gate-pass" type="password" autocomplete="current-password" required></label><button>Enter collection</button></form><p id="gate-status" role="status" aria-live="polite">Loading access configuration…</p><small>This is a basic interface gate. The static files are public. Please use a password unique to this collection.</small></div>`;
   document.body.prepend(box);
   const form = box.querySelector('form'), status = box.querySelector('#gate-status');
   form.querySelector('button').disabled = true;

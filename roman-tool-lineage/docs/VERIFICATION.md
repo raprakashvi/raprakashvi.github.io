@@ -1,0 +1,73 @@
+# Verification and known limitations
+
+Local verification on 2026-10-21; live results are recorded separately in
+`results/tables/*_live.json`. Final deployment references are in `docs/HANDOFF.md`.
+
+| Check | Result |
+|---|---|
+| Schema and unique IDs | All 2,746 records pass Draft 2020-12 validation; permanent IDs unique |
+| Lossless item migration | All 2,738 legacy source rows compared against preserved raw values; 5,346 row references reconcile (including 2,600 morphology aliases and eight imports) |
+| Stable IDs under reordering | Reverse each original source layer and rebuild: identical IDs and canonical records SHA-256 |
+| Asset paths and hashes | 2,708 distinct item-linked assets exist and match original bytes; all 2,760 existing atlas images are separately packaged, including source scans |
+| Missing information | 2,352 descriptions, 540 material fields, 2,156 numeric dimension lists, two contexts, 1,735 cultural attributions and 36 image lists are missing; reported, not imputed |
+| Date validation | One reversed Met BCE interval normalized with warning and original retained; no dropped record |
+| Browser tasks | 29 checks pass in Chromium, 0 uncaught exceptions, 0 HTTP errors in final local run |
+| Desktop/mobile | 1440 x 1050 and 390 x 844; browsing, search, item inspection, comparison and morphology access verified; mobile has no document overflow |
+| Keyboard and text alternatives | Tab reaches controls; visible focus styling, labelled filters, skip link; all morphology rows accessible through a paginated table and full CSV |
+| Contrast | Ink 10.74:1, muted text 5.34:1, accent links 5.86:1 against paper; all exceed 4.5:1 |
+| Access gate | Fresh/invalid/valid/session/sign-out behavior verified; missing configuration fails closed; actual static content remains public |
+| Failure states | Empty search, invalid item ID and simulated 503 index response give actionable UI states |
+| Personal website | Existing checker returns 0 failures, 0 warnings; tracked files outside collection hashed unchanged by deployment helper |
+| Sensitive build contents | Generated artifact scanned for actual initial plaintext password; absent. Private access note/config files absent |
+
+Exact package/runtime versions are in `results/tables/web_environment.json` and the build
+requirements lock. No model was trained, downloaded or uploaded by this delivery.
+
+## Performance evidence
+
+Original offline atlas: 62,108,929 bytes; original modular HTML: 61,881,125 bytes.
+Embedded image JSON alone: 50,551,413 bytes. These were transfer/parse-memory bottlenecks,
+not evidence that a server database was inherently required. New index HTML is about
+8 KB, catalog search index about 1.3 MB, paginated display 24 cards and detail shards of
+80 records. No collection index is fetched before a normal successful login. Detail and
+comparison fetch their shards on demand; images use native lazy loading and cached files.
+A later visit to the original research atlas deliberately loads the larger legacy data.
+
+Resource/navigation timing is saved in the browser verification JSON. These are local
+machine/cached-browser measurements, not a throttled field-performance benchmark or a
+concurrent-user load test. No unsupported live latency or capacity claim is made. The
+client still downloads the complete *search metadata index*, so very large future datasets
+may require query shards or a search worker. It does not download all full records into
+one HTML page. The optional archive and source scans are larger and load only on request.
+
+## Reproduce browser checks
+
+From the parent repository root, after building `roman_tool_lineage/dist`:
+
+```bash
+python -m http.server 8766 --bind 127.0.0.1 --directory roman_tool_lineage/dist
+google-chrome --headless --no-sandbox --disable-gpu --disable-dev-shm-usage \
+  --user-data-dir=/tmp/vestigium-check-chrome --remote-debugging-address=127.0.0.1 \
+  --remote-debugging-port=9227 about:blank
+node roman_tool_lineage/scripts/web/check_collection.mjs
+```
+
+Run the server and Chrome in separate terminals. The checker uses Node 22's built-in
+WebSocket client. It reads the ignored initial credentials file; do not publish that file.
+For live QA: `ATLAS_URL=https://raprakashvi.github.io/roman-tool-lineage/ node roman_tool_lineage/scripts/web/check_collection.mjs`.
+The missing-config and dataset-failure tests intercept fetch only in the temporary browser
+context and remove their overrides; they do not alter hosted files. Stop the local preview
+server and debugging Chrome when finished.
+
+The earlier `check_initial.mjs` checks the preserved original viewer, independently of the
+new interface. Its initial hosted run passed before redesign publication.
+
+## Limits and deferred work
+
+- The interface gate does not protect files or prevent bypass; Pages is public by explicit request. No private backend, confidential export or secure authentication is claimed.
+- Automated Chromium checks are not a full WCAG conformance audit. Independent screen-reader, touch-device and Safari/Firefox testing remain advisable; no such testing is claimed.
+- Pitt Rivers modern database access is blocked by maintenance; editorial automated refresh stops at robots HTTP 403. Five cached accession mentions are not a full museum import.
+- Smithsonian pilot is three API relevance results. Other museums have source-specific access/review tasks in the ingestion report; no complete ethnographic coverage is claimed.
+- Most function labels are analyst or keyword interpretations; detailed source descriptions and calibrated measurements are often missing. The model roadmap starts with annotation and rights/group review.
+- Morphology retains existing image features and QC. New metadata-only imports are included in the coverage denominator, with no fabricated coordinates. The existing t-SNE/shape-distance results are preserved, not independently validated here.
+- Source rights and cultural attribution remain source statements. Owner-authorized research display is separate from redistribution/training eligibility.

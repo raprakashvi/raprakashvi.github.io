@@ -30,7 +30,7 @@ const Museum=(()=>{
  // Shared by the atlas detail panel and this tab.
  function block(r){
   const m=r.museum,t=m.traits;
-  return `<div class="museum-block"><div class="eyebrow">${esc(m.institution||'Rijksmuseum Boerhaave')} · ${esc(m.object_number)} · ${esc(m.kind)}</div>${image(r)}
+  return `<div class="museum-block">${r.permanent_id?`<p><a href="index.html#item/${r.permanent_id}">#${r.permanent_id} · Structured item record</a></p>`:''}<div class="eyebrow">${esc(m.institution||'Rijksmuseum Boerhaave')} · ${esc(m.object_number)} · ${esc(m.kind)}</div>${image(r)}
   <dl><dt>Object name</dt><dd>${esc(m.object_name)}${m.object_name_en&&m.object_name_en!==m.object_name?` <small>(${esc(m.object_name_en)})</small>`:''}</dd>
   <dt>Makers and designers (catalog production field)</dt><dd>${people(r)}</dd>
   ${m.title_eponyms?`<dt>Design attribution in title</dt><dd>volgens ${esc(m.title_eponyms)}</dd>`:''}

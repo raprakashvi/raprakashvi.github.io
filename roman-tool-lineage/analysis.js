@@ -1,0 +1,27 @@
+let loaded=null,context,source='',page=0,points=[],hover=null;const PAGE=25;
+const $=id=>document.getElementById(id);
+function filtered(){return loaded.rows.filter(r=>!source||r.collection===source)}
+function table(){const rows=filtered();$('morph-table').innerHTML=`<table><caption>Accessible alternative: all plotted specimens, ${rows.length} matching. Measurements are dimensionless.</caption><thead><tr><th scope="col">Record</th><th scope="col">Collection</th><th scope="col">Aspect ratio</th><th scope="col">Solidity</th></tr></thead><tbody>${rows.slice(page*PAGE,(page+1)*PAGE).map(r=>`<tr><td><a href="#item/${r.id}">${context.esc(r.name)} · #${r.id}</a></td><td>${context.esc(r.collection)}</td><td>${r.aspect.toFixed(2)}</td><td>${r.solidity.toFixed(3)}</td></tr>`).join('')}</tbody></table>`;$('morph-page-status').textContent=`Page ${page+1} of ${Math.max(1,Math.ceil(rows.length/PAGE))}`;$('morph-prev').disabled=page===0;$('morph-next').disabled=(page+1)*PAGE>=rows.length;}
+function draw(){
+ const canvas=$('morph-canvas'),box=canvas.getBoundingClientRect(),ratio=devicePixelRatio||1;canvas.width=box.width*ratio;canvas.height=box.height*ratio;const g=canvas.getContext('2d');g.scale(ratio,ratio);const w=box.width,h=box.height,L=65,R=20,T=25,B=60;
+ const style=getComputedStyle(document.documentElement),color=k=>style.getPropertyValue('--'+k).trim();g.fillStyle=color('panel');g.fillRect(0,0,w,h);g.font='12px system-ui';g.strokeStyle=color('border');g.lineWidth=1;g.fillStyle=color('muted');
+ const xmax=Math.ceil(Math.log10(Math.max(...loaded.rows.map(r=>r.aspect)))),xmin=Math.floor(Math.log10(Math.min(...loaded.rows.map(r=>r.aspect))));
+ const x=v=>L+(Math.log10(v)-xmin)/(xmax-xmin)*(w-L-R),y=v=>h-B-v*(h-T-B);
+ for(let v=xmin;v<=xmax;v++){g.beginPath();g.moveTo(x(10**v),T);g.lineTo(x(10**v),h-B);g.stroke();g.fillText(String(10**v),x(10**v)-6,h-B+22)}
+ for(let v=0;v<=1.001;v+=.2){g.beginPath();g.moveTo(L,y(v));g.lineTo(w-R,y(v));g.stroke();g.fillText(v.toFixed(1),25,y(v)+4)}
+ g.fillStyle=color('ink');g.textAlign='center';g.fillText('Aspect ratio (dimensionless; log scale)',L+(w-L-R)/2,h-12);g.save();g.translate(14,(h-B+T)/2);g.rotate(-Math.PI/2);g.fillText('Solidity (dimensionless)',0,0);g.restore();g.textAlign='left';
+ g.fillStyle=color('accent');g.globalAlpha=.32;points=filtered().map(r=>({...r,px:x(r.aspect),py:y(r.solidity)}));for(const r of points){g.beginPath();g.arc(r.px,r.py,3,0,Math.PI*2);g.fill()}g.globalAlpha=1;
+ $('analysis-status').textContent=`${points.length.toLocaleString()} plotted / ${loaded.rows.length.toLocaleString()} available shapes / ${context.manifest.record_count.toLocaleString()} dataset records. ${loaded.excluded_records} records lack existing shape features, including the new Pitt Rivers pilot. No missing features imputed.`;
+}
+function render(){table();draw()}
+export async function show(ctx){
+ context=ctx;
+ if(!loaded){const r=await fetch(ctx.base+'morphology.json');if(!r.ok)throw Error('Morphology data unavailable');loaded=await r.json();
+ $('analysis-source').insertAdjacentHTML('beforeend',[...new Set(loaded.rows.map(r=>r.collection))].sort().map(s=>`<option>${ctx.esc(s)}</option>`).join(''));
+ $('analysis-source').onchange=()=>{source=$('analysis-source').value;page=0;render()};$('morph-prev').onclick=()=>{page--;table()};$('morph-next').onclick=()=>{page++;table()};
+ const canvas=$('morph-canvas');
+ canvas.addEventListener('mousemove',e=>{const rect=canvas.getBoundingClientRect();let near=null,distance=100;for(const p of points){const d=(p.px-e.clientX+rect.left)**2+(p.py-e.clientY+rect.top)**2;if(d<distance){distance=d;near=p}}hover=near;canvas.style.cursor=near?'pointer':'default';if(near){const entry=ctx.index.find(r=>r.id===near.id);$('morph-detail').innerHTML=`${entry?.image?ctx.preview(entry.image,entry.name):''}<p class="record-id">#${near.id}</p><h3>${ctx.esc(near.name)}</h3><p>${ctx.esc(near.collection)}<br>Aspect ratio: ${near.aspect.toFixed(2)}<br>Solidity: ${near.solidity.toFixed(3)}</p><a href="#item/${near.id}">Inspect record →</a>`;}});
+ canvas.onclick=()=>{if(hover)location.hash='item/'+hover.id};new ResizeObserver(()=>{if(!$('analysis-view').hidden)draw()}).observe(canvas.parentElement);
+ }
+ render();
+}
