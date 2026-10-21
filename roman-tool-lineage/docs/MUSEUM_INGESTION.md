@@ -1,5 +1,9 @@
 # Museum ingestion and scope
 
+**Follow-up update:** public editorial access now works with corrected robots handling;
+the collection has 2,826 records and stable-ID shape neighbors. See [ACCESS_RECOVERY.md](ACCESS_RECOVERY.md).
+The earlier pilot statistics below describe the initial delivery.
+
 As observed 2026-10-21. Bounded pilots; no complete museum collection is claimed.
 
 ## Inclusion and review

@@ -1,8 +1,9 @@
-let loaded=null,context,source='',page=0,points=[],hover=null;const PAGE=25;
+let graph=null,chosen=null,neighborMode='all',loaded=null,context,source='',page=0,points=[],hover=null;const PAGE=25;
 const $=id=>document.getElementById(id);
 function filtered(){return loaded.rows.filter(r=>!source||r.collection===source)}
-function table(){const rows=filtered();$('morph-table').innerHTML=`<table><caption>Accessible alternative: all plotted specimens, ${rows.length} matching. Measurements are dimensionless.</caption><thead><tr><th scope="col">Record</th><th scope="col">Collection</th><th scope="col">Aspect ratio</th><th scope="col">Solidity</th></tr></thead><tbody>${rows.slice(page*PAGE,(page+1)*PAGE).map(r=>`<tr><td><a href="#item/${r.id}">${context.esc(r.name)} · #${r.id}</a></td><td>${context.esc(r.collection)}</td><td>${r.aspect.toFixed(2)}</td><td>${r.solidity.toFixed(3)}</td></tr>`).join('')}</tbody></table>`;$('morph-page-status').textContent=`Page ${page+1} of ${Math.max(1,Math.ceil(rows.length/PAGE))}`;$('morph-prev').disabled=page===0;$('morph-next').disabled=(page+1)*PAGE>=rows.length;}
+function table(){const rows=filtered();$('morph-table').innerHTML=`<table><caption>Accessible alternative: all plotted specimens, ${rows.length} matching. Measurements are dimensionless.</caption><thead><tr><th scope="col">Record</th><th scope="col">Collection</th><th scope="col">Aspect ratio</th><th scope="col">Solidity</th></tr></thead><tbody>${rows.slice(page*PAGE,(page+1)*PAGE).map(r=>`<tr><td><a href="#item/${r.id}">${context.esc(r.name)} · #${r.id}</a><br><button class="quiet" data-shape-id="${r.id}">Similar outlines</button></td><td>${context.esc(r.collection)}</td><td>${r.aspect.toFixed(2)}</td><td>${r.solidity.toFixed(3)}</td></tr>`).join('')}</tbody></table>`;$('morph-page-status').textContent=`Page ${page+1} of ${Math.max(1,Math.ceil(rows.length/PAGE))}`;$('morph-prev').disabled=page===0;$('morph-next').disabled=(page+1)*PAGE>=rows.length;}
 function draw(){
+ hover=null;
  const canvas=$('morph-canvas'),box=canvas.getBoundingClientRect(),ratio=devicePixelRatio||1;canvas.width=box.width*ratio;canvas.height=box.height*ratio;const g=canvas.getContext('2d');g.scale(ratio,ratio);const w=box.width,h=box.height,L=65,R=20,T=25,B=60;
  const style=getComputedStyle(document.documentElement),color=k=>style.getPropertyValue('--'+k).trim();g.fillStyle=color('panel');g.fillRect(0,0,w,h);g.font='12px system-ui';g.strokeStyle=color('border');g.lineWidth=1;g.fillStyle=color('muted');
  const xmax=Math.ceil(Math.log10(Math.max(...loaded.rows.map(r=>r.aspect)))),xmin=Math.floor(Math.log10(Math.min(...loaded.rows.map(r=>r.aspect))));
@@ -21,7 +22,24 @@ export async function show(ctx){
  $('analysis-source').onchange=()=>{source=$('analysis-source').value;page=0;render()};$('morph-prev').onclick=()=>{page--;table()};$('morph-next').onclick=()=>{page++;table()};
  const canvas=$('morph-canvas');
  canvas.addEventListener('mousemove',e=>{const rect=canvas.getBoundingClientRect();let near=null,distance=100;for(const p of points){const d=(p.px-e.clientX+rect.left)**2+(p.py-e.clientY+rect.top)**2;if(d<distance){distance=d;near=p}}hover=near;canvas.style.cursor=near?'pointer':'default';if(near){const entry=ctx.index.find(r=>r.id===near.id);$('morph-detail').innerHTML=`${entry?.image?ctx.preview(entry.image,entry.name):''}<p class="record-id">#${near.id}</p><h3>${ctx.esc(near.name)}</h3><p>${ctx.esc(near.collection)}<br>Aspect ratio: ${near.aspect.toFixed(2)}<br>Solidity: ${near.solidity.toFixed(3)}</p><a href="#item/${near.id}">Inspect record →</a>`;}});
- canvas.onclick=()=>{if(hover)location.hash='item/'+hover.id};new ResizeObserver(()=>{if(!$('analysis-view').hidden)draw()}).observe(canvas.parentElement);
+ canvas.onclick=()=>{if(hover)location.hash='analysis/'+hover.id};new ResizeObserver(()=>{if(!$('analysis-view').hidden)draw()}).observe(canvas.parentElement);
  }
  render();
+ if(ctx.selectedId)await showNeighbours(ctx.selectedId);
 }
+
+
+async function showNeighbours(id){
+ chosen=id;const panel=$('shape-neighbours');panel.hidden=false;panel.innerHTML='<p role="status">Loading outline comparisons…</p>';
+ try{
+  if(!graph){const r=await fetch(context.base+'neighbours.json');if(!r.ok)throw Error('Shape-neighbor data unavailable');graph=await r.json()}
+  if(chosen!==id)return;
+  const item=context.index.find(r=>r.id===id),node=graph.by_id[id];
+  if(!node){panel.innerHTML='<h2 id="neighbour-heading">No outline features available</h2><p>No similarity was computed for this record. Its museum metadata remains available.</p>';return;}
+  const neighbors=neighborMode==='other'?node.other_collection_neighbors:node.neighbors;
+  panel.innerHTML=`<h2 id="neighbour-heading" tabindex="-1">Similar outlines: ${context.esc(item?.name||id)}</h2><p><a href="#item/${id}">#${id} · Inspect selected record</a> · ${context.esc(node.collection)}</p><label>Comparison pool<select id="neighbor-mode"><option value="all">All collections</option><option value="other">Other collections only</option></select></label><p class="note">Eight nearest candidates using the existing multiblock outline distance. Lower is closer; the distance is dimensionless, not confidence or probability. It combines profile, Fourier and scalar descriptors; material and physical size are excluded. These are comparison candidates, with no inferred function or ancestry.</p><div class="table-wrap"><table id="neighbor-table"><caption>Ranked shape matches; selected comparison pool: ${neighborMode==='other'?'other collections':'all collections'}.</caption><thead><tr><th scope="col">Rank</th><th scope="col">Record</th><th scope="col">Collection</th><th scope="col">Shape distance (dimensionless)</th></tr></thead><tbody>${neighbors.map(n=>{const row=context.index.find(r=>r.id===n.id);return `<tr><td>${n.rank}</td><td><a href="#item/${n.id}">${context.esc(row?.name||n.id)} · #${n.id}</a><button class="quiet compare-toggle" data-compare="${n.id}" aria-pressed="false">+ Compare</button></td><td>${context.esc(n.collection)}</td><td>${n.distance.toFixed(4)}</td></tr>`}).join('')}</tbody></table></div><p><a href="${context.base}shape_methods.json">Method and source hashes (JSON)</a> · <a href="${context.base}shape_neighbors.csv">Export all ranked edges (CSV)</a></p>`;
+  context.syncComparisons?.();$('neighbor-mode').value=neighborMode;$('neighbor-mode').onchange=()=>{neighborMode=$('neighbor-mode').value;showNeighbours(chosen)};
+  $('neighbour-heading').focus({preventScroll:true});
+ }catch(e){panel.textContent='Outline comparisons could not load. '+e.message;}
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-shape-id]');if(b)location.hash='analysis/'+b.dataset.shapeId;});

@@ -1,5 +1,9 @@
 # Vestigium operations and access
 
+**Follow-up update:** public editorial access now works with corrected robots handling;
+the collection has 2,826 records and stable-ID shape neighbors. See [ACCESS_RECOVERY.md](ACCESS_RECOVERY.md).
+The earlier pilot statistics below describe the initial delivery.
+
 Public Pages URL: https://raprakashvi.github.io/roman-tool-lineage/
 Website checkout: `/home/rp/rp_repo/raprakashvi.github.io`, publishing branch `master`.
 Source: `raprakashvi/local_tinkering`, branch `vestigium-2026-10-21`, folder `roman_tool_lineage/` (current local baseline retained).

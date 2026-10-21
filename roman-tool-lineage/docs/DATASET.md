@@ -17,8 +17,8 @@ migration; otherwise it can create a second identity. Correct a mistaken merge w
 reviewed split and deprecation/cross-reference release; never silently reuse an ID.
 
 The migration reconciles 2,738 legacy rows, 544 full Boerhaave catalog CSV rows and 2,600 morphology rows into 2,738 initial
-records; the latter are aliases for objects already represented in the atlas. Eight pilot
-imports bring the current collection to 2,746 records. Original curated records remain
+records; the latter are aliases for objects already represented in the atlas. Eighty-eight imported
+records bring the current collection to 2,826 records. Original curated records remain
 separate where accession strings are ambiguous or refer to grouped witnesses. The
 coverage JSON identifies candidate duplicate accessions for human review.
 

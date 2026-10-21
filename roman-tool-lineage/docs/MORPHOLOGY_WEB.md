@@ -9,7 +9,7 @@ MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/build_site.py --gate-config g
 To regenerate a specific frozen release without changing the current pointer:
 
 ```bash
-MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/morphology.py --dataset-version v1-108ed1654c7f --output /tmp/vestigium-morph-replay
+MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/morphology.py --dataset-version v1-5ea6e0e1e84c --output /tmp/vestigium-morph-replay
 ```
 
 Outputs: `results/figures/morphology_web.{pdf,svg,png}` (PNG 300 dpi),
@@ -22,7 +22,7 @@ The new public view reads existing `data/processed/morph/analysis_set.csv` value
 on permanent-ID aliases, and plots outline **aspect ratio** (dimensionless, logarithmic
 x axis) against **solidity** (dimensionless, linear y axis). All 2,600 existing included
 specimens appear. New imports lacking images have no features; they stay in the dataset
-and coverage denominator. The release has 2,746 records and 146 without existing shape
+and coverage denominator. The release has 2,826 records and 226 without existing shape
 features. Invalid or missing feature values cause an error rather than silent exclusion.
 
 Aspect ratio comes from the previous principal-frame outline extent ratio; solidity is
@@ -59,3 +59,8 @@ Neither is a physical distance, and t-SNE axes have no physical units. The old s
 photographic backgrounds and sibling objects can leak collection identity. Existing
 function labels often come from titles or search queries and require independent review
 before supervised learning. See the roadmap for grouped evaluation and uncertainty work.
+
+The updated interface also exports multiblock nearest-outline comparisons for all or
+other collections. See ACCESS_RECOVERY.md for distance semantics, hash-verified source
+matching, cross-collection ranking and the exportable ranked-edge CSV. This is a separate
+comparison from the 2D scatter.

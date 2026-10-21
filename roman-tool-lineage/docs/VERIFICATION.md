@@ -1,5 +1,9 @@
 # Verification and known limitations
 
+**Follow-up update:** public editorial access now works with corrected robots handling;
+the collection has 2,826 records and stable-ID shape neighbors. See [ACCESS_RECOVERY.md](ACCESS_RECOVERY.md).
+The earlier pilot statistics below describe the initial delivery.
+
 Local verification on 2026-10-21; live results are recorded separately in
 `results/tables/*_live.json`. Final deployment references are in `docs/HANDOFF.md`.
 

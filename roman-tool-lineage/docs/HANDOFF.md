@@ -1,5 +1,9 @@
 # Vestigium delivery
 
+**Follow-up update:** public editorial access now works with corrected robots handling;
+the collection has 2,826 records and stable-ID shape neighbors. See [ACCESS_RECOVERY.md](ACCESS_RECOVERY.md).
+The earlier pilot statistics below describe the initial delivery.
+
 Website: https://raprakashvi.github.io/roman-tool-lineage/
 
 Source repository: https://github.com/raprakashvi/local_tinkering/tree/vestigium-2026-10-21/roman_tool_lineage

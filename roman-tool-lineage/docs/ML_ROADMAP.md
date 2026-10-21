@@ -20,7 +20,7 @@ maps are model diagnostics, not mechanistic explanations or historical evidence.
 ## Stage 0: readiness and annotations
 
 Freeze a dataset release and eligible asset manifest before experiments. Current collection:
-2,746 record-level units, 2,600 legacy silhouettes, eight new metadata-only imports;
+2,826 record-level units, 2,600 legacy silhouettes, 88 metadata-only import records;
 most detailed clinical-function labels are missing. Collection imbalance is severe and
 many existing labels were inferred from titles/search terms. The corpus is too limited
 and biased to justify a transformer trained from scratch as the default.

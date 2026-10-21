@@ -1,0 +1,530 @@
+{
+  "retrieved_at": "2026-10-21T20:51:29.646745+00:00",
+  "page_budget": 5,
+  "request_interval_s": 2,
+  "network_requests": 0,
+  "counts": {
+    "discovered": 93,
+    "imported": 0,
+    "updated": 0,
+    "duplicates": 47,
+    "skipped": 46,
+    "failed": 0
+  },
+  "pages": [
+    {
+      "url": "https://england.prm.ox.ac.uk/englishness-James-Medhurst-and-Jordan-Hill.html",
+      "status": 200,
+      "sha256": "8b94522fd3bdcfda3b936bc90337efd8089a1772a387194d650e10e77899c7a6",
+      "paragraphs": 129
+    },
+    {
+      "url": "https://england.prm.ox.ac.uk/englishness-Stone-tool-technology.html",
+      "status": 200,
+      "sha256": "c5ea08b9467bcd03a98ba02e0e75f46e95aa57d984ae8f1b44664b82af228f49",
+      "paragraphs": 10
+    },
+    {
+      "url": "https://england.prm.ox.ac.uk/englishness-Pitt-Rivers-and-stone-tool-technology.html",
+      "status": 200,
+      "sha256": "019f8b809dfea2b9f72e324e724850dc8db2771cfd45dd4c24e64579250f1e82",
+      "paragraphs": 31
+    },
+    {
+      "url": "https://england.prm.ox.ac.uk/englishness-Work-on-stone-tools.html",
+      "status": 200,
+      "sha256": "28d6958b35ec2ae835b1a9f5680e881990440ccc3660d43a925a7d794b655d63",
+      "paragraphs": 8
+    },
+    {
+      "url": "https://england.prm.ox.ac.uk/englishness-Balfour-African-stone-tools.html",
+      "status": 200,
+      "sha256": "06acf0d380a264346afdb7af820940fbb71807428e3976bcafe9de5853aac763",
+      "paragraphs": 34
+    }
+  ],
+  "decisions": [
+    {
+      "accession": "1884.2.1",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.2.2",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.5.35",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.5.44",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.5.49",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.37.14",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.15",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.16",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.23",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.54",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.55",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.56",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.57",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.58",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.37.59",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.46.14",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.46.15",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.46.16",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.46.17",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.46.18",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.46.19",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.50.2",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.76.137",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.76.138",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.79.56",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.79.57",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.82.111",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.82.112",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.105.3",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.105.4",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.105.5",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.105.6",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.117.10",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.144",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.145",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.146",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.147",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.148",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.149",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.150",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.151",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.152",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.154",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.155",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.156",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.157",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.158",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.159",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.160",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.161",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.162",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.163",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.164",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.165",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.166",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.167",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.168",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.169",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.170",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.171",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.172",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.173",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.174",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.175",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.176",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.118.177",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.178",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.118.179",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.584",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.612",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.613",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.614",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.615",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.616",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.617",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.618",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.619",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.620",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.119.634",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.120.13",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.120.34",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.120.45",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.120.47",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.120.48",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.121.4",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.121.12",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.121.13",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.121.29",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.121.30",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.121.31",
+      "outcome": "duplicate",
+      "reason": "existing accession retained"
+    },
+    {
+      "accession": "1884.140.485",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "accession": "1884.140.557",
+      "outcome": "skipped",
+      "reason": "not a scoped tool or sensitive source text"
+    },
+    {
+      "outcome": "skipped",
+      "reason": "range or non-single accession; do not invent individual objects",
+      "source_entry": "94. 1884.140.563-565 Accession book VIII entry - Two bronze rings and a perforated object of ?lead. Found unentered in 2004'Green book' entry - South Kensington Receipts, 2 July 1879 - 1 bronze chain and 3 fragment 66/ 9680"
+    }
+  ],
+  "robots_events": [
+    {
+      "host": "england.prm.ox.ac.uk",
+      "robots_status": 403,
+      "decision": "robots unavailable; RFC 9309 section 2.3.1.3; bounded public pages only"
+    }
+  ],
+  "scope": "Leading single accession in numbered tool entries on directly linked official editorial pages; source snapshot, not modern catalogue or census.",
+  "catalogue_status": "Documented modern hosts still return a 392-byte maintenance page.",
+  "robots_policy": "RFC 9309 2.3.1.3: robots 4xx other than 429 means unavailable; actual page 401/403/429 stops host; 5xx/network robots errors stop.",
+  "records_total": 53,
+  "added_since_previous_release": {
+    "Pitt Rivers Museum, University of Oxford": 45,
+    "Smithsonian NMNH Anthropology": 35
+  },
+  "previous_import_records": 8,
+  "current_import_records": 88
+}

@@ -68,3 +68,20 @@ Do not publish raw caches, source PDFs or the embedded HTML itself. User subsequ
 - Final source implementation `1dd77e8` pushed to `raprakashvi/local_tinkering`, branch `vestigium-2026-10-21`; remote main left unchanged. Final website code/data `114c028` pushed on personal-site `master`.
 - Final live acceptance: 29 Chromium checks passed against `v1-108ed1654c7f`, 0 exceptions, 0 HTTP errors; right/wrong/missing-config access, mobile, details, comparison and morphology verified. Personal website checker: 0 failures, 0 warnings; all changes scoped to collection folder.
 - Frozen-release morphology replay produced byte-identical PDF/SVG/PNG. Docs-only handoff commits may follow the implementation commits above; no current-phase implementation work remains. Blocked/deferred source expansion and later training are listed explicitly above.
+
+
+## Follow-up: bounded access recovery and morphology comparisons
+
+User requested another access attempt, a slow crawl if useful, then progress to the next point.
+
+| # | Status | Work and verification |
+|---|---|---|
+| 10 | complete | Recheck official Pitt Rivers interfaces and robots behavior; try <=10 public editorial pages at >=2 s/request; actual content denials/429 stop the host. Preserve responses and scope. |
+| 11 | complete | Expand an accessible official API source with a small request budget; retain original IDs/provenance, report discoveries/duplicates/failures and source restrictions. |
+| 12 | complete | Add stable-ID nearest-shape comparisons using existing audited distances, with table access and clear distance semantics; no substantial training. |
+| 13 | in progress | Rebuild, validate, verify representative browser tasks, commit and publish the bounded update without changing main-site files. |
+
+- Follow-up: robots-file 403 is handled as unavailable under RFC 9309, while actual page denials/429 still stop the host. Five public editorial pages fetched at >=2 s/request, adding 45 Pitt Rivers records. Three bounded Smithsonian API requests added 35 records; one cultural-review exclusion. Current dataset has 2,826 records, source totals Pitt Rivers 50 / Smithsonian Anthropology 38.
+- Exported 41,600 ranked shape-neighbor edges for 2,600 specimens, with global and other-collection pools; original top-8 distances verified. No training performed.
+
+- Follow-up local verification: 6 access/cache regression tests pass; all 2,826 records validate; 5,970 source-row references reconcile; all item-linked image hashes resolve; 32 Chromium checks pass including nearest/cross-collection matches, 0 exceptions or HTTP errors. Publishing underway.
