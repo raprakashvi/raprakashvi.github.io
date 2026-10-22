@@ -126,3 +126,11 @@ category classifiers, autoencoder comparisons and uncertainty calibration remain
 research work. Museum acquisition, outline coverage and a separately recalibrated
 expanded distance matrix remain open. No substantial training or weight upload was
 part of this website integration.
+
+Delivery verified live: source implementation `dc11c84`, website implementation
+`b81a68d`; both pushed. Forty-four AI Chrome checks, 14 Firefox smoke checks, all
+existing workbench/atlas/collection/review browser suites, 34 website/export tests
+and 21 ML tests pass. Every AI JSON file matches the tested artifact on the live
+site. Initial AI result transfer is 1,065,464 decoded bytes (manifest, index and one
+item shard), in addition to the shared collection index and interface resources.
+No original collection, scientific dataset or substantial model training changed.

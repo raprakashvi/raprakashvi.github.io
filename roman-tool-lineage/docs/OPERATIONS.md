@@ -168,3 +168,11 @@ shards, paginated cards, lazy images and on-demand analysis. The current measure
 index is about 1.45 MB decoded; no detail shards are fetched on the initial browse view.
 Archive old dataset/pilot directories before pruning them for storage; Git history and
 release manifests support rollback. Deployment only changes the collection subfolder.
+
+AI Methods rebuilds also need the ignored `results/ml/runs/` artifacts. Back up the
+chosen run manifest, sparse text features, inspection/suggestion/readiness outputs
+and bounded image-cache metadata/vectors with the matching code checkout and frozen
+release. These are local research artifacts, not source-Git contents. Recreate them
+with the documented local CPU demo and existing-checkpoint image encoder when needed;
+pass new content-derived directories through the build options. The website build
+exports validated projections and never silently reruns fitting or downloads weights.

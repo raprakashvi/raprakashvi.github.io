@@ -57,6 +57,14 @@ learning, category models and independent evaluation remain open. See ML_TOOLS.m
 
 AI Methods is implemented under Research, with exact saved text/shape ranks, bounded
 image retrieval, color-coded exploratory clusters with tables, and eight-state label
-evidence. Current local verification: 44 AI browser checks, 14 Firefox smoke checks,
-34 website/export Python tests and 21 ML tests. See AI_METHODS.md for public-result
-coverage, reproduction and limits; deployment references will be recorded below.
+evidence. Live and local verification: 44 AI browser checks, 14 Firefox smoke checks,
+34 website/export Python tests and 21 ML tests. All existing 49 workbench, 45 atlas,
+39 collection and 24 review browser checks also pass live. See AI_METHODS.md for
+public-result coverage, reproduction and limits.
+
+Current AI integration: source `dc11c84` on `vestigium-2026-10-21`; website `b81a68d`
+on `master`. Both are pushed. Final evidence-only publication follows. Open
+https://raprakashvi.github.io/roman-tool-lineage/collection.html#ai or choose Research
+→ AI Methods. All 86 checked live interface/result files match the tested artifact,
+including every AI JSON payload. Personal homepage returns 200 and all personal-site
+files outside the collection are preserved. Existing credentials continue to work.
