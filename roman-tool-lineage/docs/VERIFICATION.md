@@ -182,3 +182,12 @@ review and Firefox reports. Inspect live reports before claiming deployment.
 The atlas's larger decoded bootstrap payload is documented in DESIGN_RESTORATION.md;
 it is not a production performance pass. Independent screen-reader, Safari and full
 Firefox workflows remain later checks. No new model or distance matrix was fitted.
+
+
+The restored release is also live-verified: 45 atlas, 39 collection, 24 review and six
+Firefox checks pass on GitHub Pages. Thirty-one interface/style/script/analysis/handoff
+files match the reviewed artifact byte-for-byte; the personal homepage returns 200 and
+the concurrent search-exclusion rules remain intact. Source implementation `888891d`,
+website implementation `2557afb`; the following documentation-only publication carries
+the completed checklist and live reports. No substantive UI or dataset changes occur
+in that evidence publication.

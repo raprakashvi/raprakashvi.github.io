@@ -1,24 +1,203 @@
 {
+  "checked_at": "2026-10-22T03:09:50.000155+00:00",
+  "url": "https://raprakashvi.github.io/roman-tool-lineage/",
   "dataset_version": "v1-804c1e7c3202",
-  "byte_identical_paths": [
-    "collection.js",
-    "review.js",
-    "analysis.js",
-    "data/v1-804c1e7c3202/working_coverage.json",
-    "data/v1-804c1e7c3202/review/pilot.json",
-    "images/pitt-1942-12-62.jpg",
-    "images/pitt-1995-20-1.jpg",
-    "images/cma-373836-1.jpg",
-    "images/cma-373836-0.jpg",
-    "images/cma-102244-1.jpg",
-    "images/cma-102244-0.jpg",
-    "images/cma-108131-1.jpg",
-    "images/cma-108131-0.jpg",
-    "images/cma-171267-1.jpg",
-    "images/cma-171267-0.jpg"
+  "source_implementation_commit": "888891d",
+  "website_implementation_commit": "2557afb",
+  "interface_and_analysis_files": [
+    {
+      "path": "index.html",
+      "sha256": "233a2d974305936d03b16357eb950fec55ae7cbf2dd3a41196e9dceeb6f31788",
+      "bytes": 32773,
+      "matches_artifact": true
+    },
+    {
+      "path": "collection.html",
+      "sha256": "ed43f6cbe2a9eb93a6a86101720e93c2f13d537342e0fcd3827b667ce6d9f729",
+      "bytes": 9726,
+      "matches_artifact": true
+    },
+    {
+      "path": "legacy.html",
+      "sha256": "233a2d974305936d03b16357eb950fec55ae7cbf2dd3a41196e9dceeb6f31788",
+      "bytes": 32773,
+      "matches_artifact": true
+    },
+    {
+      "path": "gate.js",
+      "sha256": "649c88fee7e4c6ab38b55568d17e795e734b11ef0543cf0f9dd3d25e2b028937",
+      "bytes": 3046,
+      "matches_artifact": true
+    },
+    {
+      "path": "gate-config.json",
+      "sha256": "157dd00c134194653d1b40eba89cb0b1fba19594a6bd36a95b754de3028d7e22",
+      "bytes": 170,
+      "matches_artifact": true
+    },
+    {
+      "path": "gate.css",
+      "sha256": "f281575f6fd33de166964de84462fcf39bee26d6717c053b5964c36fede01171",
+      "bytes": 568,
+      "matches_artifact": true
+    },
+    {
+      "path": "collection.js",
+      "sha256": "7f6e3a12d239f1afce4182589e0933acde9a87d7c3867497aba221b24959593f",
+      "bytes": 15832,
+      "matches_artifact": true
+    },
+    {
+      "path": "analysis.js",
+      "sha256": "9858199be98b2281e32dcf411fe25e9be748f8816a2b21fabed4c1a354f3ebaf",
+      "bytes": 10125,
+      "matches_artifact": true
+    },
+    {
+      "path": "review.js",
+      "sha256": "27d3e2e24f1135501e3348b82a8bb8c0734f030d25051df67455dfd86c6f5461",
+      "bytes": 16112,
+      "matches_artifact": true
+    },
+    {
+      "path": "review-store.js",
+      "sha256": "f21da798a01c203261191c42e02804daacda4aeaa05d205f926fa26e23819e37",
+      "bytes": 5023,
+      "matches_artifact": true
+    },
+    {
+      "path": "collection.css",
+      "sha256": "c13749b2061327122cc481c86038f52210a104e79c37ea9ae6558d7a3e22f6dc",
+      "bytes": 14637,
+      "matches_artifact": true
+    },
+    {
+      "path": "visuals/theme.css",
+      "sha256": "e39c5010903df782be8921f70163a01170e7a96dcff58cdd27fc6159d14dc5a6",
+      "bytes": 53621,
+      "matches_artifact": true
+    },
+    {
+      "path": "visuals/workspace.css",
+      "sha256": "a1b9b281e8b9da49c4b71bdb20f8b204277fbf1e033627efee2a2667d8c50046",
+      "bytes": 10851,
+      "matches_artifact": true
+    },
+    {
+      "path": "visuals/palette.json",
+      "sha256": "f6aceb5bd50c33c7f4d7ae4a613b036ac2f9791c5a6c2c6f170c98b4dbebede9",
+      "bytes": 654,
+      "matches_artifact": true
+    },
+    {
+      "path": "docs/ML_AGENT_HANDOFF.md",
+      "sha256": "54de1fb120486d215fe5460120968d8d7a4f113e0d712cab5085c0d88b472294",
+      "bytes": 15007,
+      "matches_artifact": true
+    },
+    {
+      "path": "docs/DESIGN_RESTORATION.md",
+      "sha256": "bae7cbbaa24d88f8d6b31b18f5f75ca16a59ff369db9f4c1119d0dd07e7b240c",
+      "bytes": 5562,
+      "matches_artifact": true
+    },
+    {
+      "path": "data/current.json",
+      "sha256": "b04f47cf023244f6d0b2bd9817629a6a18b483c5fe0c16fdd07b20ee6785812d",
+      "bytes": 1841,
+      "matches_artifact": true
+    },
+    {
+      "path": "data/v1-804c1e7c3202/morphology.json",
+      "sha256": "394eb8343377f8ae94c6276b46432e02405871fd2ff51d81f420b6615805a5ec",
+      "bytes": 890732,
+      "matches_artifact": true
+    },
+    {
+      "path": "data/v1-804c1e7c3202/neighbours.json",
+      "sha256": "a7b5e5ad39f4053bf5bfce2c6c9188a139c1116fe6d881ecad87d3587376f759",
+      "bytes": 5766933,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/app.js",
+      "sha256": "e38c9ec313c65c861162316bbcb304a3c0ef41423c8cb9eb9b57bdb7ee0c867e",
+      "bytes": 25740,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/morph.js",
+      "sha256": "ec833580c7ee8988c47bf7a23e701d66102b5f68fee891aa42dcc0e9df3d1229",
+      "bytes": 27487,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/query.js",
+      "sha256": "ae6515e7aeef237622bc44748e9b628d843fc2d72354b62aacfd92911fbbede6",
+      "bytes": 7315,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/world.js",
+      "sha256": "99d93e7a48e3300739c9f088e2eb6615165e20f97fdc1fd049c07e9b29f9d520",
+      "bytes": 16812,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/map_camera.js",
+      "sha256": "65c5c9aa2395f74091b89bbf846e5d5da3bcd0c6764a37cf203bff882ea182d2",
+      "bytes": 6594,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/museum.js",
+      "sha256": "258cf96a9f7648da4983672fb39315d16f892816791dcf20a3fdcb037f21173e",
+      "bytes": 21587,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/weiss.js",
+      "sha256": "6cf81a54486643393c5ccf440e1d4a60b6cef55e692aeaecea93de86777f98c7",
+      "bytes": 10866,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/boundaries.js",
+      "sha256": "988bebc4b1cbba886ecb537bc89d704afd6b208e96d032ce3d86de2dd7e08647",
+      "bytes": 9026,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/study.js",
+      "sha256": "1feeb0df2a468d544164c2afc978bc21869d16087e1f9493c89cbd48f0691890",
+      "bytes": 5818,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/research.js",
+      "sha256": "15a39c58853db7577b6b7effbe646a9fb6271e5e5a35a6ba8df71fe5fdf1136d",
+      "bytes": 13638,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/compare.js",
+      "sha256": "0fd298de453b51dae3903198b8c7094b8efebb675832d7b2560f07d9433bb687",
+      "bytes": 6152,
+      "matches_artifact": true
+    },
+    {
+      "path": "app/tree.js",
+      "sha256": "26573a240b3a6bbe5fe7955348fa637ad4bcde616c6eed23ec921230545d47ee",
+      "bytes": 24542,
+      "matches_artifact": true
+    }
   ],
-  "supplemental_images_verified": 10,
-  "personal_site_implementation_commit": "4cf9ebe",
-  "source_implementation_commit": "c559c08",
-  "public_static_files": "Expected and documented under approved basic interface gate policy"
+  "personal_homepage_status": 200,
+  "search_exclusions_preserved": true,
+  "all_passed": true,
+  "limitations": [
+    "Basic gate only; static assets remain public",
+    "No claim of complete museum acquisition or expanded distance matrix",
+    "UI workflow coverage is in separate atlas/collection/review browser reports"
+  ]
 }
