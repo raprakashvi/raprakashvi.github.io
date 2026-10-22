@@ -30,6 +30,13 @@ catalog groups; they are not all independent physical instruments.
 | Leakage groups and pilot | `data/review/pilot-2254e7f3e6c4/`; resolve the current pilot through `data/processed/web/review_current.json`. Regenerate into a disposable site using `scripts/web/review_pilot.py`. `leakage_groups.json`, `provisional_splits.csv`, `pilot.json` are frozen, provisional group assignments. |
 | Review history and masks | Browser exports from the annotation page; `scripts/web/review_exports.py` validates and exports explicit observed masks. No expert-reviewed ground truth exists yet. |
 
+The user has authorized use of the available images for local research. Record that
+run-level authorization separately from museum rights/eligibility fields; do not rewrite
+unknown source rights into a claimed license. Pilot `training_eligible: false` also
+reflects unreviewed labels and must not block text/shape exploration or user-authorized
+local representation experiments. Public redistribution and automatic uploads remain
+outside this handoff's default actions.
+
 Confirm all paths and counts from the manifest rather than hardcoding these values.
 The original neighbor matrix covers 2,600 shapes, not all 2,830 records. Supplemental
 outlines do not yet have recalibrated matrix ranks. Photographic shape proximity,

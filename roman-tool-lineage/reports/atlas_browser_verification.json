@@ -1,5 +1,5 @@
 {
-  "tested_at": "2026-10-22T03:04:00.749Z",
+  "tested_at": "2026-10-22T03:07:49.885Z",
   "url": "http://127.0.0.1:8766/",
   "checks": [
     "Main research page uses Vestigium branding",
@@ -33,6 +33,7 @@
     "Browser Back restores the previous research section",
     "390px map workspace has no page overflow",
     "390px world workspace has no page overflow",
+    "Mobile world map appears before statistics and extended explanations",
     "390px morph workspace has no page overflow",
     "390px weiss workspace has no page overflow",
     "390px compare workspace has no page overflow",

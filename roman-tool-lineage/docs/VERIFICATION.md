@@ -150,7 +150,7 @@ The expanded release also passes all 39 collection, 24 review and six Firefox sm
 
 ## Research workspace restoration verification
 
-Dataset `v1-804c1e7c3202` is unchanged. The restored primary atlas passes 44 Chromium
+Dataset `v1-804c1e7c3202` is unchanged. The restored primary atlas passes 45 Chromium
 checks at 1440×1050 and 390×844, with zero uncaught exceptions or HTTP errors. Coverage
 includes tree selection/zoom/timeline, both maps and keyboard city selection, historical
 periods, all original morphology subviews and evidence sections, Back, old URLs,
