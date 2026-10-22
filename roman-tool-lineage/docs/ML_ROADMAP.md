@@ -3,6 +3,8 @@
 Proposal, 2026-10-21. No substantial training, pretrained-weight download, or weight upload
 is part of this delivery. The website and versioned dataset are the completed foundation.
 
+Implementation specification for the next agent: [ML_AGENT_HANDOFF.md](ML_AGENT_HANDOFF.md).
+
 ## Research questions and separate claims
 
 | Objective | Task and evidence | Primary evaluation |
@@ -20,7 +22,8 @@ maps are model diagnostics, not mechanistic explanations or historical evidence.
 ## Stage 0: readiness and annotations
 
 Freeze a dataset release and eligible asset manifest before experiments. Current collection:
-2,826 record-level units, 2,600 legacy silhouettes, 88 metadata-only import records;
+2,830 record-level units, 2,605 accepted outlines (2,600 original and five supplemental),
+92 imported records, 86 of which lack linked local images;
 most detailed clinical-function labels are missing. Collection imbalance is severe and
 many existing labels were inferred from titles/search terms. The corpus is too limited
 and biased to justify a transformer trained from scratch as the default.

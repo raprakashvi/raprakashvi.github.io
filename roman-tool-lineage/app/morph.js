@@ -56,6 +56,7 @@ const Morph = (() => {
   function refresh() {
     sel = T.select(spec()); shown = T.indices(sel);
     const n = shown.length, nw = shown.filter(i => M.cols.nw[i]).length;
+    const filterCount=Object.keys(spec()).length,filterSummary=document.querySelector('.morph-filters summary');if(filterSummary)filterSummary.textContent=filterCount?`Filter specimens (${filterCount} active)`:'Filter specimens';
     $('m-status').textContent = `${n.toLocaleString()} of ${M.n.toLocaleString()} analysed specimens match (${nw.toLocaleString()} non-Western). Shapes are dimensionless; physical size is unknown for most records.`;
     if (pinned >= 0 && !sel[pinned]) pinned = -1;
     render();
@@ -69,7 +70,7 @@ const Morph = (() => {
   }
 
   function layout() {
-    const r = cv.parentElement.getBoundingClientRect(), dpr = window.devicePixelRatio || 1, w = Math.max(320, Math.floor(r.width)), h = Math.max(420, Math.min(640, Math.floor(w * 0.62)));
+    const r = cv.parentElement.getBoundingClientRect(), dpr = window.devicePixelRatio || 1, w = Math.max(240, Math.floor(r.width)), h = Math.max(420, Math.min(640, Math.floor(w * 0.62)));
     cv.width = w * dpr; cv.height = h * dpr; cv.style.width = w + 'px'; cv.style.height = h + 'px'; ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     return { w, h };
   }
@@ -101,7 +102,8 @@ const Morph = (() => {
   function card(i, big) {
     const link = M.cols.url[i] ? `<a href="${esc(M.cols.url[i])}" target="_blank" rel="noopener">Source record</a>` : 'No source URL in dataset';
     const tree = M.cols.tree[i] ? `<p><button data-tree="${esc(M.cols.tree[i])}">Open in the family tree</button></p>` : '';
-    return `<div class="m-card">${sil(i, big ? 300 : 150, big ? 90 : 46, '#243b3b')}<h3>${esc(M.cols.title[i] || M.cols.id[i])}</h3><dl><dt>Collection</dt><dd>${esc(lab('coll', i))} · ${esc(M.cols.id[i])}</dd><dt>Region · family</dt><dd>${esc(lab('region', i))} · ${esc(lab('family', i))}</dd><dt>Date</dt><dd>${yearTxt(i)}</dd><dt>Material (catalogue)</dt><dd>${esc(matTxt(i))}</dd>${M.cols.places[i] ? `<dt>Maker place(s)</dt><dd>${esc(M.cols.places[i].replace(/;/g, ', '))}</dd>` : ''}<dt>Silhouette aspect</dt><dd>${M.cols.aspect[i]} (length : breadth, from one photograph)</dd></dl><p class="filter-help">${link}. Outline derived from a third-party photograph; shape only, no scale.</p>${tree}</div>`;
+    const permanent=M.cols.permanent_id?.[i];
+    return `<div class="m-card">${permanent?`<p class="record-id"><a href="collection.html#item/${permanent}">#${permanent} · Full record →</a></p>`:''}${sil(i, big ? 300 : 150, big ? 90 : 46, '#243b3b')}<h3>${esc(M.cols.title[i] || M.cols.id[i])}</h3><dl><dt>Collection</dt><dd>${esc(lab('coll', i))} · ${esc(M.cols.id[i])}</dd><dt>Region · family</dt><dd>${esc(lab('region', i))} · ${esc(lab('family', i))}</dd><dt>Date</dt><dd>${yearTxt(i)}</dd><dt>Material (catalogue)</dt><dd>${esc(matTxt(i))}</dd>${M.cols.places[i] ? `<dt>Maker place(s)</dt><dd>${esc(M.cols.places[i].replace(/;/g, ', '))}</dd>` : ''}<dt>Silhouette aspect</dt><dd>${M.cols.aspect[i]} (length : breadth, from one photograph)</dd></dl><p class="filter-help">${link}. Outline derived from a third-party photograph; shape only, no scale.</p>${tree}</div>`;
   }
   function detail() {
     const box = $('m-detail');
@@ -183,7 +185,7 @@ const Morph = (() => {
     fillSelect('m-mat', [['any', 'Any material recorded'], ['none', 'No material recorded'], ...matCount.map(([m, n]) => [m, `${MAT_LABEL[m] || m} (${n})`])], 'Any / unrecorded');
     fillSelect('m-period', [['-3000,1', 'Before 1 CE'], ['1,1199', '1–1199'], ['1200,1599', '1200–1599'], ['1600,1699', '17th century'], ['1700,1799', '18th century'], ['1800,1899', '19th century'], ['1900,1999', '20th century']], 'Any date');
     cv = $('m-canvas'); ctx = cv.getContext('2d');
-    for (const id of ['m-view', 'm-coll', 'm-region', 'm-family', 'm-group', 'm-mat', 'm-period', 'm-colour']) $(id).addEventListener('change', () => { if (id === 'm-view') view = $('m-view').value; refresh(); });
+    for (const id of ['m-view', 'm-coll', 'm-region', 'm-family', 'm-group', 'm-mat', 'm-period', 'm-colour']) $(id).addEventListener('change', () => { if (id === 'm-view') {view = $('m-view').value; history.replaceState(null,'','#morph/'+view);} refresh(); });
     $('m-q').addEventListener('input', refresh);
     $('m-reset').onclick = () => { for (const id of ['m-coll', 'm-region', 'm-family', 'm-group', 'm-mat', 'm-period']) $(id).value = ''; $('m-q').value = ''; pinned = -1; refresh(); };
     cv.addEventListener('mousemove', e => { const r = cv.getBoundingClientRect(), i = nearest(e.clientX - r.left, e.clientY - r.top), tip = $('m-tip'); if (i === hover) { if (i >= 0) { tip.style.left = Math.min(e.clientX - r.left + 14, r.width - 270) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px'; } return; } hover = i; if (i < 0) { tip.hidden = true; cv.style.cursor = 'default'; return; } cv.style.cursor = 'pointer'; tip.hidden = false; tip.innerHTML = `${sil(i, 240, 56, '#243b3b')}<strong>${esc(M.cols.title[i] || M.cols.id[i])}</strong><br><small>${esc(lab('coll', i))} · ${esc(lab('region', i).split(' (')[0])} · ${yearTxt(i)}<br>${esc(matTxt(i))}</small>`; tip.style.left = Math.min(e.clientX - r.left + 14, r.width - 270) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px'; });

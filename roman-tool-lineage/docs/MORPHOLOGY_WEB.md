@@ -1,5 +1,13 @@
 # Morphology in the versioned website
 
+The main **Morphology** destination (`index.html#morph`) restores the full original
+shape space, six color modes, silhouettes, nearest neighbors, coverage, workshops,
+cross-region pairs and method tables. It covers the original 2,600-shape study.
+**Updated outline measurements** (`collection.html#analysis`) uses 2,605 accepted
+outlines with family/region/collection colors, counted legends and matching text labels.
+The latter is an aspect/solidity plot, not a new embedding or expanded distance matrix.
+Both remain linked from the research workspace. The old `legacy.html#morph` URL works.
+
 Run from the project directory:
 
 ```bash
@@ -9,7 +17,7 @@ MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/build_site.py --gate-config g
 To regenerate a specific frozen release without changing the current pointer:
 
 ```bash
-MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/morphology.py --dataset-version v1-5ea6e0e1e84c --output /tmp/vestigium-morph-replay
+MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/morphology.py --dataset-version v1-804c1e7c3202 --output /tmp/vestigium-morph-replay
 ```
 
 Outputs: `results/figures/morphology_web.{pdf,svg,png}` (PNG 300 dpi),

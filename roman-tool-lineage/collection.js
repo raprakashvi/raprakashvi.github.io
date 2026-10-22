@@ -46,7 +46,7 @@ async function compare(token){
 async function route(){
  const token=++request,hash=location.hash.slice(1)||'browse',view=hash.split('/')[0];const section={browse:'browse',compare:'compare',analysis:'analysis',about:'about',review:'review',item:'item'}[view]||'browse';
  for(const name of ['browse','compare','analysis','about','item','review'])$(name+'-view').hidden=name!==section;
- document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')==='#'+section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(section==='item'?'browse':section)||a.dataset.section===section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  $('global-error').hidden=true;
  if(section==='item')await showItem(hash.split('/')[1],token);
  if(section==='compare')await compare(token);

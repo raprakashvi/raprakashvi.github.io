@@ -1,8 +1,9 @@
 # Vestigium operations and access
 
-**Follow-up update:** public editorial access now works with corrected robots handling;
-the collection has 2,826 records and stable-ID shape neighbors. See [ACCESS_RECOVERY.md](ACCESS_RECOVERY.md).
-The earlier pilot statistics below describe the initial delivery.
+Current release: `v1-804c1e7c3202`, 2,830 records. The original research atlas is the
+main page again; the paginated collection is at `collection.html`. The preserved
+`legacy.html` URL opens the same branded research workspace. See
+[DESIGN_RESTORATION.md](DESIGN_RESTORATION.md) for routing, theme and performance limits.
 
 Public Pages URL: https://raprakashvi.github.io/roman-tool-lineage/
 Website checkout: `/home/rp/rp_repo/raprakashvi.github.io`, publishing branch `master`.
@@ -39,7 +40,7 @@ remotely revoked. A missing/invalid configuration fails closed at the interface.
 JavaScript, JSON, archives, images, source URLs and derived files remain publicly
 retrievable and can bypass the interface. A public verifier allows offline password
 guessing, and browser session flags are editable. Use credentials unique to this collection.
-Do not put confidential content here. HTML has `noindex,nofollow,noarchive`; the collection
+Do not put confidential content here. All three HTML entry points have `noindex,nofollow,noarchive`; the collection
 has no sitemap or personal-site navigation entry. Neither arrangement prevents discovery
 or guarantees that raw files cannot be indexed. Private hosting would require a different
 server/access architecture, which the current request explicitly does not require.

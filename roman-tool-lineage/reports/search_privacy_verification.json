@@ -1,0 +1,14 @@
+{
+  "checked_at": "2026-10-22T03:03:16.276067+00:00",
+  "website_commit": "44ee007",
+  "checks": {
+    "scoped_robots_rules_live": true,
+    "collection_data_crawl_blocked": true,
+    "collection_html_crawlable_for_noindex": true,
+    "roman-tool-lineage/noindex_live": true,
+    "roman-tool-lineage/legacy.htmlnoindex_live": true,
+    "collection_absent_from_sitemap": true,
+    "personal_homepage_ok": true
+  },
+  "all_passed": true
+}

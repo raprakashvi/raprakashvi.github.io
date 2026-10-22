@@ -145,3 +145,28 @@ Recoverable checkpoints: source `4f234f7`, website `47996c3`.
 - Current implementation deployed and live-verified: source implementation `c559c08`, website implementation `4cf9ebe`. All 39 collection + 24 review checks and six Firefox smoke checks pass against the live URL. All new source image bytes, current collection/review/analysis modules, working coverage and frozen pilot match the verified artifact. Personal-site tracked files remain unchanged; site checker passes.
 - Frozen release `v1-804c1e7c3202` reproduces both morphology and working-function PDF/SVG/PNG figure files byte-for-byte (six files). Detailed evidence: results/tables/reproducibility_verification.json and live_delivery_verification.json. Source cache replay remains offline/idempotent.
 - Tasks 19–24 are implemented, locally tested and deployed. Remaining work is explicitly source-dependent acquisition/expansion, more outline coverage and a separately recalibrated neighbor matrix, independent screen-reader/Safari/full-Firefox audits, later human validation and later model experiments. Human review is deferred and does not block the current website/data delivery. No training or automatic weight upload performed.
+
+## Restore the research workspace and unify Vestigium
+
+User correction: the redesign hid essential research views and increased the amount
+of introductory text. Preserve the original offline archive and all research modules.
+Checkpoint: source `f6e06f5`, website `c7a99de`; dataset `v1-804c1e7c3202`.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 25 | complete | Audit original and current interfaces; restore the rich atlas as the main page with visible Family tree, World & time, Morphology, Collection and comparison navigation. Preserve source studies, scans, exports and historical links. Verify direct links and browser Back. |
+| 26 | complete | After 25, unify Vestigium branding, colors, typography and navigation across research and collection pages. Remove promotional headings and long explanations above visualizations; retain methods through expandable controls. Inspect desktop and mobile screenshots and overflow. |
+| 27 | complete | After 26, add family/region/collection color encoding, counted legend and matching table labels to the updated outline plot; keep the richer original morphology controls visible. Verify filtering, coverage, selection links and non-color alternatives. No recomputed distance matrix or physical calibration implied. |
+| 28 | complete | Write an implementation-ready ML handoff for another agent: supervised, unsupervised and provisional self-annotation tools; explicit provenance, confidence, missing-label masks, leakage controls and acceptance tests. No substantial training in this delivery. |
+| 29 | complete | After 25–28, verify original tree/map/morphology/evidence workflows alongside collection/review on desktop and mobile, run integrity checks, fix regressions and document limits. Dataset version and historical scientific content must remain unchanged. |
+| 30 | in progress | After 29, commit source, push authorized branch, deploy only the personal-site subpage, verify live behavior and update handoff/checklist. Distinguish local checks from live checks. |
+
+Remaining research work: full Pitt Rivers catalog access; broader source acquisition;
+more verified images and outlines; separately versioned expansion/recalibration of the
+shape-distance matrix; later human validation and local ML experiments. These are
+independent of restoring the delivered research interface.
+
+- Restoration locally verified: 44 atlas checks (tree/zoom/selection, map/time/keyboard, five morphology workspaces, ten original evidence sections, Back, compatibility links, colors/counts and mobile widths); 39 collection checks; 24 review checks; six Firefox smoke checks; 18 Python tests. No uncaught Chromium exceptions or HTTP errors in atlas/collection workflows. Screenshots inspected at 1440×1050 and 390×844.
+- Integrity: all 2,830 records validate; 5,974 source references reconcile; 2,718 linked assets hash-verify; reordering retains IDs and release; no plaintext credential enters the artifact. Dataset remains `v1-804c1e7c3202`. Original offline HTML archives remain unchanged.
+- The ML implementation handoff is `docs/ML_AGENT_HANDOFF.md`; no ML tools or substantial training are claimed as delivered by this documentation task.
+- Known performance limit: the rich atlas still bootstraps approximately 9 MB of catalog JSON plus 1.5 MB of morphology data; the scalable collection browser remains separate with a 1.45 MB search index and record shards. Future module/data splitting must preserve first-class research tools.

@@ -146,3 +146,39 @@ WebDriver with a temporary profile. Credential values are read from ignored loca
 and never logged. Test review histories are synthetic and removed after each suite.
 
 The expanded release also passes all 39 collection, 24 review and six Firefox smoke checks on the live site. Current modules, coverage, pilot and all ten supplemental image views match local bytes. Morphology and working-function PDF/SVG/PNG exports regenerate byte-for-byte from the frozen release. See the matching live browser, delivery, phase-acceptance and reproducibility JSON reports.
+
+
+## Research workspace restoration verification
+
+Dataset `v1-804c1e7c3202` is unchanged. The restored primary atlas passes 44 Chromium
+checks at 1440×1050 and 390×844, with zero uncaught exceptions or HTTP errors. Coverage
+includes tree selection/zoom/timeline, both maps and keyboard city selection, historical
+periods, all original morphology subviews and evidence sections, Back, old URLs,
+stable-ID links, current plot colors, counted legends and mobile overflow. The expanded
+filter panel reports active filters. Desktop/mobile screenshots were visually inspected.
+
+The collection passes 39 checks, review passes 24 and Firefox 158 passes six smoke
+checks. Eighteen offline Python tests pass. Full integrity and reordering verification
+validate 2,830 records, reconcile 5,974 source references and verify 2,718 asset hashes.
+The original HTML archives and frozen release remain unchanged. No plaintext credential
+is present in the artifact. The static gate's public-asset limitation remains explicit.
+
+Start the artifact at localhost:8766 and Chrome at debugging port 9227, then run from
+the parent repository:
+
+```sh
+node roman_tool_lineage/scripts/web/check_atlas.mjs
+node roman_tool_lineage/scripts/web/check_collection.mjs
+node roman_tool_lineage/scripts/web/check_review.mjs
+```
+
+Run suites sequentially because they share a Chrome tab. Set `ATLAS_URL` to the hosted
+subpage to produce live reports. Collection/review helpers resolve `collection.html`
+from the supplied base. `check_atlas.mjs` targets the primary research page and preserves
+legacy-link verification. Firefox uses WebDriver on localhost:4445. Reports are in
+`results/tables/atlas_browser_verification{,_live}.json` and the existing collection,
+review and Firefox reports. Inspect live reports before claiming deployment.
+
+The atlas's larger decoded bootstrap payload is documented in DESIGN_RESTORATION.md;
+it is not a production performance pass. Independent screen-reader, Safari and full
+Firefox workflows remain later checks. No new model or distance matrix was fitted.
