@@ -3,7 +3,10 @@
 Proposal, 2026-10-21. No substantial training, pretrained-weight download, or weight upload
 is part of this delivery. The website and versioned dataset are the completed foundation.
 
-Implementation specification for the next agent: [ML_AGENT_HANDOFF.md](ML_AGENT_HANDOFF.md).
+Implemented local baseline tools: [ML_TOOLS.md](ML_TOOLS.md). The eight-view cached-weight
+GPU feature check is separate from the later training programme.
+
+Implementation specification and remaining extensions: [ML_AGENT_HANDOFF.md](ML_AGENT_HANDOFF.md).
 
 ## Research questions and separate claims
 

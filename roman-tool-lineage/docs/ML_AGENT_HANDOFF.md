@@ -6,8 +6,11 @@ cached representations. Human review is deferred; it must not block exploratory
 retrieval or provisional suggestions. Keep those suggestions separate from source
 facts and expert judgments. The website restoration is a separate workstream.
 
-This is an implementation specification for the next agent, not a claim that these
-ML tools have been implemented or evaluated. The broader scientific proposal is in
+This specification now has a bounded baseline implementation, documented in
+[ML_TOOLS.md](ML_TOOLS.md) and [ML_IMPLEMENTATION_STATUS.md](ML_IMPLEMENTATION_STATUS.md).
+Text/shape retrieval, unsupervised inspection, provisional suggestions and supervised
+readiness are implemented. Expanded image/multimodal encoders, category models,
+calibration and substantial learning experiments below remain planned. The broader scientific proposal is in
 [ML_ROADMAP.md](ML_ROADMAP.md).
 
 ## Current inputs and scientific limits

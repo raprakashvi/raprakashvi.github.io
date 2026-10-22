@@ -12,11 +12,13 @@ Website repository: https://github.com/raprakashvi/raprakashvi.github.io/tree/ma
 
 Source branch: `vestigium-2026-10-21`. Website publishing branch: `master`.
 Pre-restoration checkpoints: source `f6e06f5`, website `c7a99de`.
-Earlier corrective restoration implementation: source `e108523` and `888891d`; website `2557afb`
-(following `f8101bc`). Final evidence-only commits follow these implementation commits.
-All 45 atlas, 39 collection, 24 review and six Firefox checks pass live; 18 offline
-Python tests pass. Thirty-one live files match the verified artifact, and personal-site
-files and crawler exclusions are preserved. See PLAN.md and the matching reports.
+Current workbench implementation: source `ebba293`; ML tools `d1ac708`;
+website `9ee153e`. Final evidence-only commits follow these implementation commits.
+All 49 workbench, 45 atlas, 39 collection, 24 review and six Firefox checks pass live;
+18 website pipeline tests and 21 dedicated ML tests pass. Forty-one live files match
+the reviewed artifact. Initial research JSON is 65.0% smaller, with deferred data
+available on demand. Personal-site files and crawler rules remain preserved.
+Earlier corrective restoration references remain in PLAN.md.
 
 Access uses the configured username `research`. Credentials are held only in ignored
 local files, not published documentation. To change them, run

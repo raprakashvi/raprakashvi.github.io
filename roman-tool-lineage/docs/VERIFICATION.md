@@ -215,3 +215,11 @@ Run `check_workbench.mjs` against localhost:8767, or set ATLAS_URL to the deploy
 subpage for a separate `_live` report. Run CDP suites sequentially on port 9227. The
 new sign-in, drawer, collection and morphology screenshots use the `workbench-` prefix.
 Independent screen-reader/Safari and fuller Firefox audits remain open.
+
+
+The full workbench is also live-verified: 49 workbench, 45 atlas, 39 collection,
+24 review and six Firefox checks pass against GitHub Pages. Forty-one interface,
+font, deferred-data, analysis and documentation files match the tested artifact.
+The live decoded initial atlas JSON is 3,896,513 bytes. Personal homepage status
+is 200; root crawler exclusions are retained. Source implementation `ebba293`,
+website implementation `9ee153e`; the final publication updates docs and evidence only.

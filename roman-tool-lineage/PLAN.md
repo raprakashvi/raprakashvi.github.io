@@ -177,8 +177,8 @@ independent of restoring the delivered research interface.
 
 ## Full website design overhaul and delegated ML tooling
 
-The earlier restoration repaired missing navigation. The Website phase is now **in
-progress** for a full interface redesign. Acquisition, morphology expansion and the
+The earlier restoration repaired missing navigation. The full Website interface overhaul is **implemented and live-verified**. Independent
+accessibility/browser audits and the broader research work remain open. Acquisition, morphology expansion and the
 broader research tasks remain open. Checkpoint: source `cb22a7e`, website `f0ada82`.
 Dataset `v1-804c1e7c3202` and original offline HTML remain frozen.
 
@@ -189,7 +189,7 @@ Dataset `v1-804c1e7c3202` and original offline HTML remain frozen.
 | 33 | complete | After 32, redesign tree, world/time and morphology workspaces around the visualization, compact contextual controls and useful inspection panels. Preserve original source studies, comparison paths, exports and compatibility URLs. |
 | 34 | complete | After 32, redesign collection search/results/cards, item details, comparisons, review and access screen. Keep stable IDs, evidence distinctions, loading/empty/error states and local review histories. |
 | 35 | complete | After 33–34, remove unnecessary startup data where safely separable; measure before/after payloads. Verify visual layouts, keyboard/mobile navigation, all original workflows, gate and record integrity. Publish screenshots and explicit remaining audit/performance limits. |
-| 36 | in progress | After 35, commit and push source, deploy only the existing subpage, verify live, publish the final design checklist and remaining project tasks. Preserve personal-site content and crawler rules. |
+| 36 | complete | After 35, commit and push source, deploy only the existing subpage, verify live, publish the final design checklist and remaining project tasks. Preserve personal-site content and crawler rules. |
 | ML | complete (bounded tools; later experiments open) | Agent `ml_tools` implements local manifest/retrieval/unsupervised/provisional-annotation tools and supervised scaffolding from docs/ML_AGENT_HANDOFF.md. Separate ML checklist and regular milestone/blocker reports. No substantial training or automatic downloads/uploads. |
 
 Design direction: a research workbench with persistent grouped navigation, cool neutral
@@ -202,3 +202,7 @@ shell and token source replace accumulated presentation overrides.
 - Website local regression so far: 45 atlas + 39 collection + 24 review checks, plus 41 workbench checks covering real pointer/keyboard interaction, mobile focus, progressive filters, list view, deferred museum failure/retry and full export reconciliation. Eighteen website Python tests pass. Final cross-browser, responsive and live verification are still in progress.
 
 - Final local acceptance: 49 workbench + 45 atlas + 39 collection + 24 review checks and six Firefox smoke checks pass. Tested widths: 320/390/768/1024/1440; desktop/mobile screenshots inspected. Deferred museum recovery preserves 2,636 mergeable records, sources and full JSON exports. Initial decoded research JSON falls from 11,127,968 to 3,896,513 bytes (65.0%); no change to the frozen dataset or original offline HTML. Independent AT/Safari/full-Firefox audits and larger-corpus performance work remain open.
+
+- Full workbench overhaul deployed and live-verified: source `ebba293`, ML baseline tools `d1ac708`, website implementation `9ee153e`. Source branch `vestigium-2026-10-21`; website branch `master`. Final evidence publication follows these implementation commits.
+- Live acceptance: 49 workbench + 45 atlas + 39 collection + 24 annotation checks and six Firefox checks pass, with no uncaught Chromium exceptions or HTTP errors. Forty-one interface/font/data/documentation files match the verified artifact. Personal homepage returns 200; all personal-site tracked content outside the subpage and existing crawler rules are preserved.
+- Tasks 31–36 and the bounded delegated ML tool delivery are complete. The overall project remains open: independent screen-reader/Safari/full-Firefox and researcher usability audits; further corpus scaling; full Pitt access and acquisition; additional images/outlines and a recalibrated matrix; expanded image/multimodal/category models and independent evaluation. Human review remains deferred, and no substantial model training or automatic weight upload occurred.
