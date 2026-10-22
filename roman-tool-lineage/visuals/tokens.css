@@ -1,0 +1,13 @@
+/* Vestigium application tokens. Scientific category palettes remain in style.py. */
+@font-face{font-family:Manrope;src:url('./fonts/manrope-variable.ttf') format('truetype');font-weight:200 800;font-display:swap}
+:root{
+ --font-ui:Manrope,Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+ --paper:#f4f6fa;--panel:#ffffff;--ink:#182230;--muted:#526176;
+ --accent:#3155d9;--accent-hover:#2544b6;--border:#dfe5ee;--wash:#edf2fa;
+ --bronze:#9b612b;--textual:#5965a8;--event:#fff5df;
+ --nav-bg:#121d32;--nav-text:#bcc9dc;--nav-active:#263a5d;
+ --success:#14755c;--shadow:0 5px 22px #17244206;--radius:12px;
+ --sidebar-width:232px;--topbar-height:70px;
+ --cutting:#28685e;--bone:#94603c;--dilation:#52648b;
+ color-scheme:light;
+}

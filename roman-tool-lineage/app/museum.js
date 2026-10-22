@@ -78,7 +78,7 @@ const Museum=(()=>{
   <div class="boundary-counts"><span><strong>${s.records}</strong>catalog records</span><span><strong>${mergeable().length}</strong>mergeable instruments and kits</span><span><strong>${s.distinct_makers}</strong>makers named</span><span><strong>${s.distinct_designers}</strong>designers named</span><span><strong>${s.obstetric_forceps}</strong>obstetric forceps</span><span><strong>${M.names.filter(n=>n.coded_role).length}</strong>inscription names hand-coded</span><span><strong>${M.threads.filter(t=>t.kind==='design').length}</strong>design threads</span><span><strong>${M.edges.length}</strong>links (${M.edges.filter(e=>e.kind==='museum bridge').length} to curated tree)</span><span><strong>${R.filter(embedded).length}</strong>photographs embedded</span></div>
   <div class="detail-actions"><button id="museum-merge-button" aria-pressed="${merged()}">${merged()?'Unmerge from atlas':'Merge into atlas and view tree'}</button></div>
   <p class="warning">One Dutch museum's holdings, not a production sample. Attributions are the museum's own. Catalog dates are often 25–50-year bins. ${fr.files.filter(f=>f.stated_result_count===null).map(f=>`The ${esc(f.result_set)} PDF is only the first results page (${f.cards} records).`).join(' ')}</p>`;
-  $('museum-merge-button').onclick=()=>toggleMerge(!merged(),true);
+  $('museum-merge-button').onclick=()=>toggleMerge(!merged(),true).catch(e=>{$('filter-status').textContent=e.message+'. Retry the museum layer.';});
   $('museum-patterns').innerHTML=`<p>Median largest dimension of obstetric forceps: <strong>${c.median_1700_1799} cm</strong> (1700–1799, n = ${c.n_1700_1799}) vs <strong>${c.median_1850_1899} cm</strong> (1850–1899, n = ${c.n_1850_1899}); difference ${c.difference_cm} cm, bootstrap 95% interval ${c.bootstrap_95[0]}–${c.bootstrap_95[1]} cm (interval-midpoint binning; start/end binning agree). Objects are treated as exchangeable draws, which a collection is not.</p>`+
    M.figures.map(f=>`<figure class="museum-figure"><button class="photo-button" data-museum-figure="${f.id}" aria-label="Enlarge figure: ${esc(f.title)}"><img src="${f.src}" alt="${esc(f.title)}"></button></figure>`).join('');
   $('museum-names').innerHTML=`<h3>Names and marks found only in inscriptions</h3><p>Stamp text that does not match the catalog's maker field. Rows with a coded role were classified by hand (AI-assisted, unreviewed). "Maker" in this catalog can mean the retailer whose name is stamped.</p><div class="table-wrap"><table class="audit-table"><thead><tr><th>Object</th><th>Date</th><th>Stamp text</th><th>Parsed status</th><th>Coded role</th><th>Listed maker</th></tr></thead><tbody>${M.names.map(n=>`<tr><td><button class="record-link" data-museum-open="bh_${n.priref}">${esc(n.object_number)}</button></td><td>${esc(n.date_start)}–${esc(n.date_end)}</td><td>${esc(n.text)}</td><td>${esc(n.status)}</td><td>${esc(n.coded_role||'—')}</td><td>${esc(n.listed_makers||'—')}</td></tr>`).join('')}</tbody></table></div>`;
@@ -90,14 +90,28 @@ const Museum=(()=>{
   <h3>Links</h3><table class="audit-table"><thead><tr><th>Kind</th><th>n</th><th>Rule</th></tr></thead><tbody>${[['shared design attribution','Consecutive records (catalog date order) sharing the first catalogued designer, within a branch. Title eponyms are used only when no designer is catalogued.'],['same maker','Consecutive records with no designer that share their first catalogued maker, within a branch.'],['combined design attribution','A record with two or more designers, linked to the nearest-dated record of the other designer\'s thread.'],['museum bridge','From the latest-starting curated witness that starts no later than the thread\'s first dated object; same branch, or same task family when the branch is new ('+M.branch_links.map(b=>esc(b.museum_lineage)+' ← '+esc(b.curated_lineages.join(', '))).join('; ')+').']].map(([k,rule])=>`<tr><td>${esc(k)}</td><td>${M.edges.filter(e=>e.kind===k).length}</td><td>${rule}</td></tr>`).join('')}</tbody></table><p class="filter-help">Obstetric, dental, kit and other branches have no task family in the curated atlas, so they get no bridge. That is a gap in the curated tree, not evidence of independent origin.</p>
   <h3>Limits</h3><ul><li>Holdings reflect acquisition and donation history and are strongly Dutch.</li><li>"Maker" can denote a retailer; one record lists an IP mark as maker.</li><li>Traits are coded from descriptions; absence of a term is not absence of the feature.</li><li>Photographs are 320 px thumbnails cached from the museum's server and embedded for local viewing. The records carry no rights statement; ask the museum before publishing this atlas.</li><li>Design threads join records by catalogued designer surname. Father and son (Antoine and Paul Dubois; A. E. and E. C. J. von Siebold) can share a thread; such threads are flagged. Spelling variants (e.g. Fergusson/Ferguson) stay separate.</li><li>Independent human review: 0.</li></ul>`;
  }
- function toggleMerge(on,go){
+ let otherPromise=null;
+ function registerOther(other){
+  D.museum_other=other;X=other.records;byId=Object.fromEntries(R.concat(X).map(r=>[r.id,r]));
+  for(const r of X)N[r.id]=r;for(const source of other.sources)S[source.id]=source;
+  for(const thread of other.threads)for(const id of thread.members)threadOf[id]=thread;
+  for(const r of X){if(!families.includes(r.family)){families.push(r.family);$('family').insertAdjacentHTML('beforeend',`<option>${esc(r.family)}</option>`)}if(!lineages.includes(r.lineage)){lineages.push(r.lineage);$('lineage').insertAdjacentHTML('beforeend',`<option>${esc(r.lineage)}</option>`)}}
+  $('merge-museum-count').textContent=mergeable().length+X.length;
+ }
+ function ensureOther(){
+  if(!D.museum_other_lazy_url||!D.museum_other.deferred_record_count)return Promise.resolve();
+  if(!otherPromise)otherPromise=fetch(D.museum_other_lazy_url).then(r=>{if(!r.ok)throw Error('Additional museum records unavailable');return r.json()}).then(registerOther).catch(e=>{otherPromise=null;throw e});
+  return otherPromise;
+ }
+ async function toggleMerge(on,go){
+  if(on)await ensureOther();
   $('merge-museum').checked=on;
   $('merge-museum').dispatchEvent(new Event('change'));
   const b=$('museum-merge-button');if(b){b.textContent=on?'Unmerge from atlas':'Merge into atlas and view tree';b.setAttribute('aria-pressed',String(on));}
   if(on&&go){tab('map');$('view').value='family';graph();requestAnimationFrame(()=>Tree.focus('Obstetric forceps'));}
  }
- function showInTree(id){
-  if(!merged())toggleMerge(true,false);
+ async function showInTree(id){
+  try{await ensureOther();if(!merged())await toggleMerge(true,false);}catch(e){$('filter-status').textContent=e.message+'. Retry the museum layer.';return;}
   tab('map');$('view').value='family';detail(id);graph();
   requestAnimationFrame(()=>{Tree.focus(N[id].lineage);Tree.select(id);});
  }
@@ -119,7 +133,8 @@ const Museum=(()=>{
   const newLineages=[...new Set(mergeable().concat(X).map(r=>r.lineage))].filter(l=>!D.nodes.some(n=>n.lineage===l));
   newLineages.forEach(l=>$('lineage').insertAdjacentHTML('beforeend',`<option>${esc(l)}</option>`));
   [...new Set(mergeable().concat(X).map(r=>r.family))].filter(f=>!D.nodes.some(n=>n.family===f)).forEach(f=>$('family').insertAdjacentHTML('beforeend',`<option>${esc(f)}</option>`));
-  $('merge-museum-count').textContent=mergeable().length+X.length;
+  $('merge-museum-count').textContent=mergeable().length+X.length+(D.museum_other?.deferred_record_count||0);
+  $('merge-museum').addEventListener('change',async e=>{if(!$('merge-museum').checked||!D.museum_other?.deferred_record_count)return;e.stopImmediatePropagation();const toggle=$('merge-museum');toggle.checked=false;toggle.disabled=true;$('merge-museum-count').textContent='Loading…';try{await ensureOther();toggle.checked=true;toggle.dispatchEvent(new Event('change'));}catch(err){$('filter-status').textContent=err.message+'. Select the museum layer to retry.';$('merge-museum-count').textContent='Retry';}finally{toggle.disabled=false;}},true);
   $('museum-set').innerHTML=opts(M.frame.files.map(f=>f.result_set),'All PDF result sets');
   $('museum-kind').innerHTML=opts([...new Set(R.map(r=>r.museum.kind))],'All record kinds');
   $('museum-branch').innerHTML=opts([...new Set(R.map(r=>r.lineage))].sort(),'All branches');
@@ -143,7 +158,7 @@ const Museum=(()=>{
   $('museum-download').onclick=()=>download('boerhaave_records.json','application/json',JSON.stringify({source:M.source,records:R},null,2));
   renderSummary();renderRecords();
  }
- return {init,block,merged,photo,image,nodes:()=>merged()?mergeable().concat(X):[],isMuseum:id=>!!byId[id],showInTree,
+ return {init,block,merged,photo,image,ensureOther,nodes:()=>merged()?mergeable().concat(X):[],isMuseum:id=>!!byId[id],showInTree,
   edges:()=>merged()?M.edges:[],threads:lineage=>merged()?M.threads.concat(D.museum_other?D.museum_other.threads:[]).filter(t=>t.lineage===lineage):[],thread:id=>threadOf[id],threadText,
   bridgedFrom:lineage=>M?.branch_links.find(b=>b.museum_lineage===lineage)};
 })();

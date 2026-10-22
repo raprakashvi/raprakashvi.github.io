@@ -1,0 +1,77 @@
+{
+  "tested_at": "2026-10-22T03:50:14.221Z",
+  "url": "http://127.0.0.1:8767/",
+  "dataset_version": "v1-804c1e7c3202",
+  "checks": [
+    "Mobile sign-in layout fits the viewport",
+    "Redesigned access screen accurately describes the public static gate",
+    "Initial atlas loads only the bounded core and image register, deferring morphology and additional museums",
+    "Self-hosted Manrope typography is loaded",
+    "Application uses the new cool-neutral palette",
+    "Desktop navigation and top bar form one workbench layout",
+    "Ctrl K focuses collection search",
+    "Interactive target is visible: [data-tab=\"morph\"]",
+    "Morphology data loads on first use",
+    "Color key appears immediately before the shape plot",
+    "Interactive target is visible: [data-tab=\"map\"]",
+    "Interactive target is visible: #merge-museum",
+    "Deferred museum failure is visible and retryable without losing the tree",
+    "Interactive target is visible: #merge-museum",
+    "Deferred museum layer restores all 2636 mergeable records and source references",
+    "Original JSON export includes the full deferred museum data",
+    "Interactive target is visible: #merge-museum",
+    "Mobile top bar spans the viewport without page overflow",
+    "Closed mobile navigation is removed from keyboard access",
+    "Interactive target is visible: #drawer-toggle",
+    "Mobile navigation opens as a focused drawer with background inert",
+    "Drawer keyboard focus wraps within navigation",
+    "Escape closes navigation and restores opener focus",
+    "Interactive target is visible: #drawer-toggle",
+    "Interactive target is visible: [data-tab=\"morph\"]",
+    "Choosing a mobile destination closes the drawer and focuses content",
+    "Interactive target is visible: #mobile-search",
+    "Mobile search opens an accessible input",
+    "Cross-workspace search reaches the correct accession",
+    "Interactive target is visible: [data-clear-filter=\"search\"]",
+    "Clearing search also clears the shared URL query",
+    "Interactive target is visible: #view-list",
+    "Collection list view works and exposes its selected state",
+    "Interactive target is visible: #view-grid",
+    "Interactive target is visible: .collection-more-filters summary",
+    "Additional metadata filters are available on demand",
+    "Filter chips expose missing-value filters",
+    "Interactive target is visible: [data-clear-filter=\"filter-material\"]",
+    "Interactive target is visible: .collection-more-filters summary",
+    "Mobile collection layout and top bar fit",
+    "Collection fits 320px width",
+    "Top bar aligns at 320px width",
+    "Collection fits 768px width",
+    "Top bar aligns at 768px width",
+    "Collection fits 1024px width",
+    "Top bar aligns at 1024px width",
+    "Brand typography is consistent in the collection shell",
+    "No uncaught workbench exceptions",
+    "No HTTP errors in real workbench interactions"
+  ],
+  "exceptions": 0,
+  "http_errors": [],
+  "initial_research_payload": {
+    "files": [
+      "images.json",
+      "atlas-core.json"
+    ],
+    "decoded_bytes": 3896513
+  },
+  "desktop": {
+    "width": 1440,
+    "height": 1050
+  },
+  "mobile": {
+    "width": 390,
+    "height": 844
+  },
+  "limits": [
+    "Browser workflow and visual checks, not an independent screen-reader audit",
+    "Payload is decoded local resource size, not compressed production transfer or a concurrency benchmark"
+  ]
+}

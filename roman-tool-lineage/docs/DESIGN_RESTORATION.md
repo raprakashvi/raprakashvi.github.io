@@ -1,5 +1,8 @@
 # Vestigium research workspace restoration
 
+Historical corrective delivery. The subsequent complete UI workstream is documented
+in [WEBSITE_DESIGN.md](WEBSITE_DESIGN.md), including the new theme and deferred startup data.
+
 The first collection redesign made the original research tools difficult to discover.
 The restored site makes the research atlas the home page and keeps the structured
 collection alongside it. No original offline dataset, tree, map or scientific result

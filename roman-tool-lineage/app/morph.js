@@ -198,10 +198,10 @@ const Morph = (() => {
   function show() { if (!ready) return; refresh(); }
   // Called from the family tree: open the shape space with this specimen pinned (filters cleared so it is visible).
   function pinKey(key) {
-    if (!ready) return; const i = M.cols.key.indexOf(key); if (i < 0) return;
+    if (!ready) {window.VestigiumLoadMorph?.().then(()=>pinKey(key)).catch(()=>{});return;} const i = M.cols.key.indexOf(key); if (i < 0) return;
     for (const id of ['m-coll', 'm-region', 'm-family', 'm-group', 'm-mat', 'm-period']) $(id).value = ''; $('m-q').value = '';
     view = 'space'; $('m-view').value = 'space'; pinned = i; refresh();
   }
-  function setView(v) { if (!ready || !['space', 'coverage', 'europe', 'pairs', 'method'].includes(v)) return; view = v; $('m-view').value = v; refresh(); }
+  function setView(v) { if(!ready&&window.VestigiumLoadMorph){window.VestigiumLoadMorph().then(()=>setView(v)).catch(()=>{});return;} if (!ready || !['space', 'coverage', 'europe', 'pairs', 'method'].includes(v)) return; view = v; $('m-view').value = v; refresh(); }
   return { init, show, setView, pinKey, store: () => T, graph: () => G };
 })();

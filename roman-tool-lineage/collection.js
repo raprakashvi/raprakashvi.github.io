@@ -1,4 +1,5 @@
 import {unlock,signOut} from './gate.js';
+import {initWorkspace,setWorkspace} from './workspace.js';
 const $=id=>document.getElementById(id),esc=value=>String(value??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const safeUrl=url=>{try{const u=new URL(url);return /^https?:$/.test(u.protocol)?u.href:'#';}catch{return '#';}};
 const year=n=>n<0?`${-n} BCE`:`${n} CE`;
@@ -14,13 +15,21 @@ function saveSelection(){sessionStorage.setItem('tool-atlas-compare',JSON.string
 function toggle(id){if(selected.has(id))selected.delete(id);else if(selected.size<4)selected.add(id);else return notice('Compare up to four tools. Remove one to add another.');saveSelection();}
 function options(id,values){$(id).insertAdjacentHTML('beforeend',[...new Set(values.filter(Boolean))].sort((a,b)=>a.localeCompare(b)).map(v=>`<option value="${esc(v)}">${esc(v)}</option>`).join(''));}
 function filter(){
- const q=$('search').value.trim().toLocaleLowerCase();const val=name=>$('filter-'+name).value;
+ const q=$('search').value.trim().toLocaleLowerCase();const u=new URL(location.href);if(q)u.searchParams.set('q',$('search').value.trim());else u.searchParams.delete('q');history.replaceState(null,'',u);const val=name=>$('filter-'+name).value;
  const has=(values,choice)=>!choice||(choice==='__missing'?values.length===0:values.includes(choice));
  matched=index.filter(r=>(!q||`${r.id} ${r.text}`.toLocaleLowerCase().includes(q))&&has(r.category,val('category'))&&has(val('evidence')==='working'?(r.working_function||[]):r.function,val('function'))&&has(r.material,val('material'))&&has(r.geography?[r.geography]:[],val('geography'))&&(!val('institution')||r.institution===val('institution'))&&(!$('has-image').checked||r.image)&&period(r,val('period')));
- const sort=$('sort').value;matched.sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='date'?(a.start??Infinity)-(b.start??Infinity)||a.id.localeCompare(b.id):a.id.localeCompare(b.id));page=0;renderCards();
+ const sort=$('sort').value;matched.sort((a,b)=>sort==='name'?a.name.localeCompare(b.name):sort==='date'?(a.start??Infinity)-(b.start??Infinity)||a.id.localeCompare(b.id):a.id.localeCompare(b.id));page=0;renderCards();renderFilterChips();
+}
+function renderFilterChips(){
+ const active=[...document.querySelectorAll('#filters select')].filter(n=>n.value&&!(n.id==='filter-evidence'&&n.value==='documented'));
+ const parts=active.map(n=>`<button type="button" data-clear-filter="${n.id}" aria-label="Remove ${esc(n.closest('label').childNodes[0].textContent.trim())} filter">${esc(n.selectedOptions[0]?.textContent)} <span aria-hidden="true">×</span></button>`);
+ if($('search').value.trim())parts.unshift(`<button type="button" data-clear-filter="search">Search: ${esc($('search').value)} <span aria-hidden="true">×</span></button>`);
+ if($('has-image').checked)parts.push('<button type="button" data-clear-filter="has-image">With image <span aria-hidden="true">×</span></button>');
+ $('filter-chips').innerHTML=parts.join('');$('filter-chips').hidden=!parts.length;
+ document.querySelector('.collection-more-filters summary').textContent=active.length?`More filters · ${active.length} active`:'More filters';
 }
 function period(r,p){if(!p)return true;if(p==='__missing')return r.start==null;if(r.start==null||r.end==null)return false;const [a,b]={ancient:[-Infinity,499],medieval:[500,1499],modern:[1500,1799],recent:[1800,Infinity]}[p];return r.start<=b&&r.end>=a;}
-function preview(image,name){return image?`<img src="${esc(image)}" alt="${esc(name)} — source image; inspect the record for image role and caption" loading="lazy" decoding="async" width="320" height="190">`:'<span class="missing-image">No image linked</span>';}
+function preview(image,name){return image?`<img src="${esc(image)}" alt="${esc(name)} — source image; inspect the record for image role and caption" loading="lazy" decoding="async" width="320" height="190">`:'<span class="missing-image"><svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.3" aria-hidden="true"><rect x="4" y="5" width="24" height="22" rx="4"/><circle cx="12" cy="12" r="2"/><path d="m5 23 8-7 5 4 5-6 5 9"/></svg>No image linked<small>Inspect the source record</small></span>';}
 function renderCards(){
  $('result-count').textContent=`${matched.length.toLocaleString()} of ${index.length.toLocaleString()} records · dates match overlapping intervals`;
  $('cards').innerHTML=matched.length?matched.slice(page*PAGE,(page+1)*PAGE).map(r=>`<article class="card"><a class="image-link" href="#item/${r.id}" aria-label="Inspect ${esc(r.name)}">${preview(r.image,r.name)}</a><div class="card-copy"><span class="record-id">#${r.id}</span><h2><a href="#item/${r.id}">${esc(r.name)}</a></h2><p>${esc(r.institution)}</p><p>${dates(r.start,r.end)}</p><p>${esc(r.category[0]||'Category not recorded')}</p><button class="compare-toggle" data-compare="${r.id}" aria-label="Compare ${esc(r.name)}" aria-pressed="false">+ Compare</button></div></article>`).join(''):'<div class="empty"><h2>No matching records</h2><p>Try broader search terms or reset the filters.</p><button id="empty-reset">Reset filters</button></div>';
@@ -47,6 +56,7 @@ async function route(){
  const token=++request,hash=location.hash.slice(1)||'browse',view=hash.split('/')[0];const section={browse:'browse',compare:'compare',analysis:'analysis',about:'about',review:'review',item:'item'}[view]||'browse';
  for(const name of ['browse','compare','analysis','about','item','review'])$(name+'-view').hidden=name!==section;
  document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(section==='item'?'browse':section)||a.dataset.section===section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ setWorkspace(section);
  $('global-error').hidden=true;
  if(section==='item')await showItem(hash.split('/')[1],token);
  if(section==='compare')await compare(token);
@@ -55,7 +65,7 @@ async function route(){
 }
 function workingSummary(r){const a=r.derived.working_annotation;if(!a)return '';return `<section class="working-summary"><h2>Working interpretation</h2><p class="muted">Assigned from catalog context. Provisional; independent validation is deferred.</p>${a.functions.length?`<ul>${a.functions.map(f=>`<li><strong>${esc(f.label)}</strong> · ${esc(f.confidence)}<br>${esc(f.basis)}<br><small>Evidence: ${esc(f.evidence_field)} = “${esc(f.evidence_text)}”</small></li>`).join('')}</ul>`:'<p>No supported function assigned from the available context.</p>'}<p>Possible mechanism: ${a.mechanisms.map(x=>esc(x.label)).join('; ')||'Unknown'}.</p></section>`;}
 function functionOptions(){const working=$('filter-evidence').value==='working';$('filter-function').innerHTML='<option value="">All functions</option><option value="__missing">Not assigned / recorded</option>';options('filter-function',index.flatMap(r=>working?(r.working_function||[]):r.function));}
-await unlock();$('application').hidden=false;$('logout').onclick=signOut;
+await unlock();$('application').hidden=false;initWorkspace();$('logout').onclick=signOut;
 try{
  manifest=await json('data/current.json');base=`data/${manifest.version}/`;index=await json(base+'index.json');selected=new Set([...selected].filter(id=>index.some(r=>r.id===id)).slice(0,4));
  $('release-label').textContent=`Dataset ${manifest.version} · ${index.length.toLocaleString()} records`;
@@ -69,5 +79,8 @@ try{
  document.addEventListener('click',e=>{const b=e.target.closest('[data-compare]');if(b){toggle(b.dataset.compare);if(location.hash==='#compare')compare(request);}if(e.target.id==='empty-reset')$('filters').reset()});
  $('clear-compare').onclick=()=>{selected.clear();saveSelection();compare(request)};
  document.addEventListener('error',e=>{if(e.target instanceof HTMLImageElement){e.target.replaceWith(Object.assign(document.createElement('span'),{className:'image-failed',textContent:'Image unavailable — see source record'}))}},true);
+ let layout=sessionStorage.getItem('vestigium-browse-layout')||'grid';const setLayout=mode=>{layout=mode;sessionStorage.setItem('vestigium-browse-layout',mode);$('cards').classList.toggle('is-list',mode==='list');$('view-grid').setAttribute('aria-pressed',String(mode==='grid'));$('view-list').setAttribute('aria-pressed',String(mode==='list'))};$('view-grid').onclick=()=>setLayout('grid');$('view-list').onclick=()=>setLayout('list');setLayout(layout);
+ $('filter-chips').onclick=e=>{const b=e.target.closest('[data-clear-filter]');if(!b)return;const el=$(b.dataset.clearFilter);if(el.type==='checkbox')el.checked=false;else el.value=el.id==='filter-evidence'?'documented':'';if(el.id==='filter-evidence')functionOptions();filter()};
+ const incoming=new URLSearchParams(location.search).get('q');if(incoming)$('search').value=incoming;
  window.addEventListener('hashchange',route);filter();await route();
 }catch(e){$('global-error').hidden=false;$('global-error').innerHTML=`<div class="empty"><h1>Collection could not load</h1><p>${esc(e.message)}</p><button onclick="location.reload()">Reload collection</button></div>`;$('browse-view').hidden=true;}

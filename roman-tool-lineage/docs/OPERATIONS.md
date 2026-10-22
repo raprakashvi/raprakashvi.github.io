@@ -3,7 +3,9 @@
 Current release: `v1-804c1e7c3202`, 2,830 records. The original research atlas is the
 main page again; the paginated collection is at `collection.html`. The preserved
 `legacy.html` URL opens the same branded research workspace. See
-[DESIGN_RESTORATION.md](DESIGN_RESTORATION.md) for routing, theme and performance limits.
+[WEBSITE_DESIGN.md](WEBSITE_DESIGN.md) for the current shared workbench, navigation,
+startup-data splitting and remaining performance/audit limits. The earlier corrective
+restoration is recorded in DESIGN_RESTORATION.md.
 
 Public Pages URL: https://raprakashvi.github.io/roman-tool-lineage/
 Website checkout: `/home/rp/rp_repo/raprakashvi.github.io`, publishing branch `master`.

@@ -191,3 +191,27 @@ the concurrent search-exclusion rules remain intact. Source implementation `8888
 website implementation `2557afb`; the following documentation-only publication carries
 the completed checklist and live reports. No substantive UI or dataset changes occur
 in that evidence publication.
+
+
+## Full workbench overhaul
+
+Current design and startup architecture are in WEBSITE_DESIGN.md. Local verification
+passes 49 workbench checks, 45 atlas checks, 39 collection checks, 24 review checks
+and six Firefox smoke checks. Dedicated workbench checks use real pointer/keyboard
+events, modal focus/inert handling, search and filter-chip round trips, list/grid
+state, sign-in layouts and widths 320/390/768/1024/1440. The suite simulates a failed
+deferred museum request, verifies recovery and reconciles all 2,636 mergeable museum
+records/source references and complete JSON exports. Morphology loads on first use.
+No uncaught Chromium exceptions or HTTP errors occur in the checked workflows.
+
+Initial research JSON falls from 11,127,968 to 3,896,513 decoded bytes (65.0% reduction).
+The full original catalog and morphology remain accessible, with deferred data loaded
+when requested. This is not a production latency or concurrency benchmark. Original
+HTML archives, stable IDs and the frozen dataset remain unchanged; records/assets and
+reordering pass integrity checks. Eighteen web pipeline tests and 21 independent local
+ML tests pass. The small GPU representation check is separate from model training.
+
+Run `check_workbench.mjs` against localhost:8767, or set ATLAS_URL to the deployed
+subpage for a separate `_live` report. Run CDP suites sequentially on port 9227. The
+new sign-in, drawer, collection and morphology screenshots use the `workbench-` prefix.
+Independent screen-reader/Safari and fuller Firefox audits remain open.
