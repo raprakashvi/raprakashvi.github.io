@@ -238,3 +238,17 @@ Checkpoint: source `aa98630`, website `0de3bfb`. Dataset and ML results unchange
 - Local refinement verified: 47 AI + 50 workbench + 45 atlas Chrome checks and 14 Firefox smoke checks pass. New checks cover 22px/44px checkbox sizing, whole-label loading, native Space-key toggling, side-by-side AI query/results and relocation of aggregate counts to run details. Desktop/mobile screenshots inspected. All 42 AI JSON files and the dataset manifest are byte-identical to the previous delivery; full integrity verifies 2,830 records, 5,974 references, 2,718 assets and stable IDs on reordering. Live publication follows.
 
 - Refinement is implemented, locally tested, deployed and live-verified. Source implementation `497d2f7` and website implementation `1207986` are pushed. All 47 AI + 50 workbench + 45 atlas Chrome checks and 14 Firefox smoke checks pass live, with zero uncaught Chrome exceptions and unexpected HTTP errors. Eight interface/gate/dataset files match the tested artifact; personal homepage returns 200 and scoped deployment preserves all personal-site content. Final documentation/evidence publication follows; no dataset, ML result or training changes. Tasks 41–43 are complete.
+
+## Deep representations, confounds and evidence-backed hypotheses
+
+Checkpoint: source `aa98630` (+ uncommitted tasks 41–42), dataset `v1-804c1e7c3202` unchanged.
+Research code checkpoint `77f263d`. Details: [docs/AI_DEEP_METHODS.md](docs/AI_DEEP_METHODS.md).
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 44 | complete | GPU environment (venv over existing `endosrt`, versions in configs/ml/requirements-gpu.txt); background-controlled views; frozen DINOv2/CLIP/SigLIP 2/E5 features with weight hashes. |
+| 45 | complete | Grouped benchmark with confound controls (photography-only control, nuisance R², within-category museum enrichment, held-out-museum probe), group-bootstrap CIs and paired differences; embedding near-duplicate audit merged into leakage groups. |
+| 46 | complete | Three-seed photography-randomised adaptation with unseen-museum test and compositing ablation; working-end, zero-shot affordance, cross-modal and disagreement analyses with manual inspection coding; multi-channel hypotheses with calibrated agreement and flags; figures; findings; literature review (delegated). |
+| 47 | in progress | External historical/contemporary instrument corpus (Wikimedia Commons, Wellcome; delegated) with licences and exclusions; transfer and modern-analog analysis (`scripts/deep/external.py`). |
+| 48 | in progress | Website: ai-deep export wired into the build; Research → AI Methods tabs for new similarity methods, evidence channels, text search, embedding map and experiments (delegated); regression and new browser checks. |
+| 49 | pending | After 47–48: rerun export, verify locally and live, commit/push source and deploy the subpage only; publish evidence. |

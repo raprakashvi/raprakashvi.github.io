@@ -13,11 +13,16 @@
     "Firefox full text projection with accessible table",
     "Firefox shape projection accounts for missing records",
     "Firefox mobile-width AI plot/table fits",
+    "Firefox deep photo retrieval with SHA-256 verified lazy shard",
+    "Firefox function evidence with separate affordance cues",
+    "Firefox precomputed text search shows both methods",
+    "Firefox embedding map with accessible table",
+    "Firefox experiments narrative renders",
     "Firefox AI methods and missing-metric disclosure"
   ],
   "browser": "Firefox",
   "version": "158.0",
-  "url": "https://raprakashvi.github.io/roman-tool-lineage/",
+  "url": "http://127.0.0.1:8771/",
   "dataset_version": "v1-804c1e7c3202",
   "limits": [
     "Bounded Firefox smoke check, not a full screen-reader audit",

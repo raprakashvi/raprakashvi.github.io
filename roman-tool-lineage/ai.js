@@ -2,6 +2,12 @@
 let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',method='text',clusterMethod='text',selected,sequence=0,showSequence=0,observer,ready=false,startup;
 let clusterData,clusterSource='',clusterChoice='',clusterSearch='',clusterPage=0,plotPoints=[];
 const PAGE=20,$=id=>document.getElementById(id),root=()=>$('ai-view');
+// Deep-representation views live in ai-deep.js and load only when a deep tab or method is used.
+const DEEP_METHODS=['photo','silhouette','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','experiments'],FULL_TABS=['clusters','run','search','map','experiments'];
+let deepModule,renderedTab;
+function deep(){deepModule||=import('./ai-deep.js').catch(err=>{deepModule=null;throw err});return deepModule}
+function download(name,body){const url=URL.createObjectURL(new Blob([JSON.stringify(body,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
+function api(token){return{context,rows,summary,palette,selected,method,group,methodBar,download,esc:e,fmt,num,$,root,current:()=>token===undefined||token===sequence,setTab:t=>{tab=t},setMethod:m=>{method=m},choose,render}}
 const e=x=>context.esc(x),fmt=x=>Number(x||0).toLocaleString(),num=x=>Number.isFinite(x)?x.toFixed(4):'Unavailable';
 async function read(name){
  const url=context.base+'ai/'+name,r=await fetch(url);if(!r.ok)throw Error(`Result unavailable (${r.status}). Retry when the dataset has finished publishing.`);
@@ -13,7 +19,7 @@ async function item(id){const row=register.find(x=>x.id===id);if(!row)throw Erro
 function group(label,values,active,attribute){return `<div class="ai-segments" role="group" aria-label="${label}">${values.map(([key,text])=>`<button type="button" ${attribute}="${key}" aria-pressed="${key===active}">${text}</button>`).join('')}</div>`}
 function setup(){
  root().innerHTML=`<div class="workspace-heading ai-heading"><div><h1>AI Methods</h1><p>Explore similarities, inspect clusters and trace provisional labels.</p></div><a class="workspace-link" href="docs/ML_TOOLS.md">Reproduce locally ↗</a></div>
- ${group('AI workspace',[['retrieval','Similarity'],['clusters','Clusters'],['annotations','Provisional labels'],['run','Run & methods']],tab,'data-ai-tab').replace('class="ai-segments"','class="ai-segments ai-tabs"')}
+ ${group('AI workspace',[['retrieval','Similarity'],['evidence','Evidence'],['annotations','Provisional labels'],['search','Text search'],['map','Embedding map'],['clusters','Clusters'],['experiments','Experiments'],['run','Run & methods']],tab,'data-ai-tab').replace('class="ai-segments"','class="ai-segments ai-tabs"')}
  <div id="ai-layout" class="ai-layout"><aside id="ai-picker" class="ai-picker panel" aria-label="Query tool"><h2 class="ai-picker-title">Query tool</h2><label for="ai-search">Find a record</label><input id="ai-search" type="search" autocomplete="off" placeholder="Name, accession or #META ID…" aria-describedby="ai-search-help"><small id="ai-search-help">Search by name, accession or permanent ID.</small><div id="ai-search-results" class="ai-search-results" aria-live="polite"></div><div id="ai-selected"></div></aside>
  <section id="ai-content" aria-label="AI results" aria-busy="false"></section></div>`;
  $('ai-search').oninput=()=>{
@@ -23,10 +29,11 @@ function setup(){
  };
  root().onclick=action;
 }
-function choose(id){if(!rows.has(id))return;if(tab==='clusters')tab='retrieval';if(location.hash!==`#ai/${id}`)location.hash=`ai/${id}`;else{selected=id;render()}}
+function choose(id,stay=false){if(!rows.has(id))return;if(!stay&&FULL_TABS.includes(tab))tab='retrieval';if(location.hash!==`#ai/${id}`)location.hash=`ai/${id}`;else{selected=id;render()}}
 async function action(event){
  const button=event.target.closest('button');if(!button)return;
  if(button.dataset.aiTab){tab=button.dataset.aiTab;render();return}
+ if(button.dataset.aiDeep){try{await (await deep()).action(api(),button)}catch(err){$('ai-content').insertAdjacentHTML('afterbegin',`<p role="alert">${e(err.message)}</p>`)}return}
  if(button.dataset.aiMethod){method=button.dataset.aiMethod;await render();root().querySelector(`[data-ai-method="${method}"]`)?.focus({preventScroll:true});return}
  if(button.dataset.aiSelect){choose(button.dataset.aiSelect);return}
  if(button.dataset.aiClusterMethod){clusterMethod=button.dataset.aiClusterMethod;clusterSource='';clusterChoice='';clusterSearch='';clusterPage=0;await render();root().querySelector(`[data-ai-cluster-method="${clusterMethod}"]`)?.focus({preventScroll:true});return}
@@ -34,34 +41,39 @@ async function action(event){
  if(button.dataset.aiPage){clusterPage+=Number(button.dataset.aiPage);updateClusterTable();return}
  if(button.hasAttribute('data-ai-retry')){await render();$('ai-content').tabIndex=-1;$('ai-content').focus({preventScroll:true});return}
  if(button.hasAttribute('data-ai-sample')){choose('META-002742');return}
- if(button.dataset.aiExport){const name=button.dataset.aiExport;try{const data=await item(selected);const body=name==='suggestions'?data.suggestions:method==='image'?data.image_retrieval:data.neighbors[method];const url=URL.createObjectURL(new Blob([JSON.stringify({dataset_version:summary.dataset_version,run_id:summary.run_id,item_id:selected,method:name==='suggestions'?'provisional_functions':method,result:body},null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=`${selected}-${name}.json`;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}catch(err){$('ai-content').insertAdjacentHTML('afterbegin',`<p role="alert">${e(err.message)}</p>`)} }
+ if(button.dataset.aiExport){const name=button.dataset.aiExport;try{if(name==='evidence'||name==='neighbors'&&DEEP_METHODS.includes(method)){await (await deep()).exportJson(api(),name);return}const data=await item(selected);const body=name==='suggestions'?data.suggestions:method==='image'?data.image_retrieval:data.neighbors[method];download(`${selected}-${name}.json`,{dataset_version:summary.dataset_version,run_id:summary.run_id,item_id:selected,method:name==='suggestions'?'provisional_functions':method,result:body})}catch(err){$('ai-content').insertAdjacentHTML('afterbegin',`<p role="alert">${e(err.message)}</p>`)} }
 }
 function selectedCard(){const row=rows.get(selected);$('ai-selected').innerHTML=row?`<div class="ai-query">${context.preview(row.image,row.name)}<div><span class="record-id">#${row.id}</span><h2 tabindex="-1">${e(row.name)}</h2><p>${e(row.institution)}</p><a href="#item/${row.id}">Inspect source record →</a></div></div>`:'<p role="alert">Unknown record identifier. Choose a record above.</p>'}
 export async function show(ctx){
  const call=++showSequence;context=ctx;rows=new Map(ctx.index.map(r=>[r.id,r]));
  if(!ready){startup||=(async()=>{summary=await read('summary.json');if(summary.schema_version!=='1.0.0'||summary.dataset_version!==ctx.manifest.version||summary.provenance.release_files_sha256['records.jsonl']!==ctx.manifest.records_sha256)throw Error('AI release mismatch.');register=await read('index.json');const colors=await fetch('visuals/palette.json');if(!colors.ok)throw Error('Plot palette unavailable.');palette=await colors.json();setup();ready=true})().catch(err=>{startup=null;throw err});await startup}
- if(call!==showSequence)return;const previous=selected;selected=ctx.selectedId||selected||'META-002742';await render();if(previous&&previous!==selected&&tab!=='clusters'&&tab!=='run')$('ai-selected').querySelector('h2')?.focus({preventScroll:true});
+ if(call!==showSequence)return;const previous=selected;selected=ctx.selectedId||selected||'META-002742';
+ // Record-independent deep tabs keep their state when a record is selected from them (e.g. a map click).
+ if(previous&&previous!==selected&&renderedTab===tab&&['search','map','experiments'].includes(tab)&&$('ai-content').getAttribute('aria-busy')==='false'){selectedCard();if(tab==='map')(await deep()).selectionChanged(api());return}
+ await render();if(previous&&previous!==selected&&!FULL_TABS.includes(tab))$('ai-selected').querySelector('h2')?.focus({preventScroll:true});
 }
 async function render(){
  const token=++sequence;observer?.disconnect();
  root().querySelectorAll('[data-ai-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.aiTab===tab)));
- $('ai-picker').hidden=tab==='clusters'||tab==='run';$('ai-search-results').innerHTML='';$('ai-search').value='';selectedCard();
- $('ai-layout').classList.toggle('ai-full-width',tab==='clusters'||tab==='run');
+ $('ai-picker').hidden=FULL_TABS.includes(tab);$('ai-search-results').innerHTML='';$('ai-search').value='';selectedCard();
+ $('ai-layout').classList.toggle('ai-full-width',FULL_TABS.includes(tab));renderedTab=null;
  const host=$('ai-content');host.setAttribute('aria-busy','true');host.innerHTML='<p role="status">Loading saved results…</p>';
  try{
   if(tab==='clusters'){const data=await cached(`clusters-${clusterMethod}.json`);if(token!==sequence)return;clusterData=data;renderClusters()}
   else if(tab==='run')renderRun();
+  else if(DEEP_TABS.includes(tab)||tab==='retrieval'&&DEEP_METHODS.includes(method)){const module=await deep();if(token!==sequence)return;await module.render(api(token),tab)}
   else {const data=await item(selected);if(token!==sequence)return;if(tab==='annotations')renderAnnotations(data);else renderRetrieval(data)}
  }catch(err){if(token===sequence)host.innerHTML=`<div class="empty" role="alert"><h2>Results unavailable</h2><p>${e(err.message)}</p><button type="button" data-ai-retry>Retry results</button></div>`}
- finally{if(token===sequence)host.setAttribute('aria-busy','false')}
+ finally{if(token===sequence){host.setAttribute('aria-busy','false');renderedTab=tab}}
 }
 function renderRetrieval(data){
  const result=method==='image'?data.image_retrieval:data.neighbors[method],neighbors=result?.neighbors||[];
  const descriptions={text:'TF–IDF cosine similarity · higher is closer. Source wording can dominate the ranking.',shape:'Original multiblock outline distance · lower is closer. Dimensionless, with full-corpus normalization; supplemental outlines are excluded.',image:`Frozen ResNet18 cosine similarity · higher is closer. ${summary.counts.image_views} views from ${summary.counts.image_objects} objects only; this is a GPU feasibility sample.`};
- $('ai-content').innerHTML=`<div class="ai-toolbar">${group('Similarity representation',[['text','Catalog text'],['shape','Outline shape'],['image','Image · sample']],method,'data-ai-method')}<button type="button" class="quiet" data-ai-export="neighbors">Export these ranks</button></div><p class="ai-method-line">${descriptions[method]}</p><p class="ai-caution">Exploratory candidates. Scores are uncalibrated and do not establish function or ancestry. Self and known duplicate groups are excluded.</p>
+ $('ai-content').innerHTML=`<div class="ai-toolbar">${methodBar()}<button type="button" class="quiet" data-ai-export="neighbors">Export these ranks</button></div><p class="ai-method-line">${descriptions[method]}</p><p class="ai-caution">Exploratory candidates. Scores are uncalibrated and do not establish function or ancestry. Self and known duplicate groups are excluded.</p>
  ${neighbors.length?`<p role="status">${neighbors.length} ranked candidates${method==='image'?` from the ${summary.counts.image_objects===5?'five':summary.counts.image_objects}-object cache`:''} · <a href="#compare">Open comparison</a></p><div id="ai-neighbors" class="ai-neighbors">${neighbors.map((n,i)=>{const r=rows.get(n.item_id);return `<article class="panel ai-match"><a class="ai-match-image" href="#item/${n.item_id}">${context.preview(r?.image,r?.name||n.item_id)}</a><div class="ai-match-copy"><div class="ai-match-rank">Rank ${n.rank||i+1} <strong>${num(n.score)}</strong></div><span class="record-id">#${n.item_id}</span><h2><a href="#item/${n.item_id}">${e(r?.name||n.item_id)}</a></h2><p>${e(r?.institution||'Source not recorded')}</p><div class="ai-match-actions"><button class="compare-toggle" data-compare="${n.item_id}" aria-pressed="false">+ Compare</button><button class="quiet" data-ai-select="${n.item_id}">Use as query</button></div></div></article>`}).join('')}</div>`:`<div class="empty" role="status"><h2>${method==='image'?'Outside the image sample':'No ranked outlines available'}</h2><p>${e(result?.reason||(method==='image'?'This record is outside the bounded image cache. Image retrieval is not available for the full collection.':'This record is outside the original 2,600-outline distance matrix. No shape ranks were imputed.'))}</p>${method==='image'?'<button type="button" data-ai-sample>Explore the image sample</button>':'<button type="button" data-ai-method="text">Try catalog text</button>'}</div>`}`;
  context.syncComparisons();
 }
+function methodBar(){return `<div class="ai-method-bar"><div class="ai-method-set"><span aria-hidden="true">Baseline</span>${group('Baseline similarity representation',[['text','Catalog text'],['shape','Outline shape'],['image','Image · sample']],method,'data-ai-method')}</div><div class="ai-method-set"><span aria-hidden="true">Deep representations</span>${group('Deep similarity representation',[['photo','Photo'],['silhouette','Silhouette'],['adapted','Adapted'],['ends','Working ends'],['multimodal','Multimodal']],method,'data-ai-method')}</div></div>`}
 function evidenceHtml(v){
  const row=rows.get(v.item_id),label=row?`${row.name} · #${row.id}`:v.item_id;
  return `<li><strong>${v.channel==='context_rule'?'Catalog-context rule':'Weak neighbor transfer'}</strong>${v.item_id?` · <a href="#item/${e(v.item_id)}">${e(label)}</a>`:''}${v.source_text?`<blockquote>${e(v.source_text)}</blockquote>`:''}<small>${e(v.source_field||v.locator||'')} ${v.rule_id?'· Rule '+e(v.rule_id):''}${v.rule_confidence?' · Rule strength '+e(v.rule_confidence):''}${v.text_similarity!=null?' · Text cosine '+num(v.text_similarity):''}${v.rank?' · Rank '+v.rank:''}</small>${v.entity_group?`<small>Known duplicate group: ${e(v.entity_group)}</small>`:''}</li>`;

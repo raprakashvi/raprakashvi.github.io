@@ -139,3 +139,103 @@ The interface now uses an underlined section bar and a query/results layout: the
 selected tool stays in a left-hand panel on wide screens; mobile stacks a compact
 record picker above the matches. Aggregate counts are in Run & methods. Research
 results, provenance, retrieval ranks, cluster data and annotation states are unchanged.
+
+## Deep-representation views
+
+The deep-representation study ([AI_DEEP_METHODS.md](AI_DEEP_METHODS.md)) is published
+beside the baseline export and shown in the same workspace. Its views use the shared
+tab and segment controls and the shared tokens. Map colours come from the new
+colour-blind-safe `COLORBLIND_COLORS` / `COLORBLIND_MARKERS` in `visuals/style.py`
+(Okabe-Ito hues without yellow, each paired with a marker shape), exposed through
+`visuals/palette.json`. Benchmark view markers reuse `VIEW_COLORS`.
+
+- **Similarity:** adds Photo (DINOv2-L), Silhouette (DINOv2-B), Adapted, Working ends
+  and Multimodal beside catalog text, outline shape and the image sample. Each method
+  shows its note, thumbnails, record links, comparison selection and a JSON export of
+  the exact published ranks (cosine, higher is closer). If a record has no rank for a
+  method, the page says why and imputes nothing. The reasons are: no image, no
+  segmentable image, an outline that failed quality control (so no working-end crops),
+  or a missing component for Multimodal.
+- **Evidence:** eight function rows for the selected record. State chips (documented,
+  corroborated, rule only, image hypothesis, conflict, abstain) use an icon, text and
+  border style, not colour alone. Rows also show plain-language flags, rule evidence
+  text, and photo/silhouette values labelled *agreement with existing rules on
+  held-out groups* (never probability), with neighbour thumbnails. A separate panel
+  covers **physical affordance cues (visible form, not use)**: prompt cues and
+  outline geometry. The tab also shows documented statements, near-duplicate links,
+  any category-conflict note with its inspection code, and modern analogs when they
+  are published. The baseline **Provisional labels** tab is unchanged.
+- **Text search:** the 26 precomputed English/Dutch/Swedish queries, with SigLIP 2
+  zero-shot and adapted results side by side. Where a query is scored, its test
+  precision@20 is shown against the base rate. No model runs in the browser.
+  On narrow screens a grouped selector replaces the query buttons.
+- **Embedding map:** a canvas UMAP display of the photo, silhouette, adapted or text
+  map, coloured by catalog category or museum (the seven largest classes get colours,
+  the rest are drawn as "other"). It has hover and keyboard (arrow/Enter) tooltips;
+  clicking a point selects that record and stays on the map. A highlightable counted
+  legend, a paginated table of every point and the display-only caveat are included.
+- **Experiments:** a section bar, then Findings (status: observation / inference /
+  speculation; a "pending" placeholder when `findings` is null). It is followed by the
+  benchmark dot-and-interval plot (95% group-bootstrap CI, random cross-museum
+  reference, text rows marked *circular: labels derived from text*), confound
+  controls, adaptation (mean ± SD over three seeds, paired differences, loss curves),
+  working ends vs whole object, zero-shot affordance AP vs prevalence, cross-modal
+  summary, near-duplicate audit with example pairs, disagreement gallery with
+  inspection codes, hypothesis state counts and calibration, literature by topic,
+  limitations, next experiments and provenance hashes.
+
+### Data contract and loading
+
+`scripts/web/ai_deep_export.py` runs inside `build_site.py` right after the baseline
+export. It writes `data/<version>/ai-deep/` and records its report in
+`results/tables/ai_deep_export.json`, which is copied to `reports/`. It reads saved
+results only. A missing pointer, result or feature cache stops the build with an
+explicit `Missing saved …` error. Files: `summary.json` (methods, functions, shard
+map, provenance, limitations, SHA-256 per file), 29 × `items-NNNN.json` (100 records:
+neighbours, hypotheses, near-duplicates, category conflict, modern analogs),
+`experiments.json`, `crossmodal.json`, `maps.json` and `literature.json`. No vectors,
+weights or local paths are published. The total is about 5.77 MB.
+
+`web/ai-deep.js` is a separate module. `ai.js` imports it only when a deep tab or
+method is first used. Every deep file except `summary.json` is SHA-256 checked
+against `summary.files` and must carry the current `dataset_version`. Failed or
+rejected files are evicted from the cache, so **Retry results** refetches them.
+Decoded first-use transfer, measured in headless Chrome (local, not a network
+benchmark):
+
+| View | Additional files | Decoded bytes |
+|---|---|---|
+| Initial AI page (unchanged path) | `ai.js`, `ai.css`, baseline `summary.json`, `index.json`, one shard | 1,257,914 |
+| First deep method or Evidence | `ai-deep.js` (60 KB), deep `summary.json` (102 KB), one item shard (17–194 KB) | ≈ 339,000 |
+| Text search | `crossmodal.json` | 21,782 |
+| Embedding map | `maps.json` | 784,104 |
+| Experiments | `experiments.json`, `crossmodal.json`, `literature.json` | 248,187 |
+
+### Verification
+
+```bash
+# from the parent checkout, after a build served on localhost (any free port)
+ATLAS_URL=http://127.0.0.1:8771/ CDP_PORT=9227 node roman_tool_lineage/scripts/web/check_ai_deep.mjs
+VESTIGIUM_SITE=/path/to/site python -m unittest discover -s roman_tool_lineage/scripts/web -p 'test_*.py'
+```
+
+`check_ai_deep.mjs` (87 checks) confirms that the initial view requests no deep
+module or file. It checks that displayed neighbour IDs and cosines for all five deep
+methods match the shards, along with exports, keyboard method switching and the
+explicit null-neighbour reasons. On Evidence it checks states, photo thumbnails,
+flags, conflict codes, affordance cues and near-duplicate links. It verifies that
+text-search top-12 and P@20 values match `crossmodal.json`. On the map it checks
+counts, legend sums, hover, click and keyboard selection, table filtering and
+paginated toggles. It reconciles state counts with both `experiments.json` and
+every shard, and checks benchmark values, circular marking, CIs and section
+navigation. It also tests checksum rejection and 503 retry, a 390 px mobile layout
+with a compact query selector, and 320/768/1024 px widths. It writes
+`results/tables/ai_deep_browser_verification[_live].json` and
+`results/figures/ai-deep-<tab>-{desktop,mobile}.png`. `test_ai_deep_export.py`
+tests the explicit missing-result failures, published hashes, shard coverage, state
+reconciliation and the absence of vectors and paths. All CDP suites now accept
+`CDP_PORT` (default 9227). The Firefox smoke run adds five deep-tab checks.
+
+The website shows weak-label research outputs faithfully. It does not validate
+them: similarity is not ancestry, function states are not ground truth, and the map
+is a display projection.

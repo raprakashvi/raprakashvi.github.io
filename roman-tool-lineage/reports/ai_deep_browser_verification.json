@@ -1,0 +1,160 @@
+{
+  "tested_at": "2026-10-22T10:19:50.831Z",
+  "url": "http://127.0.0.1:8772/collection.html#ai/META-000104",
+  "dataset_version": "v1-804c1e7c3202",
+  "checks": [
+    "Initial AI view requests no deep module or deep result file",
+    "Eight AI sections, Similarity first and selected",
+    "Real records exist for each missing-representation case and for near-duplicates",
+    "photo: displayed neighbour IDs and cosines equal the published shard",
+    "photo: method note and score direction are shown",
+    "First deep method loads only the module, manifest and one item shard",
+    "silhouette: displayed neighbour IDs and cosines equal the published shard",
+    "silhouette: method note and score direction are shown",
+    "adapted: displayed neighbour IDs and cosines equal the published shard",
+    "adapted: method note and score direction are shown",
+    "ends: displayed neighbour IDs and cosines equal the published shard",
+    "ends: method note and score direction are shown",
+    "multimodal: displayed neighbour IDs and cosines equal the published shard",
+    "multimodal: method note and score direction are shown",
+    "Deep candidates join the shared comparison selection",
+    "Deep rank export contains the exact published ranks and release",
+    "Deep method switch works with keyboard activation and keeps focus",
+    "photo: null neighbours give an explicit reason (no image linked) and no imputed ranks (META-000003)",
+    "silhouette: null neighbours give an explicit reason (no segmentable image) and no imputed ranks (META-000264)",
+    "ends: null neighbours give an explicit reason (quality control) and no imputed ranks (META-000001)",
+    "multimodal: null neighbours give an explicit reason (photo, silhouette and catalog text) and no imputed ranks (META-000264)",
+    "Baseline catalog-text method still works beside deep methods",
+    "Evidence shows all eight functions with the published states (omitted functions as abstain)",
+    "State chips carry an icon and text, not colour alone",
+    "Photo-channel neighbour thumbnails equal the published neighbour IDs",
+    "Calibrated values are labelled agreement with existing rules on held-out groups",
+    "Calibrated agreement is never called a probability",
+    "Category-conflict note shows the inspection code",
+    "Separate affordance-cue panel lists the published prompt cues",
+    "Documented source statements are shown",
+    "Evidence export equals the published hypotheses",
+    "Hypothesis flags are rendered with plain-language explanations",
+    "Near-duplicate links equal the published near-duplicate pairs",
+    "Baseline Provisional labels tab remains intact beside Evidence",
+    "Every precomputed query is listed, grouped by language",
+    "Text search states that queries are precomputed",
+    "siglip2_zero_shot: keyboard-chosen Dutch query shows the published top-12 and test P@20",
+    "adapted: keyboard-chosen Dutch query shows the published top-12 and test P@20",
+    "Unscored queries are labelled, not given a precision",
+    "Map status reports the published number of plotted records",
+    "Map legend counts sum to the plotted records",
+    "Every legend class has a marker shape as a non-colour cue",
+    "Display-only caveat is visible",
+    "Hovering a point shows a record tooltip",
+    "Clicking a point selects that record and stays on the map",
+    "Arrow key focuses a point and shows its tooltip",
+    "Enter on a focused point selects it",
+    "Accessible map table paginates",
+    "Highlighting a legend class filters the table to that class",
+    "Map and colour toggles switch to the silhouette map coloured by museum",
+    "Findings come first: 13 published findings rendered with status",
+    "Each finding shows its observation / inference / speculation status",
+    "Hypothesis state-count table equals experiments.json",
+    "Per-record shard states reconcile with the aggregate state counts",
+    "Benchmark plot shows every representation",
+    "Rows using catalog text are visibly marked circular",
+    "Every benchmark row has a 95% CI and the random reference line",
+    "Benchmark values equal experiments.json",
+    "Near-duplicate examples and inspected disagreements are all shown",
+    "Adaptation shows mean ± SD and loss curves",
+    "Literature entries and limitations are complete",
+    "Section navigation moves view and focus to the chosen section",
+    "Browser rejects a changed deep shard before showing it",
+    "Checksum failure recovers on retry with the valid shard",
+    "Failed deep file gives an actionable error state",
+    "Retry recovers the failed deep file without a page reload",
+    "Mobile evidence: no horizontal page overflow at 390px",
+    "Mobile similarity: no horizontal page overflow at 390px",
+    "Mobile search: no horizontal page overflow at 390px",
+    "Mobile map: no horizontal page overflow at 390px",
+    "Mobile experiments: no horizontal page overflow at 390px",
+    "experiments fits 320px width",
+    "map fits 320px width",
+    "search fits 320px width",
+    "evidence fits 320px width",
+    "experiments fits 768px width",
+    "map fits 768px width",
+    "search fits 768px width",
+    "evidence fits 768px width",
+    "experiments fits 1024px width",
+    "map fits 1024px width",
+    "search fits 1024px width",
+    "evidence fits 1024px width",
+    "Mobile text search uses a compact grouped query selector",
+    "Mobile query selector shows the chosen query results",
+    "No uncaught exceptions in deep AI workflows",
+    "No unexpected HTTP errors during deep AI workflows"
+  ],
+  "exceptions": 0,
+  "http_errors": [],
+  "payload": {
+    "initial_ai": {
+      "files": [
+        "ai.css",
+        "ai.js",
+        "summary.json",
+        "index.json",
+        "ai-records-0001.json"
+      ],
+      "decoded_bytes": 1257914
+    },
+    "deep_cumulative_decoded_bytes": {
+      "after_first_deep_method": 482454,
+      "after_text_search": 1550763,
+      "after_map": 2334867,
+      "after_experiments": 2373524
+    },
+    "deep_files": [
+      {
+        "file": "ai-deep.js",
+        "decoded_bytes": 63939
+      },
+      {
+        "file": "summary.json",
+        "decoded_bytes": 102107
+      },
+      {
+        "file": "items-0001.json",
+        "decoded_bytes": 316408
+      },
+      {
+        "file": "items-0000.json",
+        "decoded_bytes": 232408
+      },
+      {
+        "file": "items-0002.json",
+        "decoded_bytes": 316554
+      },
+      {
+        "file": "experiments.json",
+        "decoded_bytes": 194437
+      },
+      {
+        "file": "items-0014.json",
+        "decoded_bytes": 303128
+      },
+      {
+        "file": "crossmodal.json",
+        "decoded_bytes": 21782
+      },
+      {
+        "file": "maps.json",
+        "decoded_bytes": 784104
+      },
+      {
+        "file": "literature.json",
+        "decoded_bytes": 38657
+      }
+    ]
+  },
+  "limits": [
+    "Workflow/keyboard/responsive checks in headless Chrome, not an independent assistive-technology audit",
+    "Results are weak-label research outputs; the checks verify faithful display, not scientific validity"
+  ]
+}
