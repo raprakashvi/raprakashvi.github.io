@@ -68,3 +68,11 @@ https://raprakashvi.github.io/roman-tool-lineage/collection.html#ai or choose Re
 → AI Methods. All 86 checked live interface/result files match the tested artifact,
 including every AI JSON payload. Personal homepage returns 200 and all personal-site
 files outside the collection are preserved. Existing credentials continue to work.
+
+Latest control/layout refinement: source `497d2f7`, website `1207986`, both pushed.
+The museum inclusion label has a 22px native checkbox, a generous whole-label target,
+a count badge and checked/focus states. AI Methods uses section navigation with a
+query panel beside matches on desktop and a compact stacked picker on mobile;
+aggregate counts remain in run details. All 47 AI + 50 workbench + 45 atlas Chrome
+checks and 14 Firefox smoke checks pass live. Dataset and all 42 AI JSON files are
+unchanged. See PLAN.md and reports/control_refinement_delivery.json for evidence.
