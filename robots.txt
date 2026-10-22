@@ -5,3 +5,19 @@ Allow: /
 Disallow: /src/
 
 Sitemap: https://raprakashvi.github.io/sitemap.xml
+
+# BEGIN Vestigium search exclusions
+# HTML stays crawlable so Google can read its noindex directive.
+# These are voluntary crawler exclusions, not authentication or asset protection.
+Disallow: /roman-tool-lineage/data/
+Disallow: /roman-tool-lineage/legacy-data/
+Disallow: /roman-tool-lineage/images/
+Disallow: /roman-tool-lineage/figures/
+Disallow: /roman-tool-lineage/docs/
+Disallow: /roman-tool-lineage/reports/
+Disallow: /roman-tool-lineage/*.md$
+
+User-agent: Googlebot-Image
+Disallow: /roman-tool-lineage/
+Disallow: /src/
+# END Vestigium search exclusions
