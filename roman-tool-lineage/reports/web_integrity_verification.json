@@ -7,7 +7,7 @@
   "morphology_rows": 2605,
   "reordering_preserves_ids_and_release": true,
   "plaintext_password_in_artifact": false,
-  "site_bytes": 152556662,
+  "site_bytes": 152580265,
   "browser_tasks": "See web_browser_verification.json",
   "checks": "passed"
 }

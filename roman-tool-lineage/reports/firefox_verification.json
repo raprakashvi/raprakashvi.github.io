@@ -17,7 +17,7 @@
   ],
   "browser": "Firefox",
   "version": "158.0",
-  "url": "https://raprakashvi.github.io/roman-tool-lineage/",
+  "url": "http://127.0.0.1:8770/",
   "dataset_version": "v1-804c1e7c3202",
   "limits": [
     "Bounded Firefox smoke check, not a full screen-reader audit",

@@ -88,3 +88,10 @@ researcher usability testing remain open. Missing images/measurements, full Pitt
 additional acquisition, expanded shape distances and validated functional labels are
 separate dataset/research tasks. ML tools are documented in ML_TOOLS.md; their current
 bounded delivery does not establish predictive accuracy or historical ancestry.
+
+Primary museum inclusion now uses a 22px native checkbox inside a minimum-46px
+whole-label target, with 14px wording, a count badge and checked/focus styling. Other
+research checkboxes use 20px controls and generous labels. AI Methods has a compact
+section bar and query/result layout; large screens show a selected-tool rail beside
+matches, while mobile uses a compact stacked picker. Experiment counts live in run
+details rather than above retrieval results. No dataset or ML output changes.

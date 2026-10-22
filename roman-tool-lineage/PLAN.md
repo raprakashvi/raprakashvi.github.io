@@ -224,3 +224,15 @@ Checkpoint: source `78f5269`, website `83cc977`; frozen dataset unchanged.
 
 - AI Methods is implemented, locally tested, deployed and live-verified at https://raprakashvi.github.io/roman-tool-lineage/collection.html#ai. Source implementation `dc11c84` is pushed on `vestigium-2026-10-21`; website implementation `b81a68d` is pushed on `master`. Final evidence-only publication follows. All 44 AI + 49 workbench + 45 atlas + 39 collection + 24 annotation Chrome checks and 14 Firefox smoke checks pass live, with no uncaught Chrome exceptions or unexpected HTTP errors. Eighty-six live interface/analysis files, including every AI result JSON, match the verified artifact. Personal homepage returns 200; personal-site content and existing crawler exclusions are preserved.
 - Tasks 37–40 are complete. Overall research tasks remain open: full Pitt catalog access and broader acquisition; more verified images/outlines and a separately recalibrated distance matrix; expanded image/multimodal/category experiments and independent evaluation; independent accessibility/usability audits. Human review is deferred. This integration did not train a substantial model or publish weights.
+
+## Control prominence and AI Methods layout refinement
+
+Checkpoint: source `aa98630`, website `0de3bfb`. Dataset and ML results unchanged.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 41 | complete | Enlarge key research checkboxes; emphasize “Include museum items” with a 22px native control, generous label target, count badge and checked/focus states. Preserve keyboard behavior and deferred loading/retry. Check desktop/mobile sizes and actual toggling. |
+| 42 | complete | Simplify AI Methods into clear section navigation and a query/result workspace. Move aggregate counts into run details; bring results higher on desktop/mobile. Preserve all retrieval, cluster, evidence, export and error states. Inspect screenshots and existing AI workflow checks. |
+| 43 | in progress | After 41–42, verify affected research/AI workflows, record results, commit/push and deploy only the subpage. Check live behavior and preserve the personal site. |
+
+- Local refinement verified: 47 AI + 50 workbench + 45 atlas Chrome checks and 14 Firefox smoke checks pass. New checks cover 22px/44px checkbox sizing, whole-label loading, native Space-key toggling, side-by-side AI query/results and relocation of aggregate counts to run details. Desktop/mobile screenshots inspected. All 42 AI JSON files and the dataset manifest are byte-identical to the previous delivery; full integrity verifies 2,830 records, 5,974 references, 2,718 assets and stable IDs on reordering. Live publication follows.

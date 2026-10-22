@@ -134,3 +134,8 @@ and 21 ML tests pass. Every AI JSON file matches the tested artifact on the live
 site. Initial AI result transfer is 1,065,464 decoded bytes (manifest, index and one
 item shard), in addition to the shared collection index and interface resources.
 No original collection, scientific dataset or substantial model training changed.
+
+The interface now uses an underlined section bar and a query/results layout: the
+selected tool stays in a left-hand panel on wide screens; mobile stacks a compact
+record picker above the matches. Aggregate counts are in Run & methods. Research
+results, provenance, retrieval ranks, cluster data and annotation states are unchanged.
