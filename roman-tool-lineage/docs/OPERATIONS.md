@@ -11,6 +11,10 @@ Public Pages URL: https://raprakashvi.github.io/roman-tool-lineage/
 Website checkout: `/home/rp/rp_repo/raprakashvi.github.io`, publishing branch `master`.
 Source: `raprakashvi/local_tinkering`, branch `vestigium-2026-10-21`, folder `roman_tool_lineage/` (current local baseline retained).
 The website is static and has no runtime API, server database, registration or paid service.
+Research → AI Methods uses versioned exports from preserved local ML runs. Rebuilding
+now also requires the saved run/cache or explicitly recreated artifacts; see
+[AI_METHODS.md](AI_METHODS.md) for `--ai-run` / `--ai-image-cache`, dependencies and
+validation. No build command trains a model or downloads pretrained weights.
 
 ## Credentials
 

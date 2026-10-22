@@ -5,11 +5,19 @@
     "Firefox review uses buttons",
     "Firefox function chip toggles positive",
     "Firefox mobile-width review has no horizontal page overflow",
-    "Firefox morphology includes supplemental outlines"
+    "Firefox morphology includes supplemental outlines",
+    "Firefox AI text retrieval and SHA-256 result verification",
+    "Firefox bounded image retrieval scope",
+    "Firefox eight-state provisional labels preserve unknowns",
+    "Firefox expandable label evidence",
+    "Firefox full text projection with accessible table",
+    "Firefox shape projection accounts for missing records",
+    "Firefox mobile-width AI plot/table fits",
+    "Firefox AI methods and missing-metric disclosure"
   ],
   "browser": "Firefox",
   "version": "158.0",
-  "url": "https://raprakashvi.github.io/roman-tool-lineage/",
+  "url": "http://127.0.0.1:8769/",
   "dataset_version": "v1-804c1e7c3202",
   "limits": [
     "Bounded Firefox smoke check, not a full screen-reader audit",

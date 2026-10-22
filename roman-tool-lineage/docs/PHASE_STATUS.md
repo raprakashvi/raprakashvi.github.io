@@ -60,3 +60,13 @@ local drafts and JSON export/import; it does not claim centralized collaboration
 
 Local implementation and live deployment evidence are tracked separately. An acceptance
 row describes the bounded delivered capability; the limits column is part of its status.
+
+## AI Methods website integration
+
+Research → AI Methods now connects the implemented local baselines to a usable
+record-linked website workspace. Similarity, text/scalar-shape clusters, provisional
+function evidence and exact run provenance are separate views. Scope remains 2,830
+text records, the original 2,600-shape matrix, 3,163 provisional positive label states
+and an eight-view/five-object frozen-image sample. These are exploratory outputs,
+with no independent accuracy or function validation. See AI_METHODS.md and the final
+checklist entries 37–40 for verification and deployment status.

@@ -1,7 +1,7 @@
 // Shared navigation, responsive drawer and cross-workspace search. No dataset writes.
 let initialized=false,returnFocus;
 const $=id=>document.getElementById(id);
-const titles={map:['Explore','Family tree'],world:['Explore','World & time'],browse:['Explore','Collection'],item:['Explore','Item record'],morph:['Analyze','Morphology'],analysis:['Analyze','Outline measurements'],compare:['Analyze','Compare'],review:['Research','Annotate'],about:['Research','Dataset & methods'],boundaries:['Research','Findings & boundaries'],weiss:['Research','1863 catalog study'],museum:['Research','Boerhaave museum'],research:['Research','Research audit'],study:['Research','Study & connections'],catalog:['Research','Research witnesses'],events:['Research','Historical context'],sources:['Research','Sources & images'],method:['Research','Research methods']};
+const titles={map:['Explore','Family tree'],world:['Explore','World & time'],browse:['Explore','Collection'],item:['Explore','Item record'],morph:['Analyze','Morphology'],analysis:['Analyze','Outline measurements'],compare:['Analyze','Compare'],ai:['Research','AI Methods'],review:['Research','Annotate'],about:['Research','Dataset & methods'],boundaries:['Research','Findings & boundaries'],weiss:['Research','1863 catalog study'],museum:['Research','Boerhaave museum'],research:['Research','Research audit'],study:['Research','Study & connections'],catalog:['Research','Research witnesses'],events:['Research','Historical context'],sources:['Research','Sources & images'],method:['Research','Research methods']};
 export function setWorkspace(section){
  const [group,label]=titles[section]||titles.map;
  $('workspace-group').textContent=group;$('workspace-label').textContent=label;

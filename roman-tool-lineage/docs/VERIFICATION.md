@@ -223,3 +223,16 @@ font, deferred-data, analysis and documentation files match the tested artifact.
 The live decoded initial atlas JSON is 3,896,513 bytes. Personal homepage status
 is 200; root crawler exclusions are retained. Source implementation `ebba293`,
 website implementation `9ee153e`; the final publication updates docs and evidence only.
+
+## AI Methods integration
+
+From the parent checkout, run
+`ATLAS_URL=http://127.0.0.1:8769/ node roman_tool_lineage/scripts/web/check_ai.mjs`. The existing CDP test service is
+required. Run CDP suites sequentially; Firefox uses a separate temporary profile.
+Reports: `ai_browser_verification.json` / `_live.json`; exporter integrity is
+`ai_export.json` and each release’s `ai/export-report.json`. The AI module checks
+published shard hashes before rendering. Tests include deliberate 503 and checksum
+failures followed by successful retry; those simulated responses do not alter data.
+Sixteen exporter tests use real ML lookup classes with small frozen fixtures. The
+combined website suite now has 34 tests; the separate ML suite has 21. See
+AI_METHODS.md for result scope, local-run prerequisites and unvalidated claims.

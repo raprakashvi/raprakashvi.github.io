@@ -206,3 +206,18 @@ shell and token source replace accumulated presentation overrides.
 - Full workbench overhaul deployed and live-verified: source `ebba293`, ML baseline tools `d1ac708`, website implementation `9ee153e`. Source branch `vestigium-2026-10-21`; website branch `master`. Final evidence publication follows these implementation commits.
 - Live acceptance: 49 workbench + 45 atlas + 39 collection + 24 annotation checks and six Firefox checks pass, with no uncaught Chromium exceptions or HTTP errors. Forty-one interface/font/data/documentation files match the verified artifact. Personal homepage returns 200; all personal-site tracked content outside the subpage and existing crawler rules are preserved.
 - Tasks 31–36 and the bounded delegated ML tool delivery are complete. The overall project remains open: independent screen-reader/Safari/full-Firefox and researcher usability audits; further corpus scaling; full Pitt access and acquisition; additional images/outlines and a recalibrated matrix; expanded image/multimodal/category models and independent evaluation. Human review remains deferred, and no substantial model training or automatic weight upload occurred.
+
+## AI Methods: connect completed local results to the website
+
+Checkpoint: source `78f5269`, website `83cc977`; frozen dataset unchanged.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 37 | complete | Export actual verified baseline results into versioned, public-safe, lazy-loaded shards. Check run/release hashes, IDs, duplicate exclusion, counts, score direction and missing modalities. Preserve canonical records and publish provenance; no weights or local paths. Delegated exporter to `ml_tools`. |
+| 38 | complete | After 37, add Research → AI Methods in both shells. Implement record-linked text/shape retrieval, bounded image retrieval, color-coded exploratory clusters with accessible tables, eight-state provisional function evidence and run/method details. Keep source truth separate; no new training. |
+| 39 | complete | After 38, verify actual query/rank/state reconciliation, comparison links, filters, pagination, error/retry and no-result states; responsive/keyboard checks and screenshots; regression-test existing research/collection routes and data integrity. Document exact coverage and limits. |
+| 40 | in progress | After 39, commit/push the source branch, deploy only the subpage, verify live AI interactions and personal-site preservation, and publish updated handoff/evidence. Distinguish implemented, tested and deployed. |
+
+- AI Methods implemented and locally verified so far: 42 Chromium interactions and 14 Firefox smoke checks; 34 website/exporter Python tests and 21 ML tests pass. All 2,830 records, 5,974 references and 2,718 assets verify; stable IDs/release survive reordering. Result coverage reconciles and browser checks exercise SHA-256 rejection/retry. Existing atlas/collection/review/workbench regressions and live deployment follow.
+
+- Final local AI acceptance: 44 Chrome checks, 14 Firefox smoke checks, 34 website/export tests and 21 ML tests pass. Desktop/mobile screenshots inspected; initial AI result fetch is 1065464 decoded bytes (one result shard plus manifest/index). All 49 workbench, 45 atlas, 39 collection and 24 review regression checks pass. Current source and dataset originals remain intact; live publication is in progress.

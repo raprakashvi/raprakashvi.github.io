@@ -6,6 +6,10 @@ prepares observed-label masks for later supervised experiments. These are resear
 utilities; no tool-function accuracy has been established and no substantial training
 has run. [ML_IMPLEMENTATION_STATUS.md](ML_IMPLEMENTATION_STATUS.md) tracks delivery.
 
+Explore the saved results on the website under **Research → AI Methods**.
+[AI_METHODS.md](AI_METHODS.md) describes the interactive browser, result manifests,
+exports and their exact experimental scope.
+
 ## Run the CPU demonstration
 
 The existing Conda `base` environment already contains the required CPU packages.

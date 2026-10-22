@@ -12,9 +12,9 @@ Website repository: https://github.com/raprakashvi/raprakashvi.github.io/tree/ma
 
 Source branch: `vestigium-2026-10-21`. Website publishing branch: `master`.
 Pre-restoration checkpoints: source `f6e06f5`, website `c7a99de`.
-Current workbench implementation: source `ebba293`; ML tools `d1ac708`;
+Previous workbench implementation: source `ebba293`; ML tools `d1ac708`;
 website `9ee153e`. Final evidence-only commits follow these implementation commits.
-All 49 workbench, 45 atlas, 39 collection, 24 review and six Firefox checks pass live;
+That release passed 49 workbench, 45 atlas, 39 collection, 24 review and six Firefox checks live;
 18 website pipeline tests and 21 dedicated ML tests pass. Forty-one live files match
 the reviewed artifact. Initial research JSON is 65.0% smaller, with deferred data
 available on demand. Personal-site files and crawler rules remain preserved.
@@ -38,6 +38,7 @@ pages; personal-site navigation and sitemap remain unchanged.
 | Both morphology views and regeneration | [MORPHOLOGY_WEB.md](MORPHOLOGY_WEB.md) |
 | Verification evidence and limits | [VERIFICATION.md](VERIFICATION.md) |
 | Implemented local ML tools and GPU commands | [ML_TOOLS.md](ML_TOOLS.md), [ML_IMPLEMENTATION_STATUS.md](ML_IMPLEMENTATION_STATUS.md) |
+| Website AI results: retrieval, clusters, provisional labels and provenance | [AI_METHODS.md](AI_METHODS.md) |
 | Scientific experiment proposal | [ML_ROADMAP.md](ML_ROADMAP.md) |
 
 Museum imports remain bounded: 50 Pitt Rivers editorial accession records, 38
@@ -53,3 +54,9 @@ later work. The delegated agent has implemented bounded local retrieval, unsuper
 provisional-annotation tools plus supervised readiness. Twenty-one tests pass; an
 eight-view cached-weight ResNet18 GPU smoke run is verified. Expanded representation
 learning, category models and independent evaluation remain open. See ML_TOOLS.md.
+
+AI Methods is implemented under Research, with exact saved text/shape ranks, bounded
+image retrieval, color-coded exploratory clusters with tables, and eight-state label
+evidence. Current local verification: 44 AI browser checks, 14 Firefox smoke checks,
+34 website/export Python tests and 21 ML tests. See AI_METHODS.md for public-result
+coverage, reproduction and limits; deployment references will be recorded below.
