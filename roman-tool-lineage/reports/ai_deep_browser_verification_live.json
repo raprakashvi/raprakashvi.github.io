@@ -1,10 +1,10 @@
 {
-  "tested_at": "2026-10-27T12:35:37.817Z",
+  "tested_at": "2026-10-27T16:06:41.031Z",
   "url": "https://raprakashvi.github.io/roman-tool-lineage/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (Photo default) loads only the deep module, manifest, browse index and one item shard",
-    "Five primary AI sections plus three baseline sections; Similar tools first and selected",
+    "Six primary AI sections plus three baseline sections; Similar tools first and selected",
     "Two primary similarity methods (photo, outline shape); six others collapsed under More methods",
     "Real records exist for each missing-representation case and for near-duplicates",
     "photo: displayed neighbour IDs and cosines equal the published shard",
@@ -70,6 +70,15 @@
     "Map table lists each record's catalog date",
     "Time scale switches between compressed and linear",
     "Returning to the 2D map removes the 3D controls",
+    "Both pre-registered verdicts (held-out, after 1850) match generate.json",
+    "Verdict IoU differences equal the published values",
+    "After-1850 verdict states its sample size",
+    "Prompt gallery shows each date with its published samples and nearest training records",
+    "Every outline canvas is painted from its packed mask",
+    "Choosing the control prompt swaps the gallery, explains the control and keeps focus",
+    "Before/after-1850 rows equal the published examples, clamps marked",
+    "Scores table lists five methods, every era, the clamp subset, memorisation and coverage",
+    "Generated outlines are labelled as form hypotheses, not designs",
     "Findings come first: 13 published findings rendered with status",
     "Each finding shows its observation / inference / speculation status",
     "Hypothesis state-count table equals experiments.json",
@@ -96,18 +105,22 @@
     "Mobile similarity: no horizontal page overflow at 390px",
     "Mobile search: no horizontal page overflow at 390px",
     "Mobile map: no horizontal page overflow at 390px",
+    "Mobile generate: no horizontal page overflow at 390px",
     "Mobile experiments: no horizontal page overflow at 390px",
     "experiments fits 320px width",
+    "generate fits 320px width",
     "map fits 320px width",
     "search fits 320px width",
     "evidence fits 320px width",
     "retrieval fits 320px width",
     "experiments fits 768px width",
+    "generate fits 768px width",
     "map fits 768px width",
     "search fits 768px width",
     "evidence fits 768px width",
     "retrieval fits 768px width",
     "experiments fits 1024px width",
+    "generate fits 1024px width",
     "map fits 1024px width",
     "search fits 1024px width",
     "evidence fits 1024px width",
@@ -128,22 +141,23 @@
         "summary.json",
         "index.json"
       ],
-      "decoded_bytes": 231356
+      "decoded_bytes": 234285
     },
     "deep_cumulative_decoded_bytes": {
-      "after_first_deep_method": 533276,
-      "after_text_search": 1650120,
-      "after_map": 2434224,
-      "after_experiments": 2494663
+      "after_first_deep_method": 547641,
+      "after_text_search": 1664485,
+      "after_map": 2448589,
+      "after_generate": 3155279,
+      "after_experiments": 3215718
     },
     "deep_files": [
       {
         "file": "ai-deep.js",
-        "decoded_bytes": 73260
+        "decoded_bytes": 86848
       },
       {
         "file": "summary.json",
-        "decoded_bytes": 103646
+        "decoded_bytes": 104423
       },
       {
         "file": "browse.json",
@@ -176,6 +190,10 @@
       {
         "file": "maps.json",
         "decoded_bytes": 784104
+      },
+      {
+        "file": "generate.json",
+        "decoded_bytes": 706690
       },
       {
         "file": "crossmodal.json",

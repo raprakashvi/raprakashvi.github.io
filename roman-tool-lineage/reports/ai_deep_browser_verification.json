@@ -1,16 +1,17 @@
 {
-  "tested_at": "2026-10-27T16:01:30.478Z",
+  "tested_at": "2026-10-27T23:38:44.054Z",
   "url": "http://127.0.0.1:8771/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
-    "Initial AI view (Photo default) loads only the deep module, manifest, browse index and one item shard",
+    "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",
     "Six primary AI sections plus three baseline sections; Similar tools first and selected",
-    "Two primary similarity methods (photo, outline shape); six others collapsed under More methods",
+    "Two primary similarity methods (photo object only = adapted, outline shape) with adapted as the default; six others, including the whole photo, collapsed under More methods",
     "Real records exist for each missing-representation case and for near-duplicates",
     "photo: displayed neighbour IDs and cosines equal the published shard",
     "photo: method note and score direction are shown",
     "First deep method loads only the module, manifest, browse index and one item shard",
     "Photo method shows its benchmark evidence (cross-museum P@10, CI, random reference) from the manifest",
+    "Adapted default states its held-out evidence against the whole-photo model from the manifest",
     "Similar tools are shown as one ordered, numbered ranking",
     "silhouette: displayed neighbour IDs and cosines equal the published shard",
     "silhouette: method note and score direction are shown",
@@ -55,14 +56,19 @@
     "Display-only caveat is visible",
     "Hovering a point shows a record tooltip",
     "Clicking a point selects that record and stays on the map",
+    "Map opens on the outline-shape map with a plain explanation of what places tools close together",
+    "Hovering far from tools draws the precomputed outline for that map cell and names the closest real tool",
+    "Hovering near tools draws the precomputed outline for that map cell and names the closest real tool",
+    "Hovering a plotted tool shows that real tool in the side panel, not an AI drawing",
+    "Zoom in changes the 2D view and “show the whole map” restores it",
     "Arrow key focuses a point and shows its tooltip",
     "Enter on a focused point selects it",
     "Accessible map table paginates",
     "Highlighting a legend class filters the table to that class",
-    "Map and colour toggles switch to the silhouette map coloured by museum",
+    "Map and colour toggles switch to the whole-photo map coloured by museum",
     "3D view reports dated records shown and undated records left out, matching the published index",
     "3D view states that date concentrations reflect collecting and dating, not origin or frequency",
-    "Date histogram spreads all 2098 dated records over 24 bins (sum 2098.1)",
+    "Date histogram spreads all 1983 dated records over 24 bins (sum 1982.9)",
     "Dragging rotates the 3D view without selecting a record",
     "Camera presets change the 3D view",
     "In 3D, arrow keys step through records in date order (first = earliest catalog date)",
@@ -70,6 +76,23 @@
     "Map table lists each record's catalog date",
     "Time scale switches between compressed and linear",
     "Returning to the 2D map removes the 3D controls",
+    "Shape-space reconstruction verdict matches latent.json",
+    "Path strips link the published endpoint records in order",
+    "Sparse and does-not-land-back markers match the published densities and cycle cosines",
+    "Prior draws (3 × 10) and held-out reconstructions are shown",
+    "Every shape-space canvas is painted from its packed mask",
+    "Shape-space flowchart marks the frozen encoder and the trained decoder",
+    "Shape-space flowchart starts with the input, explains ready-made vs trained AI, and links to hovering on the map",
+    "Switching the Generate view keeps keyboard focus",
+    "One tempo chart per fitted family axis, with the published best model",
+    "Each tempo chart states the simulation recovery of its best model",
+    "Every published reference DOI is linked in the tempo view",
+    "Tempo view names the dominant museum",
+    "The five patterns of change are drawn and explained in plain words",
+    "Each card states strong / moderate / weak evidence by the published rule",
+    "Each tempo card shows real outlines at both ends of its shape axis",
+    "Between-dates section shows every tested family for 1750-1850 with its published verdict and painted drawings",
+    "Switching to the 1800-1900 window shows its families and verdicts and keeps focus",
     "Both pre-registered verdicts (held-out, after 1850) match generate.json",
     "Verdict IoU differences equal the published values",
     "After-1850 verdict states its sample size",
@@ -79,6 +102,8 @@
     "Before/after-1850 rows equal the published examples, clamps marked",
     "Scores table lists five methods, every era, the clamp subset, memorisation and coverage",
     "Generated outlines are labelled as form hypotheses, not designs",
+    "The name view opens with a flowchart that marks the frozen encoder and the trained model",
+    "“Try it yourself” opens the outline-shape map",
     "Findings come first: 13 published findings rendered with status",
     "Each finding shows its observation / inference / speculation status",
     "Hypothesis state-count table equals experiments.json",
@@ -106,6 +131,9 @@
     "Mobile search: no horizontal page overflow at 390px",
     "Mobile map: no horizontal page overflow at 390px",
     "Mobile generate: no horizontal page overflow at 390px",
+    "Mobile generate-space: no horizontal page overflow at 390px",
+    "Mobile generate-tempo: no horizontal page overflow at 390px",
+    "Mobile generate-name: no horizontal page overflow at 390px",
     "Mobile experiments: no horizontal page overflow at 390px",
     "experiments fits 320px width",
     "generate fits 320px width",
@@ -113,18 +141,27 @@
     "search fits 320px width",
     "evidence fits 320px width",
     "retrieval fits 320px width",
+    "Generate space view fits 320px width",
+    "Generate tempo view fits 320px width",
+    "Generate name view fits 320px width",
     "experiments fits 768px width",
     "generate fits 768px width",
     "map fits 768px width",
     "search fits 768px width",
     "evidence fits 768px width",
     "retrieval fits 768px width",
+    "Generate space view fits 768px width",
+    "Generate tempo view fits 768px width",
+    "Generate name view fits 768px width",
     "experiments fits 1024px width",
     "generate fits 1024px width",
     "map fits 1024px width",
     "search fits 1024px width",
     "evidence fits 1024px width",
     "retrieval fits 1024px width",
+    "Generate space view fits 1024px width",
+    "Generate tempo view fits 1024px width",
+    "Generate name view fits 1024px width",
     "Mobile 3D map: no horizontal page overflow at 390px",
     "Mobile search uses a compact grouped query selector",
     "Mobile query selector shows the chosen query results",
@@ -141,23 +178,23 @@
         "summary.json",
         "index.json"
       ],
-      "decoded_bytes": 234279
+      "decoded_bytes": 246070
     },
     "deep_cumulative_decoded_bytes": {
-      "after_first_deep_method": 547641,
-      "after_text_search": 1664485,
-      "after_map": 2448589,
-      "after_generate": 3155279,
-      "after_experiments": 3215718
+      "after_first_deep_method": 591894,
+      "after_text_search": 1708738,
+      "after_map": 4036658,
+      "after_generate": 5488720,
+      "after_experiments": 5549159
     },
     "deep_files": [
       {
         "file": "ai-deep.js",
-        "decoded_bytes": 86848
+        "decoded_bytes": 127644
       },
       {
         "file": "summary.json",
-        "decoded_bytes": 104423
+        "decoded_bytes": 107880
       },
       {
         "file": "browse.json",
@@ -189,7 +226,31 @@
       },
       {
         "file": "maps.json",
-        "decoded_bytes": 784104
+        "decoded_bytes": 780293
+      },
+      {
+        "file": "mapgen.json",
+        "decoded_bytes": 147183
+      },
+      {
+        "file": "mapgen-0-0.json",
+        "decoded_bytes": 700222
+      },
+      {
+        "file": "mapgen-0-2.json",
+        "decoded_bytes": 700222
+      },
+      {
+        "file": "latent.json",
+        "decoded_bytes": 499536
+      },
+      {
+        "file": "tempo.json",
+        "decoded_bytes": 71589
+      },
+      {
+        "file": "between.json",
+        "decoded_bytes": 174247
       },
       {
         "file": "generate.json",

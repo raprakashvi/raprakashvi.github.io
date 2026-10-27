@@ -400,6 +400,263 @@ Caveats:
   on the gallery entry. The print loop was fixed. Metrics, samples and the result file were
   unaffected, but the recorded `code_sha256.eval` refers to the version before that fix.
 
+### 10. Decoding the shape space (`latdec-6c750b9d3c56`) and the tempo of change (`tempo-eb35961c30ed`)
+
+The question: the 2-D map has white space between clusters. Is that real empty space, so that
+tool forms jump between islands, or is there room for intermediate forms? Two pre-registered
+studies address it. The first works only in the latent space: a frozen encoder, a trained
+decoder, and decodes of chosen latent points (`configs/ml/latent_decoder.json`, `latdec-1.0.0`).
+The second uses no decoder; it fits paleontology's models of tempo to the dated record
+(`configs/ml/tempo.json`, `tempo-1.0.0`). Flowcharts: `results/figures/deep_flow_latdec`
+and `deep_flow_tempo`.
+
+**Which embedding is the map?** AI Methods → Embedding map is UMAP (n_neighbors 20,
+min_dist 0.15, cosine, seed 17). Morphology → Shape space is t-SNE on a pose-free combined
+shape distance. Neither plane preserves empty space. The UMAP plane keeps only 7% of each
+tool's 10 nearest neighbours (`latent_geometry.map`), so white space on the map is judged
+here in the 768-d latent, not on the plane.
+
+**Pose-agnostic map.** The silhouette map was built from unrotated masks, so photographed
+angle, mirror and scale moved points. It is now rebuilt from the pose-normalised latent below
+(`maps-f2935ececfca`, 2,597 records). Its 10-NN agree with the old features in only 17% of
+cases. Silhouette retrieval, the evidence channel and multimodal fusion still use unrotated
+masks; they switch after re-benchmarking. The photo map is angle-dependent by construction.
+
+**Latent and decoder.**
+
+* **Latent.** DINOv2-B/14 CLS on the canonical-pose silhouettes from §9 (2,597 records,
+  768-d, unit norm, frozen; four flips cached for training).
+* **Decoder.** The §9 UNet and DDPM conditioned on z through the text slot, with the date
+  always null. It is trained on the train split (1,532 records), 25k steps, seed 17, final
+  loss 0.022.
+* **Guidance.** Chosen on validation from {1, 1.5, 2, 3} by mean-of-4 IoU. It selected 1.0;
+  IoU falls with stronger guidance (0.42 → 0.15).
+* **Amendment before any trained decode.** The registered gap definition (a point is in a gap
+  when its maximum cosine to a training latent is below τ = 0.760, the 5th percentile of real
+  records' other-group maximum) cannot flag slerp midpoints, because a midpoint's cosine to
+  each endpoint is cos(θ/2). A k = 10 mean-cosine density (τ10 = 0.718) and a prior arm were
+  added. Both definitions are reported.
+
+**Results.** Intervals are 95% leakage-group or pair bootstraps with 2,000 resamples.
+
+| Test | Result |
+|---|---|
+| Reconstruction of held-out tools, n = 514 (506 groups) | Decoder IoU 0.41, DINOv2 cosine 0.82. Nearest training latent IoU 0.44, cosine 0.87. Difference IoU −0.025 [−0.035, −0.014], DINOv2 −0.056 [−0.060, −0.052]. **Decision: no evidence the decoder goes beyond latent retrieval.** |
+| Cycle (re-encode the decode) | Mean cos(E(D(z)), z) on test = 0.80; "lands back" threshold ρ = 0.632 (5th percentile) |
+| Memorisation | Decoded outlines' median nearest-train IoU 0.56 (real held-out: 0.61); 0.05% ≥ 0.9 |
+| Path interior points in a gap (k = 10) | Neighbour pairs (200): 0.07%; random pairs (200): 0.5%; ≤1850 → ≥1850 same family (293): 0.05%. Registered definition: 0% everywhere. Least similar 2,000 test pairs (endpoint cosine ≤ 0.29): midpoint gap share 0.05%. |
+| Path points that land back | 98–99.7% of occupied interior points. Gap points: 1 of 1, 3 of 7 and 0 of 1. |
+| Abruptness of paths (largest step / total, 1/8 = even) | 0.27, 0.24 and 0.26. The largest step's position is spread across all 8 steps; one step carries over half the change in 0, 0 and 0.7% of paths. |
+| Gaussian prior draws, n = 1,024 | 3.8% fall in a gap. Gap draws land back 36% [21, 51] (n = 39) vs 89% [87, 91] for the others. Spearman(density, cycle) = 0.65; the lowest density quintile lands back 62% vs 88–96% above it. |
+
+Reading:
+
+* **Observation.** In the 768-d latent, straight paths between tools pass through occupied
+  space. This holds even between very dissimilar tools. Points drift toward the dense centre
+  rather than through voids, and almost all of them decode to outlines that re-encode near
+  where they were asked.
+* **Observation.** Truly empty regions exist, but they are reached by random draws, not by
+  paths between tools. They sit around unusual records (the nasal speculum endpoint is itself
+  in a gap), and the decoder mostly fails there.
+* **Inference.** The map's white space is a projection artefact, not evidence of
+  punctuation. As far as this latent can tell, there is "room" for intermediate forms between
+  most tools.
+* **Limit.** The decoder adds no fidelity over looking up the nearest training latent, so
+  decoded intermediates are plausible in-distribution outlines, not new designs. Abruptness
+  of a decoded path describes the decoder; it is not history. No baseline for abruptness was
+  registered, and 0.24–0.27 is what eight noisy steps give without a single jump.
+
+**Tempo: gradual or punctuated (paleoTS).**
+
+* **Data.**
+  * Records with a catalog range of at most 100 years and a midpoint in 1650–2025: 1,844 of
+    2,597. Not used: 614 undated, 115 with ranges wider than 100 years, 24 outside the window.
+  * 1,840 of the 1,844 are Museum Boerhaave.
+* **Series.**
+  * Trait: per family, PC1 and PC2 of the latent (PCA per family).
+  * 25-year bins of the midpoint; bins with fewer than 3 records dropped and counted; at
+    least 6 bins per series.
+  * Sampling error is the pooled within-bin variance divided by n.
+* **Models.** Five models in the joint parameterisation, compared by AICc (Hurvich & Tsai
+  1989) and Akaike weights:
+  * stasis (Hunt 2007);
+  * unbiased and directional random walks, URW and GRW (Hunt 2006);
+  * Ornstein-Uhlenbeck, OU (Hunt, Bell & Travis 2008);
+  * one-shift punctuation with at least 3 bins per segment (Hunt 2008).
+* **Recovery.** Every fitted series and model is simulated 100 times at the observed bins and
+  errors (seeds 17+), and all five models are refitted.
+* **Registration.** The config was registered after an exploratory four-model fit; OU and
+  the recovery simulation were added at registration.
+
+| Family · axis | Outlines · bins | Best (Akaike weight) | Recovered when true | Max false-jump rate |
+|---|---|---|---|---|
+| blade · PC1 / PC2 | 116 · 6 | URW (0.58 / 0.51; stasis 0.35 / 0.47) | 31% / 39% | 0% (one shift position only) |
+| grasping · PC1 | 1,151 · 14 | punctuation 0.48 (stasis 0.30), shift ≈ 1900 | 76% | 34% |
+| grasping · PC2 | 1,151 · 14 | punctuation 0.95, shift ≈ 1875 | 85% | 35% |
+| probe / spatula / spoon · PC1 / PC2 | 313 · 11 | GRW (0.40 / 0.36; punctuation 0.34 / 0.31) | 80% / 98% | 11% / 7% |
+| speculum / dilator · PC1 | 264 · 8 | stasis 0.72 | 90% | 1% |
+| speculum / dilator · PC2 | 264 · 8 | GRW 0.88 | 93% | 1% |
+
+Pooled recovery (diagonal) across the 8 series:
+
+| Stasis | URW | GRW | OU | Punctuation |
+|---|---|---|---|---|
+| 0.86 | 0.26 | 0.43 | 0.03 | 0.35 |
+
+At these series lengths, OU is practically unrecoverable, so its never winning means
+nothing. Random walks and trends are often taken for each other. In 50-year bins, grasping
+becomes stasis (PC1) or URW (PC2); the other families have too few bins.
+
+Reading:
+
+* **Observation.** The record is mixed, as in fossil lineages. Hunt (2007) found directional
+  change best in about 5% of more than 250 sequences, and Hunt, Hopkins & Lidgard (2015)
+  found 13% with complex models often favoured for long series. Here, the best models across
+  the 8 series are stasis 1, URW 2, GRW 3, OU 0 and punctuation 2. Trends are more common
+  than in fossils, but trend and URW are weakly separable at these lengths.
+* **Weak evidence.** The only jumps are in grasping tools (shift ≈ 1875–1900). A random walk
+  or trend with the fitted parameters produces a false jump 30–35% of the time on the same
+  bins, and the jump disappears in 50-year bins. Random walks can mimic punctuation
+  (Hunt 2008).
+* **Confounds.** A fitted jump can come from collecting or cataloguing history, or from a
+  changing mix of sub-types within a family, rather than from design. With one museum, this
+  is the main alternative. More institutions will test it.
+
+Figures (`.svg`/`.pdf`/`.png`):
+
+* `results/figures/deep_latdec_metrics`, `deep_latdec_paths` and `deep_latdec_prior`, via
+  `scripts/plotting/latdec_figures.py`;
+* `deep_tempo_series` and `deep_tempo_recovery`, via `scripts/plotting/tempo_figures.py`;
+* `deep_flow_*`, via `scripts/plotting/flow_figures.py`.
+
+The website's AI Methods → Generate tab has three views: From a name (§9), From the shape
+space (`ai-deep/latent.json`) and Gradual or jumps? (`ai-deep/tempo.json`, with references
+and DOIs). The export adds a descriptive step profile (`path_steps`) from the saved samples.
+
+**Are middle-period tools in between? (`between-0b9336a35ba9`, `configs/ml/between.json`).**
+The 1750–1850 window was proposed by the user. The test was registered after only the
+per-period record counts had been seen. The setup:
+
+* **Periods.** A record belongs to a period only if its whole catalog range lies inside it:
+  * early: from 1600 (or 1650) to the window start;
+  * middle: the window;
+  * late: from the window end to 2025.
+* **Families tested.** Only families with at least 10 records in every period.
+* **Statistics.**
+  * The middle records' mean position t on the axis from the early mean to the late mean.
+  * The middle mean's offset from that axis, divided by the early–late distance.
+  * 95% leakage-group bootstrap intervals (2,000 resamples).
+  * A label-shuffle test that early and late differ at all (2,000 shuffles).
+
+| Window · family | Early / middle / late | t [95% CI] | Change p | Verdict (registered rule) |
+|---|---|---|---|---|
+| 1750–1850 · grasping | 34 / 92 / 964 | 0.15 [0.05, 0.68] | 0.0075 | in between |
+| 1800–1900 · grasping | 80 / 260 / 676 | 0.12 [−0.02, 0.37] | 0.0005 | still like the early tools |
+| 1800–1900 · probe / spatula / spoon | 40 / 84 / 162 | 0.79 [0.65, 0.92] | 0.0005 | in between |
+| 1800–1900 · speculum / dilator | 15 / 54 / 142 | 0.88 [0.76, 1.02] | 0.0005 | already like the late tools |
+
+Families not tested:
+
+* 1750–1850: blade 3 / 9 / 70, probe 1 / 26 / 244, speculum 12 / 4 / 230.
+* 1800–1900: blade 5 / 52 / 54.
+
+Reading:
+
+* **Observation.** Grasping tools changed mostly after 1900. This agrees with the tempo fit,
+  which places the grasping jump around 1875–1900. Probes had moved most of the way by
+  1800–1900, and specula had already arrived.
+* **Limit (offset measure).** Sampling noise always adds offset, so this measure has little
+  power: the shuffled 95th percentile is 0.75–1.07, and none of the 4 tests flags it. The
+  1750–1850 grasping middle mean lies 0.94 of the early–late distance off the line, which
+  is borderline (shuffles reach it 5.3% of the time).
+* **Exploratory, after the result.** Grasping positions are bimodal. Tools beyond
+  t = 1.5 are 9% of early, 15% of middle and 36% of late grasping tools (1800–1900 window),
+  mostly artery forceps and ring-handled clamps. Older forms (dental and obstetric forceps,
+  tweezers) persist. The moving average therefore reflects a new form that is added and
+  grows in share, not a gradual transformation of old forms. With one dominant museum,
+  collecting history is an alternative explanation.
+
+Pictures: the latent decoder draws the early, late and middle means and three stops between.
+These are display only. Next to them are the four real middle-period outlines most similar to
+the middle mean. Figure: `results/figures/deep_between` (`scripts/plotting/between_figures.py`).
+Website: Generate → Gradual or jumps? → "Are tools from in-between dates in between in shape?"
+(`ai-deep/between.json`). An earlier run of this configuration (`between-ab7331c73a59`, same
+statistics) picked the example outlines by position on the axis instead of by shape; it is
+superseded.
+
+**Hover drawings on the map (`mapdecode-2c9674c83fda`, display only).**
+`scripts/deep/map_decode.py` refits the silhouette UMAP with its recorded parameters and
+requires that it reproduce the published plane exactly. The process:
+
+* Each centre of a 64 × 64 grid over the plane is mapped back to the latent with UMAP's
+  `inverse_transform` and normalised.
+* Each point is decoded once, with guidance 1.0 and the same starting noise for every cell.
+* Each cell records:
+  * its plane distance to the nearest tool ("near" means within 3/64 of the map width);
+  * k = 10 density;
+  * cycle cosine;
+  * the nearest real record.
+
+What the grid shows:
+
+* 2,412 of 4,096 cells are near a plotted tool.
+* No cell falls in a latent gap, and all cells land back (median cycle cosine 0.89).
+* This is expected: an inverse UMAP blends nearby tools, so these drawings are
+  interpolations, not discoveries. Far cells are labelled as guesses on the page.
+
+On the website, the drawings are published as 16 tiles of 16 × 16 cells
+(`ai-deep/mapgen-{tx}-{ty}.json`), each loaded the first time the pointer reaches it. The
+cell index is `ai-deep/mapgen.json`.
+
+The page:
+
+* shows the real tool when the pointer is on a plotted point, and the drawing only off a point;
+* outlines the cell being drawn;
+* supports zoom (scroll, + / −, up to 8×) and drag to pan.
+
+A first 32 × 32 run (`mapdecode-8b4ee629e782`) is kept in `results/ml/deep/superseded/`.
+
+**Plain-language layer (website).**
+
+* AI Methods → Map of tools opens on the outline-shape map, with one sentence per layer on
+  what places two tools close together. "Adapted" is now "Photo, object only". It is listed
+  second, and it is the default in Similar tools; "Whole photo (incl. photography)" moves last
+  or under More methods.
+* The reason for the switch, on held-out test groups (n = 511, mean of 3 seeds), adapted vs
+  frozen DINOv2-L:
+  * same-type tools found in other museums: P@10 0.679 vs 0.681, a tie;
+  * photo background predictable from the embedding: R² 0.33 vs 0.74.
+
+  The adapted model learned from this collection's catalog categories. For tools it was
+  trained on, its ranking therefore partly reflects their catalog category; the page says so.
+* Search scores, evidence panels and similarity scores now lead with plain wording; the
+  technical numbers stay in small print. Experiments has a "Words used here" glossary.
+* Generate opens on "Fill the gaps?" and "Gradual or jumps?". Flowcharts read Input → Step →
+  Ready-made AI / AI trained here → Output → Check, with no model names in the boxes.
+* The catalog-name test (§9) is a secondary link, because museums name the same tool
+  differently.
+* Tempo cards:
+  * show the five patterns as small curves, with plain names: stays put, wanders, trend,
+    settles, one jump;
+  * show real outlines at the lower and upper end of each axis;
+  * state the evidence as strong, moderate or weak.
+* The evidence rule:
+  * **Strong:** Akaike weight ≥ 0.7 and recovery ≥ 0.8; for a jump, also false jumps ≤ 0.1.
+  * **Weak:** weight < 0.5, recovery < 0.5, or (for a jump) false jumps > 0.2.
+  * **Moderate:** otherwise.
+* By that rule, only the speculum / dilator axes are strong; the other six are weak.
+* The axis-end outlines come from recomputing the per-family PCA in the exporter. The
+  exporter requires the recomputed bin means to equal the saved run, up to a principal
+  axis's arbitrary sign; it aligns the sign to the run because LAPACK builds differ.
+
+Hash caveats:
+
+* `scripts/deep/latdec.py` was edited after training (feature export and an argv fix for
+  `evaluate`). The training logic is unchanged, but the decoder meta's code hash refers to
+  the earlier file.
+* The decoder evaluation still contains the exploratory four-model tempo fit; `tempo-eb35961c30ed`
+  supersedes it.
+
 ## Interpretation
 
 * **Observation:** deep image models capture catalog-level instrument type well and transfer
@@ -414,6 +671,12 @@ Caveats:
   beat looking up the nearest catalog name, either on held-out tools or on tools after 1850
   when trained only on earlier ones (§9). With 369 pre-1850 outlines it cannot anticipate
   later forms such as the ring-handled clamp.
+* **Observation:** in the 768-d pose-normalised latent, paths between tools stay in occupied
+  space and decode to outlines that re-encode in place; the map's white space is a UMAP
+  artefact (§10). A decoder trained on that latent does not beat nearest-latent lookup.
+* **Inference:** tempo models fitted to the dated record mostly favour gradual change or
+  stasis. The two jumps (grasping tools, ≈ 1875–1900) are weak: they are not robust to binning,
+  can be produced by random walks 30–35% of the time, and come from one museum's collection.
 * **Speculation:** cross-category silhouette look-alikes across Dutch, Swedish and
   ethnographic collections may include functional convergences worth expert comparison.
 
@@ -442,6 +705,13 @@ MPLCONFIGDIR=/tmp/mpl python scripts/plotting/deep_figures.py
 for s in prep 'train full --seed 17' 'train retro1850 --seed 17' 'train retro1850 --seed 18' 'train retro1850 --seed 19' evaluate; do
   PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.silgen $s; done
 MPLCONFIGDIR=/tmp/mpl python scripts/plotting/silgen_figures.py
+# Latent decoder (§10): ~1 h training + ~95 min evaluation; tempo: minutes on CPU
+for s in latents train evaluate; do PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.latdec $s; done
+PYTHONPATH=. ~/.venvs/vestigium-ml/bin/python -m scripts.deep.tempo
+PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.map_decode   # hover drawings, ~13 min
+PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.between      # between-dates test, <1 min
+PYTHONPATH=. ~/.venvs/vestigium-ml/bin/python scripts/plotting/between_figures.py
+for f in latdec tempo flow; do PYTHONPATH=. ~/.venvs/vestigium-ml/bin/python scripts/plotting/${f}_figures.py; done
 # Website export runs inside the normal site build (scripts/web/build_site.py).
 ```
 
