@@ -1,5 +1,5 @@
 {
-  "tested_at": "2026-10-22T10:26:41.808Z",
+  "tested_at": "2026-10-27T12:35:51.816Z",
   "url": "https://raprakashvi.github.io/roman-tool-lineage/collection.html#ai",
   "dataset_version": "v1-804c1e7c3202",
   "run_id": "baseline-4b286bb1a4717b14",
@@ -9,7 +9,8 @@
     "Similarity entry defers cluster and image-wide result files",
     "Desktop AI layout places query beside results with matches above the fold",
     "AI explorer uses clear section tabs without aggregate cards above results",
-    "Initial AI entry loads one bounded item shard, not the whole result corpus",
+    "Photo is the default similarity method; outline shape is the second choice and the rest are collapsed",
+    "Initial AI entry loads at most one bounded baseline item shard, not the whole result corpus",
     "Published result coverage reconciles with verified local runs",
     "Text ranking matches the actual exported retrieval result",
     "Cosine direction and uncalibrated interpretation are visible",
@@ -72,10 +73,9 @@
   "initial_ai_payload": {
     "files": [
       "summary.json",
-      "index.json",
-      "ai-records-0034.json"
+      "index.json"
     ],
-    "decoded_bytes": 1065464
+    "decoded_bytes": 160882
   },
   "limits": [
     "Workflow/keyboard/responsive checks, not an independent assistive-technology audit",

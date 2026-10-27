@@ -3,10 +3,10 @@ let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',met
 let clusterData,clusterSource='',clusterChoice='',clusterSearch='',clusterPage=0,plotPoints=[];
 const PAGE=20,$=id=>document.getElementById(id),root=()=>$('ai-view');
 // Deep-representation views live in ai-deep.js and load only when a deep tab or method is used.
-const DEEP_METHODS=['photo','silhouette','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','experiments'],FULL_TABS=['clusters','run','search','map','experiments'];
+const DEEP_METHODS=['photo','silhouette','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['clusters','run','search','map','generate','experiments'];
 // Two primary similarity methods, chosen from the deep benchmark (Experiments -> Benchmark); the rest stay one click away.
 const PRIMARY_METHODS=[['photo','Photo'],['shape','Outline shape']],MORE_METHODS=[['text','Catalog text'],['image','Image · sample'],['silhouette','Silhouette'],['adapted','Adapted'],['ends','Working ends'],['multimodal','Multimodal']];
-const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Embedding map'],['experiments','Experiments']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
+const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Embedding map'],['generate','Generate'],['experiments','Experiments']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
 const BROWSE_STEP=12;let browseData,browseCategory='',browseInstitution='',browseCount=BROWSE_STEP;
 let deepModule,renderedTab;
 function deep(){deepModule||=import('./ai-deep.js').catch(err=>{deepModule=null;throw err});return deepModule}
@@ -77,7 +77,7 @@ export async function show(ctx){
  if(!ready){startup||=(async()=>{summary=await read('summary.json');if(summary.schema_version!=='1.0.0'||summary.dataset_version!==ctx.manifest.version||summary.provenance.release_files_sha256['records.jsonl']!==ctx.manifest.records_sha256)throw Error('AI release mismatch.');register=await read('index.json');const colors=await fetch('visuals/palette.json');if(!colors.ok)throw Error('Plot palette unavailable.');palette=await colors.json();setup();ready=true})().catch(err=>{startup=null;throw err});await startup}
  if(call!==showSequence)return;const previous=selected;selected=ctx.selectedId||selected||'META-002742';
  // Record-independent deep tabs keep their state when a record is selected from them (e.g. a map click).
- if(previous&&previous!==selected&&renderedTab===tab&&['search','map','experiments'].includes(tab)&&$('ai-content').getAttribute('aria-busy')==='false'){selectedCard();if(tab==='map')(await deep()).selectionChanged(api());return}
+ if(previous&&previous!==selected&&renderedTab===tab&&['search','map','generate','experiments'].includes(tab)&&$('ai-content').getAttribute('aria-busy')==='false'){selectedCard();if(tab==='map')(await deep()).selectionChanged(api());return}
  await render();if(previous&&previous!==selected&&!FULL_TABS.includes(tab))$('ai-selected').querySelector('h2')?.focus({preventScroll:true});
 }
 async function render(){

@@ -1,14 +1,17 @@
 {
-  "tested_at": "2026-10-22T10:26:31.539Z",
+  "tested_at": "2026-10-27T12:35:37.817Z",
   "url": "https://raprakashvi.github.io/roman-tool-lineage/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
-    "Initial AI view requests no deep module or deep result file",
-    "Eight AI sections, Similarity first and selected",
+    "Initial AI view (Photo default) loads only the deep module, manifest, browse index and one item shard",
+    "Five primary AI sections plus three baseline sections; Similar tools first and selected",
+    "Two primary similarity methods (photo, outline shape); six others collapsed under More methods",
     "Real records exist for each missing-representation case and for near-duplicates",
     "photo: displayed neighbour IDs and cosines equal the published shard",
     "photo: method note and score direction are shown",
-    "First deep method loads only the module, manifest and one item shard",
+    "First deep method loads only the module, manifest, browse index and one item shard",
+    "Photo method shows its benchmark evidence (cross-museum P@10, CI, random reference) from the manifest",
+    "Similar tools are shown as one ordered, numbered ranking",
     "silhouette: displayed neighbour IDs and cosines equal the published shard",
     "silhouette: method note and score direction are shown",
     "adapted: displayed neighbour IDs and cosines equal the published shard",
@@ -25,7 +28,8 @@
     "ends: null neighbours give an explicit reason (quality control) and no imputed ranks (META-000001)",
     "multimodal: null neighbours give an explicit reason (photo, silhouette and catalog text) and no imputed ranks (META-000264)",
     "Baseline catalog-text method still works beside deep methods",
-    "Evidence shows all eight functions with the published states (omitted functions as abstain)",
+    "Evidence accounts for all eight functions with the published states (omitted functions as abstain)",
+    "Supported functions lead with a one-line verdict; bare abstentions collapse into one row",
     "State chips carry an icon and text, not colour alone",
     "Photo-channel neighbour thumbnails equal the published neighbour IDs",
     "Calibrated values are labelled agreement with existing rules on held-out groups",
@@ -37,11 +41,14 @@
     "Hypothesis flags are rendered with plain-language explanations",
     "Near-duplicate links equal the published near-duplicate pairs",
     "Baseline Provisional labels tab remains intact beside Evidence",
-    "Every precomputed query is listed, grouped by language",
-    "Text search states that queries are precomputed",
-    "siglip2_zero_shot: keyboard-chosen Dutch query shows the published top-12 and test P@20",
-    "adapted: keyboard-chosen Dutch query shows the published top-12 and test P@20",
+    "Every precomputed query is listed, grouped by clinical need",
+    "Task vocabulary reproduces every published cross-modal SigLIP 2 ranking",
+    "Search by task states that queries are precomputed and that controls also return rankings",
+    "Search by task shows SigLIP 2 zero-shot only",
+    "Keyboard-chosen Dutch query shows the published top-20 ranking and test P@20",
+    "Top-20 category mix sums to the 20 ranked records",
     "Unscored queries are labelled, not given a precision",
+    "Query filter narrows the list to matching queries",
     "Map status reports the published number of plotted records",
     "Map legend counts sum to the plotted records",
     "Every legend class has a marker shape as a non-colour cue",
@@ -53,6 +60,16 @@
     "Accessible map table paginates",
     "Highlighting a legend class filters the table to that class",
     "Map and colour toggles switch to the silhouette map coloured by museum",
+    "3D view reports dated records shown and undated records left out, matching the published index",
+    "3D view states that date concentrations reflect collecting and dating, not origin or frequency",
+    "Date histogram spreads all 2098 dated records over 24 bins (sum 2098.1)",
+    "Dragging rotates the 3D view without selecting a record",
+    "Camera presets change the 3D view",
+    "In 3D, arrow keys step through records in date order (first = earliest catalog date)",
+    "Highlighting a class overlays its dated records on the date histogram",
+    "Map table lists each record's catalog date",
+    "Time scale switches between compressed and linear",
+    "Returning to the 2D map removes the 3D controls",
     "Findings come first: 13 published findings rendered with status",
     "Each finding shows its observation / inference / speculation status",
     "Hypothesis state-count table equals experiments.json",
@@ -69,6 +86,12 @@
     "Checksum failure recovers on retry with the valid shard",
     "Failed deep file gives an actionable error state",
     "Retry recovers the failed deep file without a page reload",
+    "Browser offers every published coarse category",
+    "Category filter count equals the published category size",
+    "Browsed thumbnails belong to the chosen category",
+    "Show more extends the browsed thumbnails",
+    "Choosing a browsed thumbnail makes it the query and shows its category",
+    "Random tool picks a photographed record within the current filter",
     "Mobile evidence: no horizontal page overflow at 390px",
     "Mobile similarity: no horizontal page overflow at 390px",
     "Mobile search: no horizontal page overflow at 390px",
@@ -78,15 +101,19 @@
     "map fits 320px width",
     "search fits 320px width",
     "evidence fits 320px width",
+    "retrieval fits 320px width",
     "experiments fits 768px width",
     "map fits 768px width",
     "search fits 768px width",
     "evidence fits 768px width",
+    "retrieval fits 768px width",
     "experiments fits 1024px width",
     "map fits 1024px width",
     "search fits 1024px width",
     "evidence fits 1024px width",
-    "Mobile text search uses a compact grouped query selector",
+    "retrieval fits 1024px width",
+    "Mobile 3D map: no horizontal page overflow at 390px",
+    "Mobile search uses a compact grouped query selector",
     "Mobile query selector shows the chosen query results",
     "No uncaught exceptions in deep AI workflows",
     "No unexpected HTTP errors during deep AI workflows"
@@ -99,25 +126,28 @@
         "ai.css",
         "ai.js",
         "summary.json",
-        "index.json",
-        "ai-records-0001.json"
+        "index.json"
       ],
-      "decoded_bytes": 1257914
+      "decoded_bytes": 231356
     },
     "deep_cumulative_decoded_bytes": {
-      "after_first_deep_method": 482497,
-      "after_text_search": 1550847,
-      "after_map": 2334951,
-      "after_experiments": 2373608
+      "after_first_deep_method": 533276,
+      "after_text_search": 1650120,
+      "after_map": 2434224,
+      "after_experiments": 2494663
     },
     "deep_files": [
       {
         "file": "ai-deep.js",
-        "decoded_bytes": 63982
+        "decoded_bytes": 73260
       },
       {
         "file": "summary.json",
-        "decoded_bytes": 102107
+        "decoded_bytes": 103646
+      },
+      {
+        "file": "browse.json",
+        "decoded_bytes": 39962
       },
       {
         "file": "items-0001.json",
@@ -140,12 +170,16 @@
         "decoded_bytes": 303128
       },
       {
-        "file": "crossmodal.json",
-        "decoded_bytes": 21782
+        "file": "tasks.json",
+        "decoded_bytes": 70276
       },
       {
         "file": "maps.json",
         "decoded_bytes": 784104
+      },
+      {
+        "file": "crossmodal.json",
+        "decoded_bytes": 21782
       },
       {
         "file": "literature.json",

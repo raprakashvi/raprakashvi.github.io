@@ -281,6 +281,125 @@ These are family-level visual neighbours, not descent or equivalent use. One tea
 photographer dominates the contemporary set, which inflates needle holders. The website shows
 analogs as title, class and source link only: some external images may show clinical scenes.
 
+### 9. Text- and date-conditioned silhouette generation (`silgen-e605e67faa35`)
+
+An exploratory "discovery" test. Can a generative model draw a plausible outline for a tool
+from its catalog name and date better than simply looking up the closest name? The setup was
+pre-registered in `configs/ml/silhouette_generation.json` (`silgen-1.0.0`) before any training.
+Six amendments are listed in the config, all made before training or sampling: narrower UNet,
+speck and frame-strip cleaning, cheaper baselines, the prompt gallery and the era breakdown.
+
+**Data.**
+
+* 2,597 accepted morphology outlines in a canonical pose: principal axis horizontal,
+  long side 116 px on a 128 px canvas. Size is removed.
+* 58 masks had stray specks removed and 21 had a straight frame-edge strip removed. Three
+  records were only a strip and are excluded (META-001139, -001141, -001147).
+* Names have their accession numbers stripped and are embedded with frozen SigLIP 2 B/16
+  text. Dates are encoded as z = log10(2026 − midpoint) − 2. The 614 undated records use a
+  learned null.
+* Known issue, not corrected: 114 Region Skåne records are named "seaweed", a probable
+  machine translation of Swedish *tång* (tongs).
+
+**Model.** Pixel-space DDPM: cosine schedule, v-prediction, UNet (32/64/128/256, about
+17.9 M parameters), classifier-free dropout 0.15 per condition. Sampling uses DDIM, 50 steps,
+guidance 2.0, with k = 4 samples per record.
+
+**Two tests.**
+
+* *Held-out*: trained on the release train split (1,532), 25,000 steps, seed 17. Scored on
+  the test split (514 records, 551 validation records unused).
+* *Retrodiction*: trained only on dated outlines ending ≤ 1850 (369 records: 206 grasping,
+  125 probe, 20 speculum, 18 blade). 10,000 steps, seeds 17/18/19. Scored on records starting
+  ≥ 1850 that share no leakage group with training (1,505). Excluded and counted: 614 undated,
+  109 straddling 1850, 3 sharing a group.
+
+**Metrics and baselines.**
+
+* Metrics: flip-invariant mask IoU, and the DINOv2-B CLS cosine of black-on-white renders.
+  Each is the mean over the k candidates per record, with 95% leakage-group bootstrap
+  intervals (2,000 resamples) and paired per-record differences.
+* Baselines: the k training outlines with the nearest SigLIP name; k random outlines of the
+  same family; the unconditional generator; and a name-only ablation (retrodiction, seed 17).
+* **Decision rule:** generation "adds information beyond retrieval" only if *both* paired
+  differences against nearest-name retrieval have intervals above zero.
+
+Mean-of-4 scores (95% CI):
+
+| Method | Held-out IoU | Held-out DINOv2 | After-1850 IoU | After-1850 DINOv2 |
+|---|---|---|---|---|
+| Generator (name + date) | 0.280 [0.269, 0.291] | 0.674 [0.665, 0.683] | 0.231 [0.226, 0.236] | 0.615 [0.610, 0.620] |
+| Generator (name only) | — | — | 0.257 [0.252, 0.262] | 0.633 [0.628, 0.638] |
+| Nearest training name | 0.314 [0.301, 0.327] | 0.698 [0.689, 0.709] | 0.281 [0.276, 0.286] | 0.674 [0.668, 0.679] |
+| Random, same family | 0.255 [0.246, 0.264] | 0.627 [0.619, 0.635] | 0.265 [0.261, 0.270] | 0.612 [0.606, 0.617] |
+| Generator (no condition) | 0.205 [0.199, 0.211] | 0.615 [0.608, 0.622] | 0.235 [0.231, 0.238] | 0.621 [0.615, 0.626] |
+
+**Decision: no evidence of generation beyond retrieval in either test.**
+
+* Generator minus retrieval, held-out: IoU −0.034 [−0.044, −0.024], DINOv2 −0.024
+  [−0.033, −0.016].
+* After 1850 (three seeds pooled): IoU −0.050 [−0.055, −0.045], DINOv2 −0.059
+  [−0.065, −0.053].
+* Every seed is negative: IoU −0.062, −0.046, −0.043.
+
+Secondary checks (descriptive):
+
+* **Conditioning works within the training distribution.** In the held-out test, the
+  generator beats the unconditional model (IoU +0.075 [0.066, 0.085]) and a random outline
+  of the same family (IoU +0.025 [0.015, 0.036], DINOv2 +0.047 [0.038, 0.057]). In other
+  words, the name steers the drawing.
+* **The date hurts when it is outside training.** After 1850, name + date is no better than
+  the unconditional model (IoU −0.004 [−0.008, 0.000]), and it is below name only
+  (IoU −0.038 [−0.043, −0.033], seed 17). Every after-1850 date lies beyond the ≤ 1850
+  training range, so the date embedding is extrapolated.
+* **Era breakdown of the held-out test**, generator minus retrieval:
+
+  | Era | n | IoU difference | DINOv2 difference |
+  |---|---|---|---|
+  | ≤ 1850 | 77 | −0.053 [−0.085, −0.023] | −0.050 [−0.074, −0.027] |
+  | ≥ 1850 | 293 | −0.042 [−0.055, −0.030] | −0.032 [−0.045, −0.021] |
+  | Straddling 1850 | 20 | −0.044 [−0.094, 0.001] | −0.039 [−0.087, 0.004] |
+  | Undated | 124 | −0.002 [−0.020, 0.017] | +0.014 [−0.002, 0.031] |
+
+  Retrieval keeps its advantage for after-1850 tools even when their era is in training.
+* **By family** (held-out): the generator matches retrieval for grasping instruments (IoU
+  0.278 vs 0.286) and specula (0.338 vs 0.326). It is far behind for probes (0.218 vs 0.344)
+  and blades (0.384 vs 0.487), where thin parts break up.
+* **Clamp subset**, after 1850: 145 records, against 5 clamp-named outlines before 1850.
+  Generator minus retrieval: IoU −0.027 [−0.039, −0.016], DINOv2 −0.139 [−0.159, −0.118].
+  The generator does not anticipate the ring-handled, ratcheted clamp from "Klemtang"/"artery
+  forceps" plus a later date. Its samples are fragmented or blobby
+  (`deep_silgen_retro_examples`).
+* **Memorisation: none detected.** No generated outline has IoU ≥ 0.9 with any training
+  outline. The median nearest-training IoU is 0.506 held-out and 0.437–0.483 after 1850,
+  *below* the 0.613 and 0.541 of real held-out outlines. Samples are further from the
+  training set than real tools are. Given the scores above, this reflects lower fidelity, not
+  novelty.
+* **Coverage** (k-NN precision/recall, DINOv2, k = 5): held-out 0.91 / 0.75; after 1850
+  0.72–0.74 / 0.64–0.68 over the three seeds.
+* **Gallery** (12 fixed prompts × 1750/1850/1950/undated, full model):
+  * "Artery forceps" gives ring-handled clamps, and "Dental forceps" gives forceps.
+  * Short object names work better than clinical descriptions.
+  * The control "a kitchen spoon" yields a probe/spoon-like instrument (median nearest-train
+    IoU 0.69): the model can only recombine what it was trained on.
+
+Figures: `results/figures/deep_silgen_metrics`, `deep_silgen_retro_examples` and
+`deep_silgen_gallery` (`.svg`/`.pdf`/`.png`, via `scripts/plotting/silgen_figures.py`). The
+website's Research → AI Methods → **Generated outlines** tab shows the verdicts, the gallery,
+fixed before/after-1850 rows and all score tables from `ai-deep/generate.json`. Masks are
+packed bits; no weights are published.
+
+Caveats:
+
+* SigLIP's text tower learned language from modern web data. The retrodiction is therefore
+  blind to later *shapes* but not to later *vocabulary*.
+* Masks come from uncalibrated photographs, with no scale or mechanism.
+* The pre-1850 set is small and dominated by two museums (Boerhaave 228, Met 138).
+* The full model has one seed.
+* After the results file was written, the evaluation's final console print raised a KeyError
+  on the gallery entry. The print loop was fixed. Metrics, samples and the result file were
+  unaffected, but the recorded `code_sha256.eval` refers to the version before that fix.
+
 ## Interpretation
 
 * **Observation:** deep image models capture catalog-level instrument type well and transfer
@@ -291,6 +410,10 @@ analogs as title, class and source link only: some external images may show clin
   or spread (specula).
 * **Inference:** similarity cannot separate inherited design from convergent solutions; it
   proposes comparisons for documentary testing, not lineages.
+* **Observation:** a small text- and date-conditioned diffusion model over silhouettes does not
+  beat looking up the nearest catalog name, either on held-out tools or on tools after 1850
+  when trained only on earlier ones (§9). With 369 pre-1850 outlines it cannot anticipate
+  later forms such as the ring-handled clamp.
 * **Speculation:** cross-category silhouette look-alikes across Dutch, Swedish and
   ethnographic collections may include functional convergences worth expert comparison.
 
@@ -315,6 +438,10 @@ cd roman_tool_lineage
 ALLOW_DOWNLOAD=1 bash scripts/deep/pipeline.sh       # first time: fills the weight cache
 ~/.venvs/vestigium-ml/bin/python -m unittest scripts.deep.test_deep -v
 MPLCONFIGDIR=/tmp/mpl python scripts/plotting/deep_figures.py
+# Silhouette generation (§9): ~1.5 h training + ~70 min evaluation on one 16 GB GPU
+for s in prep 'train full --seed 17' 'train retro1850 --seed 17' 'train retro1850 --seed 18' 'train retro1850 --seed 19' evaluate; do
+  PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.silgen $s; done
+MPLCONFIGDIR=/tmp/mpl python scripts/plotting/silgen_figures.py
 # Website export runs inside the normal site build (scripts/web/build_site.py).
 ```
 

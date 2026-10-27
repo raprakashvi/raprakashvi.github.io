@@ -1,7 +1,7 @@
 // Deep-representation views for Research -> AI Methods. Loaded on demand by ai.js.
 // Every file is a static, SHA-256-verified projection of saved local experiments
 // (data/<version>/ai-deep/). No model runs in the browser and nothing here writes labels.
-let summary,queryId,queryFilter='',mapName='photo',mapColor='category',mapClass=null,mapPage=0,mapSearch='',mapView=null,mapObserver,mapDim='2d',mapScale='compressed',mapRanges=true,mapTurn=[-0.6,0.42],space3d;
+let genPrompt=0,summary,queryId,queryFilter='',mapName='photo',mapColor='category',mapClass=null,mapPage=0,mapSearch='',mapView=null,mapObserver,mapDim='2d',mapScale='compressed',mapRanges=true,mapTurn=[-0.6,0.42],space3d;
 const loaded=new Map(),PAGE=20;
 const hex=buffer=>Array.from(new Uint8Array(buffer),b=>b.toString(16).padStart(2,'0')).join('');
 const f3=x=>Number.isFinite(x)?x.toFixed(3):'—',f2=x=>Number.isFinite(x)?x.toFixed(2):'—',pct=x=>Number.isFinite(x)?(x*100).toFixed(0)+'%':'—';
@@ -49,6 +49,7 @@ export async function render(a,tab){
  if(tab==='evidence')return evidence(a);
  if(tab==='search')return search(a);
  if(tab==='map')return map(a);
+ if(tab==='generate')return generate(a);
  if(tab==='experiments')return experiments(a);
 }
 
@@ -409,6 +410,68 @@ function limitsSection(a,x){
  <div class="analysis-actions">${['summary.json','experiments.json','crossmodal.json','maps.json','literature.json'].filter(n=>n==='summary.json'||summary.files[n]).map(n=>`<a href="${a.context.base}ai-deep/${n}" download>${n}</a>`).join('')}<a href="docs/AI_METHODS.md">Website methods</a></div>`);
 }
 
+// ---------- Generated outlines: text- and date-conditioned silhouette diffusion (exploratory) ----------
+const GEN_METHODS=[['generator','Generator (name + date)'],['text_only','Generator (name only)'],['retrieval_text','Nearest training name'],['family_random','Random, same family'],['unconditional','Generator (no condition)']];
+const GEN_ERA={up_to_1850:'Catalog date ≤ 1850',from_1850:'Catalog date ≥ 1850',straddling_1850:'Range spans 1850',undated:'Undated'};
+const yearOf=v=>v==null?'undated':v<0?`${-v} BCE`:String(v);
+const span=(s,e)=>s==null?'undated':e==null||e===s?yearOf(s):`${yearOf(s)}–${yearOf(e)}`;
+const cis=c=>`<small>[${signed(c.ci95[0])}, ${signed(c.ci95[1])}]</small>`;
+function maskCanvas(i,label,cls=''){return `<canvas class="ai-mask ${cls}" width="128" height="128" data-mask="${i}" role="img" aria-label="${label}"></canvas>`}
+function paintMasks(a,d){
+ const ink=getComputedStyle(a.root()).getPropertyValue('--ink').trim()||'#1f1f1f',n=d.mask_size;
+ a.root().querySelectorAll('canvas[data-mask]').forEach(c=>{const bytes=atob(d.masks[Number(c.dataset.mask)]),g=c.getContext('2d'),img=g.createImageData(n,n);for(let i=0;i<n*n;i++)if((bytes.charCodeAt(i>>3)>>(7-(i&7)))&1)img.data[i*4+3]=255;g.putImageData(img,0,0);g.globalCompositeOperation='source-in';g.fillStyle=ink;g.fillRect(0,0,n,n);g.globalCompositeOperation='source-over'});
+}
+function verdictCard(a,id,title,sub,e){
+ const d=e.generator_minus_retrieval,yes=e.decision.startsWith('adds');
+ return `<div class="panel ai-gen-verdict" id="${id}" data-decision="${yes?'beyond':'none'}"><h3>${title}</h3><p class="muted">${sub}</p><p class="ai-gen-decision">${yes?'Adds information beyond retrieval':'No evidence of generation beyond retrieval'}</p>
+ <dl><div><dt>Outline overlap (IoU)</dt><dd><strong>${signed(d.iou_mean.mean)}</strong> ${cis(d.iou_mean)}</dd></div><div><dt>Look-alike score (DINOv2 cosine)</dt><dd><strong>${signed(d.dino_mean.mean)}</strong> ${cis(d.dino_mean)}</dd></div></dl>
+ <p class="ai-gen-foot">Generator minus nearest-name retrieval, mean of ${a.fmt(4)} candidates per record · n = ${a.fmt(e.evaluated_records)} records (${a.fmt(d.iou_mean.groups)} leakage groups) · ${e.runs?.length||e.per_seed_generator_minus_retrieval.length} seed${e.per_seed_generator_minus_retrieval.length>1?'s pooled':''}</p></div>`;
+}
+function galleryHtml(a,d){
+ const g=d.gallery,prompt=g.prompts[genPrompt].prompt,cells=g.cells.filter(c=>c.prompt===prompt),stat=g.prompts[genPrompt],last=g.prompts.length-1;
+ return `<div class="ai-gen-prompts ai-segments" role="group" aria-label="Prompt">${g.prompts.map((x,i)=>`<button type="button" data-ai-deep="gen-prompt" data-value="${i}" aria-pressed="${i===genPrompt}">${a.esc(x.prompt)}${i===last?' <small>(control)</small>':''}</button>`).join('')}</div>
+ <p class="ai-table-note" id="ai-gen-prompt-note">“${a.esc(prompt)}”: median IoU of the ${stat.n} samples with their nearest training outline ${f2(stat.nearest_train_iou_median)}; ${pct(stat['share_iou_ge_0.9'])} at or above 0.9 (near copies).${genPrompt===last?' Control prompt: an object outside the collection. The model still draws an instrument-like outline, because it can only draw what it was trained on.':''}</p>
+ <div class="ai-gen-gallery" id="ai-gen-gallery">${cells.map(c=>`<figure class="ai-gen-cell"><figcaption>${c.date==null?'No date':a.esc(String(c.date))}</figcaption>${c.samples.map((s,j)=>`<div class="ai-gen-pair">${maskCanvas(s.mask,`Generated outline ${j+1} for “${a.esc(prompt)}”, ${c.date??'no date'}`)}<a class="ai-gen-near" href="#item/${s.nearest.id}" title="${a.esc(s.nearest.name)} · #${s.nearest.id}">${maskCanvas(s.nearest.mask,`Nearest training outline: ${a.esc(s.nearest.name)}`,'ai-mask-ref')}<span>${a.esc(s.nearest.name)} <small>IoU ${f2(s.nearest.iou)}</small></span></a></div>`).join('')}</figure>`).join('')}</div>`;
+}
+function retroHtml(a,d){
+ return `<div class="ai-gen-retro" id="ai-gen-retro" role="table" aria-label="After-1850 records, nearest pre-1850 name and generated outlines"><div class="ai-gen-retro-head" role="row"><span role="columnheader">After-1850 record (real)</span><span role="columnheader">Nearest pre-1850 name</span><span role="columnheader">Generated from name + date (seed 17)</span></div>
+ ${d.retro_examples.map(r=>`<div class="ai-gen-retro-row" role="row"${r.clamp?' data-clamp="true"':''}><div role="cell">${maskCanvas(r.real,`Real outline of ${a.esc(r.name)}`)}<p><a href="#item/${r.id}">${a.esc(r.name)}</a><small>#${r.id} · ${span(r.start,r.end)} · ${a.esc(words(r.family))}</small></p></div>
+ <div role="cell">${maskCanvas(r.retrieval.mask,`Training outline of ${a.esc(r.retrieval.name)}`,'ai-mask-ref')}<p><a href="#item/${r.retrieval.id}">${a.esc(r.retrieval.name)}</a><small>${yearOf(r.retrieval.start)}</small></p></div>
+ <div role="cell" class="ai-gen-three">${r.generated.map((m,j)=>`<span>${maskCanvas(m,`Generated outline ${j+1} for ${a.esc(r.name)}`)}<small>nearest train IoU ${f2(r.nearest_train_iou[j])}</small></span>`).join('')}</div></div>`).join('')}</div>`;
+}
+function genScores(a,d){
+ const F=d.experiments.full,R=d.experiments.retro1850,cell=(e,m,k)=>e.methods[m]?ci(e.methods[m][k].mean,e.methods[m][k].ci95):'—';
+ const methods=table(`Mean over ${d.k} candidates per record. Mask IoU and DINOv2 cosine are dimensionless (0–1, higher = closer to the real outline). 95% intervals from ${a.fmt(d.bootstrap)} leakage-group bootstrap resamples. “Name only” ran on seed 17 of the after-1850 test.`,['Method','Held-out IoU','Held-out DINOv2','After-1850 IoU','After-1850 DINOv2'],GEN_METHODS.map(([m,l])=>[a.esc(l),cell(F,m,'iou_mean'),cell(F,m,'dino_mean'),cell(R,m,'iou_mean'),cell(R,m,'dino_mean')]),'ai-gen-methods');
+ const eras=F.by_era?table('Full model, held-out records split by catalog date (descriptive; not part of the decision rule). After-1850 tools here have their era in training, unlike the retrodiction test.',['Era','n','Generator IoU','Retrieval IoU','Difference','Generator DINOv2','Retrieval DINOv2','Difference'],Object.entries(F.by_era).map(([k,v])=>[GEN_ERA[k]||words(k),a.fmt(v.n),ci(v.generator.iou_mean.mean,v.generator.iou_mean.ci95),ci(v.retrieval_text.iou_mean.mean,v.retrieval_text.iou_mean.ci95),`${signed(v.generator_minus_retrieval.iou_mean.mean)} ${cis(v.generator_minus_retrieval.iou_mean)}`,ci(v.generator.dino_mean.mean,v.generator.dino_mean.ci95),ci(v.retrieval_text.dino_mean.mean,v.retrieval_text.dino_mean.ci95),`${signed(v.generator_minus_retrieval.dino_mean.mean)} ${cis(v.generator_minus_retrieval.dino_mean)}`]),'ai-gen-era'):'';
+ const c=R.clamp_subset,clamp=c?table(`After-1850 records named as clamps or artery forceps (n = ${c.n}); the pre-1850 training set has ${c.train_clamp_named} clamp-named outlines. Descriptive subset.`,['Method','IoU','DINOv2'],[['generator','Generator (name + date)'],['retrieval_text','Nearest training name'],['family_random','Random, same family']].map(([m,l])=>[l,ci(c.methods[m].iou_mean.mean,c.methods[m].iou_mean.ci95),ci(c.methods[m].dino_mean.mean,c.methods[m].dino_mean.ci95)]).concat([[`Generator minus retrieval`,`${signed(c.generator_minus_retrieval.iou_mean.mean)} ${cis(c.generator_minus_retrieval.iou_mean)}`,`${signed(c.generator_minus_retrieval.dino_mean.mean)} ${cis(c.generator_minus_retrieval.dino_mean)}`]]),'ai-gen-clamp'):'';
+ const mean=(l,k)=>l.reduce((s,x)=>s+x[k],0)/l.length;
+ const memo=table('Memorisation: for every generated outline, IoU with its nearest training outline. Real held-out outlines give the reference for how close an unseen tool naturally sits to the training set. Coverage: k-NN precision (generated outlines that fall on the real manifold) and recall (real outlines the generator reaches), DINOv2 features, k = 5, one sample per record; mean over seeds.',['Test','Generated: median nearest-train IoU','Generated: share ≥ 0.9','Real held-out: median','Real held-out: share ≥ 0.9','Precision','Recall'],[['Held-out test split',F],['After 1850, trained before',R]].map(([l,e])=>[l,f3(mean(e.memorisation.runs,'generated_nearest_train_iou_median')),pct(mean(e.memorisation.runs,'generated_share_iou_ge_0.9')),f3(e.memorisation.reference_real_heldout_nearest_train_iou_median),pct(e.memorisation['reference_real_heldout_share_iou_ge_0.9']),f3(mean(e.coverage,'precision')),f3(mean(e.coverage,'recall'))]),'ai-gen-memo');
+ const t=R.generator_minus_text_only_seed17,seeds=R.per_seed_generator_minus_retrieval;
+ const extra=`<ul class="ai-gen-facts">${t?`<li>Adding the date (after-1850 test, seed 17): IoU ${signed(t.iou_mean.mean)} ${cis(t.iou_mean)}, DINOv2 ${signed(t.dino_mean.mean)} ${cis(t.dino_mean)} relative to name only.</li>`:''}<li>Per seed, generator minus retrieval (after-1850): ${seeds.map(s=>`seed ${s.seed}: IoU ${signed(s.iou_mean.mean)}, DINOv2 ${signed(s.dino_mean.mean)}`).join('; ')}.</li><li>Generator minus a random outline of the same family: held-out IoU ${signed(F.generator_minus_family_random.iou_mean.mean)} ${cis(F.generator_minus_family_random.iou_mean)}; after-1850 IoU ${signed(R.generator_minus_family_random.iou_mean.mean)} ${cis(R.generator_minus_family_random.iou_mean)}.</li></ul>`;
+ return methods+extra+eras+clamp+memo;
+}
+async function generate(a){
+ const s=await manifest(a);
+ if(!s.files['generate.json']){a.$('ai-content').innerHTML=`<div class="ai-toolbar"><div><h2>Generated outlines</h2></div></div><p class="ai-deep-note" role="status">No silhouette-generation run has been published for this dataset release.</p>`;return}
+ const d=await file(a,'generate.json');if(!a.current())return;
+ const F=d.experiments.full,R=d.experiments.retro1850,ex=R.excluded;
+ a.$('ai-content').innerHTML=`<div class="ai-toolbar"><div><h2>Generated outlines</h2><p>Exploratory · a small diffusion model draws a tool outline from a catalog name and a date · trained from scratch on ${a.fmt(F.train_records)} canonical outlines · run ${a.esc(d.run_id)}</p></div><a href="${a.context.base}ai-deep/generate.json" download>Export results (JSON)</a></div>
+ <p class="ai-caution">These are 2-D form hypotheses, not designs. Outlines come from uncalibrated catalog photographs in a fixed pose, so they carry no scale, mechanism, material or function. Nothing runs in your browser: prompts and dates were fixed before sampling. The text encoder (SigLIP 2) learned language from modern web data, so the before-1850 test is blind to later shapes but not to later vocabulary.</p>
+ <h3 class="ai-gen-h">Does generation beat looking up the closest name?</h3>
+ <p class="ai-exp-lede">Pre-registered test: for each held-out record the model draws ${d.k} outlines from its catalog name and date; they are scored against the real outline and compared with the ${d.k} training outlines whose names are closest. The generator counts as adding information only if both differences have 95% intervals above zero.</p>
+ <div class="ai-gen-verdicts">${verdictCard(a,'ai-gen-v-full','Held-out test split','Trained on the train split; scored on unseen test records of all eras.',F)}${verdictCard(a,'ai-gen-v-retro','Trained before 1850, tested after','Trained only on outlines dated ≤ 1850, scored on records dated ≥ 1850 that share no duplicate group with training.',R)}</div>
+ <p class="muted ai-gen-excl">After-1850 test exclusions are counted, not hidden: ${a.fmt(ex.undated)} undated, ${a.fmt(ex.straddle_1850)} with a date range spanning 1850, ${a.fmt(ex.post_sharing_group_with_train)} sharing a duplicate group with training. Before 1850 the collection has only ${a.fmt(R.train_records)} usable outlines.</p>
+ <h3 class="ai-gen-h">Draw from a prompt</h3>
+ <p class="ai-exp-lede">Full model (seed 17). Each prompt is drawn at three dates and without a date; two of four samples are shown, each beside its nearest training outline (grey, by flip-invariant IoU). A high IoU means the sample is close to an existing tool.</p>
+ <div id="ai-gen-prompt-host">${galleryHtml(a,d)}</div>
+ <h3 class="ai-gen-h">Before 1850 → after 1850</h3>
+ <p class="ai-exp-lede">The retrodiction model saw only outlines dated up to 1850. Each row is a later record: its real outline, the outline of the closest pre-1850 name, and three outlines drawn from the later name and date. Rows are fixed in advance: the first six distinct clamp names, then two names per family.</p>
+ ${retroHtml(a,d)}
+ <h3 class="ai-gen-h">Scores and checks</h3>${genScores(a,d)}
+ <details class="ai-exp-details"><summary>Method, data and decision rule</summary><p>${a.esc(d.note)}</p><p><strong>Decision rule.</strong> ${a.esc(d.decision_rule)}</p><p><strong>Data.</strong> ${a.fmt(d.prep.records)} outlines, ${a.fmt(d.prep.distinct_names)} distinct names, ${a.fmt(d.prep.undated)} undated. ${d.prep.masks_with_specks_removed} masks had stray specks removed and ${d.prep.masks_with_border_strips_removed} had a frame-edge strip removed; ${d.prep.excluded_only_border_strip.length} records were only a strip and are excluded (${d.prep.excluded_only_border_strip.map(a.esc).join(', ')}).</p><p><strong>Known issue.</strong> ${a.esc(d.known_issue)}</p><p>Config ${a.esc(d.config_version)}. Metric encoder ${a.esc(d.metric_encoder)}. Weights are not published. Methods: <a href="docs/AI_DEEP_METHODS.md">AI_DEEP_METHODS.md</a>.</p></details>`;
+ paintMasks(a,d);
+}
+
 // ---------- Actions ----------
 export async function action(a,button){
  const kind=button.dataset.aiDeep,value=button.dataset.value;
@@ -417,6 +480,7 @@ export async function action(a,button){
  if(kind==='map-dim'||kind==='map-scale'){if(kind==='map-dim')mapDim=value;else mapScale=value;await a.render();a.root().querySelector(`[data-ai-deep="${kind}"][data-value="${value}"]`)?.focus({preventScroll:true});return}
  if(kind==='map-turn'||kind==='map-rot'){mapTurn=kind==='map-turn'?[...space3d.PRESETS[value]]:[mapTurn[0]+Number(value)*Math.PI/8,mapTurn[1]];draw(a);return}
  if(kind==='map-class'){mapClass=mapClass===value?null:value;mapPage=0;a.root().querySelectorAll('[data-ai-deep="map-class"]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===mapClass)));draw(a);mapTable(a);mapHist(a);return}
+ if(kind==='gen-prompt'){genPrompt=Number(value);const d=await file(a,'generate.json');a.$('ai-gen-prompt-host').innerHTML=galleryHtml(a,d);paintMasks(a,d);a.root().querySelector(`[data-ai-deep="gen-prompt"][data-value="${value}"]`)?.focus({preventScroll:true});return}
  if(kind==='map-page'){mapPage+=Number(value);mapTable(a);return}
  if(kind==='map-select'){a.choose(value,true);a.$('ai-map-canvas')?.scrollIntoView({block:'center',behavior:'instant'});return}
  if(kind==='goto'){a.setTab(button.dataset.tab);if(a.selected===value)await a.render();else a.choose(value,true);return}

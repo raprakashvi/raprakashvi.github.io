@@ -265,8 +265,26 @@ Checkpoint: source `b30fbb4`, dataset `v1-804c1e7c3202` unchanged. Details: [doc
 |---|---|---|
 | 50 | complete | Reduce similarity to two benchmark-backed methods (Photo = DINOv2-L raw, default; Outline shape) with inline cross-museum P@10, CI, random baseline and enrichment from `method_evidence`; other six behind a collapsed “More methods”. Ranked result list; record browser (category/collection filters, show more, random); compact Evidence verdict with abstentions collapsed. |
 | 51 | complete | Search by task: 66-query SigLIP 2 vocabulary (`task-queries-1.0.0`, 9 groups incl. design features and controls) via `scripts/deep/task_search.py`; 26 shared queries must reproduce `crossmodal-latest`. New queries are exploratory and never pooled into F10. |
-| 52 | in progress | Commit locally (done); push source and deploy the subpage only after confirmation; live verification. |
+| 52 | complete | Commit and push source, deploy the subpage only, live verification. |
+| 53 | complete | 3D view with catalog date as height for the AI embedding map and Morphology shape space (`app/space3d.js`): range whiskers, compressed/linear time, rotation and presets, fractional-count period histogram; undated records counted, never imputed; Boerhaave collecting caveat on screen. |
 
 - Run `tasksearch-d80e56a358ec`: all 26 shared queries reproduce the saved cross-modal top 20 (cosines within 2e-4; original batch encoded separately because bf16 text embeddings depend on batch composition). 13 new scored queries: mean test P@20 0.658 vs base rate 0.186 (exploratory, written after F10 was seen). Separation SD is not a match signal (controls 2.4–3.0 SD) and is not shown. SigLIP matches object names and visible form rather than clinical function (e.g. “small funnel for the ear” 0.95; vagina-spreading description 0.20, returns obstetric forceps; “dilator” 0.05).
 - Local acceptance on the scratch build: 103 deep-AI + 48 AI + 39 collection + 50 workbench + 45 atlas + 24 review Chrome checks, 0 exceptions, 0 unexpected HTTP errors; 40 website and 9 deep Python tests. Firefox smoke and live checks not yet run.
 - Next research direction (proposed, not started): design-space discovery grounded in coded mechanism characters and a clinical-need taxonomy (N4), need→design mapping with convergence/exaptation and morphospace gaps, a pre-1850 retrodiction test, and only then a conditional VAE over outline descriptors.
+- Deployed and live-verified: source `896e1b7` (focused workspace, task search) and `b5103f0` (3D time view) on `vestigium-2026-10-21`; website `239c84b` on `master` (subpage only; personal-site tracked files verified unchanged; homepage 200). Live: 114 deep-AI, 52 atlas and 48 AI Chrome checks, 0 exceptions, 0 HTTP errors. Collection, workbench and review suites passed locally only (39, 50, 24); Firefox smoke not run.
+
+## Silhouette generation: a pre-registered discovery test
+
+Checkpoint: dataset `v1-804c1e7c3202` unchanged; run `silgen-e605e67faa35`. Details: [docs/AI_DEEP_METHODS.md](docs/AI_DEEP_METHODS.md) §9.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 54 | complete | Pre-register `configs/ml/silhouette_generation.json` (`silgen-1.0.0`; six amendments, all made before training or sampling). Canonical-pose prep of 2,597 outlines with counted cleaning and exclusions. Text- and date-conditioned pixel DDPM (`scripts/deep/silgen*.py`). Held-out model (seed 17) and before-1850 retrodiction model (seeds 17/18/19), evaluated against nearest-name retrieval, same-family random, unconditional and name-only baselines with group-bootstrap CIs, memorisation, coverage, era and clamp subsets; figures. |
+| 55 | complete | Website: `ai-deep/generate.json` (hash-verified; packed masks, no weights). New Research → AI Methods → Generated outlines tab with verdicts, prompt gallery, before/after-1850 rows and score tables; browser and export tests. |
+
+- Result: **no evidence of generation beyond retrieval** in either test.
+  - Held-out: generator minus retrieval IoU −0.034 [−0.044, −0.024], DINOv2 −0.024 [−0.033, −0.016]; n = 514.
+  - After 1850: IoU −0.050 [−0.055, −0.045], DINOv2 −0.059 [−0.065, −0.053]; n = 1,505; 3 seeds.
+- Conditioning steers the drawings in distribution: they beat the unconditional model and random same-family outlines on the held-out test. The out-of-range date makes after-1850 drawings worse than name-only ones.
+- No memorisation: no generated outline has IoU ≥ 0.9 with any training outline.
+- Next (proposed, not started): mechanism-coded characters and the clinical-need taxonomy before any further generative work.
