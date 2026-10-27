@@ -173,6 +173,29 @@ Dutch 0.67, Swedish 0.71) and 0.57 for the adapted model; base rate 0.19. The ad
 learned full catalog descriptions, so it is better at image → own-text retrieval (R@1 0.26 vs
 0.07) but worse at short queries. The website defaults to SigLIP 2.
 
+#### 5b. Task vocabulary for the website (`tasksearch-d80e56a358ec`)
+
+`task_search.py` ranks SigLIP 2 raw-photo features against 66 queries in
+`configs/ml/task_queries.json`, grouped by clinical need (deliver, hold open, grasp, cut,
+probe, extract, scrape/burn/saw), by visible design feature, and by controls. The 26
+cross-modal queries are included unchanged and reproduce `crossmodal-94474c72616c` exactly
+(same top-20 IDs and cosines). Mixed-precision text embeddings depend slightly on batch
+composition, so near-tied ranks can swap; the script therefore encodes the shared queries as
+the original batch and the new ones separately. The 40 new queries were written **after** F10
+was known, so they are exploratory: 13 are scorable (one coarse category with ≥ 20 test
+records), with mean test P@20 0.66 against a base rate of 0.19. They are not pooled into F10.
+
+Two observations shape how the website presents search:
+
+- **No "is there a match" signal.** Controls ("a door key", "a comb", "a kitchen spoon")
+  separate their top 20 from the collection median as strongly (2.4–3.0 SD) as real queries
+  (1.5–4.4 SD). A zero-shot ranking always has a top, so rank is shown and separation is not.
+- **Object names beat task descriptions.** "a small funnel for looking into the ear" gives
+  P@20 0.95 and "scalpel" 0.80, but "an instrument that spreads apart to hold the vagina open"
+  returns obstetric forceps (0.20) and "a dilator to widen a narrow passage" returns probes
+  (0.05). SigLIP 2 matches named object types and visible form, not clinical function, which
+  limits task-first discovery with zero-shot text alone.
+
 ### 6. Disagreements (`disagreements-db66d30058e3`)
 
 A record is a category conflict when ≥ 7 of its 10 DINOv2-L neighbours share another category:

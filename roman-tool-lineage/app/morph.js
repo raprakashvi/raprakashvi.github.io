@@ -9,6 +9,7 @@ const Morph = (() => {
   const CAT = ['#28685e', '#94603c', '#52648b', '#E69F00', '#CC79A7', '#009E73', '#D55E00', '#56B4E9', '#7f7f7f', '#8c6d1f', '#4d4d4d'];
   const MAT_LABEL = { copper_alloy: 'Copper alloy', iron_steel: 'Iron / steel', gold: 'Gold', silver: 'Silver', lead_tin: 'Lead / tin', bone_ivory: 'Bone / ivory', wood: 'Wood', stone_glass: 'Stone / glass', textile_leather: 'Textile / leather', lacquer_resin: 'Lacquer / resin / rubber' };
   const REFERENCE = new Set(['Europe (post-classical)', 'Greece / Rome / Byzantium', 'North America (Euro-American)']);
+  let dim = '2d', turn = [-0.6, 0.42], tscale = 'compressed', ranges = true, sx3 = null, sy3 = null, dragged = () => false;
   let M, T, G, ready = false, sel, shown = [], pinned = -1, hover = -1, view = 'space', cv, ctx, geo = null, bboxCache = {};
 
   const lab = (name, i) => T.label(name, i);
@@ -65,7 +66,7 @@ const Morph = (() => {
   // ------------------------------------------------------------------ views
   function render() {
     for (const v of ['space', 'coverage', 'europe', 'pairs', 'method']) $('m-v-' + v).hidden = v !== view;
-    $('m-colour-wrap').hidden = view !== 'space';
+    $('m-colour-wrap').hidden = $('m-dim-wrap').hidden = view !== 'space';
     ({ space: drawSpace, coverage: drawCoverage, europe: drawEurope, pairs: drawPairs, method: drawMethod })[view]();
   }
 
@@ -76,17 +77,47 @@ const Morph = (() => {
   }
   let xs, ys, X0, X1, Y0, Y1;
   function proj(i, w, h) { const pad = 14; return [pad + (xs[i] - X0) / (X1 - X0) * (w - 2 * pad), h - pad - (ys[i] - Y0) / (Y1 - Y0) * (h - 2 * pad)]; }
+  // 3D: same shape-space plane, catalogue date as height. Undated specimens are counted, never imputed.
+  function timeData() {
+    const dated = [], museums = {}; let undatedShown = 0, reversed = 0;
+    for (let i = 0; i < M.n; i++) {
+      const r = Space3D.range(M.cols.y0[i], M.cols.y1[i]); if (!r) { if (sel[i]) undatedShown++; continue; }
+      if (M.cols.y1[i] < M.cols.y0[i]) reversed++;
+      dated.push({ i, x: (xs[i] - X0) / (X1 - X0), y: (ys[i] - Y0) / (Y1 - Y0), t0: r[0], t1: r[1] });
+      if (sel[i]) museums[lab('coll', i)] = (museums[lab('coll', i)] || 0) + 1;
+    }
+    const lo = Math.min(...dated.map(p => p.t0)), hi = Math.max(...dated.map(p => p.t1)), top = Object.entries(museums).sort((a, b) => b[1] - a[1])[0];
+    return { dated, undatedShown, reversed, top, scale: Space3D.timeScale(tscale, lo, hi) };
+  }
+  function drawSpace3d(w, h, colour) {
+    const td = timeData(), css = k => getComputedStyle(document.documentElement).getPropertyValue('--' + k).trim(), shownDated = td.dated.filter(p => sel[p.i]);
+    for (const p of td.dated) p.color = sel[p.i] ? colour(p.i) : '#d6ded6';
+    ctx.fillStyle = css('panel') || '#fff'; ctx.fillRect(0, 0, w, h);
+    const out = Space3D.render(ctx, { w, h, view: turn, scale: td.scale, points: td.dated, whiskers: ranges, highlight: p => sel[p.i], css: { border: css('border') || '#d6ded6', muted: css('muted') || '#596764' },
+      paint: (p, x, y, d) => { ctx.globalAlpha = (sel[p.i] ? 0.85 : 0.25) * (1 - 0.3 * d); ctx.fillStyle = p.color; ctx.beginPath(); ctx.arc(x, y, (sel[p.i] ? (M.cols.nw[p.i] ? 3.6 : 2.4) : 1.4) * (1.15 - 0.35 * d), 0, 6.2832); ctx.fill(); } });
+    ctx.globalAlpha = 1; sx3 = new Float32Array(M.n).fill(NaN); sy3 = new Float32Array(M.n).fill(NaN); for (const o of out) { sx3[o.p.i] = o.x; sy3[o.p.i] = o.y; }
+    $('m-3d-note').textContent = `Height is the catalogue date (middle of the range; faint lines span the range). ${shownDated.length.toLocaleString()} of ${(shownDated.length + td.undatedShown).toLocaleString()} matching specimens are dated; ${td.undatedShown.toLocaleString()} undated specimens are left out of the 3D view${td.reversed ? ` (${td.reversed} reversed catalogue range drawn earliest to latest)` : ''}.${td.top ? ` ${td.top[0]} supplies ${td.top[1].toLocaleString()} of them, so concentrations mostly show what museums collected and dated, not when a form appeared or how common it was.` : ''}`;
+    const subset = shownDated.length < td.dated.length ? shownDated : null;
+    $('m-time-bars').innerHTML = Space3D.histogram(td.scale, td.dated, subset, { color: '#94603c', grey: '#8a9590', ink: css('muted') || '#596764', label: `Dated specimens per period${subset ? ', current filter highlighted' : ''}` });
+    $('m-time-caption').textContent = `Dated specimens per period: all ${td.dated.length.toLocaleString()} dated${subset ? ` (grey) · current filter ${shownDated.length.toLocaleString()} (colour)` : '. Use the filters to compare one group.'}`;
+    return out;
+  }
+  const at = (i, w, h) => dim === '3d' ? [sx3[i], sy3[i]] : proj(i, w, h);
   function drawSpace() {
-    const { w, h } = layout(), colour = colorFn($('m-colour').value);
+    const { w, h } = layout(), colour = colorFn($('m-colour').value), three = dim === '3d';
+    $('m-3d-controls').hidden = $('m-time-hist').hidden = !three; cv.dataset.space3d = three ? '1' : ''; if (!three) cv.removeAttribute('data-space3d');
+    cv.setAttribute('aria-label', three ? 'Shape space with catalogue date as height; drag or use the camera buttons to rotate. Use the table below for text access' : 'Scatter plot of instrument shape space; use the table below for text access');
     ctx.clearRect(0, 0, w, h);
+    if (three) drawSpace3d(w, h, colour); else {
     ctx.globalAlpha = 0.5; ctx.fillStyle = '#d6ded6';
     for (let i = 0; i < M.n; i++) if (!sel[i]) { const [x, y] = proj(i, w, h); ctx.fillRect(x - 1, y - 1, 2, 2); }
     ctx.globalAlpha = 0.85;
     for (const i of shown) { const [x, y] = proj(i, w, h); ctx.fillStyle = colour(i); ctx.beginPath(); ctx.arc(x, y, M.cols.nw[i] ? 3.6 : 2.4, 0, 6.2832); ctx.fill(); }
+    }
     ctx.globalAlpha = 1;
-    if (pinned >= 0) {
-      const [px, py] = proj(pinned, w, h); ctx.strokeStyle = '#94603c'; ctx.lineWidth = 1.2;
-      for (const j of M.cols.nn[pinned]) { const [x, y] = proj(j, w, h); ctx.globalAlpha = sel[j] ? 0.9 : 0.35; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke(); }
+    if (pinned >= 0 && Number.isFinite(at(pinned, w, h)[0])) {
+      const [px, py] = at(pinned, w, h); ctx.strokeStyle = '#94603c'; ctx.lineWidth = 1.2;
+      for (const j of M.cols.nn[pinned]) { const [x, y] = at(j, w, h); if (!Number.isFinite(x)) continue; ctx.globalAlpha = sel[j] ? 0.9 : 0.35; ctx.beginPath(); ctx.moveTo(px, py); ctx.lineTo(x, y); ctx.stroke(); }
       ctx.globalAlpha = 1; ctx.lineWidth = 2.2; ctx.beginPath(); ctx.arc(px, py, 8, 0, 6.2832); ctx.stroke();
     }
     $('m-legend').innerHTML = legendFor($('m-colour').value);
@@ -96,7 +127,7 @@ const Morph = (() => {
   }
   function nearest(mx, my) {
     const { w, h } = { w: parseFloat(cv.style.width), h: parseFloat(cv.style.height) }; let best = -1, bd = 100;
-    for (const i of shown) { const [x, y] = proj(i, w, h), d = (x - mx) ** 2 + (y - my) ** 2; if (d < bd) { bd = d; best = i; } }
+    for (const i of shown) { const [x, y] = at(i, w, h), d = (x - mx) ** 2 + (y - my) ** 2; if (d < bd) { bd = d; best = i; } }
     return best;
   }
   function card(i, big) {
@@ -190,7 +221,12 @@ const Morph = (() => {
     $('m-reset').onclick = () => { for (const id of ['m-coll', 'm-region', 'm-family', 'm-group', 'm-mat', 'm-period']) $(id).value = ''; $('m-q').value = ''; pinned = -1; refresh(); };
     cv.addEventListener('mousemove', e => { const r = cv.getBoundingClientRect(), i = nearest(e.clientX - r.left, e.clientY - r.top), tip = $('m-tip'); if (i === hover) { if (i >= 0) { tip.style.left = Math.min(e.clientX - r.left + 14, r.width - 270) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px'; } return; } hover = i; if (i < 0) { tip.hidden = true; cv.style.cursor = 'default'; return; } cv.style.cursor = 'pointer'; tip.hidden = false; tip.innerHTML = `${sil(i, 240, 56, '#243b3b')}<strong>${esc(M.cols.title[i] || M.cols.id[i])}</strong><br><small>${esc(lab('coll', i))} · ${esc(lab('region', i).split(' (')[0])} · ${yearTxt(i)}<br>${esc(matTxt(i))}</small>`; tip.style.left = Math.min(e.clientX - r.left + 14, r.width - 270) + 'px'; tip.style.top = (e.clientY - r.top + 14) + 'px'; });
     cv.addEventListener('mouseleave', () => { $('m-tip').hidden = true; hover = -1; });
-    cv.addEventListener('click', e => { const r = cv.getBoundingClientRect(), i = nearest(e.clientX - r.left, e.clientY - r.top); if (i >= 0) { pinned = i; drawSpace(); } });
+    dragged = Space3D.rotate(cv, () => turn, v => { turn = v; $('m-tip').hidden = true; drawSpace(); });
+    $('m-dim').addEventListener('change', () => { dim = $('m-dim').value; drawSpace(); });
+    $('m-tscale').addEventListener('change', () => { tscale = $('m-tscale').value; drawSpace(); });
+    $('m-ranges').addEventListener('change', () => { ranges = $('m-ranges').checked; drawSpace(); });
+    $('m-3d-controls').addEventListener('click', e => { const b = e.target.closest('[data-m-turn],[data-m-rot]'); if (!b) return; turn = b.dataset.mTurn ? [...Space3D.PRESETS[b.dataset.mTurn]] : [turn[0] + Number(b.dataset.mRot) * Math.PI / 8, turn[1]]; drawSpace(); });
+    cv.addEventListener('click', e => { if (dragged()) return; const r = cv.getBoundingClientRect(), i = nearest(e.clientX - r.left, e.clientY - r.top); if (i >= 0) { pinned = i; drawSpace(); } });
     $('morph').addEventListener('click', e => { const tr = e.target.closest('[data-tree]'); if (tr && typeof Museum !== 'undefined') { Museum.showInTree(tr.dataset.tree); return; } const b = e.target.closest('[data-pin]'); if (!b) return; pinned = +b.dataset.pin; if (b.dataset.go) { view = b.dataset.go; $('m-view').value = view; } if (!sel[pinned]) { $('m-reset').click(); pinned = +b.dataset.pin; } render(); });
     window.addEventListener('resize', () => { if (ready && !$('morph').hidden && view === 'space') drawSpace(); });
     ready = true; sel = new Uint8Array(M.n).fill(1); shown = T.indices(sel);

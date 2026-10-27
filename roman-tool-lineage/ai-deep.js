@@ -1,7 +1,7 @@
 // Deep-representation views for Research -> AI Methods. Loaded on demand by ai.js.
 // Every file is a static, SHA-256-verified projection of saved local experiments
 // (data/<version>/ai-deep/). No model runs in the browser and nothing here writes labels.
-let summary,queryId,mapName='photo',mapColor='category',mapClass=null,mapPage=0,mapSearch='',mapView=null,mapObserver;
+let summary,queryId,queryFilter='',mapName='photo',mapColor='category',mapClass=null,mapPage=0,mapSearch='',mapView=null,mapObserver,mapDim='2d',mapScale='compressed',mapRanges=true,mapTurn=[-0.6,0.42],space3d;
 const loaded=new Map(),PAGE=20;
 const hex=buffer=>Array.from(new Uint8Array(buffer),b=>b.toString(16).padStart(2,'0')).join('');
 const f3=x=>Number.isFinite(x)?x.toFixed(3):'—',f2=x=>Number.isFinite(x)?x.toFixed(2):'—',pct=x=>Number.isFinite(x)?(x*100).toFixed(0)+'%':'—';
@@ -35,7 +35,14 @@ function seg(label,values,active,kind){return `<div class="ai-segments" role="gr
 function thumb(a,id,extra=''){const r=a.rows.get(id),name=r?.name||id;return `<a class="ai-thumb" href="#item/${id}" title="${a.esc(name)} · #${id}">${a.context.preview(r?.image,name)}${extra}</a>`}
 function recordLine(a,id){const r=a.rows.get(id);return `<a href="#item/${id}">${a.esc(r?.name||id)}</a> <small class="record-id">#${id}</small>`}
 function table(caption,head,body,cls=''){return `<div class="ai-deep-table ${cls}"><p class="ai-table-note">${caption}</p><div class="table-wrap"><table aria-label="${caption.replace(/<[^>]+>/g,'').replace(/"/g,'&quot;')}"><thead><tr>${head.map(h=>`<th scope="col">${h}</th>`).join('')}</tr></thead><tbody>${body.map(r=>`<tr>${r.map((c,i)=>i?`<td>${c}</td>`:`<th scope="row">${c}</th>`).join('')}</tr>`).join('')}</tbody></table></div></div>`}
-function match(a,id,rank,score){const r=a.rows.get(id);return `<article class="panel ai-match"><a class="ai-match-image" href="#item/${id}">${a.context.preview(r?.image,r?.name||id)}</a><div class="ai-match-copy"><div class="ai-match-rank">Rank ${rank} <strong>${a.num(score)}</strong></div><span class="record-id">#${id}</span><h2><a href="#item/${id}">${a.esc(r?.name||id)}</a></h2><p>${a.esc(r?.institution||'Source not recorded')}</p><div class="ai-match-actions"><button class="compare-toggle" data-compare="${id}" aria-pressed="false">+ Compare</button><button class="quiet" data-ai-select="${id}">Use as query</button></div></div></article>`}
+export async function browse(a){return file(a,'browse.json')}
+// One line of benchmark evidence for the chosen method (summary.method_evidence, from the saved benchmark run).
+function whyText(a,m){
+ const v=summary?.method_evidence?.[m];if(!v)return '';
+ const lead={photo:'Primary method: best cross-museum retrieval among image representations.',shape:'Form-only alternative: no photograph texture or background, and the weakest museum signature.',silhouette:'Matches but does not beat the outline baseline (finding F4).',multimodal:'Uses catalog text, so its benchmark score is partly circular.'}[m]||'';
+ return `${lead} Cross-museum P@10 ${f3(v.cross_institution_p10)} <small>[${f3(v.cross_institution_p10_ci[0])}, ${f3(v.cross_institution_p10_ci[1])}]</small> vs random ${f3(v.cross_institution_random_p10)}; same-museum enrichment ${f2(v.within_category_institution_enrichment)}× (1.0 = none); n = ${a.fmt(v.n)}. <button type="button" class="ai-link" data-ai-deep="goto-exp" data-value="ai-exp-benchmark">Benchmark →</button>`;
+}
+export async function methodWhy(a,m){await manifest(a);const host=a.$('ai-method-why');if(host)host.innerHTML=whyText(a,m)}
 
 export async function render(a,tab){
  if(tab==='retrieval')return similarity(a);
@@ -54,9 +61,8 @@ function missingReason(n,method){
 }
 async function similarity(a){
  const data=await item(a,a.selected);if(!a.current())return;
- const m=a.method,meta=summary.methods[m],list=data.neighbours[m];
- a.$('ai-content').innerHTML=`<div class="ai-toolbar">${a.methodBar()}<button type="button" class="quiet" data-ai-export="neighbors"${list?'':' disabled'}>Export these ranks</button></div><p class="ai-method-line"><strong>${a.esc(meta.label)}</strong> · cosine similarity, higher is closer. ${a.esc(meta.note)}</p><p class="ai-caution">Saved embeddings from the deep-representation study. Neighbours share visible 2-D form, mechanism or photography; similarity does not establish function or ancestry. Self and known duplicate groups are excluded.</p>
- ${list?`<p role="status">${list.length} ranked candidates · <a href="#compare">Open comparison</a></p><div id="ai-neighbors" class="ai-neighbors" data-method="${m}">${list.map(([id,score],i)=>match(a,id,i+1,score)).join('')}</div>`:`<div class="empty ai-deep-missing" role="status"><h2>Not available for this record</h2><p>${a.esc(meta.label)} neighbours are not available for this record (reason: ${missingReason(data.neighbours,m)}). No ranks were imputed.</p><button type="button" data-ai-method="text">Try catalog text</button></div>`}`;
+ const m=a.method,meta=summary.methods[m],list=data.neighbours[m],why=whyText(a,m);
+ a.$('ai-content').innerHTML=`<div class="ai-toolbar">${a.methodBar()}<button type="button" class="quiet" data-ai-export="neighbors"${list?'':' disabled'}>Export these ranks</button></div><p class="ai-method-line"><strong>${a.esc(meta.label)}</strong> · cosine similarity, higher is closer. ${a.esc(meta.note)}</p>${why?`<p id="ai-method-why" class="ai-method-why">${why}</p>`:''}${list?a.ranked(m,list,'cosine')+`<p class="ai-caution ai-caution-after">Saved embeddings from the deep-representation study. Neighbours share visible 2-D form, mechanism or photography; similarity does not establish function or ancestry. Self and known duplicate groups are excluded.</p>`:`<div class="empty ai-deep-missing" role="status"><h2>Not available for this record</h2><p>${a.esc(meta.label)} neighbours are not available for this record (reason: ${missingReason(data.neighbours,m)}). No ranks were imputed.</p><button type="button" data-ai-method="text">Try catalog text</button></div>`}`;
  a.context.syncComparisons();
 }
 export async function exportJson(a,name){
@@ -97,15 +103,20 @@ function functionRow(a,name,v){
 }
 async function evidence(a){
  const data=await item(a,a.selected);if(!a.current())return;
- const h=data.hypotheses,fns=summary.functions,counts={};for(const f of fns){const s=h.functions[f]?.state||'abstain';counts[s]=(counts[s]||0)+1}
+ const h=data.hypotheses,fns=summary.functions,counts={},state=f=>h.functions[f]?.state||'abstain';for(const f of fns){const s=state(f);counts[s]=(counts[s]||0)+1}
+ // Abstentions that still carry rule or documented text keep their full row so no evidence is hidden.
+ const detail=f=>state(f)!=='abstain'||h.functions[f]?.rules?.length||h.functions[f]?.documented?.length;
+ const shown=fns.filter(detail).sort((x,y)=>STATE_ORDER.indexOf(state(x))-STATE_ORDER.indexOf(state(y))),quiet=fns.filter(f=>!detail(f));
+ const support=shown.filter(f=>state(f)!=='abstain'),verdict=support.length?`Evidence for <strong>${support.map(f=>`${f} <small>(${STATES[state(f)][1].toLowerCase()})</small>`).join(', ')}</strong>.`:'No function has supporting evidence for this record.';
  const conflict=data.category_conflict;let codes={};
  if(conflict?.inspection){try{codes=(await file(a,'experiments.json')).disagreements.inspection.codes}catch{codes={}}if(!a.current())return}
- a.$('ai-content').innerHTML=`<div class="ai-toolbar"><div><h2>Function evidence</h2><p id="ai-evidence-counts">${STATE_ORDER.filter(s=>counts[s]).map(s=>`${counts[s]} ${STATES[s][1].toLowerCase()}`).join(' · ')}</p></div><button type="button" class="quiet" data-ai-export="evidence">Export evidence</button></div>
- <p class="ai-caution">Weak, source-derived states (thresholds and rule version: Experiments → Hypotheses). Image values are isotonic-calibrated agreement with existing catalog rules on held-out groups — not the probability that the object was used this way. Abstention means unknown. Human review is deferred; these states are not training ground truth.</p>
+ a.$('ai-content').innerHTML=`<div class="ai-toolbar"><div><h2>Function evidence</h2><p id="ai-evidence-verdict" class="ai-evidence-verdict">${verdict}</p><p id="ai-evidence-counts">${STATE_ORDER.filter(s=>counts[s]).map(s=>`${counts[s]} ${STATES[s][1].toLowerCase()}`).join(' · ')}</p></div><button type="button" class="quiet" data-ai-export="evidence">Export evidence</button></div>
+ <p class="ai-caution">Weak, source-derived states (Experiments → Hypotheses). Image values are calibrated agreement with existing catalog rules on held-out groups, not the probability that the object was used this way. Abstention means unknown, never “not used for”. Human review is deferred.</p>
  ${!h.single?'<p class="ai-deep-note" role="note"><strong>Not a single-object unit.</strong> Depictions, documents and kits do not receive image hypotheses.</p>':''}
  ${conflict?`<p class="ai-deep-note" role="note" data-conflict><strong>Category check.</strong> Catalog category <em>${a.esc(words(conflict.catalog))}</em>, but ${pct(conflict.agreement)} of the ten nearest photo neighbours share <em>${a.esc(words(conflict.neighbours))}</em> (flagged at ≥ 7 of 10). ${conflict.inspection?`Inspection code <span class="chip">${a.esc(conflict.inspection)}</span> ${a.esc(codes[conflict.inspection]||'')} <small>Single-coder visual inspection; not expert review.</small>`:'Not yet visually inspected.'}</p>`:''}
  <details class="ai-state-key"><summary>State key</summary><dl>${STATE_ORDER.map(s=>`<dt>${chip(s)}</dt><dd>${STATES[s][2]}</dd>`).join('')}</dl></details>
- <div id="ai-functions" class="ai-functions">${fns.map(f=>functionRow(a,f,h.functions[f])).join('')}</div>
+ <div id="ai-functions" class="ai-functions">${shown.map(f=>functionRow(a,f,h.functions[f])).join('')}</div>
+ ${quiet.length?`<div id="ai-abstained" class="ai-abstained-row">${chip('abstain')}<span>No evidence for</span><ul>${quiet.map(f=>`<li data-function="${f}" data-state="abstain">${f}</li>`).join('')}</ul></div>`:''}
  <div class="ai-evidence-context">
  <section class="panel ai-affordance" aria-labelledby="ai-affordance-title"><h3 id="ai-affordance-title">Physical affordance cues <small>(visible form, not use)</small></h3><p class="muted">Zero-shot SigLIP 2 prompt scores (centred; compare only within this record) and outline geometry of the two terminal segments. 2-D photograph form without physical scale.</p>
  ${h.cues?.length?`<ol class="ai-cues">${h.cues.map(([cue,text,score])=>`<li><strong>${a.esc(words(cue))}</strong> <span>${a.esc(text)}</span> <small>centred score ${score.toFixed(3)}</small></li>`).join('')}</ol>`:'<p>No prompt cues: this record has no usable photograph.</p>'}
@@ -140,23 +151,30 @@ function analogs(a,list){
  return `<ul class="ai-fn-list">${list.map(x=>typeof x!=='object'?`<li>${a.esc(x)}</li>`:`<li>${x.url?`<a href="${a.esc(x.url)}" target="_blank" rel="noopener">${a.esc(x.title||x.label||x.name||x.id||'Analog')}</a>`:a.esc(x.title||x.label||x.name||x.id||'Analog')}${Number.isFinite(x.cosine)?` <small>cosine ${x.cosine.toFixed(3)}</small>`:''}${x.source?` <small>${a.esc(x.source)}</small>`:''}${x.license?` <small>${a.esc(x.license)}</small>`:''}</li>`).join('')}</ul>`;
 }
 
-// ---------- Text search (precomputed cross-modal queries) ----------
+// ---------- Search by task (precomputed SigLIP 2 zero-shot queries) ----------
 const LANG={en:'English',nl:'Dutch',sv:'Swedish'};
+function queryMatches(q){const f=queryFilter.trim().toLowerCase();return !f||`${q.text} ${q.group} ${LANG[q.lang]||q.lang} ${q.expected||''}`.toLowerCase().includes(f)}
+function queryList(a,d){
+ const groups=d.groups.map(g=>[g,d.queries.filter(q=>q.group===g.id&&queryMatches(q))]).filter(([,qs])=>qs.length);
+ return groups.length?groups.map(([g,qs])=>`<div class="ai-tq-group"><h3>${a.esc(g.label)}</h3><div class="ai-tq-buttons" role="group" aria-label="${a.esc(g.label)}">${qs.map(q=>`<button type="button" data-ai-deep="query" data-value="${q.id}" aria-pressed="${q.id===queryId}">${a.esc(q.text)}${q.lang!=='en'?` <small>${q.lang}</small>`:''}</button>`).join('')}</div></div>`).join(''):'<p role="status">No precomputed query matches. Clear the filter.</p>';
+}
 async function search(a){
- const d=await file(a,'crossmodal.json');if(!a.current())return;
- const zs=d.methods.siglip2_zero_shot,ad=d.methods.adapted,queries=zs.queries;queryId||=queries[0].id;
- const langs=[...new Set(queries.map(q=>q.lang))];
- const column=(key,title,method,note)=>{const q=method.queries.find(x=>x.id===queryId);const scored=Number.isFinite(q.test_precision_at_20);
-  return `<section class="panel ai-xm-col" data-xm-method="${key}" aria-labelledby="ai-xm-${key}"><h3 id="ai-xm-${key}">${title}</h3><p class="muted">${note}</p>${scored?`<div class="ai-xm-score"><span>Test precision@20 <strong>${f2(q.test_precision_at_20)}</strong></span><span>Base rate <strong>${f2(q.test_base_rate)}</strong></span><span class="ai-compare-bar" aria-hidden="true"><i class="ai-bar-value" style="width:${q.test_precision_at_20*100}%"></i><i class="ai-bar-ref" style="left:${q.test_base_rate*100}%"></i></span></div>`:'<p class="ai-xm-score">Not scored: no matching category in the evaluation split.</p>'}
-  <ol class="ai-xm-list">${q.top.map(([id,c],i)=>`<li data-id="${id}">${thumb(a,id)}<span><span class="ai-xm-rank">${i+1} · cosine ${c.toFixed(3)}</span>${recordLine(a,id)}</span></li>`).join('')}</ol></section>`};
- const q=queries.find(x=>x.id===queryId);
- a.$('ai-content').innerHTML=`<div class="ai-toolbar"><div><h2>Text search</h2><p>${queries.length} precomputed queries in ${langs.length} languages · results rank record photographs by text–image cosine.</p></div><a href="${a.context.base}ai-deep/crossmodal.json" download>Export queries (JSON)</a></div>
- <p class="ai-caution">Queries were embedded offline; no model runs in your browser and free-text search is not available. Test precision@20 is the share of the 20 highest-ranked held-out test records whose catalog category is the expected one; the base rate is that category's share of the test split (the expected precision of a random ranking). The lists show the 12 highest-ranked records in the whole collection, including training records; precision is computed on held-out test records only. Categories are weak, catalog-derived labels.</p>
- <label class="ai-xm-select">Precomputed query<select id="ai-xm-select">${langs.map(l=>`<optgroup label="${LANG[l]||l}">${queries.filter(x=>x.lang===l).map(x=>`<option value="${x.id}"${x.id===queryId?' selected':''}>${a.esc(x.text)}</option>`).join('')}</optgroup>`).join('')}</select></label><div class="ai-xm-queries">${langs.map(l=>`<div class="ai-xm-lang"><h3>${LANG[l]||l}</h3>${seg(`${LANG[l]||l} queries`,queries.filter(x=>x.lang===l).map(x=>[x.id,a.esc(x.text)]),queryId,'query')}</div>`).join('')}</div>
- <p id="ai-xm-current" class="ai-method-line" role="status">Query <strong>“${a.esc(q.text)}”</strong> (${LANG[q.lang]||q.lang}) · expected category <em>${a.esc(words(q.expected||'not mapped'))}</em></p>
- <div class="ai-xm-grid">${column('siglip2_zero_shot','SigLIP 2 · zero-shot',zs,'Frozen SigLIP 2 B/16 text and image towers.')}${column('adapted','Adapted image encoder',ad,`Photo-randomised DINOv2-B adapted to multilingual E5 catalog text (${a.esc(d.adapted_tag)}).`)}</div>
- <p class="muted">Mean over scored queries: SigLIP 2 ${f2(zs.mean_test_precision_at_20)} and adapted ${f2(ad.mean_test_precision_at_20)} test precision@20, against a mean base rate of ${f2(zs.mean_base_rate)}.</p>`;
+ const d=await file(a,'tasks.json');if(!a.current())return;
+ queryId||=d.queries[0].id;const q=d.queries.find(x=>x.id===queryId),scored=Number.isFinite(q.test_precision_at_20),fresh=q.origin!=='crossmodal-1.0.0';
+ const group=d.groups.find(g=>g.id===q.group),s=d.summary,pre=s['crossmodal-1.0.0'],post=s['task-1.0.0'],max=q.top_categories[0]?.[1]||1;
+ a.$('ai-content').innerHTML=`<div class="ai-toolbar"><div><h2>Search by task</h2><p>${d.queries.length} precomputed queries · SigLIP 2 zero-shot ranks ${a.fmt(d.images)} record photographs by text–image cosine.</p></div><a href="${a.context.base}ai-deep/tasks.json" download>Export queries (JSON)</a></div>
+ <p class="ai-caution">Queries were embedded offline; no model runs in your browser, so free text is not available. Zero-shot search always returns a ranking: the controls (“a door key”, “a comb”) rank instruments too, so a high place is not evidence that a matching tool exists. Short object names work better than descriptions of a clinical task.</p>
+ <div class="ai-tq-layout"><aside class="ai-tq-side" aria-label="Choose a query"><label class="ai-tq-filter">Filter queries<input id="ai-tq-filter" type="search" placeholder="e.g. ear, forceps, bone…" value="${a.esc(queryFilter)}" autocomplete="off"></label>
+ <label class="ai-xm-select">Precomputed query<select id="ai-xm-select">${d.groups.map(g=>`<optgroup label="${a.esc(g.label)}">${d.queries.filter(x=>x.group===g.id).map(x=>`<option value="${x.id}"${x.id===queryId?' selected':''}>${a.esc(x.text)}${x.lang!=='en'?` (${x.lang})`:''}</option>`).join('')}</optgroup>`).join('')}</select></label>
+ <div id="ai-tq-list" class="ai-tq-list">${queryList(a,d)}</div></aside>
+ <section class="ai-tq-results" data-xm-method="siglip2_zero_shot" aria-labelledby="ai-xm-current">
+ <h3 id="ai-xm-current" class="ai-tq-query">“${a.esc(q.text)}” <small>${a.esc(group?.label||q.group)} · ${LANG[q.lang]||q.lang}</small></h3>
+ <div class="ai-tq-facts">${scored?`<div class="ai-xm-score"><span>Test precision@20 <strong>${f2(q.test_precision_at_20)}</strong></span><span>Base rate <strong>${f2(q.test_base_rate)}</strong></span><span class="ai-compare-bar" aria-hidden="true"><i class="ai-bar-value" style="width:${q.test_precision_at_20*100}%"></i><i class="ai-bar-ref" style="left:${q.test_base_rate*100}%"></i></span><small>Expected category <em>${a.esc(words(q.expected))}</em>, held-out test records only${fresh?'. Exploratory: query written after the pre-registered results':''}.</small></div>`:'<p class="ai-xm-score">Not scored: no single coarse category with enough test records. Inspect the ranking.</p>'}
+ <figure class="ai-tq-mix"><figcaption>Catalog categories in the top 20</figcaption><ul>${q.top_categories.map(([c,n])=>`<li><span>${a.esc(words(c))}</span><span class="ai-hbar"><i style="width:${n/max*100}%"></i></span><b>${n}</b></li>`).join('')}</ul></figure></div>
+ <ol id="ai-xm-results" class="ai-ranked ai-xm-list">${q.top.map(([id,c,cat],i)=>{const r=a.rows.get(id);return `<li class="ai-match" data-id="${id}"><span class="ai-rank-no" aria-hidden="true">${i+1}</span>${thumb(a,id)}<div class="ai-match-copy"><h2><a href="#item/${id}">${a.esc(r?.name||id)}</a></h2><p><span class="record-id">#${id}</span> · ${a.esc(r?.institution||'')}${cat?` · ${a.esc(words(cat))}`:''}</p></div><div class="ai-match-score"><span class="ai-xm-rank"><span class="ai-sr">Rank ${i+1}, cosine </span><strong>${c.toFixed(3)}</strong></span><small aria-hidden="true">cosine</small></div><div class="ai-match-actions"><button type="button" class="quiet" data-ai-deep="goto" data-tab="retrieval" data-value="${id}">Similar tools</button></div></li>`}).join('')}</ol></section></div>
+ <p class="muted">Pre-registered queries (finding F10): mean test precision@20 ${f2(pre.precision_at_20.mean)} over ${pre.precision_at_20.n} scored queries vs base rate ${f2(pre.base_rate.mean)}. Queries added for browsing: ${f2(post.precision_at_20.mean)} over ${post.precision_at_20.n} vs ${f2(post.base_rate.mean)} (exploratory). The adapted encoder's comparison is in <button type="button" class="ai-link" data-ai-deep="goto-exp" data-value="ai-exp-crossmodal">Experiments → Cross-modal</button>.</p>`;
  a.$('ai-xm-select').onchange=async()=>{queryId=a.$('ai-xm-select').value;await a.render();a.$('ai-xm-select')?.focus({preventScroll:true})};
+ a.$('ai-tq-filter').oninput=()=>{queryFilter=a.$('ai-tq-filter').value;a.$('ai-tq-list').innerHTML=queryList(a,d)};
 }
 
 // ---------- Embedding map ----------
@@ -173,22 +191,28 @@ function legendClasses(a,d,points){
  return {style,named,otherCount,other:sorted.filter(([c])=>!style.has(c)).map(([c,k])=>`${words(c)} (${k})`)};
 }
 async function map(a){
- const d=await file(a,'maps.json');if(!a.current())return;
+ const d=await file(a,'maps.json');if(mapDim==='3d'&&!space3d){await import('./app/space3d.js');space3d=globalThis.Space3D}if(!a.current())return;
  const m=d.maps[mapName],legend=legendClasses(a,d,m.points),plotted=new Set(m.points.map(p=>p[0]));
- a.$('ai-content').innerHTML=`<div class="ai-toolbar ai-map-toolbar">${seg('Embedding',MAPS,mapName,'map')}${seg('Colour by',[['category','Catalog category'],['institution','Source museum']],mapColor,'map-color')}<a href="${a.context.base}ai-deep/maps.json" download>Export map (JSON)</a></div>
+ const three=mapDim==='3d',time=three?dated(a,d,m,legend):null;
+ a.$('ai-content').innerHTML=`<div class="ai-toolbar ai-map-toolbar">${seg('Embedding',MAPS,mapName,'map')}${seg('Colour by',[['category','Catalog category'],['institution','Source museum']],mapColor,'map-color')}${seg('View',[['2d','2D map'],['3d','3D · time']],mapDim,'map-dim')}<a href="${a.context.base}ai-deep/maps.json" download>Export map (JSON)</a></div>
+ ${three?`<div class="ai-toolbar ai-map3d-controls">${seg('Time scale',[['compressed','Compressed'],['linear','Linear']],mapScale,'map-scale')}<div class="ai-segments" role="group" aria-label="Camera"><button type="button" data-ai-deep="map-turn" data-value="oblique">Oblique</button><button type="button" data-ai-deep="map-turn" data-value="time">Side (time)</button><button type="button" data-ai-deep="map-turn" data-value="map">Top (map)</button><button type="button" data-ai-deep="map-rot" data-value="-1" aria-label="Rotate left">↺</button><button type="button" data-ai-deep="map-rot" data-value="1" aria-label="Rotate right">↻</button></div><label class="ai-check"><input type="checkbox" id="ai-map-ranges"${mapRanges?' checked':''}> Date ranges</label></div>
+ <p class="ai-caution" id="ai-map-time-note">Height is the catalog date: each point sits at the middle of its catalog date range and the faint vertical line spans the range. ${a.fmt(time.undated)} of ${a.fmt(m.points.length)} plotted records have no catalog date and are left out of the 3D view (they remain in the 2D map and the table)${time.reversed?`; ${time.reversed} reversed range drawn from earliest to latest`:''}. ${a.esc(time.top[0])} supplies ${a.fmt(time.top[1])} of ${a.fmt(time.points.length)} dated records, so a concentration in time mostly shows what museums collected and dated, not when a tool type appeared or how common it was.</p>`:''}
  <p class="ai-caution">${a.esc(d.note)} UMAP (${d.params.n_neighbors} neighbours, min. distance ${d.params.min_dist}, ${a.esc(d.params.metric)} metric, seed ${d.params.random_state}); both axes are dimensionless and normalised to 0–1. Use Similarity for actual nearest neighbours.</p>
  <div id="ai-map-legend" class="ai-cluster-legend ai-map-legend" role="group" aria-label="Highlight a ${mapColor==='category'?'category':'museum'}">${legend.named.map(([c,n])=>`<button type="button" data-ai-deep="map-class" data-value="${a.esc(c)}" aria-pressed="${mapClass===c}"><svg class="ai-marker" viewBox="0 0 12 12" aria-hidden="true" fill="${legend.style.get(c).color}" stroke="${legend.style.get(c).color}">${SVG_SHAPES[legend.style.get(c).shape]}</svg>${a.esc(words(c))} <small>${a.fmt(n)}</small></button>`).join('')}${legend.otherCount?`<button type="button" data-ai-deep="map-class" data-value="__other" aria-pressed="${mapClass==='__other'}" title="${a.esc(legend.other.join(', '))}"><svg class="ai-marker" viewBox="0 0 12 12" aria-hidden="true" fill="${a.palette.missing}">${SVG_SHAPES.dot}</svg>Other / not mapped <small>${a.fmt(legend.otherCount)}</small></button>`:''}</div>
- <p id="ai-map-status" role="status">${a.fmt(m.points.length)} records plotted from ${a.esc(m.source)} · ${a.fmt(a.rows.size-m.points.length)} without this representation. ${plotted.has(a.selected)?'':`The selected record #${a.selected} is not in this map.`}</p>
- <div class="ai-cluster-layout"><div class="ai-chart panel ai-map-chart"><canvas id="ai-map-canvas" tabindex="0" role="img" aria-label="Two-dimensional UMAP display of ${a.esc(m.source)} embeddings coloured by ${mapColor}. Arrow keys step through points, Enter selects. The table below lists every point."></canvas><div id="ai-map-tip" class="ai-map-tip" hidden></div></div><aside id="ai-map-detail" class="panel" aria-live="polite"></aside></div>
+ <p id="ai-map-status" role="status">${a.fmt(m.points.length)} records plotted from ${a.esc(m.source)} · ${a.fmt(a.rows.size-m.points.length)} without this representation${three?` · ${a.fmt(time.points.length)} dated in 3D`:''}. ${plotted.has(a.selected)?(three&&!time.points.some(p=>p.id===a.selected)?`The selected record #${a.selected} is undated and not shown in 3D.`:''):`The selected record #${a.selected} is not in this map.`}</p>
+ <div class="ai-cluster-layout"><div class="ai-chart panel ai-map-chart"><canvas id="ai-map-canvas" tabindex="0" role="img"${three?' data-space3d="1"':''} aria-label="${three?`Three-dimensional view: UMAP display of ${a.esc(m.source)} embeddings with catalog date as height, coloured by ${mapColor}. Drag or use the camera buttons to rotate. Arrow keys step through points in date order, Enter selects.`:`Two-dimensional UMAP display of ${a.esc(m.source)} embeddings coloured by ${mapColor}. Arrow keys step through points, Enter selects.`} The table below lists every point."></canvas><div id="ai-map-tip" class="ai-map-tip" hidden></div></div><aside id="ai-map-detail" class="panel" aria-live="polite"></aside></div>
+ ${three?'<figure class="panel ai-time-hist"><figcaption id="ai-time-hist-caption"></figcaption><div id="ai-time-hist"></div><p class="muted">Each record is spread evenly over its catalog date range (fractional counts). Bins are equal width on the displayed time scale.</p></figure>':''}
  <label class="ai-map-find">Find a plotted record<input id="ai-map-search" type="search" placeholder="Name or identifier…" value="${a.esc(mapSearch)}"></label>
  <div id="ai-map-table" class="table-wrap"></div><div class="pagination"><button type="button" data-ai-deep="map-page" data-value="-1" id="ai-map-prev">← Previous</button><p id="ai-map-page" role="status"></p><button type="button" data-ai-deep="map-page" data-value="1" id="ai-map-next">Next →</button></div>`;
- mapView={d,m,legend,points:[],order:[],focus:-1,locked:null};
+ mapView={d,m,legend,time,points:[],order:[],focus:-1,locked:null};
  const canvas=a.$('ai-map-canvas'),tip=a.$('ai-map-tip');
  const nearest=(x,y)=>{let best=110,hit=null;for(const p of mapView.points){const q=(p.x-x)**2+(p.y-y)**2;if(q<best){best=q;hit=p}}return hit};
  const show=(p)=>{if(!p){tip.hidden=true;return}const r=a.rows.get(p.id);tip.innerHTML=`${a.context.preview(r?.image,r?.name||p.id)}<span><strong>${a.esc(r?.name||p.id)}</strong><small>#${p.id} · ${a.esc(words(classOf(d,p.id)))}</small></span>`;tip.hidden=false;const w=canvas.clientWidth;tip.style.left=Math.min(Math.max(p.x+12,0),w-tip.offsetWidth-4)+'px';tip.style.top=Math.max(p.y-tip.offsetHeight-10,4)+'px'};
  canvas.onpointermove=ev=>{const b=canvas.getBoundingClientRect(),p=nearest(ev.clientX-b.left,ev.clientY-b.top);canvas.style.cursor=p?'pointer':'default';show(p)};
  canvas.onpointerleave=()=>{tip.hidden=true};
- canvas.onclick=ev=>{const b=canvas.getBoundingClientRect(),p=nearest(ev.clientX-b.left,ev.clientY-b.top);if(p)a.choose(p.id,true)};
+ const dragged=three?space3d.rotate(canvas,()=>mapTurn,v=>{mapTurn=v;tip.hidden=true;draw(a)}):()=>false;
+ if(three)a.$('ai-map-ranges').onchange=ev=>{mapRanges=ev.target.checked;draw(a)};
+ canvas.onclick=ev=>{if(dragged())return;const b=canvas.getBoundingClientRect(),p=nearest(ev.clientX-b.left,ev.clientY-b.top);if(p)a.choose(p.id,true)};
  canvas.onkeydown=ev=>{const order=mapView.order;if(!order.length)return;
   if(['ArrowRight','ArrowDown','ArrowLeft','ArrowUp'].includes(ev.key)){ev.preventDefault();const step=ev.key==='ArrowRight'||ev.key==='ArrowDown'?1:-1;mapView.focus=mapView.focus<0?(step>0?0:order.length-1):(mapView.focus+step+order.length)%order.length;show(order[mapView.focus]);draw(a)}
   else if((ev.key==='Enter'||ev.key===' ')&&mapView.focus>=0){ev.preventDefault();a.choose(order[mapView.focus].id,true)}
@@ -196,7 +220,22 @@ async function map(a){
  canvas.onblur=()=>{tip.hidden=true};
  a.$('ai-map-search').oninput=()=>{mapSearch=a.$('ai-map-search').value;mapPage=0;mapTable(a)};
  mapObserver?.disconnect();mapObserver=new ResizeObserver(()=>{if(a.$('ai-map-canvas'))draw(a)});mapObserver.observe(canvas.parentElement);
- draw(a);mapDetail(a);mapTable(a);
+ draw(a);mapDetail(a);mapTable(a);mapHist(a);
+}
+// Dated points for the 3D view, from the catalog date range of each plotted record. Undated records are
+// counted and reported, never imputed; reversed ranges are reordered and counted.
+function dated(a,d,m,legend){
+ const points=[],museums=new Map();let undated=0,reversed=0;
+ for(const [id,x,y] of m.points){const r=a.rows.get(id);if(r?.start==null){undated++;continue}if(r.end!=null&&r.end<r.start)reversed++;
+  const [t0,t1]=space3d.range(r.start,r.end),c=classOf(d,id);points.push({id,x,y,t0,t1,c,color:legend.style.get(c)?.color||a.palette.missing});museums.set(d.institution[id]||'Unknown source',(museums.get(d.institution[id]||'Unknown source')||0)+1)}
+ const lo=Math.min(...points.map(p=>p.t0)),hi=Math.max(...points.map(p=>p.t1));
+ return {points,undated,reversed,top:[...museums].sort((p,q)=>q[1]-p[1])[0]||['No source',0],lo,hi,scale:points.length?space3d.timeScale(mapScale,lo,hi):null};
+}
+function mapHist(a){
+ const host=a.$('ai-time-hist');if(!host||!mapView.time?.scale)return;const t=mapView.time,css=k=>getComputedStyle(a.root()).getPropertyValue('--'+k).trim();
+ const sub=mapClass?t.points.filter(p=>visible(p.id)):null,name=mapClass==='__other'?'Other / not mapped':words(mapClass||'');
+ host.innerHTML=space3d.histogram(t.scale,t.points,sub,{color:mapClass==='__other'?a.palette.missing:mapView.legend.style.get(mapClass)?.color,grey:css('muted'),ink:css('muted'),label:`Dated records per period${sub?`, ${name} highlighted`:''}`});
+ a.$('ai-time-hist-caption').innerHTML=`Dated records per period: all ${a.fmt(t.points.length)} dated${sub?` (grey) · <strong>${a.esc(name)}</strong> ${a.fmt(sub.length)} (colour)`:'. Highlight a legend class to compare one group.'}`;
 }
 function visible(id){if(!mapClass)return true;const c=classOf(mapView.d,id);return mapClass==='__other'?!mapView.legend.style.has(c):c===mapClass}
 function draw(a){
@@ -204,6 +243,7 @@ function draw(a){
  const ratio=devicePixelRatio||1;canvas.width=w*ratio;canvas.height=h*ratio;const g=canvas.getContext('2d');g.scale(ratio,ratio);
  const css=k=>getComputedStyle(a.root()).getPropertyValue('--'+k).trim(),P=16;
  g.fillStyle=css('panel');g.fillRect(0,0,w,h);
+ if(mapDim==='3d'&&mapView.time){draw3d(a,g,w,h,css);return rings(a,g,css,canvas)}
  const sx=v=>P+v*(w-2*P),sy=v=>h-P-v*(h-2*P);
  mapView.points=mapView.m.points.map(([id,x,y])=>({id,x:sx(x),y:sy(y),c:classOf(mapView.d,id)}));
  mapView.order=mapView.points.filter(p=>visible(p.id)).sort((p,q)=>p.x-q.x);
@@ -211,11 +251,21 @@ function draw(a){
  const paint=(p,style)=>{g.globalAlpha=visible(p.id)?.78:.1;g.beginPath();if(!style){g.fillStyle=a.palette.missing;g.arc(p.x,p.y,r*.7,0,Math.PI*2);g.fill();return}SHAPES[style.shape](g,p.x,p.y,r);if(style.shape==='cross'){g.strokeStyle=style.color;g.lineWidth=1.4;g.stroke()}else{g.fillStyle=style.color;g.fill()}};
  for(const p of others)paint(p,null);
  for(const [c] of named){const style=mapView.legend.style.get(c);for(const p of mapView.points)if(p.c===c)paint(p,style)}
- g.globalAlpha=1;
+ g.globalAlpha=1;rings(a,g,css,canvas);
+ g.fillStyle=css('muted');g.font='11px system-ui';g.textAlign='right';g.fillText('UMAP display · dimensionless',w-8,h-6);
+}
+function rings(a,g,css,canvas){
  const ring=(p,color,size)=>{g.beginPath();g.arc(p.x,p.y,size,0,Math.PI*2);g.lineWidth=2;g.strokeStyle=color;g.stroke()};
  const sel=mapView.points.find(p=>p.id===a.selected);if(sel){ring(sel,css('panel'),9);ring(sel,css('ink'),7.5)}
  const focus=mapView.order[mapView.focus];if(focus&&document.activeElement===canvas)ring(focus,css('accent'),6);
- g.fillStyle=css('muted');g.font='11px system-ui';g.textAlign='right';g.fillText('UMAP display · dimensionless',w-8,h-6);
+}
+function draw3d(a,g,w,h,css){
+ const t=mapView.time,base=w<500?2.4:3;if(!t.scale)return;
+ const out=space3d.render(g,{w,h,view:mapTurn,scale:t.scale,points:t.points,whiskers:mapRanges,highlight:p=>visible(p.id),css:{border:css('border'),muted:css('muted')},
+  paint:(p,x,y,depth)=>{const st=mapView.legend.style.get(p.c),r=base*(1.15-.35*depth);g.globalAlpha=(visible(p.id)?.85:.08)*(1-.3*depth);g.beginPath();
+   if(!st){g.fillStyle=a.palette.missing;g.arc(x,y,r*.7,0,Math.PI*2);g.fill();return}SHAPES[st.shape](g,x,y,r);if(st.shape==='cross'){g.strokeStyle=st.color;g.lineWidth=1.4;g.stroke()}else{g.fillStyle=st.color;g.fill()}}});
+ g.globalAlpha=1;mapView.points=out.map(o=>({id:o.p.id,x:o.x,y:o.y,c:o.p.c,t:(o.p.t0+o.p.t1)/2}));
+ mapView.order=mapView.points.filter(p=>visible(p.id)).sort((p,q)=>p.t-q.t);
 }
 function mapDetail(a){
  const host=a.$('ai-map-detail');if(!host)return;const id=a.selected,r=a.rows.get(id),inMap=mapView.m.points.some(p=>p[0]===id);
@@ -225,9 +275,10 @@ function mapTable(a){
  const q=mapSearch.trim().replace(/^#/,'').toLowerCase(),d=mapView.d;
  const pts=mapView.m.points.filter(([id])=>visible(id)&&(!q||`${id} ${a.rows.get(id)?.name||''}`.toLowerCase().includes(q)));
  mapPage=Math.min(mapPage,Math.max(0,Math.ceil(pts.length/PAGE)-1));
- a.$('ai-map-table').innerHTML=`<table><caption>Accessible map table: ${a.fmt(pts.length)} matching plotted records. Coordinates are dimensionless display positions, not feature distances.</caption><thead><tr><th scope="col">Record</th><th scope="col">Catalog category</th><th scope="col">Source museum</th><th scope="col">x</th><th scope="col">y</th><th scope="col">Action</th></tr></thead><tbody>${pts.length?pts.slice(mapPage*PAGE,(mapPage+1)*PAGE).map(([id,x,y])=>`<tr${id===a.selected?' aria-current="true"':''}><td>${recordLine(a,id)}</td><td>${a.esc(words(d.category[id]||'not mapped'))}</td><td>${a.esc(d.institution[id]||'')}</td><td>${x.toFixed(3)}</td><td>${y.toFixed(3)}</td><td><button type="button" class="quiet" data-ai-deep="map-select" data-value="${id}">Select on map</button></td></tr>`).join(''):'<tr><td colspan="6">No matching plotted records. Clear the search or highlighted group.</td></tr>'}</tbody></table>`;
+ a.$('ai-map-table').innerHTML=`<table><caption>Accessible map table: ${a.fmt(pts.length)} matching plotted records. Coordinates are dimensionless display positions, not feature distances.</caption><thead><tr><th scope="col">Record</th><th scope="col">Catalog category</th><th scope="col">Source museum</th><th scope="col">x</th><th scope="col">y</th><th scope="col">Catalog date</th><th scope="col">Action</th></tr></thead><tbody>${pts.length?pts.slice(mapPage*PAGE,(mapPage+1)*PAGE).map(([id,x,y])=>`<tr${id===a.selected?' aria-current="true"':''}><td>${recordLine(a,id)}</td><td>${a.esc(words(d.category[id]||'not mapped'))}</td><td>${a.esc(d.institution[id]||'')}</td><td>${x.toFixed(3)}</td><td>${y.toFixed(3)}</td><td>${dateText(a,id)}</td><td><button type="button" class="quiet" data-ai-deep="map-select" data-value="${id}">Select on map</button></td></tr>`).join(''):'<tr><td colspan="7">No matching plotted records. Clear the search or highlighted group.</td></tr>'}</tbody></table>`;
  a.$('ai-map-page').textContent=`Page ${mapPage+1} of ${Math.max(1,Math.ceil(pts.length/PAGE))}`;a.$('ai-map-prev').disabled=mapPage===0;a.$('ai-map-next').disabled=(mapPage+1)*PAGE>=pts.length;
 }
+function dateText(a,id){const r=a.rows.get(id),y=v=>v<0?`${-v} BCE`:String(v);return r?.start==null?'undated':r.end==null||r.end===r.start?y(r.start):`${y(Math.min(r.start,r.end))}–${y(Math.max(r.start,r.end))}`}
 export function selectionChanged(a){if(!mapView||!a.$('ai-map-canvas'))return a.render();draw(a);mapDetail(a);mapTable(a)}
 
 // ---------- Experiments ----------
@@ -315,7 +366,7 @@ function affordanceSection(a,x){
 function crossmodalSection(a,cm){
  const m=cm.methods,langs=[...new Set(Object.values(m).flatMap(v=>Object.keys(v.by_language)))];
  return sectionHtml('crossmodal','Cross-modal text → image retrieval','Catalog-language queries rank record photographs. Scored on the held-out test split only.',
- table('Mean test precision@20 over scored queries, against the mean base rate (random ranking).',['Method','Mean test P@20','Mean base rate',...langs.map(l=>`${LANG[l]||l} P@20`)],Object.entries(m).map(([k,v])=>[k==='adapted'?'Adapted image encoder':'SigLIP 2 zero-shot',f3(v.mean_test_precision_at_20),f3(v.mean_base_rate),...langs.map(l=>f3(v.by_language[l]))]))+`<p><button type="button" data-ai-tab="search">Browse the precomputed queries in Text search →</button></p>`);
+ table('Mean test precision@20 over scored queries, against the mean base rate (random ranking).',['Method','Mean test P@20','Mean base rate',...langs.map(l=>`${LANG[l]||l} P@20`)],Object.entries(m).map(([k,v])=>[k==='adapted'?'Adapted image encoder':'SigLIP 2 zero-shot',f3(v.mean_test_precision_at_20),f3(v.mean_base_rate),...langs.map(l=>f3(v.by_language[l]))]))+`<p><button type="button" data-ai-tab="search">Browse the precomputed queries in Search by task →</button></p>`);
 }
 function duplicateSection(a,x){
  const n=x.near_duplicates,sens=x.near_duplicate_sensitivity,keys=['dinov2_l14:raw','dinov2_b14:silhouette','fusion:photo+silhouette','outline_multiblock:existing','e5_multilingual:text'].filter(k=>sens[k]);
@@ -363,9 +414,12 @@ export async function action(a,button){
  const kind=button.dataset.aiDeep,value=button.dataset.value;
  if(kind==='query'){queryId=value;await a.render();a.root().querySelector(`[data-ai-deep="query"][data-value="${value}"]`)?.focus({preventScroll:true});return}
  if(kind==='map'||kind==='map-color'){if(kind==='map')mapName=value;else mapColor=value;mapClass=null;mapPage=0;await a.render();a.root().querySelector(`[data-ai-deep="${kind}"][data-value="${value}"]`)?.focus({preventScroll:true});return}
- if(kind==='map-class'){mapClass=mapClass===value?null:value;mapPage=0;a.root().querySelectorAll('[data-ai-deep="map-class"]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===mapClass)));draw(a);mapTable(a);return}
+ if(kind==='map-dim'||kind==='map-scale'){if(kind==='map-dim')mapDim=value;else mapScale=value;await a.render();a.root().querySelector(`[data-ai-deep="${kind}"][data-value="${value}"]`)?.focus({preventScroll:true});return}
+ if(kind==='map-turn'||kind==='map-rot'){mapTurn=kind==='map-turn'?[...space3d.PRESETS[value]]:[mapTurn[0]+Number(value)*Math.PI/8,mapTurn[1]];draw(a);return}
+ if(kind==='map-class'){mapClass=mapClass===value?null:value;mapPage=0;a.root().querySelectorAll('[data-ai-deep="map-class"]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.value===mapClass)));draw(a);mapTable(a);mapHist(a);return}
  if(kind==='map-page'){mapPage+=Number(value);mapTable(a);return}
  if(kind==='map-select'){a.choose(value,true);a.$('ai-map-canvas')?.scrollIntoView({block:'center',behavior:'instant'});return}
  if(kind==='goto'){a.setTab(button.dataset.tab);if(a.selected===value)await a.render();else a.choose(value,true);return}
+ if(kind==='goto-exp'){a.setTab('experiments');await a.render();const target=a.$(value);if(target){target.scrollIntoView({block:'start',behavior:'instant'});target.focus({preventScroll:true})}return}
  if(kind==='jump'){const target=a.$(value);if(target){target.scrollIntoView({block:'start',behavior:'instant'});target.focus({preventScroll:true})}}
 }

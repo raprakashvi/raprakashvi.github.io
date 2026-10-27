@@ -1,5 +1,5 @@
 {
-  "tested_at": "2026-10-22T06:25:54.633Z",
+  "tested_at": "2026-10-27T12:26:44.808Z",
   "url": "http://127.0.0.1:8771/",
   "checks": [
     "Main research page uses Vestigium branding",
@@ -16,6 +16,13 @@
     "Original regional color legend works",
     "Expandable specimen filters update plot, legend and active-filter count",
     "Pinned silhouette exposes eight neighbors and stable full-record link",
+    "Morphology offers a 3D shape space + time projection with camera controls and a date histogram",
+    "3D note reports 1975 dated and 625 undated specimens and the collecting caveat",
+    "Morphology date histogram accounts for all 1975 dated specimens (sum 1975.0)",
+    "Morphology camera presets rotate the 3D view",
+    "Filtering highlights the filtered specimens on the date histogram",
+    "Pinning a specimen still works in 3D",
+    "Returning to 2D hides the 3D controls",
     "Original morphology coverage workspace remains available",
     "Original morphology europe workspace remains available",
     "Original morphology pairs workspace remains available",

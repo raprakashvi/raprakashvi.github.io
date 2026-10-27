@@ -184,6 +184,68 @@ colour-blind-safe `COLORBLIND_COLORS` / `COLORBLIND_MARKERS` in `visuals/style.p
   inspection codes, hypothesis state counts and calibration, literature by topic,
   limitations, next experiments and provenance hashes.
 
+### Focused workspace (October 2026)
+
+The workspace was narrowed to the methods the benchmark supports.
+
+- **Sections:** Similar tools, Search by task, Evidence, Embedding map and Experiments; the
+  earlier baseline (Provisional labels, Clusters, Run & methods) sits behind a quieter
+  *Baseline* divider in the same tab bar.
+- **Similar tools** offers two methods. **Photo (DINOv2-L)** is the default: the best
+  non-circular cross-museum retrieval (P@10 0.737 [0.723, 0.750] vs random 0.377).
+  **Outline shape** is the form-only alternative with the weakest museum signature
+  (within-category enrichment 1.22×). Each shows its benchmark line from
+  `summary.method_evidence`, derived from the saved benchmark at export. Catalog text, the image
+  sample, Silhouette (no gain over outline, F4), Adapted (equal to DINOv2-L on an unseen
+  museum, F5), Working ends (worse on subtypes, F6) and Multimodal (partly circular) remain
+  under a collapsed **More methods**. Results are one numbered ranking with catalog category,
+  score and actions per row.
+- **Record browser** in the query panel: filter by weak coarse category (`browse.json`) and
+  collection, photographed records first; with no category chosen the grid interleaves
+  categories. *Random tool* picks a photographed record within the current filter. The
+  selected record is labelled *Querying* with its category.
+- **Search by task:** SigLIP 2 zero-shot only, 66 precomputed queries grouped by clinical
+  need, design feature and controls, with a filter box, test P@20 vs base rate where scorable,
+  the top-20 category mix and a ranked top 20 (`tasks.json`, from `tasksearch-*`). The adapted
+  comparison remains in Experiments → Cross-modal.
+- **Evidence:** a one-line verdict names the supported functions; their rows come first and
+  bare abstentions collapse into one *No evidence for* row (an abstention with rule or
+  documented text keeps its full row).
+
+Photo is now the default, so the first AI view also loads `ai-deep.js`, the deep
+`summary.json`, `browse.json` and one item shard (≈ 0.5 MB decoded in headless Chrome).
+`check_ai_deep.mjs` now has 103 checks (method layout, benchmark line, ordered ranking, record
+browser, task-search reproduction of `crossmodal.json`, filter, category mix, evidence verdict).
+`check_ai.mjs` has 48.
+
+### 3D view with time (October 2026)
+
+Embedding map (AI Methods) and Morphology shape space have a **3D · time** option. The plane is the
+unchanged 2D layout (UMAP or shape space, normalised 0–1); height is the catalog date. Shared code:
+`app/space3d.js` (orthographic canvas projection, no WebGL or dependency).
+
+- Each point sits at the midpoint of its catalog date range; a faint vertical line spans the range.
+  Dates use the dataset convention (signed years, negative = BCE, no year zero). Reversed ranges are
+  drawn earliest to latest and counted in the note (one Morphology record, 31.3.111b).
+- Undated records are never imputed. They are left out of the 3D view, counted on screen and kept in
+  the 2D view and tables. Photo map: 2,098 of 2,716 plotted records dated, 618 undated. Morphology:
+  1,975 of 2,600 dated, 625 undated (mostly Region Skåne, 462).
+- Time scale: compressed (log10 of years before 2025, so the 19th–20th centuries are legible next
+  to antiquity) or linear.
+- "Dated records per period" histogram: 24 bins of equal width on the displayed scale. Each record
+  is spread evenly over its catalog range (fractional counts), so wide ranges are not piled on their
+  midpoint. A highlighted class (AI) or the current filter (Morphology) is overlaid on all dated
+  records.
+- Caveat shown on screen: Museum Boerhaave supplies 1,914 of 2,098 dated map records (1,833 of 1,975
+  in Morphology). Concentrations in time therefore mostly show what museums collected and dated, not
+  when a tool type appeared or how common it was.
+- Interaction: drag to rotate (horizontal drag only on touch, so vertical swipes still scroll), camera
+  presets (oblique, side, top) and ±22.5° rotation buttons. In 3D, arrow keys step through records in
+  date order.
+- Checks: `check_ai_deep.mjs` 114 (+11: counts against `index.json`, histogram sum equals dated count,
+  drag rotates without selecting, date-order keyboard stepping, class overlay, scale toggle, mobile
+  fit); `check_atlas.mjs` 52 (+7).
+
 ### Data contract and loading
 
 `scripts/web/ai_deep_export.py` runs inside `build_site.py` right after the baseline
@@ -194,7 +256,7 @@ explicit `Missing saved …` error. Files: `summary.json` (methods, functions, s
 map, provenance, limitations, SHA-256 per file), 29 × `items-NNNN.json` (100 records:
 neighbours, hypotheses, near-duplicates, category conflict, modern analogs),
 `experiments.json`, `crossmodal.json`, `maps.json` and `literature.json`. No vectors,
-weights or local paths are published. The total is about 5.77 MB.
+weights or local paths are published. The total is about 9.58 MB.
 
 `web/ai-deep.js` is a separate module. `ai.js` imports it only when a deep tab or
 method is first used. Every deep file except `summary.json` is SHA-256 checked
@@ -207,7 +269,7 @@ benchmark):
 |---|---|---|
 | Initial AI page (unchanged path) | `ai.js`, `ai.css`, baseline `summary.json`, `index.json`, one shard | 1,257,914 |
 | First deep method or Evidence | `ai-deep.js` (60 KB), deep `summary.json` (102 KB), one item shard (17–194 KB) | ≈ 339,000 |
-| Text search | `crossmodal.json` | 21,782 |
+| Search by task | `tasks.json` | ≈ 72,000 |
 | Embedding map | `maps.json` | 784,104 |
 | Experiments | `experiments.json`, `crossmodal.json`, `literature.json` | 248,187 |
 

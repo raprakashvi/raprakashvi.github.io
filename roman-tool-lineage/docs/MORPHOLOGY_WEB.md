@@ -50,6 +50,10 @@ filters change both plot and table; hover shows available image previews and a s
 record, and clicking a point or table entry opens the item. On touch/keyboard devices the
 table provides complete record access. Empty subsets and loading failures remain visible.
 
+## 3D shape space with time
+
+The Morphology shape space can be shown in 3D with catalogue date as height (Projection → 3D · shape space + time). The method, counts and caveats are in [AI_METHODS.md](AI_METHODS.md#3d-view-with-time-october-2026). Undated specimens (625 of 2,600) are counted and left out of the 3D view, never imputed. Date concentrations mostly reflect Museum Boerhaave's collecting and dating.
+
 ## Retained earlier study
 
 `legacy.html#morph` preserves the earlier shape study, its eight-neighbor graph and

@@ -1,13 +1,17 @@
 // Static, versioned projections of verified local runs. This module never trains or writes labels.
-let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',method='text',clusterMethod='text',selected,sequence=0,showSequence=0,observer,ready=false,startup;
+let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',method='photo',clusterMethod='text',selected,sequence=0,showSequence=0,observer,ready=false,startup;
 let clusterData,clusterSource='',clusterChoice='',clusterSearch='',clusterPage=0,plotPoints=[];
 const PAGE=20,$=id=>document.getElementById(id),root=()=>$('ai-view');
 // Deep-representation views live in ai-deep.js and load only when a deep tab or method is used.
 const DEEP_METHODS=['photo','silhouette','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','experiments'],FULL_TABS=['clusters','run','search','map','experiments'];
+// Two primary similarity methods, chosen from the deep benchmark (Experiments -> Benchmark); the rest stay one click away.
+const PRIMARY_METHODS=[['photo','Photo'],['shape','Outline shape']],MORE_METHODS=[['text','Catalog text'],['image','Image · sample'],['silhouette','Silhouette'],['adapted','Adapted'],['ends','Working ends'],['multimodal','Multimodal']];
+const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Embedding map'],['experiments','Experiments']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
+const BROWSE_STEP=12;let browseData,browseCategory='',browseInstitution='',browseCount=BROWSE_STEP;
 let deepModule,renderedTab;
 function deep(){deepModule||=import('./ai-deep.js').catch(err=>{deepModule=null;throw err});return deepModule}
 function download(name,body){const url=URL.createObjectURL(new Blob([JSON.stringify(body,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
-function api(token){return{context,rows,summary,palette,selected,method,group,methodBar,download,esc:e,fmt,num,$,root,current:()=>token===undefined||token===sequence,setTab:t=>{tab=t},setMethod:m=>{method=m},choose,render}}
+function api(token){return{context,rows,summary,palette,selected,method,group,methodBar,ranked,download,esc:e,fmt,num,$,root,current:()=>token===undefined||token===sequence,setTab:t=>{tab=t},setMethod:m=>{method=m},choose,render}}
 const e=x=>context.esc(x),fmt=x=>Number(x||0).toLocaleString(),num=x=>Number.isFinite(x)?x.toFixed(4):'Unavailable';
 async function read(name){
  const url=context.base+'ai/'+name,r=await fetch(url);if(!r.ok)throw Error(`Result unavailable (${r.status}). Retry when the dataset has finished publishing.`);
@@ -18,17 +22,39 @@ async function cached(name){if(!loaded.has(name))loaded.set(name,read(name).catc
 async function item(id){const row=register.find(x=>x.id===id);if(!row)throw Error('No AI result for that identifier.');const shard=await cached(row.shard);return shard.items[id]}
 function group(label,values,active,attribute){return `<div class="ai-segments" role="group" aria-label="${label}">${values.map(([key,text])=>`<button type="button" ${attribute}="${key}" aria-pressed="${key===active}">${text}</button>`).join('')}</div>`}
 function setup(){
- root().innerHTML=`<div class="workspace-heading ai-heading"><div><h1>AI Methods</h1><p>Explore similarities, inspect clusters and trace provisional labels.</p></div><a class="workspace-link" href="docs/ML_TOOLS.md">Reproduce locally ↗</a></div>
- ${group('AI workspace',[['retrieval','Similarity'],['evidence','Evidence'],['annotations','Provisional labels'],['search','Text search'],['map','Embedding map'],['clusters','Clusters'],['experiments','Experiments'],['run','Run & methods']],tab,'data-ai-tab').replace('class="ai-segments"','class="ai-segments ai-tabs"')}
- <div id="ai-layout" class="ai-layout"><aside id="ai-picker" class="ai-picker panel" aria-label="Query tool"><h2 class="ai-picker-title">Query tool</h2><label for="ai-search">Find a record</label><input id="ai-search" type="search" autocomplete="off" placeholder="Name, accession or #META ID…" aria-describedby="ai-search-help"><small id="ai-search-help">Search by name, accession or permanent ID.</small><div id="ai-search-results" class="ai-search-results" aria-live="polite"></div><div id="ai-selected"></div></aside>
+ root().innerHTML=`<div class="workspace-heading ai-heading"><div><h1>AI Methods</h1><p>Pick a tool to see its closest look-alikes and the evidence for its function, or search the collection by task.</p></div><a class="workspace-link" href="docs/ML_TOOLS.md">Reproduce locally ↗</a></div>
+ <div class="ai-segments ai-tabs" role="group" aria-label="AI workspace">${TABS.map(([k,t])=>`<button type="button" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}<span class="ai-tabs-divider" aria-hidden="true">Baseline</span>${BASELINE_TABS.map(([k,t])=>`<button type="button" class="ai-tab-baseline" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}</div>
+ <div id="ai-layout" class="ai-layout"><aside id="ai-picker" class="ai-picker panel" aria-label="Query tool"><h2 class="ai-picker-title">Query tool</h2><label for="ai-search">Find a record</label><input id="ai-search" type="search" autocomplete="off" placeholder="Name, accession or #META ID…" aria-describedby="ai-search-help"><small id="ai-search-help">Search by name, accession or permanent ID.</small><div id="ai-search-results" class="ai-search-results" aria-live="polite"></div><div id="ai-selected"></div>
+ <section id="ai-browse" class="ai-browse" aria-labelledby="ai-browse-title"><div class="ai-browse-head"><h3 id="ai-browse-title">Browse tools</h3><button type="button" class="quiet" data-ai-random>Random tool</button></div><div class="ai-browse-filters"><label>Category<select id="ai-browse-category"><option value="">All categories</option></select></label><label>Collection<select id="ai-browse-institution"><option value="">All collections</option>${[...new Set(context.index.map(r=>r.institution))].sort().map(s=>`<option value="${e(s)}">${e(s)}</option>`).join('')}</select></label></div><p id="ai-browse-status" class="ai-browse-status" role="status"></p><div id="ai-browse-grid" class="ai-browse-grid"></div><button type="button" class="quiet ai-browse-more" data-ai-browse-more>Show more</button></section></aside>
  <section id="ai-content" aria-label="AI results" aria-busy="false"></section></div>`;
  $('ai-search').oninput=()=>{
   const q=$('ai-search').value.trim().replace(/^#/,'').toLowerCase();if(!q){$('ai-search-results').innerHTML='';return}
   const matches=context.index.filter(r=>`${r.id} ${r.name} ${r.accession||''} ${r.institution}`.toLowerCase().includes(q));
   $('ai-search-results').innerHTML=matches.length?`<small>${fmt(matches.length)} matches · showing first ${Math.min(8,matches.length)}</small>`+matches.slice(0,8).map(r=>`<button type="button" data-ai-select="${r.id}"><span>${e(r.name)}<small>#${r.id} · ${e(r.institution)}</small></span><span aria-hidden="true">→</span></button>`).join(''):'<p role="status">No matching records. Try another name or accession.</p>';
  };
+ $('ai-browse-category').onchange=()=>{browseCategory=$('ai-browse-category').value;browseCount=BROWSE_STEP;renderBrowse()};
+ $('ai-browse-institution').onchange=()=>{browseInstitution=$('ai-browse-institution').value;browseCount=BROWSE_STEP;renderBrowse()};
  root().onclick=action;
 }
+// Record browser: weak coarse categories come from the deep export; photographed records first.
+async function loadBrowse(){
+ if(browseData)return;try{browseData=await (await deep()).browse(api())}catch{browseData={categories:{}}}
+ const words=s=>s.replace(/_/g,' ');$('ai-browse-category').insertAdjacentHTML('beforeend',Object.entries(browseData.categories).map(([k,v])=>`<option value="${e(k)}">${e(words(k))} (${fmt(v.length)})</option>`).join(''));
+ browseData.of=new Map(Object.entries(browseData.categories).flatMap(([k,v])=>v.map(id=>[id,k])));renderBrowse();selectedCard();
+}
+// Photographed records first; with no category chosen, categories are interleaved so the first page samples every kind of tool.
+function browseRows(){
+ const ids=browseCategory?new Set(browseData.categories[browseCategory]||[]):null,list=context.index.filter(r=>(!ids||ids.has(r.id))&&(!browseInstitution||r.institution===browseInstitution)).sort((a,b)=>(!a.image)-(!b.image));
+ if(browseCategory)return list;const queues=new Map();for(const r of list){const c=browseData.of.get(r.id)||'not_mapped';if(!queues.has(c))queues.set(c,[]);queues.get(c).push(r)}
+ const order=[...queues.keys()].sort((x,y)=>(x==='not_mapped')-(y==='not_mapped')),out=[];for(let i=0;out.length<list.length;i++)for(const c of order){const r=queues.get(c)[i];if(r)out.push(r)}return out;
+}
+function renderBrowse(){
+ if(!browseData||!$('ai-browse-grid'))return;const list=browseRows(),shown=list.slice(0,browseCount);
+ $('ai-browse-status').textContent=`${fmt(list.length)} records${list.length>shown.length?` · showing ${fmt(shown.length)}`:''}`;
+ $('ai-browse-grid').innerHTML=shown.map(r=>`<button type="button" data-ai-select="${r.id}" aria-pressed="${r.id===selected}" title="${e(r.name)} · #${r.id}">${context.preview(r.image,r.name)}<span>${e(r.name)}</span></button>`).join('')||'<p>No records match these filters.</p>';
+ root().querySelector('[data-ai-browse-more]').hidden=list.length<=shown.length;
+}
+function category(id){return browseData?.of?.get(id)}
 function choose(id,stay=false){if(!rows.has(id))return;if(!stay&&FULL_TABS.includes(tab))tab='retrieval';if(location.hash!==`#ai/${id}`)location.hash=`ai/${id}`;else{selected=id;render()}}
 async function action(event){
  const button=event.target.closest('button');if(!button)return;
@@ -41,9 +67,11 @@ async function action(event){
  if(button.dataset.aiPage){clusterPage+=Number(button.dataset.aiPage);updateClusterTable();return}
  if(button.hasAttribute('data-ai-retry')){await render();$('ai-content').tabIndex=-1;$('ai-content').focus({preventScroll:true});return}
  if(button.hasAttribute('data-ai-sample')){choose('META-002742');return}
+ if(button.hasAttribute('data-ai-random')){const list=browseData?browseRows().filter(r=>r.image):context.index.filter(r=>r.image);if(list.length)choose(list[Math.floor(Math.random()*list.length)].id);return}
+ if(button.hasAttribute('data-ai-browse-more')){browseCount+=BROWSE_STEP;renderBrowse();return}
  if(button.dataset.aiExport){const name=button.dataset.aiExport;try{if(name==='evidence'||name==='neighbors'&&DEEP_METHODS.includes(method)){await (await deep()).exportJson(api(),name);return}const data=await item(selected);const body=name==='suggestions'?data.suggestions:method==='image'?data.image_retrieval:data.neighbors[method];download(`${selected}-${name}.json`,{dataset_version:summary.dataset_version,run_id:summary.run_id,item_id:selected,method:name==='suggestions'?'provisional_functions':method,result:body})}catch(err){$('ai-content').insertAdjacentHTML('afterbegin',`<p role="alert">${e(err.message)}</p>`)} }
 }
-function selectedCard(){const row=rows.get(selected);$('ai-selected').innerHTML=row?`<div class="ai-query">${context.preview(row.image,row.name)}<div><span class="record-id">#${row.id}</span><h2 tabindex="-1">${e(row.name)}</h2><p>${e(row.institution)}</p><a href="#item/${row.id}">Inspect source record →</a></div></div>`:'<p role="alert">Unknown record identifier. Choose a record above.</p>'}
+function selectedCard(){const row=rows.get(selected);$('ai-selected').innerHTML=row?`<div class="ai-query">${context.preview(row.image,row.name)}<div><span class="ai-query-label">Querying</span><span class="record-id">#${row.id}</span><h2 tabindex="-1">${e(row.name)}</h2><p>${e(row.institution)}${category(row.id)?` · ${e(category(row.id).replace(/_/g,' '))}`:''}</p><a href="#item/${row.id}">Inspect source record →</a></div></div>`:'<p role="alert">Unknown record identifier. Choose a record above.</p>'}
 export async function show(ctx){
  const call=++showSequence;context=ctx;rows=new Map(ctx.index.map(r=>[r.id,r]));
  if(!ready){startup||=(async()=>{summary=await read('summary.json');if(summary.schema_version!=='1.0.0'||summary.dataset_version!==ctx.manifest.version||summary.provenance.release_files_sha256['records.jsonl']!==ctx.manifest.records_sha256)throw Error('AI release mismatch.');register=await read('index.json');const colors=await fetch('visuals/palette.json');if(!colors.ok)throw Error('Plot palette unavailable.');palette=await colors.json();setup();ready=true})().catch(err=>{startup=null;throw err});await startup}
@@ -56,7 +84,7 @@ async function render(){
  const token=++sequence;observer?.disconnect();
  root().querySelectorAll('[data-ai-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.aiTab===tab)));
  $('ai-picker').hidden=FULL_TABS.includes(tab);$('ai-search-results').innerHTML='';$('ai-search').value='';selectedCard();
- $('ai-layout').classList.toggle('ai-full-width',FULL_TABS.includes(tab));renderedTab=null;
+ $('ai-layout').classList.toggle('ai-full-width',FULL_TABS.includes(tab));renderedTab=null;if(!FULL_TABS.includes(tab)){loadBrowse();renderBrowse()}
  const host=$('ai-content');host.setAttribute('aria-busy','true');host.innerHTML='<p role="status">Loading saved results…</p>';
  try{
   if(tab==='clusters'){const data=await cached(`clusters-${clusterMethod}.json`);if(token!==sequence)return;clusterData=data;renderClusters()}
@@ -66,14 +94,19 @@ async function render(){
  }catch(err){if(token===sequence)host.innerHTML=`<div class="empty" role="alert"><h2>Results unavailable</h2><p>${e(err.message)}</p><button type="button" data-ai-retry>Retry results</button></div>`}
  finally{if(token===sequence){host.setAttribute('aria-busy','false');renderedTab=tab}}
 }
+// Ranked candidate list shared by baseline and deep methods. items: [id, score]; higher or lower is closer per method.
+function ranked(m,items,scoreName){
+ const r=rows.get(selected);
+ return `<p class="ai-ranked-head" role="status"><span>${items.length} closest to <strong>${e(r?.name||selected)}</strong></span> <a href="#compare">Open comparison</a></p><ol id="ai-neighbors" class="ai-ranked ai-neighbors" data-method="${m}">${items.map(([id,score],i)=>{const row=rows.get(id),cat=category(id);return `<li class="ai-match"><span class="ai-rank-no" aria-hidden="true">${i+1}</span><a class="ai-match-image" href="#item/${id}" tabindex="-1">${context.preview(row?.image,row?.name||id)}</a><div class="ai-match-copy"><h2><a href="#item/${id}">${e(row?.name||id)}</a></h2><p><span class="record-id">#${id}</span> · ${e(row?.institution||'Source not recorded')}${cat?` · ${e(cat.replace(/_/g,' '))}`:''}</p></div><div class="ai-match-score"><span class="ai-match-rank"><span class="ai-sr">Rank ${i+1}, ${scoreName} </span><strong>${num(score)}</strong></span><small aria-hidden="true">${scoreName}</small></div><div class="ai-match-actions"><button class="compare-toggle" data-compare="${id}" aria-pressed="false">+ Compare</button><button class="quiet" data-ai-select="${id}">Use as query</button></div></li>`}).join('')}</ol>`;
+}
 function renderRetrieval(data){
  const result=method==='image'?data.image_retrieval:data.neighbors[method],neighbors=result?.neighbors||[];
  const descriptions={text:'TF–IDF cosine similarity · higher is closer. Source wording can dominate the ranking.',shape:'Original multiblock outline distance · lower is closer. Dimensionless, with full-corpus normalization; supplemental outlines are excluded.',image:`Frozen ResNet18 cosine similarity · higher is closer. ${summary.counts.image_views} views from ${summary.counts.image_objects} objects only; this is a GPU feasibility sample.`};
- $('ai-content').innerHTML=`<div class="ai-toolbar">${methodBar()}<button type="button" class="quiet" data-ai-export="neighbors">Export these ranks</button></div><p class="ai-method-line">${descriptions[method]}</p><p class="ai-caution">Exploratory candidates. Scores are uncalibrated and do not establish function or ancestry. Self and known duplicate groups are excluded.</p>
- ${neighbors.length?`<p role="status">${neighbors.length} ranked candidates${method==='image'?` from the ${summary.counts.image_objects===5?'five':summary.counts.image_objects}-object cache`:''} · <a href="#compare">Open comparison</a></p><div id="ai-neighbors" class="ai-neighbors">${neighbors.map((n,i)=>{const r=rows.get(n.item_id);return `<article class="panel ai-match"><a class="ai-match-image" href="#item/${n.item_id}">${context.preview(r?.image,r?.name||n.item_id)}</a><div class="ai-match-copy"><div class="ai-match-rank">Rank ${n.rank||i+1} <strong>${num(n.score)}</strong></div><span class="record-id">#${n.item_id}</span><h2><a href="#item/${n.item_id}">${e(r?.name||n.item_id)}</a></h2><p>${e(r?.institution||'Source not recorded')}</p><div class="ai-match-actions"><button class="compare-toggle" data-compare="${n.item_id}" aria-pressed="false">+ Compare</button><button class="quiet" data-ai-select="${n.item_id}">Use as query</button></div></div></article>`}).join('')}</div>`:`<div class="empty" role="status"><h2>${method==='image'?'Outside the image sample':'No ranked outlines available'}</h2><p>${e(result?.reason||(method==='image'?'This record is outside the bounded image cache. Image retrieval is not available for the full collection.':'This record is outside the original 2,600-outline distance matrix. No shape ranks were imputed.'))}</p>${method==='image'?'<button type="button" data-ai-sample>Explore the image sample</button>':'<button type="button" data-ai-method="text">Try catalog text</button>'}</div>`}`;
- context.syncComparisons();
+ $('ai-content').innerHTML=`<div class="ai-toolbar">${methodBar()}<button type="button" class="quiet" data-ai-export="neighbors">Export these ranks</button></div><p class="ai-method-line">${descriptions[method]}</p>${method==='shape'?`<p id="ai-method-why" class="ai-method-why"></p>`:''}
+ ${neighbors.length?`${method==='image'?`<p class="ai-method-line">From the ${summary.counts.image_objects===5?'five':summary.counts.image_objects}-object cache only.</p>`:''}${ranked(method,neighbors.map(n=>[n.item_id,n.score]),method==='shape'?'distance':'cosine')}<p class="ai-caution ai-caution-after">Exploratory candidates. Scores are uncalibrated and do not establish function or ancestry. Self and known duplicate groups are excluded.</p>`:`<div class="empty" role="status"><h2>${method==='image'?'Outside the image sample':'No ranked outlines available'}</h2><p>${e(result?.reason||(method==='image'?'This record is outside the bounded image cache. Image retrieval is not available for the full collection.':'This record is outside the original 2,600-outline distance matrix. No shape ranks were imputed.'))}</p>${method==='image'?'<button type="button" data-ai-sample>Explore the image sample</button>':'<button type="button" data-ai-method="photo">Try photo similarity</button>'}</div>`}`;
+ context.syncComparisons();if(method==='shape')deep().then(m=>m.methodWhy(api(),'shape')).catch(()=>{});
 }
-function methodBar(){return `<div class="ai-method-bar"><div class="ai-method-set"><span aria-hidden="true">Baseline</span>${group('Baseline similarity representation',[['text','Catalog text'],['shape','Outline shape'],['image','Image · sample']],method,'data-ai-method')}</div><div class="ai-method-set"><span aria-hidden="true">Deep representations</span>${group('Deep similarity representation',[['photo','Photo'],['silhouette','Silhouette'],['adapted','Adapted'],['ends','Working ends'],['multimodal','Multimodal']],method,'data-ai-method')}</div></div>`}
+function methodBar(){const more=MORE_METHODS.some(([k])=>k===method);return `<div class="ai-method-bar"><div class="ai-method-set"><span aria-hidden="true">Rank by</span>${group('Similarity method',PRIMARY_METHODS,method,'data-ai-method')}</div><details class="ai-more-methods"${more?' open':''}><summary>More methods <small>${MORE_METHODS.length}</small></summary>${group('Other similarity methods',MORE_METHODS,method,'data-ai-method')}<p>Kept for comparison. Experiments → Benchmark shows why they are secondary.</p></details></div>`}
 function evidenceHtml(v){
  const row=rows.get(v.item_id),label=row?`${row.name} · #${row.id}`:v.item_id;
  return `<li><strong>${v.channel==='context_rule'?'Catalog-context rule':'Weak neighbor transfer'}</strong>${v.item_id?` · <a href="#item/${e(v.item_id)}">${e(label)}</a>`:''}${v.source_text?`<blockquote>${e(v.source_text)}</blockquote>`:''}<small>${e(v.source_field||v.locator||'')} ${v.rule_id?'· Rule '+e(v.rule_id):''}${v.rule_confidence?' · Rule strength '+e(v.rule_confidence):''}${v.text_similarity!=null?' · Text cosine '+num(v.text_similarity):''}${v.rank?' · Rank '+v.rank:''}</small>${v.entity_group?`<small>Known duplicate group: ${e(v.entity_group)}</small>`:''}</li>`;

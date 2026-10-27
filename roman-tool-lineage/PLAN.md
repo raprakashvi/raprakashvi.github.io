@@ -249,6 +249,24 @@ Research code checkpoint `77f263d`. Details: [docs/AI_DEEP_METHODS.md](docs/AI_D
 | 44 | complete | GPU environment (venv over existing `endosrt`, versions in configs/ml/requirements-gpu.txt); background-controlled views; frozen DINOv2/CLIP/SigLIP 2/E5 features with weight hashes. |
 | 45 | complete | Grouped benchmark with confound controls (photography-only control, nuisance R², within-category museum enrichment, held-out-museum probe), group-bootstrap CIs and paired differences; embedding near-duplicate audit merged into leakage groups. |
 | 46 | complete | Three-seed photography-randomised adaptation with unseen-museum test and compositing ablation; working-end, zero-shot affordance, cross-modal and disagreement analyses with manual inspection coding; multi-channel hypotheses with calibrated agreement and flags; figures; findings; literature review (delegated). |
-| 47 | in progress | External historical/contemporary instrument corpus (Wikimedia Commons, Wellcome; delegated) with licences and exclusions; transfer and modern-analog analysis (`scripts/deep/external.py`). |
-| 48 | in progress | Website: ai-deep export wired into the build; Research → AI Methods tabs for new similarity methods, evidence channels, text search, embedding map and experiments (delegated); regression and new browser checks. |
-| 49 | pending | After 47–48: rerun export, verify locally and live, commit/push source and deploy the subpage only; publish evidence. |
+| 47 | complete | External historical/contemporary instrument corpus (Wikimedia Commons, Wellcome; delegated) with licences and exclusions; transfer and modern-analog analysis (`scripts/deep/external.py`). |
+| 48 | complete | Website: ai-deep export wired into the build; Research → AI Methods tabs for new similarity methods, evidence channels, text search, embedding map and experiments (delegated); regression and new browser checks. |
+| 49 | complete | After 47–48: rerun export, verify locally and live, commit/push source and deploy the subpage only; publish evidence. |
+
+- Deep-representation milestone implemented, tested, deployed and live-verified. Source `77f263d` (research pipeline) and `249c6c6` (website + external corpus) pushed on `vestigium-2026-10-21`; website `b8228a2` pushed on `master` (subpage only; personal-site tracked files verified unchanged; homepage 200).
+- Local acceptance on the deploy build: 87 deep-AI + 47 AI + 50 workbench + 45 atlas + 39 collection + 24 review Chrome checks; 9 deep, 21 ML, 4 external and 46 website Python tests. Live: 87 deep-AI and 47 AI checks, 0 exceptions, 0 HTTP errors; live `ai-deep/summary.json` byte-identical to the verified build.
+- Open research work: expert pair judgments; full-resolution images; review of 147 image hypotheses and 74 conflicts (incl. the Lithotomes `cutting` rule and META-002404); mechanism-aware labels; larger multi-photographer contemporary set and validated external segmentation; explicit historical-relationship tests. Independent screen-reader/Safari audits remain open.
+
+## Focused AI Methods workspace and task search
+
+Checkpoint: source `b30fbb4`, dataset `v1-804c1e7c3202` unchanged. Details: [docs/AI_METHODS.md](docs/AI_METHODS.md) (Focused workspace) and [docs/AI_DEEP_METHODS.md](docs/AI_DEEP_METHODS.md) §5b.
+
+| # | Status | Dependencies, acceptance and verification |
+|---|---|---|
+| 50 | complete | Reduce similarity to two benchmark-backed methods (Photo = DINOv2-L raw, default; Outline shape) with inline cross-museum P@10, CI, random baseline and enrichment from `method_evidence`; other six behind a collapsed “More methods”. Ranked result list; record browser (category/collection filters, show more, random); compact Evidence verdict with abstentions collapsed. |
+| 51 | complete | Search by task: 66-query SigLIP 2 vocabulary (`task-queries-1.0.0`, 9 groups incl. design features and controls) via `scripts/deep/task_search.py`; 26 shared queries must reproduce `crossmodal-latest`. New queries are exploratory and never pooled into F10. |
+| 52 | in progress | Commit locally (done); push source and deploy the subpage only after confirmation; live verification. |
+
+- Run `tasksearch-d80e56a358ec`: all 26 shared queries reproduce the saved cross-modal top 20 (cosines within 2e-4; original batch encoded separately because bf16 text embeddings depend on batch composition). 13 new scored queries: mean test P@20 0.658 vs base rate 0.186 (exploratory, written after F10 was seen). Separation SD is not a match signal (controls 2.4–3.0 SD) and is not shown. SigLIP matches object names and visible form rather than clinical function (e.g. “small funnel for the ear” 0.95; vagina-spreading description 0.20, returns obstetric forceps; “dilator” 0.05).
+- Local acceptance on the scratch build: 103 deep-AI + 48 AI + 39 collection + 50 workbench + 45 atlas + 24 review Chrome checks, 0 exceptions, 0 unexpected HTTP errors; 40 website and 9 deep Python tests. Firefox smoke and live checks not yet run.
+- Next research direction (proposed, not started): design-space discovery grounded in coded mechanism characters and a clinical-need taxonomy (N4), need→design mapping with convergence/exaptation and morphospace gaps, a pre-1850 retrodiction test, and only then a conditional VAE over outline descriptors.
