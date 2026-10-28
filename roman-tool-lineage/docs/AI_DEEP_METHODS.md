@@ -657,6 +657,57 @@ Hash caveats:
 * The decoder evaluation still contains the exploratory four-model tempo fit; `tempo-eb35961c30ed`
   supersedes it.
 
+### 11. Angle-independent outline benchmark (`posebench-a22875acfcb0`)
+
+The question, written before the run in `configs/ml/pose_benchmark.json`: does the pose-free
+outline find same-category tools in other museums as well as the other options, while carrying
+less photography? The pose-free outline is the DINOv2-B embedding of the silhouette after it is
+rotated to a standard pose (principal axis), the same latent that the shape map and decoder use
+(§10). It needs no new model. Metrics and bootstrap are those of the benchmark (§1).
+
+Held-out test split (groups never seen by the adapted models), n = 504:
+
+| Representation | P@10 | Cross-museum P@10 [95% CI] | Same-museum excess | Background R² |
+|---|---|---|---|---|
+| Outline, any angle (pose-free, DINOv2-B) | 0.642 | 0.560 [0.530, 0.591] | 1.25 | -0.64 |
+| Outline as photographed (DINOv2-B) | 0.610 | 0.498 [0.469, 0.526] | 1.29 | -0.53 |
+| Outline as photographed (DINOv2-L) | 0.602 | 0.517 [0.489, 0.543] | 1.29 | -0.20 |
+| Whole photo (DINOv2-B) | 0.763 | 0.655 [0.620, 0.686] | 1.46 | 0.81 |
+| Whole photo (DINOv2-L) | 0.768 | 0.676 [0.645, 0.707] | 1.44 | 0.73 |
+| Adapted photo, seed 17 | 0.826 | 0.690 [0.662, 0.717] | 1.50 | 0.36 |
+| Adapted photo, seed 18 | 0.820 | 0.673 [0.644, 0.700] | 1.48 | 0.36 |
+| Adapted photo, seed 19 | 0.810 | 0.696 [0.669, 0.726] | 1.52 | 0.33 |
+
+All eligible records, n = 2542 (adapted models left out: they trained on most of these):
+
+| Representation | P@10 | Cross-museum P@10 [95% CI] | Same-museum excess | Background R² |
+|---|---|---|---|---|
+| Outline, any angle (pose-free, DINOv2-B) | 0.717 | 0.619 [0.604, 0.635] | 1.29 | -0.15 |
+| Outline as photographed (DINOv2-B) | 0.708 | 0.557 [0.544, 0.571] | 1.39 | 0.15 |
+| Outline as photographed (DINOv2-L) | 0.695 | 0.558 [0.543, 0.573] | 1.38 | 0.04 |
+| Whole photo (DINOv2-B) | 0.831 | 0.710 [0.695, 0.723] | 1.61 | 0.85 |
+| Whole photo (DINOv2-L) | 0.844 | 0.738 [0.725, 0.752] | 1.59 | 0.84 |
+
+"Same-museum excess" is within-category institution enrichment (1.0 = no museum effect).
+"Background R²" is how well the embedding predicts the photo's background colour; below 0 means
+it carries none.
+
+Readings against the pre-registered rule:
+
+* **Pose normalisation helps.** Cross-museum P@10 is +6.2 points over the
+  photographed outline (95% CI 4.3 to 8.0; n = 491).
+* **It does not become the default.** The adapted photo model is 11.3–13.6
+  points ahead for each of the three seeds, with every CI excluding the 2-point non-inferiority
+  margin.
+* **It has the least photography of any option.** Its background R² is -0.64, against 0.33–0.36 for the
+  adapted seeds and 0.73–0.81 for whole photos. Its same-museum excess is also the lowest.
+* **On the website.** The adapted model stays the default. "Outline, any angle" is offered
+  under More methods, with its evidence line. It replaces nothing: the photographed outline stays
+  available for comparison.
+* **Limits.** Categories are weak catalog labels. The pose-free set excludes outlines that the
+  preparation rules removed (2,597 of 2,673 silhouettes), so its records are slightly cleaner.
+  Each outline has one canonical pose, so a mirror-image ambiguity remains.
+
 ## Interpretation
 
 * **Observation:** deep image models capture catalog-level instrument type well and transfer
@@ -712,7 +763,16 @@ PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.m
 PYTHONPATH=. HF_HUB_OFFLINE=1 ~/.venvs/vestigium-ml/bin/python -m scripts.deep.between      # between-dates test, <1 min
 PYTHONPATH=. ~/.venvs/vestigium-ml/bin/python scripts/plotting/between_figures.py
 for f in latdec tempo flow; do PYTHONPATH=. ~/.venvs/vestigium-ml/bin/python scripts/plotting/${f}_figures.py; done
+PYTHONPATH=. ~/.venvs/vestigium-ml/bin/python -m scripts.deep.pose_benchmark          # §11, <1 min
 # Website export runs inside the normal site build (scripts/web/build_site.py).
+```
+
+All of the above, plus ingestion, the release, tests, the website build and the browser checks, is
+one command that reruns only what changed (stage list in `configs/pipeline.yaml`):
+
+```bash
+python -m scripts.pipeline status     # what is out of date and why
+python -m scripts.pipeline run        # rerun it, in order
 ```
 
 ## Next experiments

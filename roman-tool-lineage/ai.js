@@ -3,10 +3,10 @@ let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',met
 let clusterData,clusterSource='',clusterChoice='',clusterSearch='',clusterPage=0,plotPoints=[];
 const PAGE=20,$=id=>document.getElementById(id),root=()=>$('ai-view');
 // Deep-representation views live in ai-deep.js and load only when a deep tab or method is used.
-const DEEP_METHODS=['photo','silhouette','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['clusters','run','search','map','generate','experiments'];
+const DEEP_METHODS=['photo','silhouette','posefree','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['clusters','run','search','map','generate','experiments'];
 // Two primary similarity methods: the photo model retrained to ignore museum photography (ties the best ready-made
 // model on held-out tools with far less background signal; Experiments -> Adaptation) and the outline distance.
-const PRIMARY_METHODS=[['adapted','Photo, object only'],['shape','Outline shape']],MORE_METHODS=[['photo','Whole photo (incl. photography)'],['silhouette','Outline (image model)'],['ends','Working ends'],['text','Catalog words'],['multimodal','Photo + outline + words'],['image','Image · sample']];
+const PRIMARY_METHODS=[['adapted','Photo, object only'],['shape','Outline shape']],MORE_METHODS=[['photo','Whole photo (incl. photography)'],['posefree','Outline, any angle'],['silhouette','Outline (image model)'],['ends','Working ends'],['text','Catalog words'],['multimodal','Photo + outline + words'],['image','Image · sample']];
 const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Map of tools'],['generate','Generate'],['experiments','Experiments']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
 const BROWSE_STEP=12;let browseData,browseCategory='',browseInstitution='',browseCount=BROWSE_STEP;
 let deepModule,renderedTab;

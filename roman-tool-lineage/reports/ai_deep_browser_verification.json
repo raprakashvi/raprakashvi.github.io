@@ -1,20 +1,23 @@
 {
-  "tested_at": "2026-10-27T23:38:44.054Z",
+  "tested_at": "2026-10-28T15:18:42.875Z",
   "url": "http://127.0.0.1:8771/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",
     "Six primary AI sections plus three baseline sections; Similar tools first and selected",
-    "Two primary similarity methods (photo object only = adapted, outline shape) with adapted as the default; six others, including the whole photo, collapsed under More methods",
+    "Two primary similarity methods (photo object only = adapted, outline shape) with adapted as the default; seven others, including the whole photo and the pose-free outline, collapsed under More methods",
     "Real records exist for each missing-representation case and for near-duplicates",
     "photo: displayed neighbour IDs and cosines equal the published shard",
     "photo: method note and score direction are shown",
     "First deep method loads only the module, manifest, browse index and one item shard",
     "Photo method shows its benchmark evidence (cross-museum P@10, CI, random reference) from the manifest",
     "Adapted default states its held-out evidence against the whole-photo model from the manifest",
+    "Pose-free outline states its pre-registered held-out evidence against the photographed outline",
     "Similar tools are shown as one ordered, numbered ranking",
     "silhouette: displayed neighbour IDs and cosines equal the published shard",
     "silhouette: method note and score direction are shown",
+    "posefree: displayed neighbour IDs and cosines equal the published shard",
+    "posefree: method note and score direction are shown",
     "adapted: displayed neighbour IDs and cosines equal the published shard",
     "adapted: method note and score direction are shown",
     "ends: displayed neighbour IDs and cosines equal the published shard",
@@ -27,6 +30,7 @@
     "photo: null neighbours give an explicit reason (no image linked) and no imputed ranks (META-000003)",
     "silhouette: null neighbours give an explicit reason (no segmentable image) and no imputed ranks (META-000264)",
     "ends: null neighbours give an explicit reason (quality control) and no imputed ranks (META-000001)",
+    "posefree: null neighbours give an explicit reason (standard pose) and no imputed ranks (META-000001)",
     "multimodal: null neighbours give an explicit reason (photo, silhouette and catalog text) and no imputed ranks (META-000264)",
     "Baseline catalog-text method still works beside deep methods",
     "Evidence accounts for all eight functions with the published states (omitted functions as abstain)",
@@ -91,8 +95,12 @@
     "The five patterns of change are drawn and explained in plain words",
     "Each card states strong / moderate / weak evidence by the published rule",
     "Each tempo card shows real outlines at both ends of its shape axis",
+    "Enlarge opens the tempo card magnified 2.46× with its outlines painted and no duplicate ids",
+    "Zoom in magnifies further and Fit returns to the whole card",
+    "Escape closes the enlarged view and returns focus to its button",
     "Between-dates section shows every tested family for 1750-1850 with its published verdict and painted drawings",
     "Switching to the 1800-1900 window shows its families and verdicts and keeps focus",
+    "Between-dates cards enlarge too, with every drawing",
     "Both pre-registered verdicts (held-out, after 1850) match generate.json",
     "Verdict IoU differences equal the published values",
     "After-1850 verdict states its sample size",
@@ -178,23 +186,23 @@
         "summary.json",
         "index.json"
       ],
-      "decoded_bytes": 246070
+      "decoded_bytes": 247694
     },
     "deep_cumulative_decoded_bytes": {
-      "after_first_deep_method": 591894,
-      "after_text_search": 1708738,
-      "after_map": 4036658,
-      "after_generate": 5488720,
-      "after_experiments": 5549159
+      "after_first_deep_method": 616632,
+      "after_text_search": 1777340,
+      "after_map": 4105260,
+      "after_generate": 5557322,
+      "after_experiments": 5617761
     },
     "deep_files": [
       {
         "file": "ai-deep.js",
-        "decoded_bytes": 127644
+        "decoded_bytes": 132379
       },
       {
         "file": "summary.json",
-        "decoded_bytes": 107880
+        "decoded_bytes": 109185
       },
       {
         "file": "browse.json",
@@ -202,15 +210,15 @@
       },
       {
         "file": "items-0001.json",
-        "decoded_bytes": 316408
+        "decoded_bytes": 335106
       },
       {
         "file": "items-0000.json",
-        "decoded_bytes": 232408
+        "decoded_bytes": 238870
       },
       {
         "file": "items-0002.json",
-        "decoded_bytes": 316554
+        "decoded_bytes": 334358
       },
       {
         "file": "experiments.json",
@@ -218,7 +226,7 @@
       },
       {
         "file": "items-0014.json",
-        "decoded_bytes": 303128
+        "decoded_bytes": 322726
       },
       {
         "file": "tasks.json",
