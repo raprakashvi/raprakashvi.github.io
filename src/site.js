@@ -85,12 +85,30 @@
     var rotation = player.querySelector('.player-rotation');
     var timer = null;
 
+    var video = null;
     function play(id, name) {
       clearInterval(timer);
       if (rotation) rotation.hidden = true;
-      frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
-      frame.title = name;
-      frame.hidden = false;
+      if (/\.mp4$/i.test(id)) {
+        // Self-hosted clip: play it in a native <video> instead of a YouTube embed.
+        frame.removeAttribute('src');
+        frame.hidden = true;
+        if (!video) {
+          video = document.createElement('video');
+          video.controls = true;
+          video.playsInline = true;
+          frame.parentNode.insertBefore(video, frame);
+        }
+        video.src = id;
+        video.setAttribute('aria-label', name);
+        video.hidden = false;
+        video.play().catch(function () {});
+      } else {
+        if (video) { video.pause(); video.removeAttribute('src'); video.load(); video.hidden = true; }
+        frame.src = 'https://www.youtube-nocookie.com/embed/' + id + '?autoplay=1';
+        frame.title = name;
+        frame.hidden = false;
+      }
       if (poster) poster.hidden = true;
     }
     if (poster) {
@@ -125,7 +143,7 @@
         clearInterval(timer);
         rotation.textContent = paused ? 'Resume previews' : 'Pause previews';
         rotation.setAttribute('aria-pressed', String(paused));
-        if (paused || !frame.hidden || document.hidden) return;
+        if (paused || !frame.hidden || (video && !video.hidden) || document.hidden) return;
         timer = setInterval(function () {
           // Leave the current preview in place while visitors use its controls.
           if (player.matches(':hover') || player.contains(document.activeElement) || reel.contains(document.activeElement)) return;
