@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-10-28T15:13:47.639Z",
-  "url": "http://127.0.0.1:35543/",
+  "tested_at": "2026-11-14T17:00:29.990Z",
+  "url": "http://127.0.0.1:8766/",
   "checks": [
     "Main research page uses Vestigium branding",
     "Home opens the original family tree with instrument nodes",

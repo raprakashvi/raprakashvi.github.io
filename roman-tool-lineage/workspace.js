@@ -33,5 +33,9 @@ export function initWorkspace(){
  document.querySelectorAll('.global-search').forEach(form=>form.addEventListener('submit',e=>{const q=$('workspace-query').value.trim();if(document.getElementById('browse-view')){e.preventDefault();const input=$('search');input.value=q;input.dispatchEvent(new Event('input',{bubbles:true}));location.hash='browse';input.focus()} }));
  // Non-atlas documents use the same evidence accordion behavior.
  document.querySelectorAll('.nav-trigger[aria-haspopup]').forEach(b=>{if(document.getElementById('map'))return;b.onclick=()=>{const open=b.getAttribute('aria-expanded')!=='true';b.setAttribute('aria-expanded',String(open));b.nextElementSibling.hidden=!open}});
+ // Top-navigation dropdowns (T-019): one open at a time; close on outside click or Escape.
+ document.querySelectorAll('details.navmore').forEach(d=>d.addEventListener('toggle',()=>{if(d.open)document.querySelectorAll('details.navmore[open]').forEach(o=>{if(o!==d)o.removeAttribute('open')})}));
+ document.addEventListener('click',e=>{document.querySelectorAll('details.navmore[open]').forEach(d=>{if(!d.contains(e.target))d.removeAttribute('open')})});
+ document.addEventListener('keydown',e=>{if(e.key==='Escape')document.querySelectorAll('details.navmore[open]').forEach(d=>d.removeAttribute('open'))});
  window.addEventListener('vestigium:navigate',e=>setWorkspace(e.detail));
 }
