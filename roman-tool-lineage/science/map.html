@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="en" class="locked"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="referrer" content="no-referrer">
+<title>Map of forms · Vestigium</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="../gate.css"></head>
+<body><noscript><p style="padding:24px">Sign-in needs JavaScript.</p></noscript><a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="mark" href="index.html">Vestigium</a><nav aria-label="Main"><a href="collection.html">Collection</a><a href="bridges.html">Bridges</a><a href="map.html" aria-current=page>Map</a><a href="timeline.html">Timeline</a><a href="../index.html">Surgical instruments</a><a href="index.html#contact">Contact</a></nav></header>
+<main id="main"><div class="pagehead"><p class="kicker">Objects that look alike sit close together</p><h1>Map of forms</h1>
+<p>Each dot is an object, placed by how it looks. Scroll or pinch to zoom, drag to move; zoom in to see the photographs.</p></div>
+<ul class="chips" id="mchips" aria-label="Museums shown"></ul>
+<div class="mapwrap"><canvas id="map" tabindex="0" aria-label="Map of all objects. Arrow keys move, plus and minus zoom."></canvas>
+<div class="zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" id="zreset" aria-label="Reset view" style="font-size:13px">1:1</button></div>
+<div class="tip" id="tip"><img alt=""><b></b><span></span></div></div>
+</main>
+<footer class="foot"><p>AI-assisted research. Links and enriched details are AI proposals; every source is logged.</p></footer>
+<script type="module">
+/* Same interface gate and credentials as the surgical site: ../gate.js reads ../gate-config.json and the shared
+   sessionStorage flag. Nothing below runs, and no data file is requested, until it resolves. A missing or invalid
+   configuration (or a missing ../gate.js) leaves the page locked. An interface gate only, not authentication. */
+import {unlock} from '../gate.js';
+await unlock();
+document.documentElement.classList.remove('locked');
+for (const src of ["data/collection.js", "common.js", "map.js"]) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error(src)); document.body.appendChild(s); });
+</script></body></html>
