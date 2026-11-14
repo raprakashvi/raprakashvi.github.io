@@ -1,5 +1,29 @@
 [
  {
+  "id": "publication-davinci-xxi-instrument-adapter",
+  "type": "review",
+  "additional_types": ["conference"],
+  "thumb": "images/publications/daVinci_XXi_Instrument_Adapter.jpg",
+  "title": "An Open-Source da Vinci X/Xi Instrument Adapter with Integrated Electrosurgical Control for Laparoscopic Surgery Research",
+  "authors": "McDonough, D.*, Liao, J.*, Ge, J., Goldenberg, A., Zhang, Y., Eagleson, M. A., <strong>Prakash, R.</strong>, Krieger, A.†, Kim, C.†",
+  "venue": "2026 · <span>Under review</span> · *equal contribution",
+  "links": [
+   {
+    "label": "PDF",
+    "href": "papers/daVinci_XXi_Instrument_Adapter.pdf"
+   },
+   {
+    "label": "Video",
+    "href": "images/media/daVinci_XXi_Instrument_Adapter.mp4"
+   },
+   {
+    "label": "Code",
+    "href": "https://github.com/MRE-Lab-UMD/arts"
+   }
+  ],
+  "year": 2026
+ },
+ {
   "id": "publication-tumormap-a-laser-based-surgical-platform-for-3d-tumor-mapping-and-fully-automated-tumor-resection",
   "type": "journal",
   "thumb": "images/publications/TumorMap_figure.jpg",
@@ -303,7 +327,7 @@
  },
  {
   "id": "publication-operative-vision",
-  "type": "preprint",
+  "type": "review",
   "thumb": null,
   "title": "Computer Vision for Increased Operative Efficiency via Identification of Instruments in the Neurosurgical Operating Room: A Proof-of-Concept Study",
   "authors": "Zachem, T. J., Chen, S. F., Venkatraman, V., Sykes, D. A., <strong>Prakash, R.</strong>, Spellicy, S., Suarez, A. D., Ross, W., Codd, P. J.",
@@ -313,7 +337,7 @@
  },
  {
   "id": "publication-photoablation",
-  "type": "preprint",
+  "type": "review",
   "thumb": null,
   "title": "Optimization of Laser Photoablation for Robotic Soft-Tissue Surgery",
   "authors": "Ross, W., <strong>Prakash, R.</strong>, Ma, G., Eward, W., Mann, B., Codd, P. J.",
