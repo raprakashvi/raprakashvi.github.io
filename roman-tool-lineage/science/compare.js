@@ -4,7 +4,7 @@
   var inp = U.$('#pick'), ul = U.$('#picks');
   inp.addEventListener('input', function () {
     var t = inp.value.trim().toLowerCase(), hits = [];
-    if (t.length >= 2) for (var i = 0; i < S.items.length && hits.length < 8; i++) { var it = S.items[i]; if (it.id !== q.a && it.t.toLowerCase().indexOf(t) >= 0) hits.push(it); }
+    if (t.length >= 2) for (var i = 0; i < S.items.length && hits.length < 8; i++) { var it = S.items[i]; if (it.id !== q.a && (it.t + ' ' + it.k).toLowerCase().indexOf(t) >= 0) hits.push(it); }
     ul.hidden = !hits.length;
     ul.innerHTML = hits.map(function (it) {
       return '<li><a href="' + (a ? U.cmpUrl(a.id, it.id) : U.cmpUrl(it.id, '')) + '"><img src="' + U.thumb(it) + '" alt=""><div>' + U.esc(it.t) + '<span>' + U.esc(S.museums[it.m].short) + (it.dt ? ' · ' + U.esc(it.dt) : '') + '</span></div></a></li>';
@@ -26,7 +26,7 @@
         '<p class="museum" style="--c:' + m.color + ';margin-top:14px"><i></i>' + U.esc(m.name) + '</p><h2><a href="' + U.objUrl(o.id) + '">' + U.esc(o.title) + '</a></h2>' +
         (o.date ? '<p class="date" style="font-size:18px;margin-bottom:8px">' + U.esc(o.date) + '</p>' : '') +
         (o.tags.length ? '<div class="tags">' + o.tags.map(function (t) { return '<a href="collection.html?tag=' + encodeURIComponent(t) + '">' + U.esc(t) + '</a>'; }).join('') + '</div>' : '') +
-        (o.desc ? '<p class="desc" style="font-size:15px">' + U.esc(o.desc) + '</p>' : '');
+        (o.maker ? '<p class="date" style="font-size:16px;margin-bottom:8px">' + U.esc(o.maker) + '</p>' : '') + (o.desc ? '<div class="desc" style="font-size:15px">' + o.desc.slice(0, 1).map(function (p) { return '<p>' + U.esc(p) + '</p>'; }).join('') + '</div>' : '');
     });
   });
   document.title = a.t + ' and ' + b.t + ' · Vestigium';

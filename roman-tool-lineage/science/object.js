@@ -19,12 +19,13 @@
   }
   U.loadObj(id).then(function (o) {
     var m = S.museums[o.museum]; document.title = o.title + ' · Vestigium';
-    var dl = [['Maker', o.maker], ['Place', o.place], ['Size', o.dims], ['Inventory number', o.acc]].filter(function (r) { return r[1]; })
-      .map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + U.esc(r[1]) + '</dd>'; }).join('');
+    var mkl = o.maker ? o.maker.split('; ').map(function (n) { return '<a href="collection.html?maker=' + encodeURIComponent(n) + '">' + U.esc(n) + '</a>'; }).join(', ') : '';
+    var dl = [['Maker', mkl, 1], ['Place', o.place], ['Material', o.mat], ['Size', o.dims], ['Inventory number', o.acc]].filter(function (r) { return r[1]; })
+      .map(function (r) { return '<dt>' + r[0] + '</dt><dd>' + (r[2] ? r[1] : U.esc(r[1])) + '</dd>'; }).join('');
     var first = (o.other[0] || o.similar[0]);
     root.innerHTML = '<article class="object" style="--c:' + m.color + '"><div class="plate"><img src="img/d/' + o.h + '.jpg" alt="' + U.esc(o.title) + '"></div><div>' +
       '<p class="museum"><i></i>' + U.esc(m.name) + '</p><h1>' + U.esc(o.title) + '</h1>' + (o.date ? '<p class="date">' + U.esc(o.date) + '</p>' : '') + pline(o) +
-      (o.desc ? '<p class="desc">' + U.esc(o.desc) + '</p>' : '') +
+      (o.desc ? '<h2 class="sub">Museum text</h2><div class="desc">' + o.desc.map(function (p) { return '<p>' + U.esc(p) + '</p>'; }).join('') + '</div>' : '') +
       (o.tags.length ? '<div class="tags">' + o.tags.map(function (t) { return '<a href="collection.html?tag=' + encodeURIComponent(t) + '">' + U.esc(t) + '</a>'; }).join('') + '</div>' : '') +
       (dl ? '<dl>' + dl + '</dl>' : '') +
       (o.o ? '<h2 class="sub">Outline</h2><div class="outline"><img src="img/o/' + o.h + '.png" alt="Outline of ' + U.esc(o.title) + '"></div>' : '') +

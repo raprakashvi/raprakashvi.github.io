@@ -1,6 +1,9 @@
 (function () {
   var H = window.SCI_HOME, S = window.SCI, U = window.U, esc = U.esc;
   U.$('#legend').innerHTML = U.legend();
+  var K = H.keys;
+  U.$('#keyfigs').innerHTML = [[K.objects.toLocaleString('en'), 'objects'], [K.museums, 'museums'], [K.dated25 + '%', 'dated within 25 years'], [K.maker + '%', 'with a named maker']]
+    .map(function (k) { return '<li><b>' + k[0] + '</b><span>' + k[1] + '</span></li>'; }).join('');
   var im = function (h) { return '<img loading="lazy" src="img/t/' + h + '.jpg" alt="">'; };
   var ph = function (id) { var it = S.by[id]; return '<span class="ph" style="--c:' + S.museums[it.m].color + '"><img loading="lazy" src="' + U.thumb(it) + '" alt="' + esc(it.t) + '"></span>'; };
   var pt = H.pat;
