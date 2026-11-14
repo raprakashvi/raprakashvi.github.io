@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" class="locked"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="referrer" content="no-referrer">
+<title>Missing links · Vestigium</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="../gate.css"></head>
+<body><noscript><p style="padding:24px">Sign-in needs JavaScript.</p></noscript><a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="mark" href="index.html">Vestigium</a><nav aria-label="Main"><a href="principles.html">Life of a principle</a><a href="lineages.html">Lineages</a><a href="gaps.html" aria-current=page>Missing links</a><a href="collection.html">Collection</a><a href="bridges.html">Bridges</a><details class="navmore"><summary>Maps</summary><div><a href="map.html">Map of forms</a><a href="map3d.html">Map in time</a><a href="timeline.html">Timeline</a></div></details><a href="../index.html">Surgical instruments</a><a href="index.html#contact">Contact</a></nav></header>
+<main id="main"><div class="pagehead"><p class="kicker">What the five collections leave out</p><h1>Missing links</h1>
+<p>Five roles a principle can play, in order. An empty frame is a role that no object in these museums fills.</p></div>
+<div id="legend"></div>
+<section aria-labelledby="gs"><h2 id="gs">Empty stages</h2><div id="gaps"></div></section>
+<section aria-labelledby="gm"><h2 id="gm">What would complete each museum's story</h2><div id="acq"></div></section>
+</main>
+<footer class="foot"><p>Labels, links and maps on these pages are machine-made proposals read from the five museums' own records.</p></footer>
+<script type="module">
+/* Same interface gate and credentials as the surgical site: ../gate.js reads ../gate-config.json and the shared
+   sessionStorage flag. Nothing below runs, and no data file is requested, until it resolves. A missing or invalid
+   configuration (or a missing ../gate.js) leaves the page locked. An interface gate only, not authentication. */
+import {unlock} from '../gate.js';
+await unlock();
+document.documentElement.classList.remove('locked');
+for (const src of ["data/collection.js", "common.js", "data/patterns.js", "gaps.js"]) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error(src)); document.body.appendChild(s); });
+</script></body></html>

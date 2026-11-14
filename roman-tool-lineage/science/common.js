@@ -6,6 +6,8 @@
   var esc = function (s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); };
   var lum = function (hex) { var n = parseInt(hex.slice(1), 16), f = function (v) { v /= 255; return v <= .03928 ? v / 12.92 : Math.pow((v + .055) / 1.055, 2.4); };
     return .2126 * f(n >> 16) + .7152 * f((n >> 8) & 255) + .0722 * f(n & 255); };
+  document.addEventListener('click', function (e) { U.$$('details.navmore[open]').forEach(function (d) { if (!d.contains(e.target)) d.removeAttribute('open'); }); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') U.$$('details.navmore[open]').forEach(function (d) { d.removeAttribute('open'); }); });
   var P = {};
   window.__sci_obj = function (o) { if (P[o.id]) P[o.id](o); };
   window.U = {

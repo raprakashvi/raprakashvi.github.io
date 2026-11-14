@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en" class="locked"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="referrer" content="no-referrer">
+<title>Life of a principle · Vestigium</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="../gate.css"></head>
+<body><noscript><p style="padding:24px">Sign-in needs JavaScript.</p></noscript><a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="mark" href="index.html">Vestigium</a><nav aria-label="Main"><a href="principles.html" aria-current=page>Life of a principle</a><a href="lineages.html">Lineages</a><a href="gaps.html">Missing links</a><a href="collection.html">Collection</a><a href="bridges.html">Bridges</a><details class="navmore"><summary>Maps</summary><div><a href="map.html">Map of forms</a><a href="map3d.html">Map in time</a><a href="timeline.html">Timeline</a></div></details><a href="../index.html">Surgical instruments</a><a href="index.html#contact">Contact</a></nav></header>
+<main id="main"><div class="pagehead"><p class="kicker">From the cabinet to the kitchen, in five museums</p><h1>Life of a principle</h1>
+<p>Pick a principle. Every photograph is one object, set at its date in the lane of the role it played.</p></div>
+<ul class="pchips" id="pchips" aria-label="Principles"></ul>
+<h2 class="headline" id="headline" aria-live="polite"></h2>
+<div id="legend"></div>
+<div class="life" id="life" tabindex="0" aria-label="Timeline of the selected principle, one lane per role. Scroll sideways to see all dates."></div>
+<div class="ltip" id="ltip" role="tooltip"><img alt=""><b></b><span></span></div>
+</main>
+<footer class="foot"><p>Labels, links and maps on these pages are machine-made proposals read from the five museums' own records.</p></footer>
+<script type="module">
+/* Same interface gate and credentials as the surgical site: ../gate.js reads ../gate-config.json and the shared
+   sessionStorage flag. Nothing below runs, and no data file is requested, until it resolves. A missing or invalid
+   configuration (or a missing ../gate.js) leaves the page locked. An interface gate only, not authentication. */
+import {unlock} from '../gate.js';
+await unlock();
+document.documentElement.classList.remove('locked');
+for (const src of ["data/collection.js", "common.js", "data/patterns.js", "principles.js"]) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error(src)); document.body.appendChild(s); });
+</script></body></html>

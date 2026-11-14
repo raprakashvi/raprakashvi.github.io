@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en" class="locked"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex"><meta name="referrer" content="no-referrer">
+<title>Lineages · Vestigium</title><link rel="icon" href="../favicon.svg"><link rel="stylesheet" href="site.css"><link rel="stylesheet" href="../gate.css"></head>
+<body><noscript><p style="padding:24px">Sign-in needs JavaScript.</p></noscript><a class="skip" href="#main">Skip to content</a>
+<header class="top"><a class="mark" href="index.html">Vestigium</a><nav aria-label="Main"><a href="principles.html">Life of a principle</a><a href="lineages.html" aria-current=page>Lineages</a><a href="gaps.html">Missing links</a><a href="collection.html">Collection</a><a href="bridges.html">Bridges</a><details class="navmore"><summary>Maps</summary><div><a href="map.html">Map of forms</a><a href="map3d.html">Map in time</a><a href="timeline.html">Timeline</a></div></details><a href="../index.html">Surgical instruments</a><a href="index.html#contact">Contact</a></nav></header>
+<main id="main"><div class="pagehead"><p class="kicker">One device grows out of another</p><h1>Lineages</h1>
+<p>Each strip follows a family of devices from its ancestor to its descendants, across museums. Click a photograph to open the object.</p></div>
+<section aria-labelledby="la"><h2 id="la">Both annotators agree</h2><div id="lin-a"></div></section>
+<section aria-labelledby="lm"><h2 id="lm">Supported in part</h2><div id="lin-m"></div></section>
+</main>
+<footer class="foot"><p>Labels, links and maps on these pages are machine-made proposals read from the five museums' own records.</p></footer>
+<script type="module">
+/* Same interface gate and credentials as the surgical site: ../gate.js reads ../gate-config.json and the shared
+   sessionStorage flag. Nothing below runs, and no data file is requested, until it resolves. A missing or invalid
+   configuration (or a missing ../gate.js) leaves the page locked. An interface gate only, not authentication. */
+import {unlock} from '../gate.js';
+await unlock();
+document.documentElement.classList.remove('locked');
+for (const src of ["data/collection.js", "common.js", "data/patterns.js", "lineages.js"]) await new Promise((ok, no) => { const s = document.createElement('script'); s.src = src; s.onload = ok; s.onerror = () => no(new Error(src)); document.body.appendChild(s); });
+</script></body></html>
