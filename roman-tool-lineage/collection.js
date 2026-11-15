@@ -55,7 +55,9 @@ async function compare(token){
 async function route(){
  const token=++request,hash=location.hash.slice(1)||'browse',view=hash.split('/')[0];const section={browse:'browse',compare:'compare',analysis:'analysis',about:'about',review:'review',item:'item',ai:'ai'}[view]||'browse';
  for(const name of ['browse','compare','analysis','about','item','review','ai'])$(name+'-view').hidden=name!==section;
- document.querySelectorAll('nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(section==='item'?'browse':section)||a.dataset.section===section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
+ // T-027: the merged header's current item is rendered by site_nav (and kept by web/unified/host.js); this
+ // only marks the old structured-collection nav, so it must not strip aria-current from the shared header.
+ document.querySelectorAll('nav.site-nav a').forEach(a=>{if(a.getAttribute('href')==='#'+(section==='item'?'browse':section)||a.dataset.section===section)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current')});
  setWorkspace(section);
  $('global-error').hidden=true;
  if(section==='item')await showItem(hash.split('/')[1],token);

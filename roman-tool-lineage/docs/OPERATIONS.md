@@ -63,6 +63,23 @@ MPLCONFIGDIR=/tmp/vestigium-mpl python scripts/web/build_site.py --gate-config g
 python scripts/web/verify.py --reorder
 ```
 
+**The merged site (T-027).** Since the two collections became one, the full build needs
+`--science`: it builds the surgical pages and the analysis workbench, the science data and
+images into `dist/science/`, and then `scripts/web/unified/build.py` writes the one
+collection index (`dist/data/unified/<version>/`), the merged pages and a redirect for every
+old URL. Use the system `python3` for `build_site.py` (it needs `jsonschema`); the science and
+unified steps run in the pinned ML environment (`--science-python`, default
+`~/.venvs/vestigium-ml/bin/python`, for UMAP). Both releases are read only:
+
+```bash
+MPLCONFIGDIR=/tmp/vestigium-mpl python3 scripts/web/build_site.py --gate-config gate.local.json --science
+python scripts/web/browser_checks.py --site dist   # add --suites unified for the merged check
+```
+
+The build is deterministic for the same inputs: the unified version is a hash of the index,
+and the prints `u1-<hash>` in `results/tables/web_build.json` identify it. `dist/` is ignored
+by Git.
+
 Browser QA uses an installed Chrome and Node 22, with no npm dependency. Start a localhost
 HTTP server and Chrome debugging as documented in `VERIFICATION.md`, then run
 `node roman_tool_lineage/scripts/web/check_collection.mjs` from the parent repository.

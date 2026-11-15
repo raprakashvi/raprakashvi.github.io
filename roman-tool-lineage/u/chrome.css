@@ -1,0 +1,83 @@
+/* Vestigium site chrome (T-027): the one header, menus, domain filter, scope note and footer.
+   Loaded by every page, including the two hosted research applications (atlas.html, analyse.html), so the
+   selectors are written to win over their older element-level rules (header, nav, button, details, footer).
+   Colours and type come from visuals/tokens.css; the spacing scale is --s1 .. --s8. */
+:root{--s1:4px;--s2:8px;--s3:12px;--s4:16px;--s5:24px;--s6:32px;--s7:48px;--s8:64px;--gut:clamp(16px,3.6vw,56px);--maxw:1480px}
+html.locked body>:not(.gate){display:none!important}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 14px;z-index:60}
+.skip:focus{left:8px}
+header.vh{position:relative;z-index:40;display:block;margin:0;padding:0;background:var(--paper);border:0;border-bottom:1px solid var(--border);height:auto;width:auto}
+header.vh .vh-in{display:flex;align-items:center;gap:var(--s5);max-width:var(--maxw);margin:0 auto;padding:var(--s4) var(--gut) var(--s3)}
+header.vh .vh-mark{font:600 27px/1 var(--serif);color:var(--ink);text-decoration:none;letter-spacing:.005em;white-space:nowrap}
+header.vh .vh-mark:hover{text-decoration:none;color:var(--ink)}
+header.vh .vh-nav{display:flex;align-items:center;gap:var(--s2);position:static;width:auto;height:auto;background:none;border:0;padding:0;margin:0 0 0 var(--s3);flex-direction:row;overflow:visible}
+header.vh .vh-menu{position:relative;margin:0;border:0;background:none}
+header.vh .vh-menu>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;font:600 15px/1 var(--font-ui);color:var(--ink);padding:10px 12px;border-radius:999px;border:0;background:none;min-height:40px;box-sizing:border-box}
+header.vh .vh-menu>summary::-webkit-details-marker{display:none}
+header.vh .vh-menu>summary::after{content:"";width:6px;height:6px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:translateY(-2px) rotate(45deg)}
+header.vh .vh-menu>summary:hover,header.vh .vh-menu[open]>summary{background:var(--tint)}
+header.vh .vh-menu[data-current]>summary{box-shadow:inset 0 -2.5px 0 var(--accent);border-radius:0}
+header.vh .vh-drop{position:absolute;top:calc(100% + 8px);left:0;min-width:230px;display:flex;flex-direction:column;padding:var(--s2);background:var(--panel);border:1px solid var(--ink);box-shadow:0 10px 30px #1822301f;z-index:50}
+header.vh .vh-drop a{display:block;padding:9px 12px;font:500 15px/1.3 var(--font-ui);color:var(--ink);text-decoration:none;border-radius:2px;white-space:nowrap}
+header.vh .vh-drop a:hover{background:var(--tint);text-decoration:none}
+header.vh .vh-drop a[aria-current]{font-weight:700;box-shadow:inset 3px 0 0 var(--accent)}
+header.vh .vh-search{display:flex;align-items:center;gap:var(--s2);margin:0 0 0 auto;padding:8px 12px;width:min(320px,26vw);min-width:180px;border:1px solid #c5cdda;border-radius:999px;background:var(--panel);color:var(--muted);box-sizing:border-box;max-width:none}
+header.vh .vh-search:focus-within{border-color:var(--ink)}
+header.vh .vh-search input{flex:1;min-width:0;border:0;background:transparent;padding:0;margin:0;font:15px/1.4 var(--font-ui);color:var(--ink);height:22px;box-shadow:none}
+header.vh .vh-search input:focus{outline:none}
+header.vh .vh-search kbd{font:11px var(--font-ui);color:var(--muted);border:1px solid var(--border);border-radius:3px;padding:0 4px;white-space:nowrap;background:var(--panel)}
+header.vh .ui-icon{width:18px;height:18px;flex:none}
+header.vh .vh-out{display:inline-flex;align-items:center;gap:var(--s2);font:600 14px/1 var(--font-ui);padding:9px 14px;border:1px solid var(--border);border-radius:999px;background:transparent;color:var(--ink);cursor:pointer;white-space:nowrap;min-height:40px}
+header.vh .vh-out:hover{border-color:var(--ink);background:var(--tint)}
+header.vh .icon-button{display:none;align-items:center;justify-content:center;width:44px;height:44px;padding:0;border:1px solid var(--border);border-radius:999px;background:var(--panel);color:var(--ink);cursor:pointer}
+/* domain filter: one segmented control, on every page */
+header.vh .vh-domain{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2);max-width:var(--maxw);margin:0 auto;padding:0 var(--gut) var(--s3)}
+header.vh .vh-domain button{display:inline-flex;align-items:center;gap:var(--s2);font:600 14px/1 var(--font-ui);color:var(--ink);background:var(--panel);border:1.5px solid #c9c3b5;border-radius:999px;padding:8px 14px;min-height:38px;cursor:pointer}
+header.vh .vh-domain button b{font-weight:600;font-variant-numeric:tabular-nums;color:var(--muted)}
+header.vh .vh-domain button:hover{border-color:var(--ink)}
+header.vh .vh-domain button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+header.vh .vh-domain button[aria-pressed=true] b{color:#d9dee8}
+header.vh .vh-domain button[data-domain=surg][aria-pressed=true]{background:var(--dom-surg);border-color:var(--dom-surg)}
+header.vh .vh-domain button[data-domain=sci][aria-pressed=true]{background:var(--dom-sci);border-color:var(--dom-sci)}
+.dm{display:inline-block;width:11px;height:11px;flex:none}
+.dm.surg{background:var(--dom-surg);border-radius:2px}
+.dm.sci{background:var(--dom-sci);border-radius:50%}
+header.vh .vh-domain button[aria-pressed=true] .dm{outline:2px solid #fff;outline-offset:0}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+/* one-line scope note: says plainly which objects a view covers */
+.scope{display:flex;align-items:center;gap:var(--s3);flex-wrap:wrap;max-width:var(--maxw);margin:var(--s4) auto 0;padding:10px var(--s4);box-sizing:border-box;background:#fff5df;border-left:4px solid var(--dom-surg);font:600 15px/1.45 var(--font-ui);color:var(--ink)}
+.scope.sci{border-left-color:var(--dom-sci);background:#e9eff6}
+.scope a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+.host-scope{margin:var(--s4) var(--gut) 0}
+@media (min-width:1600px){.host-scope{margin-left:auto;margin-right:auto}}
+body footer.vfoot{max-width:var(--maxw);margin:var(--s7) auto 0;padding:var(--s5) var(--gut) var(--s7);border-top:1px solid var(--border);background:none;display:block;text-align:left}
+body footer.vfoot p{margin:0;font:500 15px/1.5 var(--font-ui);color:var(--ink);max-width:62em}
+/* narrow screens: menus move into the focus-managed drawer (web/workspace.js) */
+@media (max-width:900px){
+ header.vh .vh-in{gap:var(--s3);padding:var(--s3) var(--gut)}
+ header.vh .icon-button{display:inline-flex}
+ header.vh .vh-search{display:none}
+ header.vh .vh-out{margin-left:auto;padding:9px 12px}
+ header.vh .vh-out span{display:none}
+ header.vh .vh-nav{display:none}
+ /* T-027: the drawer and its close button live inside the header, which is a stacking context (z-index 40);
+    the scrim must stay below the open drawer, or the drawer's links are covered and unclickable on phones. */
+ body.drawer-open header.vh{z-index:80}
+ body.drawer-open header.vh .vh-nav{display:flex;position:fixed;inset:0 0 0 auto;width:min(340px,88vw);height:100dvh;margin:0;flex-direction:column;align-items:stretch;gap:0;padding:64px var(--s5) var(--s5);background:var(--paper);border-left:1px solid var(--ink);overflow:auto;z-index:70}
+ body.drawer-open header.vh .drawer-close{display:inline-flex;position:absolute;top:12px;right:12px}
+ header.vh .vh-menu{border-top:1px solid var(--border);padding:var(--s2) 0}
+ header.vh .vh-menu>summary{pointer-events:none;padding:var(--s2) 0;font:600 12px var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);min-height:0}
+ header.vh .vh-menu>summary::after{display:none}
+ header.vh .vh-menu[data-current]>summary{box-shadow:none}
+ header.vh .vh-menu>.vh-drop{display:flex!important;position:static;border:0;box-shadow:none;padding:0;background:none;min-width:0}
+ header.vh .vh-drop a{padding:11px 0;font-size:17px}
+ .drawer-scrim{position:fixed;inset:0;background:#18223066;z-index:65}
+ body.search-open header.vh .vh-search{display:flex;position:absolute;left:var(--gut);right:var(--gut);top:10px;width:auto;z-index:5}
+ header.vh .vh-domain{gap:6px;padding-bottom:var(--s3);flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+ header.vh .vh-domain button{padding:7px 11px;font-size:13px;flex:none}
+}
+@media (max-width:480px){
+ header.vh .vh-domain button[data-domain=surg] span::after{content:""}
+ header.vh .vh-domain button span.long{display:none}
+}

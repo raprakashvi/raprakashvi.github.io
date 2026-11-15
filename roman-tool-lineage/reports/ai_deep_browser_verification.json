@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-10-28T15:21:30.710Z",
-  "url": "http://127.0.0.1:58537/collection.html#ai/META-000104",
+  "tested_at": "2026-11-14T23:28:33.187Z",
+  "url": "http://127.0.0.1:34819/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",
@@ -95,7 +95,7 @@
     "The five patterns of change are drawn and explained in plain words",
     "Each card states strong / moderate / weak evidence by the published rule",
     "Each tempo card shows real outlines at both ends of its shape axis",
-    "Enlarge opens the tempo card magnified 2.46× with its outlines painted and no duplicate ids",
+    "Enlarge opens the tempo card magnified 2.04× with its outlines painted and no duplicate ids",
     "Zoom in magnifies further and Fit returns to the whole card",
     "Escape closes the enlarged view and returns focus to its button",
     "Between-dates section shows every tested family for 1750-1850 with its published verdict and painted drawings",
@@ -192,8 +192,8 @@
       "after_first_deep_method": 616632,
       "after_text_search": 1777340,
       "after_map": 4105260,
-      "after_generate": 5557322,
-      "after_experiments": 5617761
+      "after_generate": 5557279,
+      "after_experiments": 5617718
     },
     "deep_files": [
       {
@@ -254,7 +254,7 @@
       },
       {
         "file": "tempo.json",
-        "decoded_bytes": 71589
+        "decoded_bytes": 71546
       },
       {
         "file": "between.json",

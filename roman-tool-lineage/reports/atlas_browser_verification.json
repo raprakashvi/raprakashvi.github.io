@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-10-28T15:20:37.006Z",
-  "url": "http://127.0.0.1:58537/",
+  "tested_at": "2026-11-14T23:45:44.971Z",
+  "url": "http://127.0.0.1:51633/atlas.html",
   "checks": [
     "Main research page uses Vestigium branding",
     "Home opens the original family tree with instrument nodes",
@@ -45,7 +45,7 @@
     "390px weiss workspace has no page overflow",
     "390px compare workspace has no page overflow",
     "Previously published legacy morphology URL retains the restored interface",
-    "Previously published root stable-item URLs redirect to the structured collection",
+    "Previously published root stable-item URLs now open the one object page",
     "Updated measurements have counted colors and explicit table group labels",
     "Updated region color encoding renders",
     "Updated collection color encoding renders",

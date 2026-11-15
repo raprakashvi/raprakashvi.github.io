@@ -1,11 +1,11 @@
 {
-  "tested_at": "2026-10-28T15:20:53.943Z",
-  "url": "http://127.0.0.1:58537/collection.html#ai",
+  "tested_at": "2026-11-15T00:07:38.576Z",
+  "url": "http://127.0.0.1:41385/analyse.html#ai",
   "dataset_version": "v1-804c1e7c3202",
   "run_id": "baseline-4b286bb1a4717b14",
   "checks": [
     "No AI result files requested before login",
-    "AI Methods is a current Research destination",
+    "AI Methods is the current Analyse destination in the one navigation",
     "Similarity entry defers cluster and image-wide result files",
     "Desktop AI layout places query beside results with matches above the fold",
     "AI explorer uses clear section tabs without aggregate cards above results",
