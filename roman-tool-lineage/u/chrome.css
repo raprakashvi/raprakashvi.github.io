@@ -40,9 +40,17 @@ header.vh .vh-domain button[aria-pressed=true]{background:var(--ink);border-colo
 header.vh .vh-domain button[aria-pressed=true] b{color:#d9dee8}
 header.vh .vh-domain button[data-domain=surg][aria-pressed=true]{background:var(--dom-surg);border-color:var(--dom-surg)}
 header.vh .vh-domain button[data-domain=sci][aria-pressed=true]{background:var(--dom-sci);border-color:var(--dom-sci)}
+header.vh .vh-domain button[data-domain=uns][aria-pressed=true]{background:var(--dom-uns);border-color:var(--dom-uns)}
 .dm{display:inline-block;width:11px;height:11px;flex:none}
 .dm.surg{background:var(--dom-surg);border-radius:2px}
 .dm.sci{background:var(--dom-sci);border-radius:50%}
+.dm.uns{background:var(--dom-uns);border-radius:1px;transform:rotate(45deg)}
+/* The optional personality of a domain (T-032): one accent colour over the same site, no separate pages. */
+html[data-domain=surg]{--accent:var(--dom-surg);--accent-hover:#8c351a}
+html[data-domain=sci]{--accent:var(--dom-sci);--accent-hover:#1d3d60}
+html[data-domain=uns]{--accent:var(--dom-uns);--accent-hover:#57534b}
+/* a small domain note under the page title, written by the page script */
+.personality{margin:0 0 var(--s3);font:400 15px/1.5 var(--font-ui);color:var(--muted);max-width:70ch;border-left:3px solid var(--accent);padding-left:var(--s3)}
 header.vh .vh-domain button[aria-pressed=true] .dm{outline:2px solid #fff;outline-offset:0}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* one-line scope note: says plainly which objects a view covers */

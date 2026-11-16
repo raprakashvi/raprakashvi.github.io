@@ -5,7 +5,7 @@ import {boot, loadIndex, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomai
 await boot();
 let IX;
 try { IX = await loadIndex(); } catch (e) { errorBox($('.mapwrap'), e); throw e; }
-const DC = ['#a8431f', '#284f7a'], cv = $('#map'), ctx = cv.getContext('2d'), tip = $('#tip');
+const DC = ['#a8431f', '#284f7a', '#6f6a60'], cv = $('#map'), ctx = cv.getContext('2d'), tip = $('#tip');
 const P = IX.rows.filter(r => r.x != null);
 let colBy = 'domain', W, H, dpr, k = 1, ox = 0, oy = 0, hover = null, pad = 30, sc = 1;
 const imgs = {};
@@ -18,14 +18,14 @@ const sy = r => (H / 2 - (r.y - (y0 + y1) / 2) * sc) * k + oy;
 function legend() {
   const vis = P.filter(r => inDomain(r.d));
   if (colBy === 'domain') {
-    const n = [0, 0]; vis.forEach(r => n[r.d]++);
-    $('#legend').innerHTML = [0, 1].filter(d => n[d]).map(d => '<span><i class="dm ' + (d ? 'sci' : 'surg') + '"></i>' + (d ? 'Science and technology' : 'Surgical instruments') + ' <b>' + fmt(n[d]) + '</b></span>').join('');
+    const n = [0, 0, 0]; vis.forEach(r => n[r.d]++);
+    $('#legend').innerHTML = [0, 1, 2].filter(d => n[d]).map(d => '<span><i class="dm ' + (d === 0 ? 'surg' : d === 1 ? 'sci' : 'uns') + '"></i>' + (d === 0 ? 'Surgical instruments' : d === 1 ? 'Science and technology' : 'Not placed') + ' <b>' + fmt(n[d]) + '</b></span>').join('');
   } else {
     const n = new Map(); vis.forEach(r => n.set(r.m, (n.get(r.m) || 0) + 1));
     $('#legend').innerHTML = [...n.keys()].sort((a, b) => n.get(b) - n.get(a)).map(i => '<span><i style="background:' + mus(i).color + '"></i>' + esc(mus(i).short) + ' <b>' + fmt(n.get(i)) + '</b></span>').join('');
   }
   const off = IX.rows.filter(r => inDomain(r.d) && r.x == null).length;
-  $('#mapnote').textContent = off ? fmt(off) + ' objects without a photograph are not on the map; they are in the collection.' : '';
+  $('#mapnote').textContent = off ? fmt(off) + ' objects have no photograph, so no position on the map; they are in the collection.' : '';
 }
 function resize() {
   const w0 = cv.parentNode.getBoundingClientRect().width;
@@ -40,7 +40,7 @@ function thumbImg(r) {
   return i.ok ? i : null;
 }
 let raf = 0; const sched = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw(); }); };
-function mark(x, y, rad, d) { ctx.beginPath(); if (d === 0) ctx.rect(x - rad * .9, y - rad * .9, rad * 1.8, rad * 1.8); else ctx.arc(x, y, rad, 0, 6.2832); }
+function mark(x, y, rad, d) { ctx.beginPath(); if (d === 0) ctx.rect(x - rad * .9, y - rad * .9, rad * 1.8, rad * 1.8); else if (d === 1) ctx.arc(x, y, rad, 0, 6.2832); else ctx.rect(x - rad * .62, y - rad * .62, rad * 1.24, rad * 1.24); }
 function draw() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
   const vis = [], ghost = [];
@@ -56,7 +56,7 @@ function draw() {
   });
   if (hover) { ctx.beginPath(); ctx.arc(sx(hover), sy(hover), rad + 6, 0, 6.2832); ctx.lineWidth = 2.5; ctx.strokeStyle = '#182230'; ctx.stroke(); }
   cv._vis = vis;
-  cv.dataset.surg = vis.filter(v => v[0].d === 0).length; cv.dataset.sci = vis.filter(v => v[0].d === 1).length;
+  cv.dataset.surg = vis.filter(v => v[0].d === 0).length; cv.dataset.sci = vis.filter(v => v[0].d === 1).length; cv.dataset.uns = vis.filter(v => v[0].d === 2).length;
 }
 function pick(mx, my) { let best = null, bd = 144; (cv._vis || []).forEach(v => { const d = (v[1] - mx) ** 2 + (v[2] - my) ** 2; if (d < bd) { bd = d; best = v[0]; } }); return best; }
 function clamp() { ox = Math.min(0, Math.max(W - W * k, ox)); oy = Math.min(0, Math.max(H - H * k, oy)); }
@@ -65,7 +65,7 @@ function showTip(r, mx, my) {
   if (!r) { tip.style.display = 'none'; return; }
   const m = mus(r.m), dl = dateLabel(r.s, r.e);
   tip.querySelector('img').src = thumb(r.im); tip.querySelector('b').textContent = r.t;
-  tip.querySelector('span').textContent = (r.d ? 'Science · ' : 'Surgical · ') + m.short + (dl ? ' · ' + dl : '');
+  tip.querySelector('span').textContent = (r.d === 0 ? 'Surgical · ' : r.d === 1 ? 'Science · ' : 'Catalogue · ') + m.short + (dl ? ' · ' + dl : '');
   tip.style.borderTop = '4px solid ' + color(r); tip.style.display = 'block';
   let x = mx + 16, y = my + 16; if (x + 200 > W) x = mx - 206; if (y + 270 > H) y = Math.max(4, H - 270); tip.style.left = x + 'px'; tip.style.top = y + 'px';
 }

@@ -1,7 +1,7 @@
 // One collection browser for every object.  Domain (header), museum, period, category, principle, function, type,
 // role, maker, material and "with a photograph" are filters; counts follow the domain, museums and search.
 // Built for tens of thousands of objects: one pass per filter change, cards rendered 60 at a time.
-import {boot, loadIndex, loadText, $, $$, esc, fmt, tile, mus, mid, getDomain, inDomain, errorBox} from './core.js';
+import {boot, loadIndex, loadText, $, $$, esc, fmt, tile, mus, mid, getDomain, inDomain, personality, errorBox} from './core.js';
 
 const PAGE = 60;
 const FACETS = [['c', 'Category', 'All categories'], ['pr', 'Principle', 'All principles'], ['fn', 'Function', 'All functions'],
@@ -22,7 +22,7 @@ try {
 
 function readURL() {
   const p = new URLSearchParams(location.search);
-  st.q = p.get('q') || ''; st.per = p.get('per') || ''; st.img = p.get('img') === '1'; st.sort = p.get('sort') || 'name';
+  st.q = p.get('q') || ''; st.per = p.get('per') || ''; st.img = p.get('img') === '1'; st.sort = p.get('sort') || personality().sort;
   FACETS.forEach(([k]) => st[k] = p.get(k) || '');
   st.m = new Set((p.get('m') || '').split(',').filter(x => x !== '').map(Number));
 }
@@ -35,7 +35,7 @@ function writeURL() {
   if (getDomain() !== 'all') p.set('d', getDomain());
   if (st.m.size) p.set('m', [...st.m].sort((a, b) => a - b).join(','));
   if (st.img) p.set('img', '1');
-  if (st.sort !== 'name') p.set('sort', st.sort);
+  if (st.sort !== personality().sort) p.set('sort', st.sort);   // the domain's default order stays out of the URL
   const s = p.toString();
   history.replaceState(null, '', location.pathname + (s ? '?' + s : '') + location.hash);
 }
@@ -71,7 +71,7 @@ function init() {
   $('#more').onclick = () => render(shown + PAGE);
   // the header search filters this page in place
   document.querySelector('.global-search')?.addEventListener('submit', e => { e.preventDefault(); st.q = $('#workspace-query').value.trim(); $('#q').value = st.q; ensureText(); apply(); $('#q').focus(); });
-  window.addEventListener('vestigium:domain', () => { st.m.clear(); apply(); });
+  window.addEventListener('vestigium:domain', () => { st.m.clear(); st.sort = personality().sort; $('#sort').value = st.sort; apply(); });
   apply();
 }
 
@@ -110,8 +110,9 @@ function apply() {
   matched.sort(cmp);
   // controls
   const total = IX.rows.filter(r => inDomain(r.d)).length;
+  const uns = IX.rows.filter(r => r.d === 2).length;
   $('#count').innerHTML = (matched.length === total ? '<b>' + fmt(total) + '</b> objects' : '<b>' + fmt(matched.length) + '</b> of ' + fmt(total) + ' objects') +
-    (getDomain() === 'all' ? '' : ' · ' + (getDomain() === 'surg' ? 'surgical instruments' : 'science and technology'));
+    (getDomain() === 'all' ? ' · ' + fmt(uns) + ' not placed by the domain rule' : ' · ' + (getDomain() === 'surg' ? 'surgical instruments' : getDomain() === 'sci' ? 'science and technology' : 'not placed'));
   $('#f-per').innerHTML = '<option value="">Any period</option>' + PERIODS.filter(([k]) => pc[k] || st.per === k).map(([k, l]) => '<option value="' + k + '"' + (st.per === k ? ' selected' : '') + '>' + l + ' (' + fmt(pc[k] || 0) + ')</option>').join('');
   for (const [k, , all] of FACETS) {
     const sel = $('#f-' + k), cnt = fc[k];

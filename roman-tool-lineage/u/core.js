@@ -4,8 +4,8 @@
 //   data/unified/<v>/text.json           search text, fetched on the first search only
 //   data/unified/<v>/obj/<k>.json        object shards, k = FNV-1a(id) mod shards (object page, compare)
 //   data/unified/<v>/{patterns,bridges,home}.json   pattern pages and the front page carry their own tile data
-import {getDomain, inDomain, initDomain} from './domain.js';
-export {getDomain, inDomain};
+import {getDomain, inDomain, initDomain, personality} from './domain.js';
+export {getDomain, inDomain, personality};
 
 export const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'}[c]));
 export const $ = (s, r) => (r || document).querySelector(s);
@@ -34,8 +34,8 @@ export async function boot() {
   MUSEUMS = m.museums; DOMAINS = m.domains;
   return m;
 }
-export const domainKey = d => d === 0 ? 'surg' : 'sci';
-export const domainLabel = d => d === 0 ? 'Surgical instruments' : 'Science and technology';
+export const domainKey = d => d === 0 ? 'surg' : d === 1 ? 'sci' : 'uns';
+export const domainLabel = d => d === 0 ? 'Surgical instruments' : d === 1 ? 'Science and technology' : 'Not placed';
 export const mus = i => MUSEUMS[i] || {name: 'Unknown', short: 'Unknown', color: '#8a8f8c'};
 
 // ---------------------------------------------------------------- dates
@@ -51,8 +51,10 @@ export function dateLabel(s, e) {
 export const mid = r => r.s == null ? null : (r.s + (r.e == null ? r.s : r.e)) / 2;
 
 // ---------------------------------------------------------------- images
-export function thumb(im) { return !im ? '' : im[0] === 'S' ? 'science/img/t/' + im.slice(1) + '.jpg' : im; }
-export function large(im) { return !im ? '' : im[0] === 'S' ? 'science/img/d/' + im.slice(1) + '.jpg' : im; }
+// S…: science thumbnail hash; C…: catalogue thumbnail (the only catalogue image the site carries, there is no
+// full-size copy — object pages link to the museum's own record); anything else is a path into this site.
+export function thumb(im) { return !im ? '' : im[0] === 'S' ? 'science/img/t/' + im.slice(1) + '.jpg' : im[0] === 'C' ? 'img/c/' + im.slice(1, 3) + '/' + im.slice(1) + '.webp' : im; }
+export function large(im) { return !im ? '' : im[0] === 'S' ? 'science/img/d/' + im.slice(1) + '.jpg' : thumb(im); }
 export const objUrl = id => 'object.html?id=' + encodeURIComponent(id);
 export const cmpUrl = (a, b) => 'compare.html?a=' + encodeURIComponent(a) + (b ? '&b=' + encodeURIComponent(b) : '');
 

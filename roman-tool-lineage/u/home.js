@@ -1,18 +1,19 @@
 // Front page: one title, one sentence, a photo mosaic from both domains, then Patterns, Explore, Analyse, Contact.
-import {boot, loadJSON, $, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, errorBox} from './core.js';
+import {boot, loadJSON, $, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, personality, errorBox} from './core.js';
 
 const main = $('#main');
 try {
   const m = await boot(), H = await loadJSON('home.json');
   const R = id => fromMini(id, H.mini[id]);
-  $('#lede').innerHTML = fmt(m.counts.surg) + ' surgical instruments and ' + fmt(m.counts.sci) + ' scientific objects from ' + m.counts.museums +
-    ' museum collections, in one collection you can browse, map and follow through time.';
+  $('#lede').innerHTML = fmt(m.counts.all) + ' objects from ' + m.counts.museums + ' collections: ' + fmt(m.counts.surg) + ' surgical instruments, ' +
+    fmt(m.counts.sci) + ' scientific objects and ' + fmt(m.counts.uns) + ' catalogue records the codebook could not place — one collection you can browse, map and follow through time.';
   const ph = (id, extra) => { const r = R(id); if (!r) return ''; return '<span class="ph" style="--c:' + mus(r.m).color + '"' + (extra || '') + '><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"></span>'; };
   const im = id => { const r = R(id); return r ? '<img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="">' : ''; };
   function mosaic() {
-    const d = getDomain(), s = H.mosaic.surg, c = H.mosaic.sci;
-    const ids = d === 'surg' ? s.slice(0, 24) : d === 'sci' ? c.slice(0, 24) : Array.from({length: 24}, (_, k) => (k % 2 ? c : s)[k >> 1]);
-    $('#mosaic').innerHTML = ids.map(id => { const r = R(id); return r ? '<a href="' + objUrl(id) + '" style="--c:' + mus(r.m).color + '" title="' + esc(r.t) + '"><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"><i class="dm ' + (r.d ? 'sci' : 'surg') + '"></i></a>' : ''; }).join('');
+    const d = getDomain(), lists = {surg: H.mosaic.surg, sci: H.mosaic.sci, uns: H.mosaic.cat || []};
+    const pick = d === 'all' ? Array.from({length: 24}, (_, k) => [lists.surg, lists.sci, lists.uns][k % 3][(k / 3) | 0]).filter(Boolean) : (lists[d] || []).slice(0, 24);
+    $('#mosaic').innerHTML = pick.map(id => { const r = R(id); return r ? '<a href="' + objUrl(id) + '" style="--c:' + mus(r.m).color + '" title="' + esc(r.t) + '"><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"><i class="dm ' + (r.d === 0 ? 'surg' : r.d === 1 ? 'sci' : 'uns') + '"></i></a>' : ''; }).join('');
+    const pl = document.getElementById('plede'); if (pl) pl.textContent = personality().line;
   }
   mosaic();
   window.addEventListener('vestigium:domain', mosaic);
@@ -33,7 +34,9 @@ try {
     ['timeline.html', 'Timeline', 'Photo strips through the centuries', '<div class="pics p4">' + H.timeline.map(im).join('') + '</div>']
   ];
   const card = t => '<a class="entry" href="' + t[0] + '">' + t[3] + '<h3>' + t[1] + '</h3><p>' + t[2] + '</p></a>';
-  $('#explore').innerHTML = entries.map(card).join('');
+  // the personality also sets which view comes first for a domain: a skin over the same cards, not another site
+  const order = ['all', 'surg'].includes(getDomain()) ? entries : [entries[1], entries[4], entries[0], entries[2], entries[3]];
+  $('#explore').innerHTML = order.map(card).join('');
   const nb = H.cross.length ? H.cross : H.collage.slice(0, 2);
   $('#analyse').innerHTML = [
     ['compare.html' + (nb.length === 2 ? '?a=' + encodeURIComponent(nb[0]) + '&b=' + encodeURIComponent(nb[1]) : ''), 'Compare', 'Any two objects, side by side', '<div class="pics p2">' + nb.map(im).join('') + '</div>'],

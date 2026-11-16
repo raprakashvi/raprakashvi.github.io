@@ -46,12 +46,13 @@ if (!ids.length) {
       const list = v => (v || []).map(esc).join(', ');
       const fn = o => o.d ? list(o.fn) : (o.working || []).map(w => esc(w.label)).join(', ');
       const R = [['Date', o => esc(o.dt || dateLabel(o.s, o.e) || 'Undated')], ['Category', o => list(o.c)], [null, o => list(o.ty.filter(v => !o.c.includes(v)))],
-        ['Principle', o => o.pat?.pl ? esc(o.pat.pl) : ''], ['Function', fn], ['Role', o => o.pat?.r ? esc(o.pat.r) : ''], ['Maker', o => list(o.mk)],
+        ['Principle', o => o.pat?.pl ? esc(o.pat.pl) : o.pr?.length ? esc(o.pr[0]) : ''],
+        ['Function', fn], ['Role', o => o.pat?.r ? esc(o.pat.r) : o.ro?.length ? esc(o.ro[0]) : ''], ['Maker', o => list(o.mk)],
         ['Place', o => esc(o.pl || '')], ['Material', o => list(o.mt)], ['Size', o => esc(o.dims || '')], ['Inventory number', o => esc(o.acc || '')]];
       const body = R.map(([label, f]) => {
         const va = f(a), vb = f(b);
         if (!va && !vb) return '';
-        const l = label || (a.d && b.d ? 'Device' : !a.d && !b.d ? 'Type' : 'Type or device');
+        const l = label || (a.k === 'cat' || b.k === 'cat' ? 'Device family' : a.d && b.d ? 'Device' : !a.d && !b.d ? 'Type' : 'Type or device');
         const same = va && va === vb ? ' class="same"' : '';
         return '<tr' + same + '><th scope="row">' + l + '</th><td>' + (va || '<span class="none">none</span>') + '</td><td>' + (vb || '<span class="none">none</span>') + '</td></tr>';
       }).join('');

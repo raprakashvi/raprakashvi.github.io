@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" class="locked"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex,max-image-preview:none"><meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
 <title>Method · Vestigium</title><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="visuals/tokens.css"><link rel="stylesheet" href="u/chrome.css"><link rel="stylesheet" href="u/site.css"><link rel="stylesheet" href="gate.css"></head>
 <body data-page="method"><a class="skip" href="#main">Skip to content</a>
@@ -17,19 +17,21 @@
  <button id="logout" class="vh-out" aria-label="Sign out"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 4H4v16h5M13 8l4 4-4 4M8 12h13"/></svg><span>Sign out</span></button>
  <button class="drawer-toggle icon-button" id="drawer-toggle" aria-controls="workspace-sidebar" aria-expanded="false" aria-label="Open navigation"><svg class="ui-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
  </div>
- <div class="vh-domain" id="domainbar" role="group" aria-label="Domain shown in every view"><button type="button" data-domain="all" aria-pressed="true"><span>All</span><b data-count="all">4,034</b></button><button type="button" data-domain="surg" aria-pressed="false"><i class="dm surg" aria-hidden="true"></i><span>Surgical instruments</span><b data-count="surg">2,830</b></button><button type="button" data-domain="sci" aria-pressed="false"><i class="dm sci" aria-hidden="true"></i><span>Science and technology</span><b data-count="sci">1,204</b></button></div>
+ <div class="vh-domain" id="domainbar" role="group" aria-label="Domain shown in every view"><button type="button" data-domain="all" aria-pressed="true"><span>All</span><b data-count="all">52,790</b></button><button type="button" data-domain="surg" aria-pressed="false"><i class="dm surg" aria-hidden="true"></i><span>Surgical instruments</span><b data-count="surg">5,165</b></button><button type="button" data-domain="sci" aria-pressed="false"><i class="dm sci" aria-hidden="true"></i><span>Science and technology</span><b data-count="sci">31,566</b></button><button type="button" data-domain="uns" aria-pressed="false" title="Records the domain rule cannot place"><i class="dm uns" aria-hidden="true"></i><span>Not placed</span><b data-count="uns">16,059</b></button></div>
 </header>
 <main id="main" tabindex="-1"><div class="pagehead"><h1>Method</h1><p>From museum records to the views on this site, in four steps.</p></div>
 <section aria-labelledby="mf"><h2 id="mf" class="vh">How the collection is made</h2>
 <ol class="flow" id="flow">
 <li class="fstep"><h3>Museum records</h3>
 <div class="fbox surg"><i class="dm surg"></i><b>Surgical instruments</b><span id="m-surg">2,830 records</span><span id="m-surg-src">14 collections</span></div>
-<div class="fbox sci"><i class="dm sci"></i><b>Science and technology</b><span id="m-sci">1,204 records</span><span>5 Dutch museums</span></div></li>
+<div class="fbox sci"><i class="dm sci"></i><b>Science and technology</b><span id="m-sci">1,204 records</span><span>5 Dutch museums</span></div>
+<div class="fbox"><i class="dm uns"></i><b>Museum catalogues</b><span id="m-cat">50,063 records</span><span>NEMO, Boerhaave, Teylers</span></div></li>
 <li class="fstep"><h3>Reading each record</h3>
 <div class="fbox surg"><b>Working function</b><span>rules on name and catalogue text</span></div>
 <div class="fbox surg"><b>Outline measurements</b><span>shape set, photographs</span></div>
 <div class="fbox sci"><b>Dates, makers, places</b><span>museum fields, checked</span></div>
-<div class="fbox sci"><b>Principle, role, device</b><span>two annotators, agreed labels</span></div></li>
+<div class="fbox sci"><b>Principle, role, device</b><span>two annotators, agreed labels</span></div>
+<div class="fbox"><b>Codebook at catalogue scale</b><span>50,063 records, one label each, basis kept verbatim</span></div></li>
 <li class="fstep"><h3>One shared space</h3>
 <div class="fbox both"><b>Photograph + title</b><span>SigLIP 2, one encoder for both domains</span></div>
 <div class="fbox both"><b>Museum style removed</b><span>within each domain</span></div>
@@ -41,6 +43,18 @@
 </ol></section>
 <section aria-labelledby="mc"><h2 id="mc">Which objects each view covers</h2>
 <div class="cover" id="cover"></div></section>
+<section aria-labelledby="md"><h2 id="md">How a catalogue record gets its domain</h2>
+<p>Every record of the three complete catalogues is in the same collection, with the same filters and the same views.
+The domain chips also give each domain a personality: an accent colour, one framing line and the default order of the
+collection, over the same pages. A record is placed as follows (<code>scripts/web/unified/catalogue.py</code>, full text in
+<a href="docs/CATALOGUE_DOMAIN_RULE.md">the rule</a>):</p>
+<ol class="flow">
+<li class="fstep"><h3>Flat first</h3><p>A print, drawing, photograph, letter, book, coin or map is never made surgical by a word in its title. A print <em>about</em> a surgeon is a print.</p></li>
+<li class="fstep"><h3>Surgical</h3><p>The museum&rsquo;s own words name a medical or surgical instrument: a Boerhaave classification under <em>10 Geneeskunde, hygiene, farmacie</em> (packaging excluded), a NEMO medical-technology category, or a term from a stated word list in the name or categories.</p></li>
+<li class="fstep"><h3>Science</h3><p>The T-030 codebook labelled the record with a named principle of physics, chemistry, life science or earth science.</p></li>
+<li class="fstep"><h3>Not placed</h3><p>Everything else. The record stays in the collection, is counted on the Data page, and is never dropped.</p></li>
+</ol>
+<p class="scope" id="m-rule"></p></section>
 <section aria-labelledby="mm"><h2 id="mm">More on method</h2>
 <div class="cards3">
 <a class="card" href="atlas.html#method"><b>Research methods</b><span>How the surgical study reads its sources</span></a>

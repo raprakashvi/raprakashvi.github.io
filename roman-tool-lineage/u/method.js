@@ -1,13 +1,19 @@
-// Method: the four-step flow and a picture of which objects each view covers.
+// Method: the four-step flow, the domain rule and a picture of which objects each view covers.
 import {boot, loadJSON, $, esc, fmt} from './core.js';
 
 const m = await boot();
 $('#m-surg').textContent = fmt(m.counts.surg) + ' records';
 $('#m-sci').textContent = fmt(m.counts.sci) + ' records';
 $('#m-surg-src').textContent = m.museums.filter(x => x.n[0]).length + ' collections';
+if (m.catalogue) {
+  $('#m-cat').textContent = fmt(m.catalogue.records) + ' records';
+  $('#m-rule').textContent = 'In this build: ' + fmt(m.catalogue.records) + ' catalogue records, ' + fmt(m.catalogue.duplicates) +
+    ' already in the collection, ' + fmt(m.catalogue.kept) + ' added. Placed surgical: ' + fmt(m.catalogue.by_domain['0'] || 0) +
+    '; science: ' + fmt(m.catalogue.by_domain['1'] || 0) + '; not placed: ' + fmt(m.catalogue.by_domain['2'] || 0) + '.';
+}
 // [view, href, surgical coverage, science coverage, what it uses] ; 2 = all objects, 1 = in part, 0 = not in this view
 const V = [
-  ['Collection', 'collection.html', 2, 2, 'every record'],
+  ['Collection', 'collection.html', 2, 2, 'every record, including the three catalogues'],
   ['Map of forms, Map in time', 'map.html', 2, 2, 'every object with a photograph'],
   ['Timeline', 'timeline.html', 2, 2, 'every dated object'],
   ['Compare', 'compare.html', 2, 2, 'any two objects'],

@@ -80,6 +80,25 @@ The build is deterministic for the same inputs: the unified version is a hash of
 and the prints `u1-<hash>` in `results/tables/web_build.json` identify it. `dist/` is ignored
 by Git.
 
+**The catalogue records (T-032).** `--science` also brings the three complete museum catalogues
+(50,063 records, T-025) and their T-030 labels into the one collection. Before the build, the
+photographs get a WebP thumbnail (240 px long side, quality 70, median 2.6 kB):
+
+```bash
+~/.venvs/vestigium-ml/bin/python scripts/web/unified/thumbs.py   # cache: data/processed/web/thumbs/ (ignored)
+MPLCONFIGDIR=/tmp/vestigium-mpl python3 scripts/web/build_site.py --gate-config gate.local.json --science
+du -sh dist   # budget: under 700 MB
+```
+
+`scripts/web/unified/build.py` calls `thumbs.py` when the cache is missing, copies the thumbnails
+into `dist/img/c/`, and writes `results/tables/catalogue_site.json` (records read, duplicates,
+per museum and domain, rule counts, thumbnail sizes, map positions). The domain rule is in
+[CATALOGUE_DOMAIN_RULE.md](CATALOGUE_DOMAIN_RULE.md). Build time on this machine is about three
+minutes for 52,790 objects (UMAP over 41,698 positions is most of it). A rebuild also removes
+dataset and unified version folders under `dist/` that `data/*/current.json` no longer points at;
+the published site keeps its own copies for old tabs.
+
+
 Browser QA uses an installed Chrome and Node 22, with no npm dependency. Start a localhost
 HTTP server and Chrome debugging as documented in `VERIFICATION.md`, then run
 `node roman_tool_lineage/scripts/web/check_collection.mjs` from the parent repository.

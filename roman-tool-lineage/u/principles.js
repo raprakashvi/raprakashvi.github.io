@@ -14,11 +14,28 @@ function groups() {
   const g = [];
   if (d !== 'surg') g.push(['p', 'Principles', 'sci', S.principles.map(p => [p.k, p.label, p.n])]);
   if (d !== 'sci') g.push(['f', 'Surgical function families', 'surg', PAT.fams.map(f => [f.k, f.label, f.n])]);
+  if (PAT.catpr && PAT.catpr.length && d !== 'surg') g.push(['c', 'Principles in the museum catalogues', 'uns', PAT.catpr.map(p => [p.k, p.k, p.n])]);
   $('#pgroups').innerHTML = g.map(([kind, title, dom, list]) => '<div class="pgroup"><h2 class="ptitle"><i class="dm ' + dom + '"></i>' + title + '</h2><ul class="pchips">' +
     list.map(([k, l, n]) => '<li><button type="button" class="pchip ' + dom + '" data-kind="' + kind + '" data-k="' + esc(k) + '" aria-pressed="false">' + esc(l) + '<b>' + fmt(n) + '</b></button></li>').join('') + '</ul></div>').join('');
   return g;
 }
 function select(kind, k) {
+  if (kind === 'c') {
+    // catalogue records under their T-030 principle: one lane, 12 records spread over the museums and dates
+    const p = PAT.catpr.find(x => x.k === k) || PAT.catpr[0];
+    const items = p.ids.map(id => { const r = fromMini(id, PAT.mini[id]); return r ? [id, r.s, r.e == null ? r.s : r.e, (r.e || r.s) - r.s > 50 ? 1 : 0] : null; }).filter(Boolean);
+    const pp = {k: p.k, label: p.k, n: p.n, museums: p.museums.map(x => x[0]), lanes: [{title: p.k, n: p.n, items}],
+      headline: p.n.toLocaleString('en') + ' catalogue records labelled ' + p.k + ', 12 shown' + (p.from ? ', ' + p.from + ' to ' + p.to : '') + '.'};
+    cur = {kind, p: pp};
+    $$('#pgroups button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.kind === kind && b.dataset.k === p.k)));
+    $('#headline').textContent = pp.headline;
+    $('#pscope').innerHTML = scopeNote('Every record here comes from the three museums\' own catalogues, labelled by the T-030 codebook. The strips above are the curated 1,204-object study; these records are the same principles seen across whole collections, and the site\'s own count for this principle is in the collection filter.');
+    $('#legend').innerHTML = legendMuseums(pp.museums);
+    document.title = p.k + ' in the catalogues · Life of a principle · Vestigium';
+    try { history.replaceState(null, '', '?' + kind + '=' + encodeURIComponent(p.k)); } catch {}
+    draw();
+    return;
+  }
   const list = kind === 'f' ? PAT.fams : S.principles;
   const p = list.find(x => x.k === k) || list[0];
   cur = {kind, p};
@@ -31,7 +48,7 @@ function select(kind, k) {
   draw();
 }
 function axisFor(lanes) {
-  if (cur.kind === 'p') return {y0: 1700, y1: 2020, brk: null};
+  if (cur.kind === 'p' || cur.kind === 'c') return {y0: 1700, y1: 2020, brk: null};
   let lo = 1e9, hi = -1e9;
   lanes.forEach(l => l.items.forEach(it => { lo = Math.min(lo, it[1]); hi = Math.max(hi, it[2]); }));
   const y1 = Math.ceil(Math.max(hi, 1900) / 50) * 50, y0 = Math.floor(lo / 100) * 100;
@@ -99,6 +116,7 @@ function start() {
   const kinds = g.map(x => x[0]);
   if (q.get('p') && kinds.includes('p')) select('p', q.get('p'));
   else if (q.get('f') && kinds.includes('f')) select('f', q.get('f'));
+  else if (q.get('c') && kinds.includes('c')) select('c', q.get('c'));
   else if (cur && kinds.includes(cur.kind)) select(cur.kind, cur.p.k);
   else select(kinds[0], null);
 }

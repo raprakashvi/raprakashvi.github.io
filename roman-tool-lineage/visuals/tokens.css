@@ -12,7 +12,7 @@
   --cutting:#28685e;--bone:#94603c;--dilation:#52648b;
   /* T-027: the two domains of the merged collection (filter chips, map markers, tile corners).
      Surgical = the atlas accent; science = an ink blue kept clear of the Boerhaave museum blue. */
-  --dom-surg:#a8431f;--dom-sci:#284f7a;
+  --dom-surg:#a8431f;--dom-sci:#284f7a;--dom-uns:#6f6a60;
   /* T-019: the fixed sidebar/topbar are gone, but later CSS still computes offsets
      from these two tokens; zero them so sticky/scroll offsets resolve cleanly. */
   --sidebar-width:0px;--topbar-height:0px;
