@@ -17,7 +17,7 @@ const V = [
   ['Map of forms, Map in time', 'map.html', 2, 2, 'every object with a photograph'],
   ['Timeline', 'timeline.html', 2, 2, 'every dated object'],
   ['Compare', 'compare.html', 2, 2, 'any two objects'],
-  ['Life of a principle', 'principles.html', 1, 2, 'science: principle and role; surgical: working function'],
+  ['Life of a principle', 'principles.html', 1, 2, 'science: principle and role; surgical: working function; catalogues: principle counts and strips'],
   ['Lineages', 'lineages.html', 1, 2, 'science: device chains and makers; surgical: family-tree branches'],
   ['Bridges', 'bridges.html', 1, 2, 'pairs across domains; museum pairs for science'],
   ['Missing links', 'gaps.html', 0, 2, 'principles and roles'],

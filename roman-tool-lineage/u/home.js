@@ -6,7 +6,7 @@ try {
   const m = await boot(), H = await loadJSON('home.json');
   const R = id => fromMini(id, H.mini[id]);
   $('#lede').innerHTML = fmt(m.counts.all) + ' objects from ' + m.counts.museums + ' collections: ' + fmt(m.counts.surg) + ' surgical instruments, ' +
-    fmt(m.counts.sci) + ' scientific objects and ' + fmt(m.counts.uns) + ' catalogue records the codebook could not place — one collection you can browse, map and follow through time.';
+    fmt(m.counts.sci) + ' scientific objects and ' + fmt(m.counts.uns) + ' records that could not be placed in either — mostly prints, drawings and letters. One collection you can browse, map and follow through time.';
   const ph = (id, extra) => { const r = R(id); if (!r) return ''; return '<span class="ph" style="--c:' + mus(r.m).color + '"' + (extra || '') + '><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"></span>'; };
   const im = id => { const r = R(id); return r ? '<img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="">' : ''; };
   function mosaic() {
