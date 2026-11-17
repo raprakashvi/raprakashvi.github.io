@@ -64,7 +64,7 @@ function render(o) {
     (o.lab.b ? '<details class="evd"><summary>Where the label comes from</summary><p>The label rests on these words of the record: “' + esc(o.lab.b) + '”.</p></details>' : '') : '';
   let html = '<article class="object" style="--c:' + m.color + '">' + '<div class="pcol">' + plate + '</div><div class="fcol">' +
     '<p class="museum"><i></i>' + esc(m.name) + '</p><h1>' + esc(o.t) + '</h1>' + (date ? '<p class="date">' + esc(date) + '</p>' : '<p class="date">Undated</p>') +
-    '<p class="dline"><span class="dtag ' + domainKey(o.d) + '"><i class="dm ' + domainKey(o.d) + '"></i>' + domainLabel(o.d) + '</span>' + (pl.length ? '<span class="pline">' + pl.join(' <i>·</i> ') + '</span>' : '') + '</p>' +
+    '<p class="dline">' + (o.d ? '<span class="dtag ' + domainKey(o.d) + '"><i class="dm ' + domainKey(o.d) + '"></i>' + domainLabel(o.d) + '</span>' : '') + (pl.length ? '<span class="pline">' + pl.join(' <i>·</i> ') + '</span>' : '') + '</p>' +
     (facts.length ? '<dl>' + facts.map(r => '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>').join('') + '</dl>' : '') +
     (o.desc ? '<h2 class="sub">' + (sci ? 'Museum text' : 'Catalogue text') + '</h2><div class="desc">' + o.desc.slice(0, 4).map(p => '<p>' + esc(p) + '</p>').join('') + '</div>' : '') +
     lab +

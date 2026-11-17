@@ -37,7 +37,7 @@ if (!ids.length) {
       const m = mus(o.m), d = o.dt || dateLabel(o.s, o.e);
       return '<div class="side" style="--c:' + m.color + '"><div class="plate">' + (o.im ? '<img src="' + esc(large(o.im)) + '" alt="' + esc(o.t) + '">' : '<span class="nophoto">No photograph</span>') + '</div>' +
         '<p class="museum"><i></i>' + esc(m.name) + '</p><h2><a href="' + objUrl(o.id) + '">' + esc(o.t) + '</a></h2>' +
-        '<p class="dline"><span class="dtag ' + domainKey(o.d) + '"><i class="dm ' + domainKey(o.d) + '"></i>' + domainLabel(o.d) + '</span><span class="cdate">' + esc(d || 'Undated') + '</span></p></div>';
+        '<p class="dline">' + (o.d ? '<span class="dtag ' + domainKey(o.d) + '"><i class="dm ' + domainKey(o.d) + '"></i>' + domainLabel(o.d) + '</span>' : '') + '<span class="cdate">' + esc(d || 'Undated') + '</span></p></div>';
     }).join('') + (objs.length === 1 ? '<div class="side pickone"><p>Choose the second object above.</p></div>' : '');
     if (objs.length === 2) {
       const [a, b] = objs;
