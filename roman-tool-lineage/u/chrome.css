@@ -7,21 +7,28 @@ html.locked body>:not(.gate){display:none!important}
 .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 .skip{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 14px;z-index:60}
 .skip:focus{left:8px}
-header.vh{position:relative;z-index:40;display:block;margin:0;padding:0;background:var(--paper);border:0;border-bottom:1px solid var(--border);height:auto;width:auto}
+/* The header carries class "vh"; site.css also has a .vh visually-hidden utility, so the header must unset its
+   clip/overflow or the menu panel would be cut to the header box (found in the T-036 menu screenshot). */
+header.vh{position:relative;z-index:40;display:block;margin:0;padding:0;background:var(--paper);border:0;border-bottom:1px solid var(--border);height:auto;width:auto;overflow:visible;clip:auto}
 header.vh .vh-in{display:flex;align-items:center;gap:var(--s5);max-width:var(--maxw);margin:0 auto;padding:var(--s4) var(--gut) var(--s3)}
 header.vh .vh-mark{font:600 27px/1 var(--serif);color:var(--ink);text-decoration:none;letter-spacing:.005em;white-space:nowrap}
 header.vh .vh-mark:hover{text-decoration:none;color:var(--ink)}
-header.vh .vh-nav{display:flex;align-items:center;gap:var(--s2);position:static;width:auto;height:auto;background:none;border:0;padding:0;margin:0 0 0 var(--s3);flex-direction:row;overflow:visible}
-header.vh .vh-menu{position:relative;margin:0;border:0;background:none}
-header.vh .vh-menu>summary{list-style:none;cursor:pointer;display:flex;align-items:center;gap:7px;font:600 15px/1 var(--font-ui);color:var(--ink);padding:10px 12px;border-radius:999px;border:0;background:none;min-height:40px;box-sizing:border-box}
-header.vh .vh-menu>summary::-webkit-details-marker{display:none}
-header.vh .vh-menu>summary::after{content:"";width:6px;height:6px;border-right:1.6px solid currentColor;border-bottom:1.6px solid currentColor;transform:translateY(-2px) rotate(45deg)}
-header.vh .vh-menu>summary:hover,header.vh .vh-menu[open]>summary{background:var(--tint)}
-header.vh .vh-menu[data-current]>summary{box-shadow:inset 0 -2.5px 0 var(--accent);border-radius:0}
-header.vh .vh-drop{position:absolute;top:calc(100% + 8px);left:0;min-width:230px;display:flex;flex-direction:column;padding:var(--s2);background:var(--panel);border:1px solid var(--ink);box-shadow:0 10px 30px #1822301f;z-index:50}
-header.vh .vh-drop a{display:block;padding:9px 12px;font:500 15px/1.3 var(--font-ui);color:var(--ink);text-decoration:none;border-radius:2px;white-space:nowrap}
-header.vh .vh-drop a:hover{background:var(--tint);text-decoration:none}
-header.vh .vh-drop a[aria-current]{font-weight:700;box-shadow:inset 3px 0 0 var(--accent)}
+header.vh .vh-nav{display:none;position:absolute;left:0;right:0;top:100%;z-index:60;background:var(--paper);border-bottom:1px solid var(--ink);box-shadow:0 18px 34px #1822301f;padding:var(--s5) var(--gut) var(--s6)}
+body.menu-open header.vh .vh-nav{display:block}
+header.vh .menu-panel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:var(--s5) var(--s6);max-width:var(--maxw);margin:0 auto}
+header.vh .menu-group h2{font:700 12px var(--font-ui);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:0 0 var(--s3);padding-bottom:7px;border-bottom:1px solid var(--border)}
+header.vh .menu-group[data-current] h2{color:var(--ink);box-shadow:inset 0 -2px 0 var(--accent)}
+header.vh .menu-group ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:var(--s3) var(--s3)}
+header.vh .menu-group a{display:flex;flex-direction:column;gap:6px;padding:3px;text-decoration:none;color:var(--ink)}
+header.vh .menu-group a:hover{background:var(--tint);text-decoration:none}
+header.vh .menu-group img{width:100%;height:64px;object-fit:cover;display:block;background:var(--tint);border-bottom:3px solid var(--accent)}
+header.vh .menu-group a[aria-current]{font-weight:700}
+header.vh .menu-group a[aria-current] img{border-bottom-color:var(--ink)}
+header.vh .menu-group span{font:600 13.5px/1.25 var(--font-ui)}
+header.vh .vh-menubtn{display:inline-flex;align-items:center;gap:var(--s2);font:600 15px/1 var(--font-ui);color:var(--ink);background:none;border:0;border-radius:0;padding:10px 2px;min-height:40px;cursor:pointer;margin-left:var(--s4)}
+header.vh .vh-menubtn:hover{box-shadow:inset 0 -2.5px 0 var(--accent)}
+header.vh .vh-menubtn[aria-expanded=true]{box-shadow:inset 0 -2.5px 0 var(--accent)}
+header.vh .vh-menubtn .ui-icon{width:17px;height:17px}
 header.vh .vh-search{display:flex;align-items:center;gap:var(--s2);margin:0 0 0 auto;padding:8px 12px;width:min(320px,26vw);min-width:180px;border:1px solid #c5cdda;border-radius:999px;background:var(--panel);color:var(--muted);box-sizing:border-box;max-width:none}
 header.vh .vh-search:focus-within{border-color:var(--ink)}
 header.vh .vh-search input{flex:1;min-width:0;border:0;background:transparent;padding:0;margin:0;font:15px/1.4 var(--font-ui);color:var(--ink);height:22px;box-shadow:none}
@@ -38,19 +45,18 @@ header.vh .vh-domain button b{font-weight:600;font-variant-numeric:tabular-nums;
 header.vh .vh-domain button:hover{border-color:var(--ink)}
 header.vh .vh-domain button[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:#fff}
 header.vh .vh-domain button[aria-pressed=true] b{color:#d9dee8}
-header.vh .vh-domain button[data-domain=surg][aria-pressed=true]{background:var(--dom-surg);border-color:var(--dom-surg)}
+header.vh .vh-domain button[data-domain=med][aria-pressed=true]{background:var(--dom-surg);border-color:var(--dom-surg)}
 header.vh .vh-domain button[data-domain=sci][aria-pressed=true]{background:var(--dom-sci);border-color:var(--dom-sci)}
-header.vh .vh-domain button[data-domain=uns][aria-pressed=true]{background:var(--dom-uns);border-color:var(--dom-uns)}
 .dm{display:inline-block;width:11px;height:11px;flex:none}
-.dm.surg{background:var(--dom-surg);border-radius:2px}
+/* T-034: overlapping tags.  Square = Medicine, circle = Science and technology, both = both, outline = neither. */
+.dm.med,.dm.surg{background:var(--dom-surg);border-radius:2px}
 .dm.sci{background:var(--dom-sci);border-radius:50%}
-.dm.uns{background:var(--dom-uns);border-radius:1px;transform:rotate(45deg)}
+.dm.both{background:linear-gradient(90deg,var(--dom-surg) 50%,var(--dom-sci) 50%);border-radius:2px}
+.dm.none,.dm.uns{background:transparent;border:1.5px solid var(--muted);border-radius:1px}
 /* The optional personality of a domain (T-032): one accent colour over the same site, no separate pages. */
 html[data-domain=surg]{--accent:var(--dom-surg);--accent-hover:#8c351a}
 html[data-domain=sci]{--accent:var(--dom-sci);--accent-hover:#1d3d60}
-html[data-domain=uns]{--accent:var(--dom-uns);--accent-hover:#57534b}
-/* a small domain note under the page title, written by the page script */
-.personality{margin:0 0 var(--s3);font:400 15px/1.5 var(--font-ui);color:var(--muted);max-width:70ch;border-left:3px solid var(--accent);padding-left:var(--s3)}
+
 header.vh .vh-domain button[aria-pressed=true] .dm{outline:2px solid #fff;outline-offset:0}
 :focus-visible{outline:3px solid var(--accent);outline-offset:2px}
 /* one-line scope note: says plainly which objects a view covers */
@@ -69,6 +75,11 @@ body footer.vfoot p{margin:0;font:500 15px/1.5 var(--font-ui);color:var(--ink);m
  header.vh .vh-out{margin-left:auto;padding:9px 12px}
  header.vh .vh-out span{display:none}
  header.vh .vh-nav{display:none}
+ /* T-036: the panel becomes one column inside the drawer; the groups stack, their items stay two by two */
+ header.vh .vh-menubtn{display:none}
+ header.vh .menu-panel{grid-template-columns:1fr;gap:var(--s4);max-width:none}
+ header.vh .menu-group ul{grid-template-columns:1fr 1fr;gap:var(--s2)}
+ header.vh .menu-group img{height:56px}
  /* T-027: the drawer and its close button live inside the header, which is a stacking context (z-index 40);
     the scrim must stay below the open drawer, or the drawer's links are covered and unclickable on phones. */
  body.drawer-open header.vh{z-index:80}

@@ -1,6 +1,9 @@
-// The domain filter (All · Surgical instruments · Science and technology), shown at the top of every page and
-// remembered across views in localStorage.  ?d=surg|sci|all in a URL sets it explicitly (old science links use it).
-const KEY = 'vestigium-domain', VALID = ['all', 'surg', 'sci', 'uns'];
+// The tag filter (All · Medicine · Science and technology), shown at the top of every page and remembered across
+// views in localStorage.  T-034: the tags overlap, so a record may be under both; there is no third "not placed"
+// state.  ?d=med|sci|all in a URL sets it explicitly (old science links use ?d=sci; old ?d=surg and ?d=uns are read
+// as their nearest tag so old links still land somewhere sensible).
+const KEY = 'vestigium-domain', VALID = ['all', 'med', 'sci'];
+const ALIAS = {surg: 'med', sur: 'med', uns: 'all'};
 let cur = null, bound = false;
 
 function stored() { try { return localStorage.getItem(KEY); } catch { return null; } }
@@ -9,37 +12,32 @@ function store(d) { try { localStorage.setItem(KEY, d); } catch { /* private mod
 export function getDomain() {
   if (cur) return cur;
   let d = new URLSearchParams(location.search).get('d');
+  if (ALIAS[d]) d = ALIAS[d];
   if (!VALID.includes(d)) d = stored();
   if (!VALID.includes(d)) d = 'all';
   cur = d; store(d);
   return d;
 }
-/** 0 = surgical, 1 = science, 2 = not placed by the domain rule */
-export function inDomain(d) { const c = getDomain(); return c === 'all' || (c === 'surg' ? d === 0 : c === 'sci' ? d === 1 : d === 2); }
-export const DOMAIN_INDEX = {surg: 0, sci: 1, uns: 2};
+/** d is the tag bitmask carried by the index: 1 medicine, 2 science and technology, 3 both, 0 neither. */
+export function inDomain(d) { const c = getDomain(); return c === 'all' || !!(d & (c === 'med' ? 1 : 2)); }
+export const DOMAIN_INDEX = {med: 0, sci: 1};
 
 function paint() {
   document.documentElement.dataset.domain = cur;
   document.querySelectorAll('#domainbar [data-domain]').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.domain === cur)));
-  // The optional personality: the accent colour comes from CSS (html[data-domain=…]); the line and the default
-  // order of the collection are here, so every page can use them without a separate page per domain.
-  document.querySelectorAll('[data-personality]').forEach(el => { el.textContent = personality().line; });
 }
 
-// One framing line and one default collection order per domain.  A skin over the same site, not a second site.
+// One default collection order per tag.  A skin over the same site, not a second site.  The framing line that used
+// to sit under every page title is gone (T-036: one site-wide note is enough); the accent and the order stay.
 const PERSONALITY = {
-  all: {line: 'Every object from the surgical collection, the science collection and three complete museum catalogues, in one place.',
-        sort: 'name'},
-  surg: {line: 'Instruments made to cut, clamp, open and close: the surgeon’s hands, from Roman times to the operating theatre.',
-         sort: 'name'},
-  sci: {line: 'Objects that measure, light, heat, sound and switch: physics in the laboratory and in the home.',
-        sort: 'date'},
-  uns: {line: 'Prints, drawings, letters and specimens that the codebook could not place in a principle. Kept with the collection, counted, never dropped.',
-        sort: 'museum'},
+  all: {sort: 'name'},
+  med: {sort: 'name'},
+  sci: {sort: 'date'},
 };
 export function personality() { return PERSONALITY[getDomain()] || PERSONALITY.all; }
 
 export function setDomain(d) {
+  if (ALIAS[d]) d = ALIAS[d];
   if (!VALID.includes(d) || d === cur) return;
   cur = d; store(d);
   const u = new URL(location.href);

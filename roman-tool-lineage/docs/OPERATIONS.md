@@ -92,11 +92,25 @@ du -sh dist   # budget: under 700 MB
 
 `scripts/web/unified/build.py` calls `thumbs.py` when the cache is missing, copies the thumbnails
 into `dist/img/c/`, and writes `results/tables/catalogue_site.json` (records read, duplicates,
-per museum and domain, rule counts, thumbnail sizes, map positions). The domain rule is in
-[CATALOGUE_DOMAIN_RULE.md](CATALOGUE_DOMAIN_RULE.md). Build time on this machine is about three
-minutes for 52,790 objects (UMAP over 41,698 positions is most of it). A rebuild also removes
-dataset and unified version folders under `dist/` that `data/*/current.json` no longer points at;
-the published site keeps its own copies for old tabs.
+per museum and tag, rule counts, thumbnail sizes, map positions, registration cards). The tag rule
+is in [CATALOGUE_DOMAIN_RULE.md](CATALOGUE_DOMAIN_RULE.md). The Site (T-036) also writes:
+
+- `data/processed/web/unified_layout.json` — the map's photo + title projection;
+- `data/processed/web/unified_layout_photo.json` and `_title.json` — the photo-only and title-only
+  projections of the same objects (each cached and reused while its vectors are unchanged);
+- `data/processed/web/unified_clusters.json` — the groups by closeness (mutual k-nearest-neighbour
+  graph, k = 12, cosine; Louvain modularity, seed 20261116; groups under 40 objects are left
+  unclustered), reused while the vectors are unchanged;
+- `results/tables/clusters.json` — group count, sizes, share unclustered, and the top 20 groups
+  ranked by how many museums they span.
+
+Build time on this machine is about three minutes for ~52,800 objects when the projections and the
+groups are cached, longer when the image inventory has changed (UMAP over ~40,000 positions is most
+of it). The projections and clusters are cached because UMAP and Louvain are not guaranteed to be
+bit-reproducible between runs; without the caches the version hash changes on every rebuild. Delete
+the cache files to recompute. A rebuild also removes dataset and unified version folders under
+`dist/` that `data/*/current.json` no longer points at; the published site keeps its own copies for
+old tabs.
 
 
 Browser QA uses an installed Chrome and Node 22, with no npm dependency. Start a localhost

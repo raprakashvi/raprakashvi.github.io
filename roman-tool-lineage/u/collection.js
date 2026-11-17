@@ -110,9 +110,11 @@ function apply() {
   matched.sort(cmp);
   // controls
   const total = IX.rows.filter(r => inDomain(r.d)).length;
-  const uns = IX.rows.filter(r => r.d === 2).length;
+  const both = IX.rows.filter(r => inDomain(r.d) && r.d === 3).length;
+  const none = IX.rows.filter(r => inDomain(r.d) && r.d === 0).length;
   $('#count').innerHTML = (matched.length === total ? '<b>' + fmt(total) + '</b> objects' : '<b>' + fmt(matched.length) + '</b> of ' + fmt(total) + ' objects') +
-    (getDomain() === 'all' ? ' · ' + fmt(uns) + ' not placed by the domain rule' : ' · ' + (getDomain() === 'surg' ? 'surgical instruments' : getDomain() === 'sci' ? 'science and technology' : 'not placed'));
+    (getDomain() === 'all' ? ' · ' + fmt(both) + ' carry both tags, ' + fmt(none) + ' neither'
+      : ' · ' + (getDomain() === 'med' ? 'tagged Medicine' : 'tagged Science and technology'));
   $('#f-per').innerHTML = '<option value="">Any period</option>' + PERIODS.filter(([k]) => pc[k] || st.per === k).map(([k, l]) => '<option value="' + k + '"' + (st.per === k ? ' selected' : '') + '>' + l + ' (' + fmt(pc[k] || 0) + ')</option>').join('');
   for (const [k, , all] of FACETS) {
     const sel = $('#f-' + k), cnt = fc[k];

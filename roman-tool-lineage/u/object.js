@@ -17,7 +17,7 @@ try {
 
 function render(o) {
   const m = mus(o.m), M = i => fromMini(i, o.mini[i]), rows = ids => (ids || []).map(M).filter(Boolean);
-  const kind = o.k || (o.d === 1 ? 'sci' : 'surg'), sci = kind === 'sci', cat = kind === 'cat';
+  const kind = o.k || ((o.d & 2) && !(o.d & 1) ? 'sci' : 'surg'), sci = kind === 'sci', cat = kind === 'cat';
   const date = o.dt || dateLabel(o.s, o.e);
   document.title = o.t + ' · Vestigium';
   const link = (href, text) => '<a href="' + href + '">' + esc(text) + '</a>';
@@ -44,7 +44,6 @@ function render(o) {
     ['Material', o.mt.map(v => facet('mt', v)).join(', ')],
     ['Size', esc(o.dims || '')],
     ['Inventory number', esc(o.acc || '')],
-    ['Catalogue number', cat && o.src ? esc([o.src.id, o.src.priref].filter(Boolean).join(' ')) : ''],
   ].filter(r => r[1]);
   const imgs = (o.images || []).slice(0, 6);
   const plate = o.im ? '<div class="plate"><img id="plate-img" src="' + esc(large(o.im)) + '" alt="' + esc(o.t) + '"></div>' +
@@ -62,7 +61,7 @@ function render(o) {
     '<h2 class="sub">Codebook label</h2><dl class="labdl">' +
     [['Principle', o.lab.p], ['Role', o.lab.r], ['Function', o.lab.f], ['Device family', o.lab.fam], ['Confidence', o.lab.c]].filter(x => x[1])
       .map(x => '<dt>' + x[0] + '</dt><dd>' + esc(x[1]) + '</dd>').join('') + '</dl>' +
-    (o.lab.b ? '<p class="scope">The label rests on these words of the record: “' + esc(o.lab.b) + '”.</p>' : '') : '';
+    (o.lab.b ? '<details class="evd"><summary>Where the label comes from</summary><p>The label rests on these words of the record: “' + esc(o.lab.b) + '”.</p></details>' : '') : '';
   let html = '<article class="object" style="--c:' + m.color + '">' + '<div class="pcol">' + plate + '</div><div class="fcol">' +
     '<p class="museum"><i></i>' + esc(m.name) + '</p><h1>' + esc(o.t) + '</h1>' + (date ? '<p class="date">' + esc(date) + '</p>' : '<p class="date">Undated</p>') +
     '<p class="dline"><span class="dtag ' + domainKey(o.d) + '"><i class="dm ' + domainKey(o.d) + '"></i>' + domainLabel(o.d) + '</span>' + (pl.length ? '<span class="pline">' + pl.join(' <i>·</i> ') + '</span>' : '') + '</p>' +
@@ -77,7 +76,7 @@ function render(o) {
     html += strip('Similar across the whole collection', rows(o.nb), {compare: o.id, lede: 'Nearest by photograph and name, in any domain.'});
     if ((o.nbx || []).length) html += strip(cat ? 'Nearest outside the catalogues' : sci ? 'Closest surgical instruments' : 'Closest science objects', rows(o.nbx), {compare: o.id});
   } else if (cat) {
-    html += strip('Same device family, nearest in date', rows(o.row_fam), {compare: o.id, lede: 'This record has no position in the learned space yet (embeddings pending); these are its nearest relatives by the codebook device family.'});
+    html += strip('Same device family, nearest in date', rows(o.row_fam), {compare: o.id, lede: 'This record has no position in the frozen SigLIP 2 space (no photograph, or a registration-card image); these are its nearest relatives by the codebook device family.'});
     if ((o.row_pr || []).length) html += strip('Same principle, ' + esc((o.pr[0] || '').toLowerCase()) + ', nearest in date', rows(o.row_pr), {compare: o.id});
   } else html += '<section class="row"><h2>Similar across the whole collection</h2><p class="scope">This record has no photograph, so it has no place on the maps and no visual neighbours.</p></section>';
   if (sci) {
@@ -96,12 +95,6 @@ function render(o) {
     if (o.row_fn) html += strip('Same working function, ' + esc(o.fn[0]) + ', nearest in date', rows(o.row_fn), {compare: o.id, lede: 'Surgical instruments carry no physics principle; their working function stands in for it.'});
     else html += '<section class="row"><h2>Principle</h2><p class="scope">No principle or working function is assigned to this record.</p></section>';
     html += surgicalEvidence(o);
-  } else {
-    const RULE = {'principle': 'the T-030 principle label', 'medicine classification': 'the museum’s medical classification',
-      'surgical word': 'a surgical or medical term in its own name', 'medical technology category': 'the museum’s medical-technology category',
-      'unclear': 'nothing the rule could place'};
-    html += '<section class="row"><h2>Provenance</h2><p class="scope">Read from ' + esc((o.src && o.src.id) || 'the museum catalogue') +
-      (o.basis ? ', dates from ' + esc(o.basis) : '') + '. Placed by ' + esc(RULE[o.rule] || o.rule || 'the domain rule') + '.</p></section>';
   }
   root.innerHTML = html;
   $$('.pthumbs button', root).forEach(b => b.onclick = () => { $('#plate-img').src = b.dataset.src; });

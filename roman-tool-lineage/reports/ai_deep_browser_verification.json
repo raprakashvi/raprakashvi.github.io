@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-11-16T08:02:55.922Z",
-  "url": "http://127.0.0.1:53433/collection.html#ai/META-000104",
+  "tested_at": "2026-11-16T08:48:18.443Z",
+  "url": "http://127.0.0.1:45355/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",
@@ -265,12 +265,12 @@
         "decoded_bytes": 706690
       },
       {
-        "file": "literature.json",
-        "decoded_bytes": 38657
-      },
-      {
         "file": "crossmodal.json",
         "decoded_bytes": 21782
+      },
+      {
+        "file": "literature.json",
+        "decoded_bytes": 38657
       }
     ]
   },

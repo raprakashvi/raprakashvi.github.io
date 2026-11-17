@@ -1,42 +1,59 @@
-// Front page: one title, one sentence, a photo mosaic from both domains, then Patterns, Explore, Analyse, Contact.
-import {boot, loadJSON, $, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, personality, errorBox} from './core.js';
+// Front page (T-036): one large photo band from every collection, one sentence, the groups that cross museums, three
+// ways in, then a visual "what is here" strip (no tables), the patterns and the analysis views.  Photographs lead;
+// no gradients, no emoji, no repeated caveat line (the one plain note is in the footer).
+import {boot, loadJSON, $, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, errorBox} from './core.js';
 
 const main = $('#main');
 try {
   const m = await boot(), H = await loadJSON('home.json');
   const R = id => fromMini(id, H.mini[id]);
-  $('#lede').innerHTML = fmt(m.counts.all) + ' objects from ' + m.counts.museums + ' collections: ' + fmt(m.counts.surg) + ' surgical instruments, ' +
-    fmt(m.counts.sci) + ' scientific objects and ' + fmt(m.counts.uns) + ' records that could not be placed in either — mostly prints, drawings and letters. One collection you can browse, map and follow through time.';
-  const ph = (id, extra) => { const r = R(id); if (!r) return ''; return '<span class="ph" style="--c:' + mus(r.m).color + '"' + (extra || '') + '><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"></span>'; };
+  $('#lede').innerHTML = fmt(m.counts.all) + ' objects from ' + m.counts.museums + ' collections: ' + fmt(m.counts.med) +
+    ' tagged Medicine and ' + fmt(m.counts.sci) + ' tagged Science and technology (some carry both), one collection you can browse, map and follow through time.';
   const im = id => { const r = R(id); return r ? '<img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="">' : ''; };
-  function mosaic() {
-    const d = getDomain(), lists = {surg: H.mosaic.surg, sci: H.mosaic.sci, uns: H.mosaic.cat || []};
-    const pick = d === 'all' ? Array.from({length: 24}, (_, k) => [lists.surg, lists.sci, lists.uns][k % 3][(k / 3) | 0]).filter(Boolean) : (lists[d] || []).slice(0, 24);
-    $('#mosaic').innerHTML = pick.map(id => { const r = R(id); return r ? '<a href="' + objUrl(id) + '" style="--c:' + mus(r.m).color + '" title="' + esc(r.t) + '"><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"><i class="dm ' + (r.d === 0 ? 'surg' : r.d === 1 ? 'sci' : 'uns') + '"></i></a>' : ''; }).join('');
-    const pl = document.getElementById('plede'); if (pl) pl.textContent = personality().line;
-  }
-  mosaic();
-  window.addEventListener('vestigium:domain', mosaic);
+  const ph = (id, extra) => { const r = R(id); if (!r) return ''; return '<span class="ph" style="--c:' + mus(r.m).color + '"' + (extra || '') + '><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"></span>'; };
+
+  // the opening band: real photographs only (registration cards are already excluded by the build)
+  $('#band').innerHTML = H.band.map(id => { const r = R(id); return r ? '<a href="' + objUrl(id) + '" style="--c:' + mus(r.m).color + '" title="' + esc(r.t + ' · ' + mus(r.m).short) + '">' + im(id) + '</a>' : ''; }).join('');
+
+  // the groups that cross museums: a row of photographs each, one plain line
+  $('#cband').innerHTML = (H.clusters || []).map(c => '<a class="clrow" href="clusters.html#c' + c.id + '"><span class="clpics">' +
+    c.pics.slice(0, 4).map(id => { const r = R(id); return r ? '<img loading="lazy" decoding="async" style="--c:' + mus(r.m).color + '" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '">' : ''; }).join('') +
+    '</span><span class="clline">' + esc(c.line) + '<b>' + fmt(c.n) + ' objects in this group</b></span></a>').join('');
+
+  // three ways in
   const arrow = '<span class="ar" aria-hidden="true">→</span>';
+  const entries = [
+    ['collection.html', 'Browse', fmt(m.counts.all) + ' objects, every filter', '<div class="pics p2x2">' + H.collage.map(im).join('') + '</div>'],
+    ['map.html', 'See connections', 'What looks alike sits together; the groups that cross museums are outlined', '<div class="pics p1"><img loading="lazy" src="img/u/map-preview.png" alt="Map of every object; the groups that cross museums are outlined"></div>'],
+    ['principles.html', 'Follow through time', 'A principle or a working function, from its first object to its last', '<div class="pp life4">' + H.life.map(id => ph(id)).join('') + '</div>'],
+  ];
+  const card = t => '<a class="entry" href="' + t[0] + '">' + t[3] + '<h3>' + t[1] + '</h3><p>' + t[2] + '</p></a>';
+  $('#entries').innerHTML = entries.map(card).join('');
+
+  // what is here: counts by collection and by century, as small charts
+  const maxm = Math.max(...H.by_museum.map(x => x.n), 1);
+  const bars = H.by_museum.filter(x => x.n > 200).map(x => '<div class="whrow"><span class="whlab">' + esc(x.short) + '</span><span class="whbar" style="--c:' + x.color + ';--w:' + (100 * x.n / maxm).toFixed(1) + '%"></span><b>' + fmt(x.n) + '</b></div>').join('');
+  const C = ['#a8431f', '#284f7a', '#7b5f6d', '#b3ada0'];
+  const maxc = Math.max(...H.by_century.map(x => x.n), 1);
+  const hist = H.by_century.map(x => {
+    let y = 100;
+    const seg = x.by_museum.map((n, i) => { const h = 100 * n / maxc; y -= h; return h > 0 ? '<i style="height:' + h.toFixed(2) + '%;bottom:' + y.toFixed(2) + '%;background:' + mus(i).color + '"></i>' : ''; }).join('');
+    return '<div class="whcol"><span class="whstack">' + seg + '</span><b>' + (x.n >= 1000 ? Math.round(x.n / 1000) + 'k' : fmt(x.n)) + '</b><span class="whcl">' + esc(x.label) + '</span></div>';
+  }).join('');
+  $('#whathere').innerHTML = '<div class="wh"><h3>By collection</h3><div class="whbars">' + bars + '</div></div>' +
+    '<div class="wh"><h3>By century, stacked by collection</h3><div class="whhist">' + hist + '</div>' +
+    '<p class="whnote">' + fmt(H.by_century.find(x => x.label === 'undated').n) + ' objects carry no usable date and are counted in the last column.</p></div>';
+
+  // patterns and analysis keep their place
   const pats = [
-    ['principles.html', 'Life of a principle', H.n_principles + ' principles of physics and ' + H.n_fams + ' surgical functions, from the first object to the last.', '<div class="pp life4">' + H.life.map(id => ph(id)).join('') + '</div>', 'big'],
+    ['principles.html', 'Life of a principle', H.n_principles + ' principles and ' + H.n_fams + ' working functions, one list, from the first object to the last.', '<div class="pp life4">' + H.life.map(id => ph(id)).join('') + '</div>', 'big'],
     ['lineages.html', 'Lineages', 'Which device grew out of which, across museums and family-tree branches.', '<div class="pp lin4">' + H.lin.map((id, i) => (i === 2 ? arrow : '') + ph(id)).join('') + '</div>', ''],
     ['atlas.html#map', 'Family tree', 'Surgical instruments from Roman times on, linked by documented comparisons: ' + esc(H.tree_name.toLowerCase()) + ' shown.', '<div class="pp tree4">' + H.tree.map((id, i) => (i ? '<span class="ar" aria-hidden="true">→</span>' : '') + ph(id)).join('') + '</div>', ''],
     ['gaps.html', 'Missing links', 'The stages no museum here holds, and what would fill them.', '<div class="pp gap2">' + ph(H.gap.id) + '<span class="frame"><span>' + esc(H.gap.text) + '</span></span></div>', ''],
-    ['bridges.html', 'Bridges', 'A surgical instrument and a scientific object that look alike, and pairs across museums.', '<div class="pp gap2 br2">' + H.cross.map(id => ph(id)).join('<span class="swap" aria-hidden="true">↔</span>') + '</div>', '']
+    ['bridges.html', 'Bridges', 'A surgical instrument and a scientific object that look alike, and pairs across museums.', '<div class="pp gap2 br2">' + H.cross.map(id => ph(id)).join('<span class="swap" aria-hidden="true">↔</span>') + '</div>', ''],
+    ['clusters.html', 'Groups by closeness', 'The collection grouped by how close objects are, not by a list.', '<div class="pp p2x2">' + (H.clusters || []).slice(0, 4).map(c => ph(c.pics[0])).join('') + '</div>', ''],
   ];
   $('#patterns').innerHTML = pats.map(t => '<a class="pat ' + t[4] + '" href="' + t[0] + '">' + t[3] + '<h3>' + t[1] + '</h3><p>' + t[2] + '</p></a>').join('');
-  const entries = [
-    ['collection.html', 'Collection', fmt(m.counts.all) + ' objects, every filter', '<div class="pics p2x2">' + H.collage.map(im).join('') + '</div>'],
-    ['map.html', 'Map of forms', 'Objects that look alike sit together', '<div class="pics p1"><img loading="lazy" src="img/u/map-preview.png" alt="Map of every object: squares surgical, circles science"></div>'],
-    ['map3d.html', 'Map in time', 'The same map, the date as height', '<div class="pics p1"><img loading="lazy" src="img/u/map3d-preview.png" alt="Three-dimensional map of every object"></div>'],
-    ['atlas.html#world', 'World and time', 'Where and when the surgical records were made', '<div class="pics p1"><img loading="lazy" src="img/u/world-preview.png" alt="Map of Europe with the places of surgical records"></div>'],
-    ['timeline.html', 'Timeline', 'Photo strips through the centuries', '<div class="pics p4">' + H.timeline.map(im).join('') + '</div>']
-  ];
-  const card = t => '<a class="entry" href="' + t[0] + '">' + t[3] + '<h3>' + t[1] + '</h3><p>' + t[2] + '</p></a>';
-  // the personality also sets which view comes first for a domain: a skin over the same cards, not another site
-  const order = ['all', 'surg'].includes(getDomain()) ? entries : [entries[1], entries[4], entries[0], entries[2], entries[3]];
-  $('#explore').innerHTML = order.map(card).join('');
   const nb = H.cross.length ? H.cross : H.collage.slice(0, 2);
   $('#analyse').innerHTML = [
     ['compare.html' + (nb.length === 2 ? '?a=' + encodeURIComponent(nb[0]) + '&b=' + encodeURIComponent(nb[1]) : ''), 'Compare', 'Any two objects, side by side', '<div class="pics p2">' + nb.map(im).join('') + '</div>'],

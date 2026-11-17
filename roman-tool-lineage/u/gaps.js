@@ -25,7 +25,7 @@ $('#acq').innerHTML = P.acq.map(a => {
 }).join('');
 function apply() {
   const d = getDomain();
-  $('#scope').innerHTML = d === 'sci' ? '' : scopeNote('Missing links are worked out from principles and roles, which only the science and technology objects carry; surgical instruments are not part of this view.' + (d === 'surg' ? ' See <a href="principles.html">their function families</a>.' : ''));
+  $('#scope').innerHTML = d === 'sci' ? '' : scopeNote('Missing links are worked out from principles and roles, which the science and technology objects and the catalogues carry; surgical instruments are not part of this view.' + (d === 'med' ? ' See <a href="principles.html">their working functions</a>.' : ''));
 }
 window.addEventListener('vestigium:domain', apply);
 apply();

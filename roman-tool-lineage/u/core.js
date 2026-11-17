@@ -26,16 +26,19 @@ async function getJSON(name) {
 }
 export const loadJSON = getJSON;
 
-// ---------------------------------------------------------------- museums and domains
-export let MUSEUMS = [], DOMAINS = [];
+// ---------------------------------------------------------------- museums and tags
+export let MUSEUMS = [], TAGS = [];
 export async function boot() {
   initDomain();
   const m = await manifest();
-  MUSEUMS = m.museums; DOMAINS = m.domains;
+  MUSEUMS = m.museums; TAGS = m.tags;
   return m;
 }
-export const domainKey = d => d === 0 ? 'surg' : d === 1 ? 'sci' : 'uns';
-export const domainLabel = d => d === 0 ? 'Surgical instruments' : d === 1 ? 'Science and technology' : 'Not placed';
+// d is a tag bitmask (T-034): 1 medicine, 2 science and technology, 3 both, 0 neither.  The site shows overlapping
+// tags, so the mark for a record with both is a two-tone one, not a third kind of object.
+export const domainKey = d => d === 3 ? 'both' : d === 1 ? 'med' : d === 2 ? 'sci' : 'none';
+export const domainLabel = d => d === 3 ? 'Medicine and science and technology' : d === 1 ? 'Medicine' : d === 2 ? 'Science and technology' : 'No tag';
+export const tagged = (d, k) => !!(d & (k === 'med' ? 1 : k === 'sci' ? 2 : 0));
 export const mus = i => MUSEUMS[i] || {name: 'Unknown', short: 'Unknown', color: '#8a8f8c'};
 
 // ---------------------------------------------------------------- dates
@@ -94,11 +97,11 @@ export function loadIndex() {
     for (let i = 0; i < n; i++) {
       const r = {i, id: C.id[i], d: C.d[i], m: C.m[i], t: C.t[i], s: C.s[i], e: C.e[i], im: C.im[i],
         c: arr(C.c[i]), ty: arr(C.ty[i]), fn: arr(C.fn[i]), pr: arr(C.pr[i]), ro: arr(C.ro[i]), mk: arr(C.mk[i]), mt: arr(C.mt[i]),
-        x: C.x[i], y: C.y[i], o: C.o[i]};
+        x: C.x[i], y: C.y[i], px: C.px[i], py: C.py[i], tx: C.tx[i], ty2: C.ty2[i], lx: C.lx[i], ly: C.ly[i], cl: C.cl[i], o: C.o[i]};
       rows[i] = r; by[r.id] = r;
     }
-    MUSEUMS = raw.museums; DOMAINS = raw.domains;
-    return {rows, by, dict: D, museums: raw.museums, map: raw.map, ms: performance.now() - t0};
+    MUSEUMS = raw.museums; TAGS = raw.tags;
+    return {rows, by, dict: D, museums: raw.museums, map: raw.map, clusters: raw.clusters || [], ms: performance.now() - t0};
   }).catch(e => { IX = null; throw e; });
   return IX;
 }

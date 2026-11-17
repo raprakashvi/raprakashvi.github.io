@@ -42,9 +42,9 @@ if (!ids.length) {
     if (objs.length === 2) {
       const [a, b] = objs;
       const rel = a.nb?.includes(b.id) || b.nb?.includes(a.id) ? 'Among each other’s nearest objects by photograph and name.' :
-        a.nbx?.includes(b.id) || b.nbx?.includes(a.id) ? 'The closest object of the other domain, by photograph and name.' : '';
+        a.nbx?.includes(b.id) || b.nbx?.includes(a.id) ? 'The closest object of the other collection, by photograph and name.' : '';
       const list = v => (v || []).map(esc).join(', ');
-      const fn = o => o.d ? list(o.fn) : (o.working || []).map(w => esc(w.label)).join(', ');
+      const fn = o => o.k !== 'surg' ? list(o.fn) : (o.working || []).map(w => esc(w.label)).join(', ');
       const R = [['Date', o => esc(o.dt || dateLabel(o.s, o.e) || 'Undated')], ['Category', o => list(o.c)], [null, o => list(o.ty.filter(v => !o.c.includes(v)))],
         ['Principle', o => o.pat?.pl ? esc(o.pat.pl) : o.pr?.length ? esc(o.pr[0]) : ''],
         ['Function', fn], ['Role', o => o.pat?.r ? esc(o.pat.r) : o.ro?.length ? esc(o.ro[0]) : ''], ['Maker', o => list(o.mk)],
@@ -52,7 +52,7 @@ if (!ids.length) {
       const body = R.map(([label, f]) => {
         const va = f(a), vb = f(b);
         if (!va && !vb) return '';
-        const l = label || (a.k === 'cat' || b.k === 'cat' ? 'Device family' : a.d && b.d ? 'Device' : !a.d && !b.d ? 'Type' : 'Type or device');
+        const l = label || (a.k === 'cat' || b.k === 'cat' ? 'Device family' : a.k !== 'surg' && b.k !== 'surg' ? 'Device' : a.k === 'surg' && b.k === 'surg' ? 'Type' : 'Type or device');
         const same = va && va === vb ? ' class="same"' : '';
         return '<tr' + same + '><th scope="row">' + l + '</th><td>' + (va || '<span class="none">none</span>') + '</td><td>' + (vb || '<span class="none">none</span>') + '</td></tr>';
       }).join('');

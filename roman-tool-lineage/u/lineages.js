@@ -40,8 +40,8 @@ $('#lin-p').innerHTML = X.pairs.map(p => '<article class="mpair"><h3>' + esc(p.n
 
 function apply() {
   const d = getDomain();
-  $$('section[data-dom]').forEach(s => { s.hidden = (d === 'surg' && s.dataset.dom === 'sci') || (d === 'sci' && s.dataset.dom === 'surg'); });
-  $('#scope').innerHTML = d === 'surg' ? scopeNote('Science lineages (device chains, makers) are hidden while only surgical instruments are shown.')
+  $$('section[data-dom]').forEach(s => { s.hidden = (d === 'med' && s.dataset.dom === 'sci') || (d === 'sci' && s.dataset.dom === 'surg'); });
+  $('#scope').innerHTML = d === 'med' ? scopeNote('Science lineages (device chains, makers) are hidden while only Medicine-tagged objects are shown.')
     : d === 'sci' ? scopeNote('Surgical family-tree branches are hidden while only science objects are shown.', 'sci') : '';
   $('#jump').innerHTML = $$('section[data-dom]').filter(s => !s.hidden).map(s => { const h = s.querySelector('h2'); return '<a href="#' + h.id + '">' + esc(h.textContent) + '</a>'; }).join('');
 }

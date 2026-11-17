@@ -11,7 +11,7 @@ export function setWorkspace(section){
  const fromDrawer=document.body.classList.contains('drawer-open');closeDrawer(false);if(fromDrawer)$('main')?.focus({preventScroll:true});
 }
 function closeDrawer(focus=false){
- document.body.classList.remove('drawer-open');document.querySelectorAll('details.vh-menu[open]').forEach(d=>d.open=false);$('drawer-toggle')?.setAttribute('aria-expanded','false');if($('drawer-scrim'))$('drawer-scrim').hidden=true;
+ document.body.classList.remove('drawer-open');document.body.classList.remove('menu-open');$('menu-toggle')?.setAttribute('aria-expanded','false');document.querySelectorAll('details.vh-menu[open]').forEach(d=>d.open=false);$('drawer-toggle')?.setAttribute('aria-expanded','false');if($('drawer-scrim'))$('drawer-scrim').hidden=true;
  if(innerWidth<=900)$('workspace-sidebar')?.setAttribute('inert','');
  $('main')?.removeAttribute('inert');document.querySelector('.workspace-topbar')?.removeAttribute('inert');$('workspace-sidebar')?.removeAttribute('role');$('workspace-sidebar')?.removeAttribute('aria-modal');if(focus)returnFocus?.focus();
 }
@@ -21,6 +21,13 @@ export function initWorkspace(){
  const media=matchMedia('(max-width:900px)');const sync=()=>{if(media.matches)closeDrawer();else{closeDrawer();sidebar.removeAttribute('inert')}};media.addEventListener('change',sync);sync();
  $('drawer-toggle').onclick=()=>{returnFocus=document.activeElement;document.querySelectorAll('details.vh-menu').forEach(d=>d.open=true);document.body.classList.remove('search-open');sidebar.removeAttribute('inert');document.body.classList.add('drawer-open');$('drawer-toggle').setAttribute('aria-expanded','true');$('drawer-scrim').hidden=false;sidebar.setAttribute('role','dialog');sidebar.setAttribute('aria-modal','true');$('main')?.setAttribute('inert','');document.querySelector('.workspace-topbar')?.setAttribute('inert','');$('drawer-close').focus()};
  $('drawer-close').onclick=() =>closeDrawer(true);$('drawer-scrim').onclick=()=>closeDrawer(true);
+ // T-036: one menu panel opens on click and shows the whole site; Escape and an outside click close it.
+ const mt=$('menu-toggle'),mp=$('menu-panel');
+ if(mt&&mp){
+  mt.onclick=()=>{const open=!document.body.classList.contains('menu-open');document.body.classList.toggle('menu-open',open);mt.setAttribute('aria-expanded',String(open));if(open)mp.querySelector('a')?.focus();};
+  document.addEventListener('click',e=>{if(!document.body.classList.contains('menu-open'))return;if(mt.contains(e.target)||mp.contains(e.target))return;document.body.classList.remove('menu-open');mt.setAttribute('aria-expanded','false')});
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('menu-open')){document.body.classList.remove('menu-open');mt.setAttribute('aria-expanded','false');mt.focus()}});
+ }
  // T-027: a destination in the same document (atlas.html#morph from atlas.html) must hand focus to the content.
  // The link's own fragment navigation lands after this handler, so focus runs in a 0-timer; a cross-page link
  // unloads the page and only needs the drawer closed.

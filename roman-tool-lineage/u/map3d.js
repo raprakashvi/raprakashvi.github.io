@@ -1,11 +1,11 @@
 // Map in time: the 2-D map of forms (same shared space) with the date as height.  The time axis is linear from
 // 1500 on and compressed below 1500 (Roman and medieval surgical objects); the break is drawn and labelled.
-import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, mid, inDomain, errorBox} from './core.js';
+import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, mid, inDomain, domainKey, errorBox} from './core.js';
 
 await boot();
 let IX;
 try { IX = await loadIndex(); } catch (e) { errorBox($('.mapwrap'), e); throw e; }
-const DC = ['#a8431f', '#284f7a', '#6f6a60'], cv = $('#map3d'), ctx = cv.getContext('2d'), tip = $('#tip');
+const COL = {med: '#a8431f', sci: '#284f7a', both: '#7b5f6d', none: '#b3ada0'}, cv = $('#map3d'), ctx = cv.getContext('2d'), tip = $('#tip');
 const HS = 0.95, ZU = -1.45, BRK = 1500, LOWFRAC = 0.16;
 let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
 const R = IX.rows.filter(r => r.x != null);
@@ -19,12 +19,12 @@ const byId = {}; P.forEach(p => byId[p.r.id] = p);
 const DEF = {yaw: -0.7, pitch: 0.42, zoom: 1, px: 0, py: 0};
 let V = {...DEF}, W, H, dpr, base = 1, hover = null, raf = 0, colBy = 'domain', showBr = false, showOl = true, B = null;
 const imgs = {};
-const color = r => colBy === 'domain' ? DC[r.d] : mus(r.m).color;
+const color = r => colBy === 'domain' ? COL[domainKey(r.d)] : mus(r.m).color;
 function legend() {
   const vis = R.filter(r => inDomain(r.d));
   if (colBy === 'domain') {
-    const n = [0, 0, 0]; vis.forEach(r => n[r.d]++);
-    $('#legend').innerHTML = [0, 1, 2].filter(d => n[d]).map(d => '<span><i class="dm ' + (d === 0 ? 'surg' : d === 1 ? 'sci' : 'uns') + '"></i>' + (d === 0 ? 'Surgical instruments' : d === 1 ? 'Science and technology' : 'Not placed') + ' <b>' + fmt(n[d]) + '</b></span>').join('');
+    const n = {med: 0, sci: 0, both: 0, none: 0}; vis.forEach(r => n[domainKey(r.d)]++);
+    $('#legend').innerHTML = ['med', 'sci', 'both', 'none'].filter(x => n[x]).map(x => '<span><i class="dm ' + x + '"></i>' + (x === 'med' ? 'Medicine' : x === 'sci' ? 'Science and technology' : x === 'both' ? 'Both tags' : 'No tag') + ' <b>' + fmt(n[x]) + '</b></span>').join('');
   } else {
     const n = new Map(); vis.forEach(r => n.set(r.m, (n.get(r.m) || 0) + 1));
     $('#legend').innerHTML = [...n.keys()].sort((a, b) => n.get(b) - n.get(a)).map(i => '<span><i style="background:' + mus(i).color + '"></i>' + esc(mus(i).short) + ' <b>' + fmt(n.get(i)) + '</b></span>').join('');
@@ -47,7 +47,10 @@ function proj(x, y, z) {
 const sched = () => { if (!raf) raf = requestAnimationFrame(() => { raf = 0; draw(); }); };
 function photo(p) { let im = imgs[p.r.id]; if (!im) { im = imgs[p.r.id] = new Image(); im.onload = () => { im.ok = 1; sched(); }; im.src = thumb(p.r.im); } return im.ok ? im : null; }
 function line(a, b) { ctx.beginPath(); ctx.moveTo(a[0], a[1]); ctx.lineTo(b[0], b[1]); ctx.stroke(); }
-function mark(x, y, rad, d) { ctx.beginPath(); if (d === 0) ctx.rect(x - rad * .9, y - rad * .9, rad * 1.8, rad * 1.8); else if (d === 1) ctx.arc(x, y, rad, 0, 6.2832); else ctx.rect(x - rad * .62, y - rad * .62, rad * 1.24, rad * 1.24); }
+function mark(x, y, rad, d) { const mx = d & 1, m2 = d & 2;
+  if (mx) { ctx.beginPath(); ctx.rect(x - rad * .9, y - rad * .9, rad * 1.8, rad * 1.8); ctx.fill(); }
+  if (m2) { ctx.beginPath(); ctx.arc(x + (mx ? rad * .55 : 0), y + (mx ? rad * .55 : 0), rad * (mx ? .8 : 1), 0, 6.2832); ctx.fill(); }
+  if (!mx && !m2) { ctx.beginPath(); ctx.rect(x - rad * .8, y - rad * .8, rad * 1.6, rad * 1.6); ctx.stroke(); } }
 function draw() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
   const mut = '#526176';
@@ -85,13 +88,15 @@ function draw() {
   });
   if (hover) { const h = proj(hover.x, hover.y, hover.z); ctx.beginPath(); ctx.arc(h[0], h[1], r0 + 5, 0, 6.2832); ctx.lineWidth = 2.5; ctx.strokeStyle = '#182230'; ctx.stroke(); }
   cv._vis = vis;
-  cv.dataset.surg = vis.filter(v => v[0].r.d === 0).length; cv.dataset.sci = vis.filter(v => v[0].r.d === 1).length; cv.dataset.uns = vis.filter(v => v[0].r.d === 2).length;
+  cv.dataset.med = vis.filter(v => v[0].r.d === 1).length; cv.dataset.sci = vis.filter(v => v[0].r.d === 2).length;
+  cv.dataset.surg = cv.dataset.med; cv.dataset.both = vis.filter(v => v[0].r.d === 3).length;
+  cv.dataset.none = cv.dataset.uns = vis.filter(v => !v[0].r.d).length;
 }
 function pick(mx, my) { let best = null, bd = 169; const v = cv._vis || []; for (let i = v.length - 1; i >= 0; i--) { const d = (v[i][1] - mx) ** 2 + (v[i][2] - my) ** 2; if (d < bd) { bd = d; best = v[i][0]; } } return best; }
 function showTip(p, mx, my) {
   if (!p) { tip.style.display = 'none'; return; }
   const r = p.r, m = mus(r.m); tip.querySelector('img').src = thumb(r.im); tip.querySelector('b').textContent = r.t;
-  tip.querySelector('span').textContent = (r.d === 0 ? 'Surgical · ' : r.d === 1 ? 'Science · ' : 'Catalogue · ') + m.short + ' · ' + (dateLabel(r.s, r.e) || 'undated'); tip.style.borderTop = '4px solid ' + color(r); tip.style.display = 'block';
+  tip.querySelector('span').textContent = (r.d === 3 ? 'Medicine and science · ' : r.d === 1 ? 'Medicine · ' : r.d === 2 ? 'Science · ' : '') + m.short + ' · ' + (dateLabel(r.s, r.e) || 'undated'); tip.style.borderTop = '4px solid ' + color(r); tip.style.display = 'block';
   let x = mx + 16, y = my + 16; if (x + 200 > W) x = mx - 206; if (y + 270 > H) y = Math.max(4, H - 270); tip.style.left = x + 'px'; tip.style.top = y + 'px';
 }
 const ptrs = {}; let last = null, moved = 0, pinch = 0, mode = 'rot';
