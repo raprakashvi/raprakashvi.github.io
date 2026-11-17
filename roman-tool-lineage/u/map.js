@@ -51,7 +51,7 @@ function legend() {
     const m = subMeta && subMeta.metrics;
     $('#mapnote').textContent = fmt(P.length) + ' objects of ' + (subMeta ? subMeta.label : subKey) +
       ', laid out on their own (photo + title space). ' +
-      (m ? 'Measured against the high-dimensional neighbours: trustworthiness ' + m.trustworthiness.toFixed(2) +
+      (m ? 'Measured against the 50-dimensional space the layout is computed from: trustworthiness ' + m.trustworthiness.toFixed(2) +
         ', continuity ' + m.continuity.toFixed(2) + ', k-NN preservation ' + m.knn_preservation.toFixed(2) + ' (k = 10). ' : '') +
       'Groups are found on all objects, so they are outlined only under All objects.';
     return;
@@ -94,7 +94,7 @@ function draw() {
   ghost.forEach(v => { mark(v[1], v[2], rad * .7, v[0].d); ctx.fill(); });
   // the groups by closeness: an outline and a plain name, drawn under the photographs
   const groups = [];
-  if (showGroups) {
+  if (showGroups && !subKey) {
     for (const c of CL) {
       const cross = c.n_museums >= 2;
       if (!cross && k < 1.6) continue;                    // single-museum groups only when zoomed in

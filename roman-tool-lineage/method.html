@@ -67,6 +67,22 @@ tag and a principle — computed from the data by the build, never chosen by han
 <section aria-labelledby="mm"><h2 id="mm">The map and the groups</h2>
 <p id="m-map"></p>
 <p id="m-clusters"></p>
+<h3>How the map is drawn, and how its settings were chosen</h3>
+<p>The map follows standard practice for dimensionality reduction, and the settings were picked by measurement, not
+by look. The vectors are L2-normalised, reduced to 50 principal components, and laid out with UMAP on those
+components (cosine metric, spectral initialisation, fixed seed). A random initialisation is treated as an error: if
+UMAP cannot initialise spectrally it is re-initialised from the principal components (deterministic), and if that
+also fails the build fits a seeded subsample and places the rest with the fitted reducer — never a silent random
+start. The quality of each candidate layout is measured against the 50-dimensional space the layout is computed
+from: <em>trustworthiness</em> (few false neighbours appear close), <em>continuity</em> (few true neighbours
+are torn apart) and <em>k-NN preservation</em> for k = 10. The same numbers are given for two baselines, PCA to two
+dimensions and t-SNE. The default is the UMAP setting with the highest k-NN preservation; ties go to
+trustworthiness, then continuity, then the smaller neighbourhood.</p>
+<div id="m-layout"></div>
+<p class="scope">A sub-collection (a tag, a museum, a principle, a device family or a century) is laid out on its own
+on the same pipeline and gets its own cached layout and its own measured metrics; the map's selector shows them. The
+two-dimensional layout is for viewing only: the groups by closeness are always found in the full high-dimensional
+space, never in the plane, and for that reason a sub-collection view does not outline groups.</p>
 <p class="scope">Dates: a catalogue record whose own date falls outside 1450–2035 is treated as undated on the charts
 and in the group lines (the same stated rule the T-030 analyses use); the two curated releases keep their own checked
 dates, including Roman instruments.</p>

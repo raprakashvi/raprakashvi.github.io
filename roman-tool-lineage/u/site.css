@@ -473,3 +473,9 @@ dt{color:var(--muted);font-weight:500}dd{margin:0;font-weight:600;overflow-wrap:
 
 main code{overflow-wrap:anywhere;word-break:break-word}
 main .flownote,main .scope{overflow-wrap:anywhere}
+/* T-038: the layout evaluation table on the Method page */
+.laytable{font-size:13px;max-width:760px}
+.laytable th,.laytable td{padding:6px 10px;border-bottom:1px solid var(--border);text-align:left}
+.laytable td:not(:first-child),.laytable th:not(:first-child){text-align:right;font-variant-numeric:tabular-nums}
+.laytable tr.chosen td{font-weight:600}
+.layspaces{margin:10px 0 0 18px;font-size:14px;line-height:1.7}

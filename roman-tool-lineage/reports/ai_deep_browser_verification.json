@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-11-17T00:42:42.041Z",
-  "url": "http://127.0.0.1:42265/collection.html#ai/META-000104",
+  "tested_at": "2026-11-17T05:20:21.974Z",
+  "url": "http://127.0.0.1:48345/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",

@@ -52,6 +52,26 @@ try {
   $('#m-map').textContent = 'One page, one space, three modes on the same objects: ' + mm +
     '. Each mode is its own cached UMAP layout of the same vectors; the map switches between them without reloading. ' +
     'The date can be read as height on Map in time.';
+  const lay = b.layout || {};
+  if (lay.pipeline && $('#m-layout')) {
+    const rows = (lay.sweep || []).slice();
+    const ch = lay.sweep_choice || {};
+    const tb = '<table class="laytable"><thead><tr><th>Layout</th><th>Trustworthiness</th><th>Continuity</th><th>k-NN preservation (k = 10)</th></tr></thead><tbody>' +
+      rows.map(r => '<tr' + (r.name === ch.name ? ' class="chosen"' : '') + '><td>' + esc(r.name) + (r.name === ch.name ? ' · default' : '') + '</td><td>' +
+        r.trustworthiness.toFixed(2) + '</td><td>' + r.continuity.toFixed(2) + '</td><td>' + r.knn_preservation.toFixed(2) + '</td></tr>').join('') +
+      '</tbody></table>';
+    const three = ['fusion', 'photo', 'title'].filter(k => lay[k] && lay[k].metrics).map(k =>
+      '<li><b>' + {fusion: 'Photo + title', photo: 'Photo only', title: 'Title only'}[k] + '</b>: ' +
+      `trustworthiness ${lay[k].metrics.trustworthiness.toFixed(2)}, continuity ${lay[k].metrics.continuity.toFixed(2)}, ` +
+      `k-NN preservation ${lay[k].metrics.knn_preservation.toFixed(2)}` +
+      (lay[k].pca_explained != null ? `; the 50 components carry ${Math.round(100 * lay[k].pca_explained)} % of the variance` : '') + '</li>').join('');
+    const subs = (lay.subsets || []).length;
+    $('#m-layout').innerHTML = (rows.length ? '<div class="tablewrap">' + tb + '</div>' + '<p class="scope">The sweep was run on the photo + title space — the map\'s default space — with ' +
+        fmt(lay.eval_sample || 2000) + ' objects sampled for the metrics; t-SNE is the second nonlinear method because it is the standard reference and needs no dependency beyond scikit-learn. ' +
+        'The other two spaces use the same chosen settings; their measured quality is below.</p>' : '') +
+      (three ? '<ul class="layspaces">' + three + '</ul>' : '') +
+      (subs ? '<p class="scope">' + fmt(subs) + ' sub-collection layouts are cached with the build; each carries its own metrics, shown with it on the map.</p>' : '');
+  }
   const c = b.clusters || {};
   $('#m-clusters').textContent = (b.clusters && b.clusters.n ? fmt(b.clusters.n) + ' groups of at least 40 objects' : 'No groups') +
     (c.unclustered != null ? ', ' + fmt(c.unclustered) + ' objects between groups' : '') + '. Method: ' + esc(c.method || '') +
