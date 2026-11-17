@@ -6,7 +6,7 @@ const Research=(()=>{
   function table(head,rows,caption){return `<div class="table-wrap"><table class="audit-table"><caption>${esc(caption)}</caption><thead><tr>${head.map(h=>`<th scope="col">${esc(h)}</th>`).join('')}</tr></thead><tbody>${rows.join('')}</tbody></table></div>`;}
   function matches(n){return ($('research-family').value==='all'||n.lineage===$('research-family').value)&&($('research-evidence').value==='all'||n.evidence===$('research-evidence').value);}
   function coverage(){
-    const ns=D.nodes.filter(n=>n.family!=='Knowledge transfer'&&matches(n));
+    const ns=D.nodes.filter(n=>n.family!=='Knowledge transfer'&&n.domain!=='sci'&&matches(n));
     const rows=[...new Set(ns.map(n=>n.lineage))].map(l=>`<tr><th scope="row">${esc(l)}</th>${A().periods.map(p=>{
       const ids=ns.filter(n=>n.lineage===l&&n.date_start!==null&&n.date_start<=p.end&&n.date_end>=p.start).map(n=>n.id);
       const contained=ids.filter(id=>N[id].date_start>=p.start&&N[id].date_end<=p.end).length;
@@ -24,7 +24,7 @@ const Research=(()=>{
     $('research-materials').innerHTML=`<p>${claims.length} material claims across ${new Set(claims.map(c=>c.node_id)).size} selected records. These are component assertions, not counts of artifacts or material prevalence. “As cataloged” is an attribution, not independent verification of original manufacture.</p>${table(['Witness / date meaning','Component','Material / status','Evidence / limitation'],claims.map(c=>`<tr><td>${node(c.node_id)}<br>${c.phase==='modern restoration'?'<strong>Modern restoration; date unresolved</strong>':date(N[c.node_id])+'<br><small>'+esc(N[c.node_id].date_kind)+'</small>'}</td><td>${esc(c.component)}<small>${esc(c.phase)}</small></td><td>${esc(c.material??'Not reported')}<small>${esc(c.status)} · ${esc(c.method)}</small></td><td><a href="${esc(S[c.source].url)}" target="_blank" rel="noopener">${esc(c.locator)} ↗</a><p>${esc(c.note)}</p></td></tr>`),'Component material ledger · AI-curated pilot; independent review pending')}`;
   }
   function characters(){
-    const defs=R().character_definitions,ns=D.nodes.filter(n=>n.family!=='Knowledge transfer'&&matches(n));
+    const defs=R().character_definitions,ns=D.nodes.filter(n=>n.family!=='Knowledge transfer'&&n.domain!=='sci'&&matches(n));
     const rows=ns.map(n=>`<tr><th scope="row">${node(n.id)}</th>${defs.map(f=>{
       const c=R().character_claims.find(c=>c.node_id===n.id&&c.character===f.id);
       return `<td>${c?`<span class="character-state state-${c.state}">${esc(c.state)}</span><br>${esc(c.value??'')}<details><summary>Evidence</summary><p>${esc(c.note)}</p><a href="${esc(S[c.source].url)}" target="_blank" rel="noopener">${esc(c.locator)} ↗</a></details>`:'<span class="not-recorded">Not coded</span>'}</td>`;

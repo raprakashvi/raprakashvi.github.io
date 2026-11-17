@@ -4,16 +4,16 @@ import {initDomain, getDomain} from './domain.js';
 
 const page = location.pathname.split('/').pop() || 'atlas.html';
 const NOTES = {
-  map: ['tree', 'The family tree links surgical instruments only.', 'Science objects follow their own lines on <a href="lineages.html">Lineages</a>.'],
-  world: ['world', 'World and time maps place surgical records by catalogue city; science objects have no map places yet.', 'See science objects through time on the <a href="timeline.html">Timeline</a>.'],
-  morph: ['morph', 'Outline morphology exists for the surgical shape set; science objects have photographs but no outline measurements.', 'Compare their forms on the <a href="map.html">Map of forms</a>.'],
+  map: ['tree', 'One family tree over both domains: the instruments\' documented comparisons and the science objects\' device chains, form groups and maker series.', 'The lists behind the branches are on <a href="lineages.html">Lineages</a>.'],
+  world: ['world', 'The Medicine branch: this map places the catalogue cities of the instruments; science objects have no map places yet.', 'See science objects through time on the <a href="timeline.html">Timeline</a>.'],
+  morph: ['morph', 'The Medicine branch: outline morphology exists for the surgical shape set; science objects have photographs but no outline measurements.', 'Compare their forms on the <a href="map.html">Map of forms</a>.'],
   compare: ['compare', 'These dossiers compare family-tree records. To compare any two objects, from either domain, use <a href="compare.html">Compare</a>.', ''],
-  research: ['research', 'The research audit checks the surgical family-tree links.', ''],
-  method: ['method', 'Research methods of the surgical study.', 'The method of the whole collection is on <a href="method.html">Method</a>.'],
-  analysis: ['analysis', 'Outline measurements exist for the surgical shape set; science objects are not measured.', 'Compare their forms on the <a href="map.html">Map of forms</a>.'],
-  ai: ['ai', 'AI methods were run on the surgical release; science objects are not part of these runs.', 'Science objects share the photograph and name space of the <a href="map.html">Map of forms</a>.'],
-  review: ['review', 'Annotation tasks cover surgical records.', ''],
-  about: ['data', 'Dataset notes for the surgical release.', 'Both releases are on <a href="data.html">Data and sources</a>.'],
+  research: ['research', 'The Medicine branch: the research audit checks the documented links of the instruments; the science branches are not scored here.', ''],
+  method: ['method', 'Research methods of the Medicine branch (the surgical study).', 'The method of the whole collection is on <a href="method.html">Method</a>.'],
+  analysis: ['analysis', 'The Medicine branch: outline measurements exist for the surgical shape set; science objects are not measured.', 'Compare their forms on the <a href="map.html">Map of forms</a>.'],
+  ai: ['ai', 'The Medicine branch: AI methods were run on the surgical release; science objects are not part of these runs.', 'Science objects share the photograph and name space of the <a href="map.html">Map of forms</a>.'],
+  review: ['review', 'The Medicine branch: annotation tasks cover surgical records; the science branches are not queued here.', ''],
+  about: ['data', 'Dataset notes for the Medicine branch (the surgical release).', 'Both releases are on <a href="data.html">Data and sources</a>.'],
 };
 const EVIDENCE = ['boundaries', 'weiss', 'museum', 'study', 'catalog', 'events', 'sources'];
 

@@ -6,7 +6,7 @@ const Tree = (() => {
   let hideTimer, ignoreClickUntil=0, ignoreHoverUntil=0, fittedBounds=null;
   const points=new Map();
   const popup=()=>document.getElementById('tree-hover');
-  const theme=()=>Object.fromEntries(['panel','paper','ink','muted','border','accent','bronze','wash','textual'].map(k=>[k,getComputedStyle(document.documentElement).getPropertyValue('--'+k).trim()]));
+  const theme=()=>Object.fromEntries(['panel','paper','ink','muted','border','accent','bronze','wash','textual','dom-surg','dom-sci'].map(k=>[k,getComputedStyle(document.documentElement).getPropertyValue('--'+k).trim()]));
 
   function layout(nodes) {
     const result={nodes:{},groups:[],edges:[],rows:[],width:0,height:0};
@@ -251,8 +251,12 @@ const Tree = (() => {
         continue;
       }
       const textWitness=`<text x="${p.x+14}" y="${p.y+25}" font-size="10" fill="${c.muted}">TEXT WITNESS · ${esc(n.accession)}</text>${wrap(n.features,36).slice(0,4).map((line,i)=>`<text x="${p.x+14}" y="${p.y+46+i*16}" font-size="12" fill="${c.ink}">${esc(line)}${i===3?'…':''}</text>`).join('')}`;
-      const photograph=im?`<image href="${photoSrc(im)}" x="${p.x+9}" y="${p.y+9}" width="${p.w-18}" height="96" preserveAspectRatio="xMidYMid meet"><title>${esc(im.caption+' '+im.credit+' '+im.license)}</title></image>`:n.evidence==='text'?textWitness:`<text x="${p.x+p.w/2}" y="${p.y+61}" text-anchor="middle" fill="${c.muted}" font-size="11">${n.evidence==='illustration'?'Source image linked in record':'Image not yet sourced'}</text>`;
-      parts.push(`<g data-node="${n.id}" role="button" tabindex="0" aria-pressed="${n.id===trace}" aria-label="${esc(n.label+', '+date(n))}" style="cursor:pointer"><rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="8" fill="${c.panel}" stroke="${n.id===trace?c.bronze:c.accent}" stroke-width="${n.id===trace?3:1.1}"/>${photograph}<text x="${p.x+14}" y="${p.y+126}" font-size="15" font-weight="700" fill="${c.accent}">${date(n)}</text>${label.map((s,i)=>`<text x="${p.x+14}" y="${p.y+150+i*21}" font-size="16" font-weight="600">${esc(s)}</text>`).join('')}<text x="${p.x+14}" y="${p.y+201}" font-size="10" fill="${c.muted}">${im?(im.relation==='reference objects'?'Reference plate · see record':esc(im.short_credit||'Science Museum Group · CC BY-NC-SA')):`${esc(n.date_kind)} · ${n.sources.length} source${n.sources.length===1?'':'s'}`}</text></g>`);
+      // T-039: the science cards do not inline their photograph in the tree: 1,204 SVG images would load at once and
+      // fill the browser's resource buffer.  The photograph is one click away, in the detail panel (and on the object
+      // page); the card names the collection instead.
+      const photograph=im?`<image href="${photoSrc(im)}" x="${p.x+9}" y="${p.y+9}" width="${p.w-18}" height="96" preserveAspectRatio="xMidYMid meet"><title>${esc(im.caption+' '+im.credit+' '+im.license)}</title></image>`:n.evidence==='text'?textWitness:`<text x="${p.x+p.w/2}" y="${p.y+61}" text-anchor="middle" fill="${c.muted}" font-size="11">${n.photo?'Photograph in the record':'Image not yet sourced'}</text>`;
+      const mark=n.domain==='sci'?`<circle cx="${p.x+p.w-17}" cy="${p.y+17}" r="6" fill="${c['dom-sci']}"/><title>Science and technology</title>`:`<rect x="${p.x+p.w-23}" y="${p.y+11}" width="12" height="12" fill="${c['dom-surg']}"/><title>Medicine</title>`;
+      parts.push(`<g data-node="${n.id}" role="button" tabindex="0" aria-pressed="${n.id===trace}" aria-label="${esc(n.label+', '+date(n))}" style="cursor:pointer"><rect x="${p.x}" y="${p.y}" width="${p.w}" height="${p.h}" rx="8" fill="${c.panel}" stroke="${n.id===trace?c.bronze:n.domain==='sci'?c['dom-sci']:c.accent}" stroke-width="${n.id===trace?3:1.1}"/>${mark}${photograph}<text x="${p.x+14}" y="${p.y+126}" font-size="15" font-weight="700" fill="${c.accent}">${date(n)}</text>${label.map((s,i)=>`<text x="${p.x+14}" y="${p.y+150+i*21}" font-size="16" font-weight="600">${esc(s)}</text>`).join('')}<text x="${p.x+14}" y="${p.y+201}" font-size="10" fill="${c.muted}">${im?(im.relation==='reference objects'?'Reference plate · see record':esc(im.short_credit||'Science Museum Group · CC BY-NC-SA')):n.photo?`${esc(n.context.split(' · ')[0])} · science release`:`${esc(n.date_kind)} · ${n.sources.length} source${n.sources.length===1?'':'s'}`}</text></g>`);
     }
     const {w,h}=size();
     $('graph').innerHTML=`<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" tabindex="0" role="group" aria-label="Zoomable surgical tool family tree" font-family="system-ui,sans-serif" fill="${c.ink}"><g id="tree-world">${parts.join('')}</g></svg>`;

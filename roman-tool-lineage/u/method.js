@@ -34,7 +34,7 @@ const V = [
   ['Lineages', 'lineages.html', 1, 2, 'science: device chains and makers; surgical: family-tree branches'],
   ['Bridges', 'bridges.html', 1, 2, 'pairs across the two releases; museum pairs for science'],
   ['Missing links', 'gaps.html', 0, 2, 'principles and roles'],
-  ['Family tree', 'atlas.html#map', 2, 0, 'documented comparisons between surgical records'],
+  ['Family tree', 'atlas.html#map', 2, 2, 'one tree: documented comparisons among the instruments, device chains and maker series among the scientific objects'],
   ['World and time', 'atlas.html#world', 1, 0, 'catalogue cities of surgical records'],
   ['Morphology, outline measurements', 'atlas.html#morph', 1, 0, 'the surgical shape set'],
   ['AI methods', 'analyse.html#ai', 2, 0, 'runs on the surgical release'],
