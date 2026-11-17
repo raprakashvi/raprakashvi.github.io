@@ -1,6 +1,6 @@
 <!doctype html>
 <html lang="en" class="locked"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="robots" content="noindex,nofollow,noarchive"><meta name="referrer" content="no-referrer">
+<meta name="robots" content="noindex,nofollow,noarchive,nosnippet,noimageindex,max-image-preview:none"><meta name="referrer" content="no-referrer">
 <title>Map of forms · Vestigium</title><link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="stylesheet" href="visuals/tokens.css"><link rel="stylesheet" href="u/chrome.css"><link rel="stylesheet" href="u/site.css"><link rel="stylesheet" href="gate.css"></head>
 <body data-page="map"><a class="skip" href="#main">Skip to content</a>
@@ -23,6 +23,7 @@
 <main id="main" tabindex="-1"><div class="pagehead"><h1>One map of every object</h1><p>Every object with a photograph, placed by how it looks and how it is named. Square: Medicine. Circle: Science and technology. Both: both marks. Outline: no tag. Circles outline the groups found by closeness. Zoom in to see the photographs; click a group's outline to open it.</p></div>
 <div class="toggles" role="group" aria-label="Space shown on the map"><span class="tlabel">Space</span><button type="button" class="seg" data-mode="fusion" aria-pressed="true">Photo + title</button><button type="button" class="seg" data-mode="photo" aria-pressed="false">Photo only</button><button type="button" class="seg" data-mode="title" aria-pressed="false">Title only</button><button type="button" class="seg" data-mode="learned" aria-pressed="false" hidden>Learned</button></div>
 <div class="toggles" role="group" aria-label="Colour and groups"><span class="tlabel">Colour by</span><button type="button" class="seg" data-col="tag" aria-pressed="true">Tag</button><button type="button" class="seg" data-col="museum" aria-pressed="false">Museum</button><label><input type="checkbox" id="tgroups" checked> Outline the groups</label></div>
+<div class="toggles" role="group" aria-label="Objects shown" id="mshow"><span class="tlabel">Show</span><select id="mset" aria-label="Objects shown on the map"><option value="">All objects</option></select><span class="seg-note">A sub-collection is laid out on its own; each has its own cached layout and measured quality.</span></div>
 <div id="legend" class="maplegend"></div>
 <div class="mapwrap"><canvas id="map" tabindex="0" aria-label="Map of all objects. Arrow keys move, plus and minus zoom."></canvas>
 <div class="zoom"><button type="button" id="zin" aria-label="Zoom in">+</button><button type="button" id="zout" aria-label="Zoom out">−</button><button type="button" id="zreset" aria-label="Reset view" style="font-size:13px">1:1</button></div>

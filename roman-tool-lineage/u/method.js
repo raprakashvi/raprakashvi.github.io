@@ -56,5 +56,9 @@ try {
   $('#m-clusters').textContent = (b.clusters && b.clusters.n ? fmt(b.clusters.n) + ' groups of at least 40 objects' : 'No groups') +
     (c.unclustered != null ? ', ' + fmt(c.unclustered) + ' objects between groups' : '') + '. Method: ' + esc(c.method || '') +
     '; parameters k = ' + (c.k ?? '') + ', minimum group size ' + (c.min_cluster_size ?? '') + ', seed ' + (c.seed ?? '') +
-    '; the random seed is fixed, so the same vectors give the same groups. A group is named by the device family its members most often carry in the codebook.';
+    '; the random seed is fixed, so the same vectors give the same groups. ' +
+    (c.naming ? 'How a group is named, so that a name is not a finding its members do not support: ' + esc(c.naming.rule) +
+      '. In this build ' + fmt(c.naming.pass) + ' of ' + fmt(c.naming.groups) + ' groups are named for a family that at least 30 % of their members share; ' +
+      'the other ' + fmt(c.naming.groups - c.naming.pass) + ' say they are mixed groups, list their most common families, or are "Mixed group of N objects".'
+      : 'A group is named by the device family its members most often carry in the codebook.');
 } catch { $('#m-map').textContent = 'The map draws the frozen SigLIP 2 space of every object with a photograph.'; }

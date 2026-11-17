@@ -61,8 +61,11 @@ tagged Medicine by a word in its title: a print *about* a surgeon is a print. T-
 
 Before de-duplication the 50,063 records carry: Medicine only 292, Science only 28,042, both 2,584,
 neither 19,145. After removing duplicates (the same museum and inventory number already in a
-release) 48,756 records remain; their per-tag counts are in
-`results/tables/catalogue_site.json` (`by_tags`) and on the Data page.
+release) 48,756 records remain: **Medicine only 286, Science only 27,094, both 2,249, neither
+19,127**. Per museum the 50,063 read as: Boerhaave 7,571 / 3,617 / 290 / 2,522; NEMO 2,736 / 19,263
+/ 2 / 62; Teylers 8,838 / 5,162 / 0 / 0 (neither / science only / medicine only / both). The exact
+table is `results/tables/catalogue_site.json` (`by_tags`, `by_tags_before_deduplication`) and the
+Data page.
 
 The three catalogues remain different kinds of collection: NEMO is electrical household appliances
 (nearly all Science), Teylers is largely prints, drawings and minerals (mostly neither), Boerhaave

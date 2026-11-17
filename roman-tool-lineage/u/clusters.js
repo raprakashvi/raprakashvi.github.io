@@ -11,7 +11,8 @@ const cross = C.clusters.filter(c => c.n_museums >= 2 && c.n >= 40);
 const rest = C.clusters.filter(c => !(c.n_museums >= 2 && c.n >= 40));
 $('#csum').innerHTML = '<p class="clsum"><b>' + fmt(C.clusters.length) + '</b> groups of 40 objects or more; <b>' + fmt(cross.length) +
   '</b> of them cross a museum. ' + fmt(P.unclustered) + ' objects (' + Math.round(100 * P.unclustered / P.n) + ' %) sit between groups and are not assigned to one. ' +
-  'Sizes run from ' + fmt(P.min_cluster_size) + ' to ' + fmt(Math.max(...C.clusters.map(c => c.n))) + ' objects.</p>' +
+  'Sizes run from ' + fmt(P.min_cluster_size) + ' to ' + fmt(Math.max(...C.clusters.map(c => c.n))) + ' objects; <b>' +
+  fmt(C.clusters.filter(c => c.passes).length) + '</b> of the groups are named for a device family that at least 30 % of their members share, the rest are mixed groups.</p>' +
   '<p class="clmethod">' + esc(P.method) + ', parameters: k = ' + P.k + ', minimum group size ' + P.min_cluster_size + ', seed ' + P.seed + '. ' +
   'The same groups are outlined on the <a href="map.html">map</a>.</p>';
 

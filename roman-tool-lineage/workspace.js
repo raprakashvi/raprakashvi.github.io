@@ -24,7 +24,7 @@ export function initWorkspace(){
  // T-036: one menu panel opens on click and shows the whole site; Escape and an outside click close it.
  const mt=$('menu-toggle'),mp=$('menu-panel');
  if(mt&&mp){
-  mt.onclick=()=>{const open=!document.body.classList.contains('menu-open');document.body.classList.toggle('menu-open',open);mt.setAttribute('aria-expanded',String(open));if(open)mp.querySelector('a')?.focus();};
+  mt.onclick=()=>{const open=!document.body.classList.contains('menu-open');document.body.classList.toggle('menu-open',open);mt.setAttribute('aria-expanded',String(open));if(open)mp.querySelector('a')?.focus({preventScroll:true});};
   document.addEventListener('click',e=>{if(!document.body.classList.contains('menu-open'))return;if(mt.contains(e.target)||mp.contains(e.target))return;document.body.classList.remove('menu-open');mt.setAttribute('aria-expanded','false')});
   document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.body.classList.contains('menu-open')){document.body.classList.remove('menu-open');mt.setAttribute('aria-expanded','false');mt.focus()}});
  }

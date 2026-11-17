@@ -2,7 +2,7 @@
 // photo + title (the fusion the site has used), photo only, title only.  A learned mode appears once T-035 has
 // written its shared space.  Marks: square = Medicine, circle = Science and technology, both = both marks, outline =
 // no tag.  T-036 also draws the groups found by closeness (clusters) as outlined, clickable regions.
-import {boot, loadIndex, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomain, getDomain, domainKey, errorBox} from './core.js';
+import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomain, getDomain, domainKey, errorBox} from './core.js';
 
 await boot();
 let IX;
@@ -14,18 +14,27 @@ const MODES = {fusion: {x: 'x', y: 'y', label: 'Photo + title'}, photo: {x: 'px'
 const M = IX.map.modes || {fusion: {}};
 if (M.learned) MODES.learned = {x: 'lx', y: 'ly', label: M.learned.label || 'Learned'};
 let mode = M.fusion ? 'fusion' : Object.keys(M)[0];
-const P = IX.rows.filter(r => r[MODES[mode].x] != null);
+// T-038: a sub-collection selector re-lays-out only a subset of the objects, each with its own cached layout and
+// measured metrics (layouts.json).  Sub-collection layouts use the photo + title space, so choosing one switches
+// that space on; the other two spaces always show the whole collection.
+let P = [], SUBS = null, subKey = '', subPts = null, subMeta = null;
+const coords = r => subPts ? (subPts.get(r.i) || [null, null]) : [r[MODES[mode].x], r[MODES[mode].y]];
+const cx = r => coords(r)[0], cy = r => coords(r)[1];
+function refreshP() {
+  P = IX.rows.filter(r => cx(r) != null && cy(r) != null);
+}
+refreshP();
 let colBy = 'tag', W, H, dpr, k = 1, ox = 0, oy = 0, hover = null, pad = 30, sc = 1, showGroups = true;
 let x0 = 1e9, x1 = -1e9, y0 = 1e9, y1 = -1e9;
 const CL = IX.clusters || [];
 function bounds() {
   x0 = 1e9; x1 = -1e9; y0 = 1e9; y1 = -1e9;
-  P.forEach(r => { const X = r[MODES[mode].x], Y = r[MODES[mode].y]; x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y); });
+  P.forEach(r => { const X = cx(r), Y = cy(r); x0 = Math.min(x0, X); x1 = Math.max(x1, X); y0 = Math.min(y0, Y); y1 = Math.max(y1, Y); });
 }
 bounds();
 const color = r => colBy === 'tag' ? COL[domainKey(r.d)] : mus(r.m).color;
-const sx = r => (W / 2 + (r[MODES[mode].x] - (x0 + x1) / 2) * sc) * k + ox;
-const sy = r => (H / 2 - (r[MODES[mode].y] - (y0 + y1) / 2) * sc) * k + oy;
+const sx = r => (W / 2 + (cx(r) - (x0 + x1) / 2) * sc) * k + ox;
+const sy = r => (H / 2 - (cy(r) - (y0 + y1) / 2) * sc) * k + oy;
 
 function legend() {
   const vis = P.filter(r => inDomain(r.d));
@@ -38,10 +47,21 @@ function legend() {
     const n = new Map(); vis.forEach(r => n.set(r.m, (n.get(r.m) || 0) + 1));
     $('#legend').innerHTML = [...n.keys()].sort((a, b) => n.get(b) - n.get(a)).map(i => '<span><i style="background:' + mus(i).color + '"></i>' + esc(mus(i).short) + ' <b>' + fmt(n.get(i)) + '</b></span>').join('');
   }
+  if (subKey) {
+    const m = subMeta && subMeta.metrics;
+    $('#mapnote').textContent = fmt(P.length) + ' objects of ' + (subMeta ? subMeta.label : subKey) +
+      ', laid out on their own (photo + title space). ' +
+      (m ? 'Measured against the high-dimensional neighbours: trustworthiness ' + m.trustworthiness.toFixed(2) +
+        ', continuity ' + m.continuity.toFixed(2) + ', k-NN preservation ' + m.knn_preservation.toFixed(2) + ' (k = 10). ' : '') +
+      'Groups are found on all objects, so they are outlined only under All objects.';
+    return;
+  }
   const off = IX.rows.filter(r => inDomain(r.d) && r[MODES[mode].x] == null).length;
   $('#mapnote').textContent = (off ? fmt(off) + ' objects have no photograph or carry a registration-card image, so no position on the map; they are in the collection. ' : '') +
     (CL.length ? fmt(CL.length) + ' groups of objects that sit close together are outlined (' + fmt(CL.filter(c => c.n_museums >= 2).length) + ' of them cross museums); click an outline to open its page. ' : '') +
-    'Photographs and titles are embedded with SigLIP 2 and placed with UMAP (n_neighbors 15, min_dist 0.2, cosine, seed 7); each mode is a cached layout of the same objects.';
+    'Photographs and titles are embedded with SigLIP 2 and placed with UMAP' +
+    (IX.map.params ? ' on 50 principal components (n_neighbors ' + IX.map.params.n_neighbors + ', min_dist ' + IX.map.params.min_dist + ', cosine, seed 7)' : ' (n_neighbors 15, min_dist 0.2, cosine, seed 7)') +
+    '; each mode is a cached layout of the same objects.';
 }
 function resize() {
   const w0 = cv.parentNode.getBoundingClientRect().width;
@@ -158,7 +178,32 @@ $('#zin').onclick = () => zoomAt(1.5, W / 2, H / 2);
 $('#zout').onclick = () => zoomAt(.67, W / 2, H / 2);
 $('#zreset').onclick = () => { k = 1; ox = oy = 0; draw(); };
 $$('[data-col]').forEach(b => b.onclick = () => { colBy = b.dataset.col; $$('[data-col]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); legend(); draw(); });
-$$('[data-mode]').forEach(b => { if (!M[b.dataset.mode]) { b.hidden = true; return; } b.onclick = () => { mode = b.dataset.mode; $$('[data-mode]').forEach(x => x.setAttribute('aria-pressed', String(x === b))); P.length = 0; IX.rows.forEach(r => { if (r[MODES[mode].x] != null) P.push(r); }); bounds(); resize(); legend(); }; });
+$$('[data-mode]').forEach(b => { if (!M[b.dataset.mode]) { b.hidden = true; return; } b.onclick = () => {
+  if (subKey) { subKey = ''; subPts = null; subMeta = null; if ($('#mset')) $('#mset').value = ''; }
+  mode = b.dataset.mode; $$('[data-mode]').forEach(x => x.setAttribute('aria-pressed', String(x === b)));
+  refreshP(); bounds(); resize(); legend();
+}; });
+
+// ---- T-038: the sub-collection selector.  One cached layout per subset, computed by the build on the
+// photo + title space; the metrics of each layout are shown with it.
+const SUB = IX.map.subsets || [];
+if (!$('#mset') || !SUB.length) { if ($('#mshow')) $('#mshow').hidden = true; } else {
+  const groups = [...new Set(SUB.map(s => s.group))];
+  $('#mset').innerHTML = '<option value="">All objects (' + fmt(IX.rows.length) + ')</option>' + groups.map(g =>
+    '<optgroup label="' + esc(g) + '">' + SUB.filter(s => s.group === g).map(s =>
+      '<option value="' + esc(s.key) + '">' + esc(s.label) + ' (' + fmt(s.n) + ')</option>').join('') + '</optgroup>').join('');
+  $('#mset').onchange = async function () {
+    const key = this.value;
+    if (!key) { subKey = ''; subPts = null; subMeta = null; refreshP(); bounds(); resize(); legend(); return; }
+    if (!SUBS) { try { SUBS = await loadJSON('layouts.json'); } catch (e) { errorBox($('.mapwrap'), e); return; } }
+    const set = (SUBS.sets || {})[key];
+    if (!set) { alert('That layout is not in this build.'); return; }
+    subKey = key; subMeta = set;
+    subPts = new Map(set.p.map(q => [q[0], [q[1], q[2]]]));
+    if (mode !== 'fusion') { mode = 'fusion'; $$('[data-mode]').forEach(x => x.setAttribute('aria-pressed', String(x.dataset.mode === 'fusion'))); }
+    refreshP(); bounds(); resize(); legend();
+  };
+}
 
 $('#tgroups').onchange = function () { showGroups = this.checked; draw(); };
 window.addEventListener('vestigium:domain', () => { legend(); draw(); });
