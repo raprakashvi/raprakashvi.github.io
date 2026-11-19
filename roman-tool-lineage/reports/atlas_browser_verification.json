@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-11-17T06:02:12.488Z",
-  "url": "http://127.0.0.1:39853/atlas.html",
+  "tested_at": "2026-11-19T22:13:47.546Z",
+  "url": "http://127.0.0.1:41789/atlas.html",
   "checks": [
     "Main research page uses Vestigium branding",
     "Home opens the original family tree with instrument nodes",

@@ -1,11 +1,11 @@
 {
-  "tested_at": "2026-11-17T05:30:12.941Z",
-  "url": "http://127.0.0.1:59577/atlas.html",
+  "tested_at": "2026-11-19T22:13:57.589Z",
+  "url": "http://127.0.0.1:41789/atlas.html",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Mobile sign-in layout fits the viewport",
     "Redesigned access screen accurately describes the public static gate",
-    "Initial atlas loads only the bounded core and image register, deferring morphology and additional museums",
+    "Initial atlas loads only the bounded core (one tree over both domains, T-039) and the image register, deferring morphology and additional museums",
     "Self-hosted Manrope typography is loaded",
     "Museum toggle has a prominent native checkbox and whole-label target",
     "Application uses the shared paper palette",
@@ -49,7 +49,7 @@
       "images.json",
       "atlas-core.json"
     ],
-    "decoded_bytes": 3896513
+    "decoded_bytes": 6584092
   },
   "desktop": {
     "width": 1440,

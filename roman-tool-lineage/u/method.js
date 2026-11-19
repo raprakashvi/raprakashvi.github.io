@@ -47,7 +47,9 @@ $('#cover').innerHTML = '<div class="cvhead"><span></span><span><i class="dm med
 try {
   const b = await loadJSON('build.json');
   const e = b.embedding, mp = b.maps || {};
-  $('#flownote').textContent = 'Shared space: ' + fmt(e.n) + ' objects with a photograph, each placed by UMAP (n_neighbors 15, min_dist 0.2, cosine, seed 7).';
+  const lp = (b.layout && b.layout.params) || {};
+  $('#flownote').textContent = 'Shared space: ' + fmt(e.n) + ' objects with a photograph, each placed by UMAP (n_neighbors ' +
+    (lp.n_neighbors ?? 15) + ', min_dist ' + (lp.min_dist ?? 0.1) + ', cosine, seed ' + (lp.seed ?? 7) + ').';
   const mm = Object.keys(mp).map(k => mp[k].label || k).join(', ');
   $('#m-map').textContent = 'One page, one space, three modes on the same objects: ' + mm +
     '. Each mode is its own cached UMAP layout of the same vectors; the map switches between them without reloading. ' +
@@ -71,6 +73,16 @@ try {
         'The other two spaces use the same chosen settings; their measured quality is below.</p>' : '') +
       (three ? '<ul class="layspaces">' + three + '</ul>' : '') +
       (subs ? '<p class="scope">' + fmt(subs) + ' sub-collection layouts are cached with the build; each carries its own metrics, shown with it on the map.</p>' : '');
+    // T-042: what k-NN preservation means for a reader, in plain words, with the measured default.
+    const kn = lay.fusion && lay.fusion.metrics ? lay.fusion.metrics.knn_preservation : null;
+    const kk = (lay.fusion && lay.fusion.metrics && lay.fusion.metrics.k) || 10;
+    if (kn != null && $('#m-neighbours')) {
+      $('#m-neighbours').textContent = 'In plain words: the dots nearest an object on screen are not necessarily its ' +
+        'nearest neighbours in the data. On the default layout, the ' + kk + ' dots nearest an object on the map hold ' +
+        'on average only about ' + (kn * kk).toFixed(1) + ' of its ' + kk + ' nearest neighbours in the full space (' +
+        Math.round(100 * kn) + ' in 100). Clicking an object opens its record, and the row "Similar across the whole ' +
+        'collection" lists the real neighbours, not the dots that happen to sit beside it on the map.';
+    }
   }
   const c = b.clusters || {};
   $('#m-clusters').textContent = (b.clusters && b.clusters.n ? fmt(b.clusters.n) + ' groups of at least 40 objects' : 'No groups') +
@@ -81,4 +93,10 @@ try {
       '. In this build ' + fmt(c.naming.pass) + ' of ' + fmt(c.naming.groups) + ' groups are named for a family that at least 30 % of their members share; ' +
       'the other ' + fmt(c.naming.groups - c.naming.pass) + ' say they are mixed groups, list their most common families, or are "Mixed group of N objects".'
       : 'A group is named by the device family its members most often carry in the codebook.');
+  if (b.landing && b.landing.groups && $('#m-landing')) {
+    const names = b.landing.groups.map(g => esc(g.name) + ' (' + fmt(g.n) + ' objects, ' + g.n_museums + ' museums)').join(', ');
+    $('#m-landing').textContent = 'The "groups that cross museums" band on the landing page follows this rule: ' + b.landing.rule +
+      '. In this build it shows ' + b.landing.groups.length + (b.landing.groups.length === 1 ? ' group: ' : ' groups: ') + names +
+      '. The date rule was applied to catalogue records only, and only to broken dates (T-042); the curated releases and the Met keep their own checked ancient dates.';
+  }
 } catch { $('#m-map').textContent = 'The map draws the frozen SigLIP 2 space of every object with a photograph.'; }

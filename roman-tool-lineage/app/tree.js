@@ -108,7 +108,14 @@ const Tree = (() => {
   }
   function focus(name){
     const group=geometry?.groups.find(g=>g.name===name);
-    if(group){$('tree-branch').value=name;markBranch(name);fit(group);}
+    if(group){
+      // T-042: choosing a branch is a newer intent than a record selection.  If the selected record belongs to
+      // another branch, every card in this branch would be dimmed to 13 % opacity and the canvas would read as
+      // empty at the fitted zoom; clear the selection instead.  The browser check fails on an empty canvas.
+      const sel=document.querySelector('#graph [data-node][aria-pressed="true"]');
+      if(sel&&N[sel.dataset.node]?.lineage!==name&&typeof deselectLineage==='function')deselectLineage();
+      $('tree-branch').value=name;markBranch(name);fit(group);
+    }
   }
   function markBranch(name){
     $('tree-branches').querySelectorAll('[data-branch]').forEach(el=>el.setAttribute('aria-pressed',String(el.dataset.branch===name)));

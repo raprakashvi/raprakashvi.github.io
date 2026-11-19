@@ -2,12 +2,12 @@
   "version": "v1-804c1e7c3202",
   "records_validated": 2830,
   "original_rows_compared": 2738,
-  "source_row_references": 5974,
+  "source_row_references": 6457,
   "assets_hash_verified": 2718,
   "morphology_rows": 2605,
   "reordering_preserves_ids_and_release": true,
   "plaintext_password_in_artifact": false,
-  "site_bytes": 152580265,
+  "site_bytes": 533947815,
   "browser_tasks": "See web_browser_verification.json",
   "checks": "passed"
 }
