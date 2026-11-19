@@ -97,6 +97,6 @@ try {
     const names = b.landing.groups.map(g => esc(g.name) + ' (' + fmt(g.n) + ' objects, ' + g.n_museums + ' museums)').join(', ');
     $('#m-landing').textContent = 'The "groups that cross museums" band on the landing page follows this rule: ' + b.landing.rule +
       '. In this build it shows ' + b.landing.groups.length + (b.landing.groups.length === 1 ? ' group: ' : ' groups: ') + names +
-      '. The date rule was applied to catalogue records only, and only to broken dates (T-042); the curated releases and the Met keep their own checked ancient dates.';
+      '. The date rule was applied to catalogue records only, and only to broken dates (T-042); the curated releases and the Met keep their own checked ancient dates, written with their era (7000 BCE to 2000 CE).';
   }
 } catch { $('#m-map').textContent = 'The map draws the frozen SigLIP 2 space of every object with a photograph.'; }
