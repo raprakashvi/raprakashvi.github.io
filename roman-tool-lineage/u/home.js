@@ -1,7 +1,7 @@
 // Front page (T-036): one large photo band from every collection, one sentence, the groups that cross museums, three
 // ways in, then a visual "what is here" strip (no tables), the patterns and the analysis views.  Photographs lead;
 // no gradients, no emoji, no repeated caveat line (the one plain note is in the footer).
-import {boot, loadJSON, $, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, errorBox} from './core.js';
+import {boot, loadJSON, $, $$, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, errorBox} from './core.js';
 
 const main = $('#main');
 try {
@@ -15,10 +15,23 @@ try {
   // the opening band: real photographs only (registration cards are already excluded by the build)
   $('#band').innerHTML = H.band.map(id => { const r = R(id); return r ? '<a href="' + objUrl(id) + '" style="--c:' + mus(r.m).color + '" title="' + esc(r.t + ' · ' + mus(r.m).short) + '">' + im(id) + '</a>' : ''; }).join('');
 
-  // the groups that cross museums: a row of photographs each, one plain line
-  $('#cband').innerHTML = (H.clusters || []).map(c => '<a class="clrow" href="clusters.html#c' + c.id + '"><span class="clpics">' +
-    c.pics.slice(0, 4).map(id => { const r = R(id); return r ? '<img loading="lazy" decoding="async" style="--c:' + mus(r.m).color + '" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '">' : ''; }).join('') +
-    '</span><span class="clline">' + esc(c.line) + '<b>' + fmt(c.n) + ' objects in this group</b></span></a>').join('');
+  // T-044: the four kinds of group, one tab each, a picture grid of the top cross-museum groups (no tables, no
+  // prose walls).  Every tile links to its section on the groups page, and that section links on to the map.
+  const FAMS = H.families || [];
+  const showFam = key => {
+    const f = FAMS.find(x => x.key === key) || FAMS[0];
+    if (!f) return;
+    $('#cband').innerHTML = f.groups.map(g => '<a class="cltile" data-museums="' + g.n_museums + '" href="clusters.html#' + g.anchor + '">' +
+      '<span class="clpics">' + g.pics.map(id => { const r = R(id); return r ? '<img loading="lazy" decoding="async" style="--c:' + mus(r.m).color + '" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t + ' · ' + mus(r.m).short) + '">' : ''; }).join('') + '</span>' +
+      '<h3>' + esc(g.name) + '</h3><p>' + esc(g.line) + '</p>' +
+      '<b class="cln">' + fmt(g.n) + ' objects · ' + g.n_museums + ' museums</b></a>').join('');
+    $$('#cltabs .cltab').forEach(b => b.setAttribute('aria-selected', String(b.dataset.fam === f.key)));
+  };
+  if (FAMS.length) {
+    $('#cltabs').innerHTML = FAMS.map((f, i) => '<button class="cltab" role="tab" data-fam="' + f.key + '" aria-selected="' + (i === 0) + '" aria-controls="cband" title="' + esc(f.definition) + '">' + esc(f.label) + '</button>').join('');
+    $('#cltabs').addEventListener('click', e => { const b = e.target.closest('.cltab'); if (b) showFam(b.dataset.fam); });
+    showFam(FAMS[0].key);
+  }
 
   // three ways in
   const arrow = '<span class="ar" aria-hidden="true">→</span>';
@@ -51,7 +64,7 @@ try {
     ['atlas.html#map', 'Family tree', 'Medicine and Science and technology in one tree: documented comparisons among the instruments, device chains and maker series among the scientific objects.', '<div class="pp tree4">' + H.tree.map((id, i) => (i ? '<span class="ar" aria-hidden="true">→</span>' : '') + ph(id)).join('') + '</div>', ''],
     ['gaps.html', 'Missing links', 'The stages no museum here holds, and what would fill them.', '<div class="pp gap2">' + ph(H.gap.id) + '<span class="frame"><span>' + esc(H.gap.text) + '</span></span></div>', ''],
     ['bridges.html', 'Bridges', 'A surgical instrument and a scientific object that look alike, and pairs across museums.', '<div class="pp gap2 br2">' + H.cross.map(id => ph(id)).join('<span class="swap" aria-hidden="true">↔</span>') + '</div>', ''],
-    ['clusters.html', 'Groups by closeness', 'The collection grouped by how close objects are, not by a list.', '<div class="pp p2x2">' + (H.clusters || []).slice(0, 4).map(c => ph(c.pics[0])).join('') + '</div>', ''],
+    ['clusters.html', 'Groups, four ways', 'The collection grouped by how close objects are, not by a list.', '<div class="pp p2x2">' + (H.clusters || []).slice(0, 4).map(c => ph(c.pics[0])).join('') + '</div>', ''],
   ];
   $('#patterns').innerHTML = pats.map(t => '<a class="pat ' + t[4] + '" href="' + t[0] + '">' + t[3] + '<h3>' + t[1] + '</h3><p>' + t[2] + '</p></a>').join('');
   const nb = H.cross.length ? H.cross : H.collage.slice(0, 2);

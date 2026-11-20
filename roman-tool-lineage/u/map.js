@@ -2,11 +2,26 @@
 // photo + title (the fusion the site has used), photo only, title only.  A learned mode appears once T-035 has
 // written its shared space.  Marks: square = Medicine, circle = Science and technology, both = both marks, outline =
 // no tag.  T-036 also draws the groups found by closeness (clusters) as outlined, clickable regions.
-import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomain, getDomain, domainKey, errorBox} from './core.js';
+import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomain, getDomain, domainKey, params, errorBox} from './core.js';
 
 await boot();
 let IX;
 try { IX = await loadIndex(); } catch (e) { errorBox($('.mapwrap'), e); throw e; }
+// T-044: a group from the cluster pages opens this map filtered to its own objects.  Look uses the cluster column,
+// Morphology the morphology group column, Type and Use the record's own codebook label.
+const GF = params().g || '', GFAM = GF.split(':')[0], GVAL = GF.split(':').slice(1).join(':');
+let GFNAME = '';
+if (GF) {
+  try {
+    const C = await loadJSON('clusters.json');
+    const g = (C.families || []).flatMap(f => f.groups).find(g => g.gkey === GF);
+    if (g) GFNAME = g.name;
+  } catch {}
+}
+const inGroup = r => !GF || (GFAM === 'look' ? r.cl === Number(GVAL) :
+  GFAM === 'morphology' ? r.mg === Number(GVAL) :
+  GFAM === 'type' ? (r.ty.length > 0 && IX.dict.ty[r.ty[0]] === GVAL) :
+  GFAM === 'use' ? (r.fn.length > 0 && IX.dict.fn[r.fn[0]] === GVAL) : true);
 const COL = {med: '#a8431f', sci: '#284f7a', both: '#7b5f6d', none: '#b3ada0'};
 const cv = $('#map'), ctx = cv.getContext('2d'), tip = $('#tip');
 const MODES = {fusion: {x: 'x', y: 'y', label: 'Photo + title'}, photo: {x: 'px', y: 'py', label: 'Photo only'},
@@ -21,7 +36,7 @@ let P = [], SUBS = null, subKey = '', subPts = null, subMeta = null;
 const coords = r => subPts ? (subPts.get(r.i) || [null, null]) : [r[MODES[mode].x], r[MODES[mode].y]];
 const cx = r => coords(r)[0], cy = r => coords(r)[1];
 function refreshP() {
-  P = IX.rows.filter(r => cx(r) != null && cy(r) != null);
+  P = IX.rows.filter(r => inGroup(r) && cx(r) != null && cy(r) != null);
 }
 refreshP();
 let colBy = 'tag', W, H, dpr, k = 1, ox = 0, oy = 0, hover = null, pad = 30, sc = 1, showGroups = true;
@@ -57,11 +72,13 @@ function legend() {
     return;
   }
   const off = IX.rows.filter(r => inDomain(r.d) && r[MODES[mode].x] == null).length;
-  $('#mapnote').textContent = (off ? fmt(off) + ' objects have no photograph or carry a registration-card image, so no position on the map; they are in the collection. ' : '') +
+  const note = (off ? fmt(off) + ' objects have no photograph or carry a registration-card image, so no position on the map; they are in the collection. ' : '') +
     (CL.length ? fmt(CL.length) + ' groups of objects that sit close together are outlined (' + fmt(CL.filter(c => c.n_museums >= 2).length) + ' of them cross museums); click an outline to open its page. ' : '') +
     'Photographs and titles are embedded with SigLIP 2 and placed with UMAP' +
     (IX.map.params ? ' on 50 principal components (n_neighbors ' + IX.map.params.n_neighbors + ', min_dist ' + IX.map.params.min_dist + ', cosine, seed 7)' : ' (n_neighbors 15, min_dist 0.2, cosine, seed 7)') +
     '; each mode is a cached layout of the same objects.';
+  $('#mapnote').innerHTML = (GF ? '<b>Group: ' + esc(GFNAME || GF) + '</b> — ' + fmt(P.length) +
+    ' objects with a position. <a href="map.html">Show all objects</a>. ' : '') + esc(note);
 }
 function resize() {
   const w0 = cv.parentNode.getBoundingClientRect().width;

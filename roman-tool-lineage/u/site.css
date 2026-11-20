@@ -428,6 +428,33 @@ dt{color:var(--muted);font-weight:500}dd{margin:0;font-weight:600;overflow-wrap:
 .clpics img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-bottom:3px solid var(--c);background:var(--tint)}
 .clline{font:500 clamp(19px,2vw,25px)/1.3 var(--serif)}
 .clline b{display:block;font:600 14px var(--font-ui);color:var(--muted);margin-top:6px}
+/* T-044: the four kinds of group — tabs, a picture grid on the front page, and pair cards on the group pages */
+.cltabs{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 var(--s5);border-bottom:1px solid var(--border);padding-bottom:12px}
+.cltab{border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:8px 17px;font:600 15px var(--font-ui);cursor:pointer;min-height:42px}
+.cltab[aria-selected=true]{background:var(--ink);color:#fff}
+.cltab:hover{background:var(--tint)}
+.clgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(258px,1fr));gap:var(--s6) var(--s5)}
+.cltile{display:block;min-width:0}
+.cltile:hover{text-decoration:none}
+.cltile .clpics{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.cltile .clpics img{width:100%;aspect-ratio:1;object-fit:cover;display:block;border-bottom:3px solid var(--c);background:var(--tint)}
+.cltile h3{font:500 21px/1.2 var(--serif);margin:10px 0 4px}
+.cltile p{font-size:14px;color:var(--muted);margin:0 0 6px;line-height:1.35}
+.cltile .cln{font:600 13px var(--font-ui);color:var(--muted)}
+.famh{font-size:clamp(28px,3.4vw,44px);margin:0 0 var(--s2)}
+.clspan{font-size:15px;color:var(--text);margin:0 0 var(--s3);max-width:72em}
+.clpairs{margin-top:var(--s5);border-top:1px solid var(--border);padding-top:var(--s4)}
+.clpairs h3{font:500 21px/1.2 var(--serif);margin:0 0 4px}
+.pairsgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:var(--s4)}
+.ptile{display:block;min-width:0}
+.ptile .ph{display:block}
+.ptile .ph img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.ptile b{display:-webkit-box;font-weight:600;font-size:14px;line-height:1.3;margin-top:8px;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.ptile span{display:block;font-size:13.5px;color:var(--muted)}
+.clpairs .pair{display:grid;grid-template-columns:1fr 1fr;gap:6px;align-items:start;border-top:2px solid var(--ink);padding-top:8px}
+.clpairs .pair .ptile > b,.clpairs .pair .ptile > span:not(.ph){display:none}
+.clpairs .pair .ptile .ph{border-top-width:3px}
+.clpairs .pair .sim{grid-column:1/-1;font:600 13px var(--font-ui);color:var(--muted);font-variant-numeric:tabular-nums}
 .entries.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 .entries.three .entry .pics,.entries.three .entry .pp{height:clamp(220px,20vw,300px)}
 .whathere{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:var(--s7)}
@@ -463,6 +490,9 @@ dt{color:var(--muted);font-weight:500}dd{margin:0;font-weight:600;overflow-wrap:
 .evd summary{cursor:pointer;font-weight:600;font-size:14px}
 .evd p{margin:var(--s2) 0 0;font-size:14px}
 @media (max-width:900px){
+ .cl header{display:block}
+ .cl header h2{margin-bottom:6px}
+ .cl header p{margin-bottom:8px}
  .band{grid-template-columns:repeat(4,1fr)}
  .band a:nth-child(8){display:none}
  .entries.three{grid-template-columns:1fr}

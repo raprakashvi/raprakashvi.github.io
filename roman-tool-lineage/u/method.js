@@ -27,7 +27,7 @@ if (sm && sm.principle) {
 const V = [
   ['Collection', 'collection.html', 2, 2, 'every record, including the three catalogues'],
   ['Map, Map in time', 'map.html', 2, 2, 'every object with a photograph that is not a registration card'],
-  ['Groups by closeness', 'clusters.html', 2, 2, 'groups in the same space as the map'],
+  ['Groups, four ways', 'clusters.html', 2, 2, 'Look, Type, Morphology and Use groups over the same collection'],
   ['Timeline', 'timeline.html', 2, 2, 'every dated object'],
   ['Compare', 'compare.html', 2, 2, 'any two objects'],
   ['Life of a principle', 'principles.html', 2, 2, 'every source in every lane; surgical instruments in the Medical practice lane'],
@@ -85,7 +85,13 @@ try {
     }
   }
   const c = b.clusters || {};
-  $('#m-clusters').textContent = (b.clusters && b.clusters.n ? fmt(b.clusters.n) + ' groups of at least 40 objects' : 'No groups') +
+  const fams = b.families || [];
+  const famtext = fams.length ? ' Four ways of grouping are on the front page and on the groups page: ' +
+    fams.map(f => esc(f.label) + ' (' + fmt(f.groups) + ' groups, ' + fmt(f.covered) + ' objects covered, ' +
+      fmt(f.cross_museum) + ' crossing a museum)').join('; ') +
+    '. Look is the closeness grouping below; Type is the record\'s own device family; Morphology is shape only, from ' +
+    'pose-free outline descriptors; Use is the codebook working function. No museum is an input to any grouping.' : '';
+  $('#m-clusters').textContent = famtext + ' ' + (b.clusters && b.clusters.n ? fmt(b.clusters.n) + ' Look groups of at least 40 objects' : 'No groups') +
     (c.unclustered != null ? ', ' + fmt(c.unclustered) + ' objects between groups' : '') + '. Method: ' + esc(c.method || '') +
     '; parameters k = ' + (c.k ?? '') + ', minimum group size ' + (c.min_cluster_size ?? '') + ', seed ' + (c.seed ?? '') +
     '; the random seed is fixed, so the same vectors give the same groups. ' +
@@ -95,8 +101,10 @@ try {
       : 'A group is named by the device family its members most often carry in the codebook.');
   if (b.landing && b.landing.groups && $('#m-landing')) {
     const names = b.landing.groups.map(g => esc(g.name) + ' (' + fmt(g.n) + ' objects, ' + g.n_museums + ' museums)').join(', ');
-    $('#m-landing').textContent = 'The "groups that cross museums" band on the landing page follows this rule: ' + b.landing.rule +
+    $('#m-landing').textContent = 'The front page has four group tabs (Look, Type, Morphology, Use); a group appears only if it passes the naming rule. ' +
+      'The Look tab keeps the stricter band rule: ' + b.landing.rule +
       '. In this build it shows ' + b.landing.groups.length + (b.landing.groups.length === 1 ? ' group: ' : ' groups: ') + names +
-      '. The date rule was applied to catalogue records only, and only to broken dates (T-042); the curated releases and the Met keep their own checked ancient dates, written with their era (7000 BCE to 2000 CE).';
+      '. The date rule was applied to catalogue records only, and only to broken dates (T-042); the curated releases and the Met keep their own checked ancient dates, written with their era (7000 BCE to 2000 CE). ' +
+      'The other three tabs use the same naming rule with at least two museums and 40 objects, and no paper artefacts.';
   }
 } catch { $('#m-map').textContent = 'The map draws the frozen SigLIP 2 space of every object with a photograph.'; }
