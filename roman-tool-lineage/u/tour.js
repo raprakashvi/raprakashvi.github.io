@@ -47,6 +47,7 @@ try {
     body = '<h2 class="tq">Four ways to group the same ' + fmt(m.counts.all) + ' objects. Every group below crosses museums.</h2>' +
       '<div class="cltabs" role="tablist" aria-label="Kinds of group" id="ttabs">' + FAMS.map((f, i) => '<button class="cltab" role="tab" data-fam="' + f.key + '" aria-selected="' + (i === 0) + '" title="' + esc(f.definition) + '">' + esc(f.label) + '</button>').join('') + '</div>' +
       '<p class="tdef" id="tdef"></p><div class="clgrid" id="tgrid" role="tabpanel"></div>' +
+      fold('How each group was found, and how well (the AI tour)', '<p>The groups come from AI methods. <a href="aitour.html?s=2">The 10-minute AI tour</a> shows what worked, how well, real predictions and what did not work.</p>') +
       fold('How each group is formed', '<ul class="tl2">' + FAMS.map(f => '<li><b>' + esc(f.label) + '.</b> ' + esc(f.definition) + '.</li>').join('') + '</ul><p>The museum is never an input; it is counted afterwards. Morphology covers only the surgical release (2,434 objects), not the whole collection.</p>');
     main.dataset.fams = JSON.stringify(FAMS.map(f => [f.key, f.definition, f.groups.map(tile)]));
   }
@@ -122,7 +123,7 @@ try {
       '<div class="tcontact"><h3 class="tsm">Contact for this walkthrough</h3><p class="tcontact-who"><b>Ravi Prakash</b> <span>Postdoctoral Fellow, Johns Hopkins University</span> <a href="mailto:ravi.prakash@jhu.edu">ravi.prakash@jhu.edu</a> · <a href="https://raprakashvi.github.io">raprakashvi.github.io</a></p><p><a href="index.html#contact">Project contacts on the front page</a></p></div>' +
       fold('What a museum can ask of this', '<p>Is an object of ours close to something elsewhere? Which stage of a principle does no collection here hold? Which pair would be worth showing together? Every view links back to the museum\'s own record.</p>');
     live = 'gaps.html'; liveLabel = 'Open the gaps';
-    fine = btn(cmpH, 'Compare two objects');
+    fine = btn(cmpH, 'Compare two objects') + btn('aitour.html?s=1', 'AI tour: how the models did');
   }
   function photo2(id) { const r = R(id); return r ? '<span class="tph2" ' + col(r) + '><img loading="lazy" decoding="async" src="' + esc(thumb(r.im)) + '" alt="' + esc(r.t) + '"><i>' + esc(mus(r.m).short) + '</i></span>' : ''; }
 

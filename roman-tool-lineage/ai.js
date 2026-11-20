@@ -1,15 +1,18 @@
 // Static, versioned projections of verified local runs. This module never trains or writes labels.
-let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',method='adapted',clusterMethod='text',selected,sequence=0,showSequence=0,observer,ready=false,startup;
+let context,summary,register,rows=new Map(),loaded=new Map(),tab='results',method='adapted',clusterMethod='text',selected,sequence=0,showSequence=0,observer,ready=false,startup;
 let clusterData,clusterSource='',clusterChoice='',clusterSearch='',clusterPage=0,plotPoints=[];
 const PAGE=20,$=id=>document.getElementById(id),root=()=>$('ai-view');
 // Deep-representation views live in ai-deep.js and load only when a deep tab or method is used.
-const DEEP_METHODS=['photo','silhouette','posefree','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['clusters','run','search','map','generate','experiments','asbestos'];
+const DEEP_METHODS=['photo','silhouette','posefree','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['results','clusters','run','search','map','generate','experiments','asbestos'];
 // Two primary similarity methods: the photo model retrained to ignore museum photography (ties the best ready-made
 // model on held-out tools with far less background signal; Experiments -> Adaptation) and the outline distance.
 const PRIMARY_METHODS=[['adapted','Photo, object only'],['shape','Outline shape']],MORE_METHODS=[['photo','Whole photo (incl. photography)'],['posefree','Outline, any angle'],['silhouette','Outline (image model)'],['ends','Working ends'],['text','Catalog words'],['multimodal','Photo + outline + words'],['image','Image · sample']];
-const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Map of tools'],['generate','Generate'],['experiments','Experiments'],['asbestos','Asbestos flagging']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
+// T-048: Results first, then Asbestos flagging (a method that was tested against the museum's own samples); everything else is folded under Details and tests.
+const TOP_TABS=[['results','Results'],['asbestos','Asbestos flagging']],TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Map of tools'],['generate','Generate'],['experiments','Experiments']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
 const BROWSE_STEP=12;let browseData,browseCategory='',browseInstitution='',browseCount=BROWSE_STEP;
-let deepModule,renderedTab;
+let deepModule,renderedTab,showDetails=false,firstShow=true;
+// The detail tabs stay folded while a top-level tab (Results, Asbestos flagging) is open, unless the visitor unfolds them.
+function foldTabs(){const bar=root().querySelector('.ai-tabs');if(!bar)return;const folded=['results','asbestos'].includes(tab)&&!showDetails;bar.classList.toggle('ai-tabs-folded',folded);bar.querySelector('[data-ai-fold]')?.setAttribute('aria-expanded',String(!folded))}
 function deep(){deepModule||=import('./ai-deep.js').catch(err=>{deepModule=null;throw err});return deepModule}
 function download(name,body){const url=URL.createObjectURL(new Blob([JSON.stringify(body,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),1000)}
 function api(token){return{context,rows,summary,palette,selected,method,group,methodBar,ranked,download,esc:e,fmt,num,$,root,current:()=>token===undefined||token===sequence,setTab:t=>{tab=t},setMethod:m=>{method=m},choose,render}}
@@ -23,8 +26,8 @@ async function cached(name){if(!loaded.has(name))loaded.set(name,read(name).catc
 async function item(id){const row=register.find(x=>x.id===id);if(!row)throw Error('No AI result for that identifier.');const shard=await cached(row.shard);return shard.items[id]}
 function group(label,values,active,attribute){return `<div class="ai-segments" role="group" aria-label="${label}">${values.map(([key,text])=>`<button type="button" ${attribute}="${key}" aria-pressed="${key===active}">${text}</button>`).join('')}</div>`}
 function setup(){
- root().innerHTML=`<div class="workspace-heading ai-heading"><div><h1>AI Methods</h1><p>Pick a tool to see its closest look-alikes and the evidence for its function, or search the collection by task.</p></div><a class="workspace-link" href="docs/ML_TOOLS.md">Reproduce locally ↗</a></div>
- <div class="ai-segments ai-tabs" role="group" aria-label="AI workspace">${TABS.map(([k,t])=>`<button type="button" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}<span class="ai-tabs-divider" aria-hidden="true">Baseline</span>${BASELINE_TABS.map(([k,t])=>`<button type="button" class="ai-tab-baseline" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}</div>
+ root().innerHTML=`<div class="workspace-heading ai-heading"><div><h1>AI Methods</h1><p>What worked, how well, and real predictions first. Tool-by-tool views, tests and run details sit under Details and tests.</p></div><a class="workspace-link" href="docs/ML_TOOLS.md">Reproduce locally ↗</a></div>
+ <div class="ai-segments ai-tabs" role="group" aria-label="AI workspace">${TOP_TABS.map(([k,t])=>`<button type="button" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}<button type="button" class="ai-tab-fold" data-ai-fold aria-expanded="false">Details and tests <small>${TABS.length+BASELINE_TABS.length}</small></button>${TABS.map(([k,t])=>`<button type="button" class="ai-tab-detail" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}<span class="ai-tabs-divider" aria-hidden="true">Baseline</span>${BASELINE_TABS.map(([k,t])=>`<button type="button" class="ai-tab-baseline ai-tab-detail" data-ai-tab="${k}" aria-pressed="${k===tab}">${t}</button>`).join('')}</div>
  <div id="ai-layout" class="ai-layout"><aside id="ai-picker" class="ai-picker panel" aria-label="Query tool"><h2 class="ai-picker-title">Query tool</h2><label for="ai-search">Find a record</label><input id="ai-search" type="search" autocomplete="off" placeholder="Name, accession or #META ID…" aria-describedby="ai-search-help"><small id="ai-search-help">Search by name, accession or permanent ID.</small><div id="ai-search-results" class="ai-search-results" aria-live="polite"></div><div id="ai-selected"></div>
  <section id="ai-browse" class="ai-browse" aria-labelledby="ai-browse-title"><div class="ai-browse-head"><h3 id="ai-browse-title">Browse tools</h3><button type="button" class="quiet" data-ai-random>Random tool</button></div><div class="ai-browse-filters"><label>Category<select id="ai-browse-category"><option value="">All categories</option></select></label><label>Collection<select id="ai-browse-institution"><option value="">All collections</option>${[...new Set(context.index.map(r=>r.institution))].sort().map(s=>`<option value="${e(s)}">${e(s)}</option>`).join('')}</select></label></div><p id="ai-browse-status" class="ai-browse-status" role="status"></p><div id="ai-browse-grid" class="ai-browse-grid"></div><button type="button" class="quiet ai-browse-more" data-ai-browse-more>Show more</button></section></aside>
  <section id="ai-content" aria-label="AI results" aria-busy="false"></section></div>`;
@@ -59,6 +62,7 @@ function category(id){return browseData?.of?.get(id)}
 function choose(id,stay=false){if(!rows.has(id))return;if(!stay&&FULL_TABS.includes(tab))tab='retrieval';if(location.hash!==`#ai/${id}`)location.hash=`ai/${id}`;else{selected=id;render()}}
 async function action(event){
  const button=event.target.closest('button');if(!button)return;
+ if(button.hasAttribute('data-ai-fold')){showDetails=!showDetails;foldTabs();return}
  if(button.dataset.aiTab){tab=button.dataset.aiTab;render();return}
  if(button.dataset.aiDeep){try{await (await deep()).action(api(),button)}catch(err){$('ai-content').insertAdjacentHTML('afterbegin',`<p role="alert">${e(err.message)}</p>`)}return}
  if(button.dataset.aiMethod){method=button.dataset.aiMethod;await render();root().querySelector(`[data-ai-method="${method}"]`)?.focus({preventScroll:true});return}
@@ -74,7 +78,7 @@ async function action(event){
 }
 function selectedCard(){const row=rows.get(selected);$('ai-selected').innerHTML=row?`<div class="ai-query">${context.preview(row.image,row.name)}<div><span class="ai-query-label">Querying</span><span class="record-id">#${row.id}</span><h2 tabindex="-1">${e(row.name)}</h2><p>${e(row.institution)}${category(row.id)?` · ${e(category(row.id).replace(/_/g,' '))}`:''}</p><a href="#item/${row.id}">Inspect source record →</a></div></div>`:'<p role="alert">Unknown record identifier. Choose a record above.</p>'}
 export async function show(ctx){
- const call=++showSequence;context=ctx;rows=new Map(ctx.index.map(r=>[r.id,r]));
+ const call=++showSequence;context=ctx;if(firstShow){firstShow=false;if(ctx.selectedId)tab='retrieval'}rows=new Map(ctx.index.map(r=>[r.id,r]));
  if(!ready){startup||=(async()=>{summary=await read('summary.json');if(summary.schema_version!=='1.0.0'||summary.dataset_version!==ctx.manifest.version||summary.provenance.release_files_sha256['records.jsonl']!==ctx.manifest.records_sha256)throw Error('AI release mismatch.');register=await read('index.json');const colors=await fetch('visuals/palette.json');if(!colors.ok)throw Error('Plot palette unavailable.');palette=await colors.json();setup();ready=true})().catch(err=>{startup=null;throw err});await startup}
  if(call!==showSequence)return;const previous=selected;selected=ctx.selectedId||selected||'META-002742';
  // Record-independent deep tabs keep their state when a record is selected from them (e.g. a map click).
@@ -82,13 +86,14 @@ export async function show(ctx){
  await render();if(previous&&previous!==selected&&!FULL_TABS.includes(tab))$('ai-selected').querySelector('h2')?.focus({preventScroll:true});
 }
 async function render(){
- const token=++sequence;observer?.disconnect();
+ const token=++sequence;observer?.disconnect();foldTabs();
  root().querySelectorAll('[data-ai-tab]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.aiTab===tab)));
  $('ai-picker').hidden=FULL_TABS.includes(tab);$('ai-search-results').innerHTML='';$('ai-search').value='';selectedCard();
  $('ai-layout').classList.toggle('ai-full-width',FULL_TABS.includes(tab));renderedTab=null;if(!FULL_TABS.includes(tab)){loadBrowse();renderBrowse()}
  const host=$('ai-content');host.setAttribute('aria-busy','true');host.innerHTML='<p role="status">Loading saved results…</p>';
  try{
   if(tab==='clusters'){const data=await cached(`clusters-${clusterMethod}.json`);if(token!==sequence)return;clusterData=data;renderClusters()}
+  else if(tab==='results'){const module=await import('./ai-results.js');const d=await module.loadResults();if(token!==sequence)return;host.innerHTML=module.view(d)}
   else if(tab==='run')renderRun();
   else if(tab==='asbestos'){const module=await import('./asbestos.js');if(token!==sequence)return;await module.render(api(token))}
   else if(DEEP_TABS.includes(tab)||tab==='retrieval'&&DEEP_METHODS.includes(method)){const module=await deep();if(token!==sequence)return;await module.render(api(token),tab)}
