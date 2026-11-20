@@ -11,7 +11,7 @@ const NOTES = {
   research: ['research', 'The Medicine branch: the research audit checks the documented links of the instruments; the science branches are not scored here.', ''],
   method: ['method', 'Research methods of the Medicine branch (the surgical study).', 'The method of the whole collection is on <a href="method.html">Method</a>.'],
   analysis: ['analysis', 'The Medicine branch: outline measurements exist for the surgical shape set; science objects are not measured.', 'Compare their forms on the <a href="map.html">Map of forms</a>.'],
-  ai: ['ai', 'The Medicine branch: AI methods were run on the surgical release; science objects are not part of these runs.', 'Science objects share the photograph and name space of the <a href="map.html">Map of forms</a>.'],
+  ai: ['ai', 'The Medicine branch: these AI methods were run on the surgical release, except Asbestos flagging, which reads the Boerhaave catalogue (T-045).', 'Science objects share the photograph and name space of the <a href="map.html">Map of forms</a>.'],
   review: ['review', 'The Medicine branch: annotation tasks cover surgical records; the science branches are not queued here.', ''],
   about: ['data', 'Dataset notes for the Medicine branch (the surgical release).', 'Both releases are on <a href="data.html">Data and sources</a>.'],
 };

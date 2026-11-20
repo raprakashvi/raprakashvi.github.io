@@ -97,8 +97,7 @@ export function loadIndex() {
     for (let i = 0; i < n; i++) {
       const r = {i, id: C.id[i], d: C.d[i], m: C.m[i], t: C.t[i], s: C.s[i], e: C.e[i], im: C.im[i],
         c: arr(C.c[i]), ty: arr(C.ty[i]), fn: arr(C.fn[i]), pr: arr(C.pr[i]), ro: arr(C.ro[i]), mk: arr(C.mk[i]), mt: arr(C.mt[i]),
-        x: C.x[i], y: C.y[i], px: C.px[i], py: C.py[i], tx: C.tx[i], ty2: C.ty2[i], lx: C.lx[i], ly: C.ly[i], cl: C.cl[i], o: C.o[i],
-        mg: C.mg ? C.mg[i] : -1};
+        x: C.x[i], y: C.y[i], px: C.px[i], py: C.py[i], tx: C.tx[i], ty2: C.ty2[i], lx: C.lx[i], ly: C.ly[i], cl: C.cl[i], o: C.o[i]};
       rows[i] = r; by[r.id] = r;
     }
     MUSEUMS = raw.museums; TAGS = raw.tags;

@@ -3,11 +3,11 @@ let context,summary,register,rows=new Map(),loaded=new Map(),tab='retrieval',met
 let clusterData,clusterSource='',clusterChoice='',clusterSearch='',clusterPage=0,plotPoints=[];
 const PAGE=20,$=id=>document.getElementById(id),root=()=>$('ai-view');
 // Deep-representation views live in ai-deep.js and load only when a deep tab or method is used.
-const DEEP_METHODS=['photo','silhouette','posefree','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['clusters','run','search','map','generate','experiments'];
+const DEEP_METHODS=['photo','silhouette','posefree','adapted','ends','multimodal'],DEEP_TABS=['evidence','search','map','generate','experiments'],FULL_TABS=['clusters','run','search','map','generate','experiments','asbestos'];
 // Two primary similarity methods: the photo model retrained to ignore museum photography (ties the best ready-made
 // model on held-out tools with far less background signal; Experiments -> Adaptation) and the outline distance.
 const PRIMARY_METHODS=[['adapted','Photo, object only'],['shape','Outline shape']],MORE_METHODS=[['photo','Whole photo (incl. photography)'],['posefree','Outline, any angle'],['silhouette','Outline (image model)'],['ends','Working ends'],['text','Catalog words'],['multimodal','Photo + outline + words'],['image','Image · sample']];
-const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Map of tools'],['generate','Generate'],['experiments','Experiments']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
+const TABS=[['retrieval','Similar tools'],['search','Search by task'],['evidence','Evidence'],['map','Map of tools'],['generate','Generate'],['experiments','Experiments'],['asbestos','Asbestos flagging']],BASELINE_TABS=[['annotations','Provisional labels'],['clusters','Clusters'],['run','Run & methods']];
 const BROWSE_STEP=12;let browseData,browseCategory='',browseInstitution='',browseCount=BROWSE_STEP;
 let deepModule,renderedTab;
 function deep(){deepModule||=import('./ai-deep.js').catch(err=>{deepModule=null;throw err});return deepModule}
@@ -90,6 +90,7 @@ async function render(){
  try{
   if(tab==='clusters'){const data=await cached(`clusters-${clusterMethod}.json`);if(token!==sequence)return;clusterData=data;renderClusters()}
   else if(tab==='run')renderRun();
+  else if(tab==='asbestos'){const module=await import('./asbestos.js');if(token!==sequence)return;await module.render(api(token))}
   else if(DEEP_TABS.includes(tab)||tab==='retrieval'&&DEEP_METHODS.includes(method)){const module=await deep();if(token!==sequence)return;await module.render(api(token),tab)}
   else {const data=await item(selected);if(token!==sequence)return;if(tab==='annotations')renderAnnotations(data);else renderRetrieval(data)}
  }catch(err){if(token===sequence)host.innerHTML=`<div class="empty" role="alert"><h2>Results unavailable</h2><p>${e(err.message)}</p><button type="button" data-ai-retry>Retry results</button></div>`}

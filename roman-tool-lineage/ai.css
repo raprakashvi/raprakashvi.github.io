@@ -173,3 +173,45 @@
 .ai-expand-dialog{width:min(96vw,1400px);height:92vh;max-width:none;max-height:none;padding:0;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:var(--ink);display:flex;flex-direction:column;overflow:hidden}.ai-expand-dialog:not([open]){display:none}.ai-expand-dialog::backdrop{background:rgba(0,0,0,.55)}
 .ai-expand-bar{display:flex;gap:10px;align-items:center;justify-content:space-between;padding:8px 12px;border-bottom:1px solid var(--border);font-size:13px}.ai-expand-bar strong{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.ai-expand-bar span{display:flex;gap:6px;flex:0 0 auto}.ai-expand-bar button{min-width:36px;min-height:36px;padding:4px 10px;font-size:16px;background:transparent;color:var(--accent);border-color:var(--border)}
 .ai-expand-view{flex:1 1 auto;position:relative;overflow:hidden;cursor:grab;touch-action:none}.ai-expand-view:active{cursor:grabbing}.ai-expand-stage{position:absolute;left:0;top:0;transform-origin:0 0}.ai-expand-figure{margin:0;box-shadow:none}
+
+/* T-046: the asbestos view.  The four bar colours are the committed figure's (Okabe-Ito orange / blue / orange,
+   unknown a light grey); unknown and "seen as a copy" are hatched, so the bars also read in grayscale.  Every bar
+   carries an accessible label and the exact counts sit in the table below it. */
+.ai-asb{--asb-pos:#D55E00;--asb-neg:#0072B2;--asb-unk:#c9cfc9;--asb-vis:#E69F00}
+#main .ai-asb h3.ai-asb-h{font-size:19px;margin:30px 0 6px}
+.ai-asb-note{font-size:12px;line-height:1.7;color:var(--muted);margin:0 0 12px;max-width:960px}
+.ai-asb-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:11px;color:var(--muted);margin:0 0 10px}
+.ai-asb-legend span{display:inline-flex;align-items:center;gap:6px}
+.ai-asb-legend .ai-dot{position:relative;top:0;transform:none;display:inline-block;flex-shrink:0}
+.ai-asb-legend .sw{display:inline-block;width:13px;height:13px;border-radius:3px;background:var(--wash)}
+.ai-asb-legend .sw.pos{background:var(--asb-pos)}.ai-asb-legend .sw.neg{background:var(--asb-neg)}
+.ai-asb-legend .sw.unk{background:var(--asb-unk);background-image:repeating-linear-gradient(135deg,#ffffffcc 0 1px,transparent 1px 4px)}
+.ai-asb-legend .sw.vis{background:var(--asb-vis);background-image:repeating-linear-gradient(45deg,#ffffffcc 0 1px,transparent 1px 4px)}
+.ai-asb .ai-dot-value{white-space:nowrap;text-align:right}.ai-asb .ai-dot-value small{display:block;font-size:10px}
+.ai-asb-bars{list-style:none;padding:0;margin:0 0 8px;display:grid;gap:5px;max-width:1040px}
+.ai-asb-bars li{display:grid;grid-template-columns:minmax(110px,200px) minmax(0,1fr) 2.6rem;gap:10px;align-items:center;font-size:12px}
+.ai-asb-fn{min-width:0;overflow-wrap:anywhere}.ai-asb-fn small{color:var(--muted);font-weight:400}
+.ai-asb-bars b{font-variant-numeric:tabular-nums;text-align:right;font-size:12px}
+.ai-asb-stack{display:flex;height:15px;border-radius:3px;overflow:hidden;background:var(--wash)}
+.ai-asb-stack i{display:block;height:100%;min-width:1px}
+.ai-asb-stack .pos{background:var(--asb-pos)}.ai-asb-stack .neg{background:var(--asb-neg)}
+.ai-asb-stack .unk{background:var(--asb-unk);background-image:repeating-linear-gradient(135deg,#ffffffcc 0 1px,transparent 1px 4px)}
+.ai-asb-stack .vis{background:var(--asb-vis);background-image:repeating-linear-gradient(45deg,#ffffffcc 0 1px,transparent 1px 4px)}
+.ai-asb-table{font-size:12px}.ai-asb-table caption{text-align:left;font-size:11px;color:var(--muted);padding:6px 2px 9px;line-height:1.6}
+.ai-asb-table th,.ai-asb-table td{padding:6px 10px;vertical-align:middle}
+.ai-asb-table th small,.ai-asb-table td small{color:var(--muted)}
+.ai-asb-queue td{font-size:12px}.ai-asb-rank{font-variant-numeric:tabular-nums;color:var(--muted);text-align:right}
+.ai-asb-score{font-variant-numeric:tabular-nums;white-space:nowrap}
+.ai-asb-obj{display:flex;gap:10px;align-items:center;min-width:210px}
+.ai-asb-obj .ai-thumb{width:44px;height:44px;font-size:14px;color:var(--muted)}
+.ai-asb-obj b{display:block;font-weight:650;font-variant-numeric:tabular-nums}
+.ai-asb-obj small{display:block;color:var(--muted);line-height:1.4;max-width:360px;overflow-wrap:anywhere}
+.ai-asb-tag{display:inline-block;font-style:normal;font-size:10px;font-weight:650;color:var(--accent);border:1px dashed var(--accent);border-radius:4px;padding:0 5px;margin-top:3px}
+.asb-marker{font-size:12.5px;line-height:1.7;margin:0 0 12px;padding:10px 14px;background:var(--wash);border-left:3px solid var(--accent);border-radius:0 6px 6px 0}
+.asb-marker code{font-size:11px;background:var(--panel);border:1px solid var(--border);border-radius:4px;padding:1px 5px;margin-right:3px;white-space:nowrap}
+.ai-asb-loc{margin-top:34px;padding:18px 20px}
+.ai-asb-loc h2{font-size:19px;margin:0 0 8px}
+.ai-asb-loc p{font-size:12px;line-height:1.7;margin:0 0 12px}
+.ai-asb-codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;margin:0 0 10px}
+.ai-asb-codes span{display:flex;align-items:center;justify-content:center;height:38px;border:1px dashed var(--border);border-radius:5px;color:var(--muted);font-size:12px;background:var(--paper)}
+@media(max-width:700px){.ai-asb-bars li{grid-template-columns:minmax(0,1fr) 2.2rem;grid-template-areas:"fn n" "track track";gap:3px 8px}.ai-asb-fn{grid-area:fn}.ai-asb-bars b{grid-area:n}.ai-asb-stack{grid-area:track}.ai-asb-obj{min-width:0;flex-wrap:wrap}.ai-asb-obj small{max-width:none}}

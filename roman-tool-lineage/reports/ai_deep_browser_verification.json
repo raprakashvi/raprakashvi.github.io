@@ -1,6 +1,6 @@
 {
-  "tested_at": "2026-11-20T01:03:42.104Z",
-  "url": "http://127.0.0.1:54147/collection.html#ai/META-000104",
+  "tested_at": "2026-11-20T01:15:11.379Z",
+  "url": "http://127.0.0.1:57893/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",
@@ -192,8 +192,8 @@
       "after_first_deep_method": 616632,
       "after_text_search": 1777340,
       "after_map": 4105260,
-      "after_generate": 5557279,
-      "after_experiments": 5617718
+      "after_generate": 5557278,
+      "after_experiments": 5617717
     },
     "deep_files": [
       {
@@ -254,7 +254,7 @@
       },
       {
         "file": "tempo.json",
-        "decoded_bytes": 71546
+        "decoded_bytes": 71545
       },
       {
         "file": "between.json",
