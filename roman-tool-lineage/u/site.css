@@ -122,6 +122,8 @@ section+section{margin-top:var(--s7)}
 .chip[aria-pressed=true]{background:var(--c);color:#fff}
 .chip[aria-pressed=true]::before{background:#fff}
 .chip.dark[aria-pressed=true]{color:#182230}.chip.dark[aria-pressed=true]::before{background:#182230}
+.chip.more{--c:var(--muted);border-style:dashed;font-weight:500}
+.chip.more::before{display:none}
 .active{display:flex;flex-wrap:wrap;gap:var(--s2);margin:0 0 var(--s5)}
 .active:empty{display:none}
 .active button{font:600 14px var(--font-ui);border:0;background:var(--ink);color:#fff;border-radius:99px;padding:6px 12px;cursor:pointer}

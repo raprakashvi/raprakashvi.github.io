@@ -28,5 +28,6 @@ try {
     fmt(sum('none')) + ' here). ' + (C.paper ? fmt(C.paper) + ' records are paper media; ' + fmt(C.paper_science_dropped) +
       ' of them carry a codebook principle that came from the medium, and paper media get no Science tag from such a label. ' : '') +
     (C.registration_cards ? fmt(C.registration_cards) + ' catalogue photographs are the museum\'s registration cards, not objects: they are not shown as photographs and have no map position. ' : '') +
+    (m.other && m.other.kept ? fmt(m.other.kept) + ' records come from ' + fmt(m.other.museums) + ' further museums (Science Museum Group, the museums behind Europeana, the Rijksmuseum, museum-digital and the Met); this new material has not yet been reviewed by a curator. ' : '') +
     'The rule: ' + esc(C.rule || '') + '.</p>';
 } catch (e) { $('#counts').innerHTML = '<p class="scope" role="alert">The counts could not be loaded: ' + esc(e.message) + '</p>'; }

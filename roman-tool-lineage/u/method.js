@@ -16,6 +16,14 @@ if (m.catalogue) {
     ' of those carry a codebook principle that does not make them Science. ' + fmt(m.catalogue.registration_cards || 0) +
     ' photographs are the museum\'s registration cards and are not shown as photographs.';
 }
+if (m.other) {
+  const o = m.other;
+  $('#m-rule').textContent += ' ' + fmt(o.kept) + ' further records from ' + fmt(o.museums) +
+    ' museums joined the collection in T-049 (Science Museum Group, the museums behind Europeana, the Rijksmuseum, ' +
+    'museum-digital and further Met records). They carry no codebook label, so none of them gets the Science tag from a ' +
+    'label; their type is the museum\'s own object-name category, and no curator has reviewed them yet. Each record ' +
+    'keeps its own licence text in the index; a record without a recognised licence is listed without a photograph.';
+}
 const sm = m.surg_map;
 if (sm && sm.principle) {
   const top = (sm.counts || []).slice(0, 4).map(([k, n]) => esc(k) + ' ' + fmt(n)).join(', ');

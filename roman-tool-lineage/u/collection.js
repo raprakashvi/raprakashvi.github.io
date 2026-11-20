@@ -10,7 +10,7 @@ const PERIODS = [['pre500', 'Before 500'], ['500', '500 to 1499'], ['1500', '150
 const periodOf = r => { const x = mid(r); if (x == null) return 'none'; if (x < 500) return 'pre500'; if (x < 1500) return '500'; return String(Math.min(2000, Math.floor(x / 100) * 100)); };
 
 const main = $('#main');
-let IX, TEXT = null, textLoading = null, shown = 0, matched = [];
+let IX, TEXT = null, textLoading = null, shown = 0, matched = [], mAll = false;
 const st = {q: '', per: '', img: false, m: new Set(), sort: 'name'};
 FACETS.forEach(f => st[f[0]] = '');
 
@@ -60,8 +60,11 @@ function init() {
     else if (id.startsWith('f-')) st[id.slice(2)] = e.target.value;
     apply();
   });
-  $('#reset').onclick = () => { st.q = ''; st.per = ''; st.img = false; st.m.clear(); FACETS.forEach(([k]) => st[k] = ''); $('#q').value = ''; $('#f-img').checked = false; apply(); };
-  $('#mchips').addEventListener('click', e => { const b = e.target.closest('button[data-m]'); if (!b) return; const i = +b.dataset.m; st.m.has(i) ? st.m.delete(i) : st.m.add(i); apply(); });
+  $('#reset').onclick = () => { st.q = ''; st.per = ''; st.img = false; st.m.clear(); mAll = false; FACETS.forEach(([k]) => st[k] = ''); $('#q').value = ''; $('#f-img').checked = false; apply(); };
+  $('#mchips').addEventListener('click', e => {
+    if (e.target.closest('#m-more')) { mAll = !mAll; apply(); return; }
+    const b = e.target.closest('button[data-m]'); if (!b) return; const i = +b.dataset.m; st.m.has(i) ? st.m.delete(i) : st.m.add(i); apply();
+  });
   $('#active').addEventListener('click', e => {
     const b = e.target.closest('[data-clear]'); if (!b) return;
     const k = b.dataset.clear;
@@ -71,7 +74,7 @@ function init() {
   $('#more').onclick = () => render(shown + PAGE);
   // the header search filters this page in place
   document.querySelector('.global-search')?.addEventListener('submit', e => { e.preventDefault(); st.q = $('#workspace-query').value.trim(); $('#q').value = st.q; ensureText(); apply(); $('#q').focus(); });
-  window.addEventListener('vestigium:domain', () => { st.m.clear(); st.sort = personality().sort; $('#sort').value = st.sort; apply(); });
+  window.addEventListener('vestigium:domain', () => { st.m.clear(); mAll = false; st.sort = personality().sort; $('#sort').value = st.sort; apply(); });
   apply();
 }
 
@@ -126,7 +129,13 @@ function apply() {
     sel.closest('label').classList.toggle('off', !vals.length);
   }
   const ms = [...mc.keys()].sort((a, b) => mc.get(b) - mc.get(a));
-  $('#mchips').innerHTML = ms.map(i => { const m = mus(i); return '<li><button type="button" class="chip' + (lum(m.color) > .3 ? ' dark' : '') + '" data-m="' + i + '" aria-pressed="' + st.m.has(i) + '" style="--c:' + m.color + '">' + esc(m.short) + ' <b>' + fmt(mc.get(i)) + '</b></button></li>'; }).join('');
+  // T-049: 103 collections is more than a row of chips can hold.  The largest 18 are always shown, the rest
+  // behind one button; every museum stays reachable and a selected museum is always shown.
+  const CHIP_MIN = 18;
+  let ml = mAll ? ms : ms.slice(0, CHIP_MIN);
+  if (!mAll) for (const i of st.m) if (!ml.includes(i) && mc.has(i)) ml = ml.concat([i]);
+  $('#mchips').innerHTML = ml.map(i => { const m = mus(i); return '<li><button type="button" class="chip' + (lum(m.color) > .3 ? ' dark' : '') + '" data-m="' + i + '" aria-pressed="' + st.m.has(i) + '" style="--c:' + m.color + '">' + esc(m.short) + ' <b>' + fmt(mc.get(i)) + '</b></button></li>'; }).join('') +
+    (ms.length > CHIP_MIN ? '<li><button type="button" class="chip more" id="m-more" aria-expanded="' + mAll + '">' + (mAll ? 'Fewer museums' : 'All ' + fmt(ms.length) + ' museums') + '</button></li>' : '');
   const act = [];
   if (st.q) act.push(['q', '', 'Search: ' + st.q]);
   if (st.per) act.push(['per', '', (PERIODS.find(p => p[0] === st.per) || ['', st.per])[1]]);

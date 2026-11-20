@@ -79,7 +79,7 @@ try {
       '<div class="tcols"><div><h3 class="tsm">When the pictured objects were made</h3>' + chart + '<p class="whnote">' + dated.length + ' of the ' + Math.min(ids.length, 6) + ' pictured objects carry a usable date; the group as a whole runs ' + esc(span(g)) + '.</p></div>' +
       '<div class="tfact"><b>' + fmt(g.n) + '</b><span>objects</span><b>' + g.n_museums + '</b><span>museums</span></div></div>' +
       '<h3 class="tsm">Closest pairs between museums</h3><div class="tpairs">' + pairs + '</div>' +
-      fold('About this group', '<p>' + esc(g.line) + '. Purity ' + g.purity.toFixed(2) + ' against ' + esc(g.purity_kind || 'the codebook') + '; similarity is ' + esc(g.metric) + '. Change the group with <code>tour.html?s=3&amp;g=look:7</code>.</p>');
+      fold('About this group', '<p>' + esc(g.line) + '. Purity ' + g.purity.toFixed(2) + ' against ' + esc(g.purity_kind || 'the codebook') + '; similarity is ' + esc(g.metric) + '. Change the group by putting its number in the address: <code>tour.html?s=3&amp;g=look:&hellip;</code>.</p>');
     live = 'clusters.html#' + g.anchor; liveLabel = 'Open this group';
     fine = btn('map.html?g=' + encodeURIComponent(g.gkey), 'Show it on the map');
   }

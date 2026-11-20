@@ -1,10 +1,10 @@
 {
-  "tested_at": "2026-11-20T01:15:11.379Z",
-  "url": "http://127.0.0.1:57893/collection.html#ai/META-000104",
+  "tested_at": "2026-11-20T15:49:19.054Z",
+  "url": "http://127.0.0.1:35503/collection.html#ai/META-000104",
   "dataset_version": "v1-804c1e7c3202",
   "checks": [
     "Initial AI view (adapted photo default) loads only the deep module, manifest, browse index and one item shard",
-    "Six primary AI sections plus three baseline sections; Similar tools first and selected",
+    "T-048: Results plus seven tool sections (T-046 added Asbestos flagging) plus three baseline sections; a record deep link opens on Similar tools",
     "Two primary similarity methods (photo object only = adapted, outline shape) with adapted as the default; seven others, including the whole photo and the pose-free outline, collapsed under More methods",
     "Real records exist for each missing-representation case and for near-duplicates",
     "photo: displayed neighbour IDs and cosines equal the published shard",
@@ -186,14 +186,14 @@
         "summary.json",
         "index.json"
       ],
-      "decoded_bytes": 247694
+      "decoded_bytes": 254588
     },
     "deep_cumulative_decoded_bytes": {
       "after_first_deep_method": 616632,
       "after_text_search": 1777340,
       "after_map": 4105260,
-      "after_generate": 5557278,
-      "after_experiments": 5617717
+      "after_generate": 5557279,
+      "after_experiments": 5617718
     },
     "deep_files": [
       {
@@ -254,7 +254,7 @@
       },
       {
         "file": "tempo.json",
-        "decoded_bytes": 71545
+        "decoded_bytes": 71546
       },
       {
         "file": "between.json",

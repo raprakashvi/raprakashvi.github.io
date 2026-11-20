@@ -64,6 +64,7 @@ function render(o) {
     (o.lab.b ? '<details class="evd"><summary>Where the label comes from</summary><p>The label rests on these words of the record: “' + esc(o.lab.b) + '”.</p></details>' : '') : '';
   let html = '<article class="object" style="--c:' + m.color + '">' + '<div class="pcol">' + plate + '</div><div class="fcol">' +
     '<p class="museum"><i></i>' + esc(m.name) + '</p><h1>' + esc(o.t) + '</h1>' + (date ? '<p class="date">' + esc(date) + '</p>' : '<p class="date">Undated</p>') +
+    (o.nr ? '<p class="scope">New collection: not yet reviewed by a curator.</p>' : '') +
     '<p class="dline">' + (o.d ? '<span class="dtag ' + domainKey(o.d) + '"><i class="dm ' + domainKey(o.d) + '"></i>' + domainLabel(o.d) + '</span>' : '') + (pl.length ? '<span class="pline">' + pl.join(' <i>·</i> ') + '</span>' : '') + '</p>' +
     (facts.length ? '<dl>' + facts.map(r => '<dt>' + r[0] + '</dt><dd>' + r[1] + '</dd>').join('') + '</dl>' : '') +
     (o.desc ? '<h2 class="sub">' + (sci ? 'Museum text' : 'Catalogue text') + '</h2><div class="desc">' + o.desc.slice(0, 4).map(p => '<p>' + esc(p) + '</p>').join('') + '</div>' : '') +
@@ -74,7 +75,7 @@ function render(o) {
   // rows
   if (o.x) {
     html += strip('Similar across the whole collection', rows(o.nb), {compare: o.id, lede: 'Nearest by photograph and name, in any domain.'});
-    if ((o.nbx || []).length) html += strip(cat ? 'Nearest outside the catalogues' : sci ? 'Closest surgical instruments' : 'Closest science objects', rows(o.nbx), {compare: o.id});
+    if ((o.nbx || []).length) html += strip(o.nr ? 'Nearest in the established collections' : cat ? 'Nearest outside the catalogues' : sci ? 'Closest surgical instruments' : 'Closest science objects', rows(o.nbx), {compare: o.id});
   } else if (cat) {
     html += strip('Same device family, nearest in date', rows(o.row_fam), {compare: o.id, lede: 'This record has no position in the frozen SigLIP 2 space (no photograph, or a registration-card image); these are its nearest relatives by the codebook device family.'});
     if ((o.row_pr || []).length) html += strip('Same principle, ' + esc((o.pr[0] || '').toLowerCase()) + ', nearest in date', rows(o.row_pr), {compare: o.id});
