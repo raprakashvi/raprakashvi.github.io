@@ -215,3 +215,16 @@
 .ai-asb-codes{display:grid;grid-template-columns:repeat(auto-fill,minmax(58px,1fr));gap:6px;margin:0 0 10px}
 .ai-asb-codes span{display:flex;align-items:center;justify-content:center;height:38px;border:1px dashed var(--border);border-radius:5px;color:var(--muted);font-size:12px;background:var(--paper)}
 @media(max-width:700px){.ai-asb-bars li{grid-template-columns:minmax(0,1fr) 2.2rem;grid-template-areas:"fn n" "track track";gap:3px 8px}.ai-asb-fn{grid-area:fn}.ai-asb-bars b{grid-area:n}.ai-asb-stack{grid-area:track}.ai-asb-obj{min-width:0;flex-wrap:wrap}.ai-asb-obj small{max-width:none}}
+
+/* T-046 revision: the call and its accuracy lead the page.  A verdict chip is text first: colour is a second cue. */
+.ai-asb-acc tr.picked{background:var(--wash)}
+.ai-asb-acc tr.picked th{font-weight:750}
+.ai-asb-acc td:first-of-type,.ai-asb-acc th[scope=row]{white-space:nowrap}
+.ai-asb-acc th[scope=row] small{display:block;font-weight:400;color:var(--muted);white-space:normal;max-width:300px}
+.ai-asb-tested td b{font-variant-numeric:tabular-nums}
+.ai-asb-tested td small{display:block;color:var(--muted);max-width:430px;line-height:1.4;overflow-wrap:anywhere}
+.asb-verdict{display:inline-block;font-size:11px;font-weight:650;line-height:1.4;padding:2px 7px;border-radius:4px;border:1.5px solid transparent;white-space:nowrap}
+.asb-verdict.pos{color:var(--asb-pos);border-color:var(--asb-pos);background:#d55e000f}
+.asb-verdict.neg{color:var(--muted);border-color:var(--border);background:var(--paper)}
+.asb-verdict.ok{color:var(--success);border-color:var(--success)}
+.asb-verdict.bad{color:var(--accent);border-color:var(--accent);border-style:dashed}
