@@ -17,6 +17,7 @@ function closeDrawer(focus=false){
 }
 export function initWorkspace(){
  if(initialized)return;initialized=true;
+ import('./u/tourbar.js').catch(()=>{}); // T-047: the persistent tour bar, shown once a stop has been opened
  const sidebar=$('workspace-sidebar');if(!sidebar)return;
  const media=matchMedia('(max-width:900px)');const sync=()=>{if(media.matches)closeDrawer();else{closeDrawer();sidebar.removeAttribute('inert')}};media.addEventListener('change',sync);sync();
  $('drawer-toggle').onclick=()=>{returnFocus=document.activeElement;document.querySelectorAll('details.vh-menu').forEach(d=>d.open=true);document.body.classList.remove('search-open');sidebar.removeAttribute('inert');document.body.classList.add('drawer-open');$('drawer-toggle').setAttribute('aria-expanded','true');$('drawer-scrim').hidden=false;sidebar.setAttribute('role','dialog');sidebar.setAttribute('aria-modal','true');$('main')?.setAttribute('inert','');document.querySelector('.workspace-topbar')?.setAttribute('inert','');$('drawer-close').focus()};

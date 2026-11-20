@@ -1,6 +1,7 @@
 // Front page (T-036): one large photo band from every collection, one sentence, the groups that cross museums, three
 // ways in, then a visual "what is here" strip (no tables), the patterns and the analysis views.  Photographs lead;
 // no gradients, no emoji, no repeated caveat line (the one plain note is in the footer).
+import {STOPS, stopHref} from './tourstops.js';
 import {boot, loadJSON, $, $$, esc, fmt, fromMini, mus, thumb, objUrl, getDomain, errorBox} from './core.js';
 
 const main = $('#main');
@@ -14,6 +15,13 @@ try {
 
   // the opening band: real photographs only (registration cards are already excluded by the build)
   $('#band').innerHTML = H.band.map(id => { const r = R(id); return r ? '<a href="' + objUrl(id) + '" style="--c:' + mus(r.m).color + '" title="' + esc(r.t + ' · ' + mus(r.m).short) + '">' + im(id) + '</a>' : ''; }).join('');
+
+  // T-047: the tour, six stops with one picture each; the tour pages and the route sheet share the same list
+  const g0 = ((H.families || [])[0] || {groups: []}).groups[0];
+  const tpics = [H.band[0], g0 && g0.pics[0], g0 && (g0.pics[1] || g0.pics[0]), null, H.tree[0], H.gap.id];
+  $('#tstops').innerHTML = STOPS.map((s, i) => '<li><a href="' + stopHref(s.n) + '" data-stop="' + s.n + '"><span class="tpi" style="--c:var(--ink)"><em>' + s.n + '</em>' +
+    (tpics[i] && R(tpics[i]) ? '<img loading="lazy" decoding="async" src="' + esc(thumb(R(tpics[i]).im)) + '" alt="">' : '<img loading="lazy" src="img/u/map-preview.png" alt="">') +
+    '</span><b>' + esc(s.name) + '</b><span class="tmn">' + s.min + ' min</span></a></li>').join('');
 
   // T-044: the four kinds of group, one tab each, a picture grid of the top cross-museum groups (no tables, no
   // prose walls).  Every tile links to its section on the groups page, and that section links on to the map.

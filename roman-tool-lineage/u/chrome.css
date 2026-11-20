@@ -100,3 +100,30 @@ body footer.vfoot p{margin:0;font:500 15px/1.5 var(--font-ui);color:var(--ink);m
  header.vh .vh-domain button[data-domain=surg] span::after{content:""}
  header.vh .vh-domain button span.long{display:none}
 }
+
+/* T-047: the persistent tour bar, on every page once a stop has been opened */
+body.has-tourbar{padding-bottom:64px}
+.tourbar{position:fixed;left:0;right:0;bottom:0;z-index:35;display:flex;align-items:center;gap:var(--s4);padding:8px var(--gut);background:var(--ink);color:#fff;font:600 14px/1.2 var(--font-ui);border-top:3px solid var(--accent)}
+.tourbar a,.tourbar button{color:#fff;font:inherit}
+.tourbar a:hover{text-decoration:underline;text-underline-offset:3px}
+.tb-route{letter-spacing:.1em;text-transform:uppercase;font-size:12px!important;opacity:.85}
+.tb-dots{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.tb-dots a{display:grid;place-items:center;width:26px;height:26px;border-radius:50%;border:1.5px solid #ffffffa0;font-size:12.5px}
+.tb-dots a:hover{background:#ffffff30;text-decoration:none}
+.tb-dots a[aria-current]{background:#fff;color:var(--ink);border-color:#fff}
+.tb-now{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tb-now b{margin-right:6px}
+.tb-back{text-decoration:underline;text-underline-offset:3px;white-space:nowrap}
+.tb-go{display:flex;gap:var(--s2)}
+.tb-go a,.tb-go .off{display:inline-flex;align-items:center;padding:9px 16px;border:1.5px solid #fff;border-radius:999px;white-space:nowrap;min-height:40px}
+.tb-go a.tb-next{background:#fff;color:var(--ink)}
+.tb-go .off{opacity:.4}
+.tb-go a:hover{background:#ffffff30;text-decoration:none}
+.tb-go a.tb-next:hover{background:var(--tint)}
+.tb-end{background:none;border:0;cursor:pointer;opacity:.75;text-decoration:underline;text-underline-offset:3px;padding:8px}
+@media (max-width:900px){
+ .tourbar{gap:var(--s2);padding:6px var(--s3)}
+ .tb-route,.tb-dots,.tb-back,.tb-end{display:none}
+ .tb-now{font-size:12.5px}
+ .tb-go a,.tb-go .off{padding:8px 12px;font-size:13px}
+}

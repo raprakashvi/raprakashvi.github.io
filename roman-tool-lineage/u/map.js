@@ -2,7 +2,7 @@
 // photo + title (the fusion the site has used), photo only, title only.  A learned mode appears once T-035 has
 // written its shared space.  Marks: square = Medicine, circle = Science and technology, both = both marks, outline =
 // no tag.  T-036 also draws the groups found by closeness (clusters) as outlined, clickable regions.
-import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomain, getDomain, domainKey, params, errorBox} from './core.js';
+import {boot, loadIndex, loadJSON, $, $$, esc, fmt, mus, thumb, dateLabel, objUrl, inDomain, getDomain, domainKey, params, errorBox, MUSEUMS} from './core.js';
 
 await boot();
 let IX;
@@ -22,6 +22,10 @@ const inGroup = r => !GF || (GFAM === 'look' ? r.cl === Number(GVAL) :
   GFAM === 'morphology' ? r.mg === Number(GVAL) :
   GFAM === 'type' ? (r.ty.length > 0 && IX.dict.ty[r.ty[0]] === GVAL) :
   GFAM === 'use' ? (r.fn.length > 0 && IX.dict.fn[r.fn[0]] === GVAL) : true);
+// T-047: a museum filter.  The other museums stay on the map as grey ghosts, so the chosen museum is seen in its
+// place among everything else; ?m=<museum index> opens the map with it chosen (the tour's fourth stop links here).
+let GM = params().m != null && params().m !== '' && Number.isFinite(Number(params().m)) ? Number(params().m) : null;
+const inMus = r => GM == null || r.m === GM;
 const COL = {med: '#a8431f', sci: '#284f7a', both: '#7b5f6d', none: '#b3ada0'};
 const cv = $('#map'), ctx = cv.getContext('2d'), tip = $('#tip');
 const MODES = {fusion: {x: 'x', y: 'y', label: 'Photo + title'}, photo: {x: 'px', y: 'py', label: 'Photo only'},
@@ -52,7 +56,7 @@ const sx = r => (W / 2 + (cx(r) - (x0 + x1) / 2) * sc) * k + ox;
 const sy = r => (H / 2 - (cy(r) - (y0 + y1) / 2) * sc) * k + oy;
 
 function legend() {
-  const vis = P.filter(r => inDomain(r.d));
+  const vis = P.filter(r => inDomain(r.d) && inMus(r));
   if (colBy === 'tag') {
     const n = {med: 0, sci: 0, both: 0, none: 0};
     vis.forEach(r => n[domainKey(r.d)]++);
@@ -77,7 +81,8 @@ function legend() {
     'Photographs and titles are embedded with SigLIP 2 and placed with UMAP' +
     (IX.map.params ? ' on 50 principal components (n_neighbors ' + IX.map.params.n_neighbors + ', min_dist ' + IX.map.params.min_dist + ', cosine, seed 7)' : ' (n_neighbors 15, min_dist 0.2, cosine, seed 7)') +
     '; each mode is a cached layout of the same objects.';
-  $('#mapnote').innerHTML = (GF ? '<b>Group: ' + esc(GFNAME || GF) + '</b> — ' + fmt(P.length) +
+  $('#mapnote').innerHTML = (GM != null ? '<b>Museum: ' + esc(mus(GM).name) + '</b> — ' + fmt(P.filter(r => r.m === GM && inDomain(r.d)).length) +
+    ' objects with a position, in colour; every other object is grey. ' : '') + (GF ? '<b>Group: ' + esc(GFNAME || GF) + '</b> — ' + fmt(P.length) +
     ' objects with a position. <a href="map.html">Show all objects</a>. ' : '') + esc(note);
 }
 function resize() {
@@ -105,7 +110,7 @@ function mark(x, y, rad, d) {
 function draw() {
   ctx.setTransform(dpr, 0, 0, dpr, 0, 0); ctx.clearRect(0, 0, W, H);
   const vis = [], ghost = [];
-  for (const r of P) { const x = sx(r), y = sy(r); if (x < -40 || x > W + 40 || y < -40 || y > H + 40) continue; (inDomain(r.d) ? vis : ghost).push([r, x, y]); }
+  for (const r of P) { const x = sx(r), y = sy(r); if (x < -40 || x > W + 40 || y < -40 || y > H + 40) continue; (inDomain(r.d) && inMus(r) ? vis : ghost).push([r, x, y]); }
   const rad = 4 + Math.min(3, Math.log2(k));
   ctx.fillStyle = 'rgba(82,97,118,.16)';
   ghost.forEach(v => { mark(v[1], v[2], rad * .7, v[0].d); ctx.fill(); });
@@ -222,6 +227,15 @@ if (!$('#mset') || !SUB.length) { if ($('#mshow')) $('#mshow').hidden = true; } 
   };
 }
 
+if ($('#mmus')) {
+  $('#mmus').innerHTML = '<option value="">All museums</option>' + MUSEUMS.map((m, i) => '<option value="' + i + '">' + esc(m.name) + '</option>').join('');
+  if (GM != null) $('#mmus').value = String(GM);
+  $('#mmus').onchange = function () {
+    GM = this.value === '' ? null : Number(this.value);
+    try { const u = new URL(location.href); if (GM == null) u.searchParams.delete('m'); else u.searchParams.set('m', GM); history.replaceState(null, '', u); } catch {}
+    legend(); draw();
+  };
+}
 $('#tgroups').onchange = function () { showGroups = this.checked; draw(); };
 window.addEventListener('vestigium:domain', () => { legend(); draw(); });
 addEventListener('resize', resize);
